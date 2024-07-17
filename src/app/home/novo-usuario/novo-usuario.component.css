@@ -1,0 +1,52 @@
+.novo-usuario {
+    padding: 1rem 1rem 1rem;
+  }
+  
+  .novo-usuario form {
+    background: #bbbfc2;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 2rem 2rem;
+    margin: 1rem 6rem 1rem;
+  }
+  
+  .novo-usuario form label {
+    color: #000000;
+    font-weight: bold;
+    margin: 0 0 1rem;
+  }
+  
+  .novo-usuario form .input {
+    border: none;
+    height: 40px;
+    padding: 1rem 1rem;
+    border-radius: 10px;
+    margin: 0em 0em 1em;
+  }
+
+  .acoes {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+  }  
+
+  .botao {
+    margin-top: 60px;
+    width: 200px;
+  }
+
+  .erro {
+    margin: -1em 0em 1em;
+  }
+
+  .usuario {
+    width: 300px; 
+    margin-left: auto;
+    margin-right: auto; 
+  }
+
+  .text-center {
+    margin: 0em 0em 1em;
+  }

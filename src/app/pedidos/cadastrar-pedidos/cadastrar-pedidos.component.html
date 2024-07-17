@@ -1,0 +1,667 @@
+<!-- <section class="container cadastrar-pedidos ff-inter">
+  <header class="header">
+    <h4><strong>Emitir Pedido:</strong></h4>
+  </header>
+
+  <form [formGroup]="formulario" class="full-width" id="formulario">
+    <div class="row">
+      <div class="col-md-9">
+        <mat-form-field class="form-grid" appearance="fill">
+          <mat-label>Buscar Cliente</mat-label>
+          <input
+            type="text"
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="auto"
+            autofocus
+          />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            @for (option of filteredOptions | async; track option) {
+              <mat-option [value]="option">{{ option.name }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field class="form-grid" appearance="outline">
+          <mat-label>Código Cliente</mat-label>
+          <input
+            matInput
+            disableRipple
+            value="1"
+            name="idCliente"
+            formControlName="idCliente"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <br />
+    <h6><strong>Informações Cliente:</strong></h6>
+    <br />
+
+    <div class="espaco-dentro">
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Nome:</mat-label>
+            <input
+              matInput
+              name="nome"
+              placeholder="Digite o Nome"
+              formControlName="nome"
+              #nome
+            />
+            <mat-hint align="end">{{nome.value.length || 0}} / 100</mat-hint>
+            <mat-error *ngIf="formulario.get('nome')?.invalid"> {{getMensagemErro("nome")}}</mat-error>
+            @if (formulario.get('nome')?.invalid) {
+            <mat-error>{{ formUtils.getErrorMessage(formulario, "nome") }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>CPF/CNPJ:</mat-label>
+            <input
+              matInput
+              name="cpfcnpj"
+              placeholder="Digite o CPF ou CNPJ"
+              formControlName="cpfcnpj"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Telefone:</mat-label>
+            <span matTextPrefix>+55</span>
+            <input
+              matInput
+              name="telefone"
+              placeholder="(11) 5555-1234"
+              formControlName="telefone"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Celular:</mat-label>
+            <span matTextPrefix>+55</span>
+            <input
+              matInput
+              name="celular"
+              placeholder="(XX) 9XXXX-XXXX"
+              formControlName="celular"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="form-grid">
+            <mat-label>E-mail:</mat-label>
+            <input
+              matInput
+              name="email"
+              placeholder="Ex. pat@example.com"
+              formControlName="email"
+            />
+            <div
+              *ngIf="
+                (formulario?.invalid && formulario?.touched) ||
+                formulario?.dirty
+              "
+            >
+              <mat-error
+                *ngIf="
+                  formulario.hasError('email') &&
+                  !formulario.hasError('required')
+                "
+              >
+                E-mail é obrigatório.
+              </mat-error>
+            </div>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>CEP:</mat-label>
+            <input
+              matInput
+              name="cep"
+              placeholder="Digite o CEP"
+              formControlName="cep"
+              (blur)="consultaCEP()"
+            />
+            <div *ngIf="(formulario?.invalid && formulario?.touched) || formulario?.dirty">
+              <mat-error *ngIf="formulario.hasError('cep') && !formulario.hasError('required')">
+                O campo de CEP é obrigatório
+              </mat-error>
+            </div>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Logradouro:</mat-label>
+            <input matInput name="logradouro" formControlName="logradouro" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Número:</mat-label>
+            <input matInput name="numero" formControlName="numero" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Complemento:</mat-label>
+            <input
+              matInput
+              placeholder="Ex. Apto 64"
+              name="complemento"
+              formControlName="complemento"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Bairro:</mat-label>
+            <input matInput name="bairro" formControlName="bairro" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Cidade:</mat-label>
+            <input
+              matInput
+              placeholder="Ex. Santo André"
+              name="cidade"
+              formControlName="cidade"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>UF:</mat-label>
+            <input
+              matInput
+              placeholder="Ex. São Paulo"
+              name="estado"
+              formControlName="estado"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <h6><strong>Informações Empresa:</strong></h6>
+    <br />
+
+    <div class="espaco-dentro">
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Nome Fantasia:</mat-label>
+            <input
+              matInput
+              name="nomePedido"
+              placeholder="Digite o nome fantasia"
+              formControlName="nomePedido"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Razão Social:</mat-label>
+            <input
+              matInput
+              name="razaoSocial"
+              placeholder="Digite a Razão Social"
+              formControlName="razaoSocial"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>CPF/CNPJ:</mat-label>
+            <input
+              matInput
+              name="cpfcnpjPedido"
+              placeholder="Digite o CPF ou CNPJ"
+              formControlName="cpfcnpjPedido"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <h6><strong>Informações Pedido:</strong></h6>
+    <br />
+
+    <div class="espaco-dentro">
+      Forma de Pagamento:
+      <div class="row">
+        <div class="col-md-2">
+          <mat-card-content>
+            <section class="form-grid">
+              <mat-checkbox
+                class="checkbox-margin"
+                (change)="onPaymentCheckBoxChange($event)"
+                >Á Vista</mat-checkbox
+              >
+            </section>
+          </mat-card-content>
+        </div>
+        <div class="col-md-2">
+          <mat-card-content>
+            <section class="form-grid">
+              <mat-form-field>
+                <mat-label>Faturado:</mat-label>
+                <mat-select [disabled]="isPaymentChecked">
+                  <mat-option value="0"> </mat-option>
+                  <mat-option value="1">10 dias</mat-option>
+                  <mat-option value="2">11 dias</mat-option>
+                  <mat-option value="3">12 dias</mat-option>
+                  <mat-option value="4">13 dias</mat-option>
+                  <mat-option value="5">14 dias</mat-option>
+                  <mat-option value="6">15 dias</mat-option>
+                  <mat-option value="7">16 dias</mat-option>
+                  <mat-option value="8">17 dias</mat-option>
+                  <mat-option value="9">18 dias</mat-option>
+                  <mat-option value="10">19 dias</mat-option>
+                  <mat-option value="11">20 dias</mat-option>
+                  <mat-option value="12">21 dias</mat-option>
+                  <mat-option value="13">22 dias</mat-option>
+                  <mat-option value="14">23 dias</mat-option>
+                  <mat-option value="15">24 dias</mat-option>
+                  <mat-option value="16">25 dias</mat-option>
+                  <mat-option value="17">26 dias</mat-option>
+                  <mat-option value="18">27 dias</mat-option>
+                  <mat-option value="19">28 dias</mat-option>
+                  <mat-option value="20">29 dias</mat-option>
+                  <mat-option value="21">30 dias</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </section>
+          </mat-card-content>
+        </div>
+      </div>
+
+      <br />
+
+      <tr>
+        <mat-slide-toggle
+          color="blue"
+          formControlName="deliveryAddress"
+          (change)="onToggleChange($event)"
+          [checked]="isAdressChecked"
+        >
+          Entregar no mesmo endereço de cadastro:
+        </mat-slide-toggle>
+        {{isAdressChecked}}
+      </tr>
+
+      <br />
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>CEP:</mat-label>
+            <input
+              [disabled]="isAdressChecked"
+              matInput
+              name="cepPedido"
+              formControlName="cepPedido"
+              (blur)="consultaCEP()"
+            />
+            <div *ngIf="(formulario?.invalid && formulario?.touched) || formulario?.dirty">
+              <mat-error *ngIf="formulario.hasError('cep') && !formulario.hasError('required')">
+                O campo de CEP é obrigatório
+              </mat-error>
+            </div>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Logradouro:</mat-label>
+            <input
+              [disabled]="isAdressChecked"
+              matInput
+              name="logradouroPedido"
+              formControlName="logradouroPedido"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Número:</mat-label>
+            <input
+              disableRipple
+              [disabled]="isAdressChecked"
+              matInput
+              name="numeroPedido"
+              formControlName="numeroPedido"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Complemento:</mat-label>
+            <input
+              disableRipple
+              [disabled]="isAdressChecked"
+              matInput
+              name="complementoPedido"
+              placeholder="Ex. Apto 64"
+              formControlName="complementoPedido"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Bairro:</mat-label>
+            <input
+              disableRipple
+              [disabled]="isAdressChecked"
+              matInput
+              name="bairroPedido"
+              formControlName="bairroPedido"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Cidade:</mat-label>
+            <input
+              disableRipple
+              [disabled]="isAdressChecked"
+              matInput
+              name="cidadePedido"
+              placeholder="Ex. Santo André"
+              formControlName="cidadePedido"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>UF:</mat-label>
+            <input
+              disableRipple
+              [disabled]="isAdressChecked"
+              matInput
+              name="estadoPedido"
+              placeholder="Ex. São Paulo"
+              formControlName="estadoPedido"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>SFOBRAS:</mat-label>
+            <input
+              matInput
+              name="sfobras"
+              placeholder="Digite o SFOBRAS"
+              formControlName="sfobras"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>CNO:</mat-label>
+            <input
+              matInput
+              name="cno"
+              placeholder="Digite o CNO"
+              formControlName="cno"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Inscrição Estadual:</mat-label>
+            <input
+              matInput
+              name="ie"
+              placeholder="Informe a IE"
+              formControlName="ie"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Mangueira: Metros</mat-label>
+            <select matNativeControl name="metro" formControlName="mangueira">
+              <option value="" selected></option>
+              @for (metro of metros; track metro) {
+                <option [value]="metro.value">{{ metro.viewValue }}</option>
+              }
+            </select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <h6>Volume:</h6>
+      <div class="row">
+        <div class="col-md-12">
+          <mat-radio-group
+            aria-labelledby="example-radio-group-label"
+            name="volume"
+            formControlName="volume"
+          >
+            @for (volume of volumes; track volume) {
+              <mat-radio-button [value]="volume.value">{{
+                volume.viewValue
+              }}</mat-radio-button>
+            }
+          </mat-radio-group>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço cx-5m³</mat-label>
+            <span matTextPrefix>R$ </span>
+            <input matInput name="precoCx5" formControlName="precoCx5" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço cx-10m³</mat-label>
+            <span matTextPrefix>R$ </span>
+            <input matInput name="precoCx10" formControlName="precoCx10" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço cx-15m³</mat-label>
+            <span matTextPrefix>R$ </span>
+            <input matInput name="precoCx15" formControlName="precoCx15" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço lav-5m³</mat-label>
+            <span matTextPrefix>R$ </span>
+            <input matInput name="precoLv5" formControlName="precoLv5" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço lav-10m³</mat-label>
+            <span matTextPrefix>R$ </span>
+            <input matInput name="precoLv10" formControlName="precoLv10" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço lav-15m³</mat-label>
+            <span matTextPrefix>R$ </span>
+            <input matInput name="precoLv15" formControlName="precoLv15" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field class="form-grid">
+            <mat-label>Ajudante p/ hora adicional:</mat-label>
+            <input
+              matInput
+              name="ajudanteHora"
+              placeholder="Informe o ajudante para hora adicional"
+              formControlName="ajudanteHora"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="form-grid">
+            <mat-label>Observações:</mat-label>
+            <input
+              matInput
+              name="observacao"
+              placeholder="Informações adicionais"
+              formControlName="observacao"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <br />
+  <br />
+
+  <div class="container-previa">
+    <header class="header">
+      <h4><i>Prévia do Pedido:</i></h4>
+    </header>
+    <div class="modelo ff-roboto-mono">
+      <img
+        class="col-md-12"
+        src="../../../../assets/img/logo.png"
+        alt="Logo São Tomé"
+      />
+
+      <br />
+
+      <mat-list>
+        <mat-divider></mat-divider>
+      </mat-list>
+
+      <div class="row">
+        <div class="col-md-9">
+          <h4>PEDIDO: {{ formulario.controls.idCliente.value }}</h4>
+        </div>
+        <div class="col-md-3">
+          <b>DATA: </b>
+          {{ dataAtual | date: "dd/MM/yyyy" }}
+        </div>
+      </div>
+
+      <mat-list>
+        <mat-divider></mat-divider>
+      </mat-list>
+
+      <br />
+
+      <div class="campos_previa">
+        <p class="nomePedido">
+          <b>CLIENTE: </b>
+          {{ formulario.nomePedido }}
+          <small> - CNPJ: {{ formulario.controls.cpfcnpjPedido.value }}</small>
+        </p>
+      </div>
+
+      <div class="campos_previa">
+        <p class="endereco">
+          <b>ENDEREÇO: </b>
+          {{ formulario.controls.logradouroPedido.value }},
+          {{ formulario.controls.numeroPedido.value }} -
+          {{ formulario.controls.complementoPedido.value }} -
+          {{ formulario.controls.bairroPedido.value }}/{{
+            formulario.controls.estadoPedido.value
+          }}
+          - CEP: {{ formulario.controls.cepPedido.value }}
+        </p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <b>VOLUME: </b>
+          {{ formulario.controls.volume.value }}
+        </div>
+        <div class="col-md-4">
+          <b>MANGUEIRA: </b>
+          {{ formulario.controls.mangueira.value }}
+        </div>
+        <div class="col-md-4">
+          <b>PREÇO: R$ </b>
+          {{ formulario.controls.precoCx5.value }}
+        </div>
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class="col-md-4">
+          <b>MOTORISTA: </b>
+        </div>
+        <div class="col-md-4">
+          <b>CAMINHÃO: </b>
+        </div>
+        <div class="col-md-4">
+          <b>PLACA: </b>
+        </div>
+      </div>
+
+      <br />
+
+      <mat-list>
+        <mat-divider></mat-divider>
+      </mat-list>
+
+      <img
+        class="col-md-12"
+        src="../../../../assets/img/rodapeprevia.png"
+        alt="Rodapé da Prévia do Pedido"
+      />
+
+      <div class="acoes">
+        <button (click)="onSubmit()" class="botao">Emite Pedido</button>
+        <button (click)="onCancel()" class="botao">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</section> -->

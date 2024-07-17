@@ -1,0 +1,11 @@
+<div mat-dialog-content  class="caixa-dialogo">
+  <p>{{ data }}</p>
+</div>
+<div mat-dialog-actions align="center" class="actions-center">
+  <button mat-raised-button (click)="onConfirm(true)" color="primary" class="btn-space">
+    Sim
+  </button>
+  <button mat-raised-button (click)="onConfirm(false)" color="warn" class="btn-space">
+    Não
+  </button>
+</div>

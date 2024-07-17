@@ -1,0 +1,66 @@
+ .cadastrar-pedidos {
+    padding: 2rem 0;
+  }
+
+.cadastrar-pedidos form {
+  background: #dde0e2;
+  border: none;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  width: 100%;
+}
+
+.espaco-dentro {
+  padding: 0rem 2rem 0rem;
+}
+
+.form-grid {
+  display: grid;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mat-slide-toggle {
+  margin: 8px 10px;
+  display: block;
+}
+
+.checkbox-margin {
+  margin: 0 10px;
+}
+
+.acoes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.botao {
+  margin: 5px;
+  margin-top: 70px;
+  width: 200px;
+}
+
+.modelo {
+  background:#e4edf0;
+  padding: 1rem;
+  width: 100%;
+  margin: 0 0 6rem; 
+  border-radius: 20px;
+  box-shadow: 15px 15px 15px #154580;
+}
+
+.container-previa {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 2rem 0rem;
+}
+
+.container-previa .imagem {
+  padding: 1rem;
+}

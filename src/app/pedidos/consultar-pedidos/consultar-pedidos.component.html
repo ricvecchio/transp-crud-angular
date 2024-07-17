@@ -1,0 +1,113 @@
+<!-- <section class="container">
+    <header class="header d-flex">
+      <h2 class="ff-inter">Consultar Pedidos:</h2>
+    </header>
+    <div class="layoutpedido" *ngIf="listaPedidos.length > 0; else semPedidos">
+      <div *ngFor="let pedido of listaPedidos">
+        <app-cadastrar-pedidos [dadosPedido]="pedido"></app-cadastrar-pedidos>
+      </div>
+    </div>
+
+  <ng-template #semPedidos>
+    <div class="ff-inter sem-pedidos]">
+      <p>Ainda não há pedidos cadastrados!</p>
+    </div>
+  </ng-template> -->
+
+<!-- <mat-form-field>
+    <mat-label>Filtro</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Exemplo: Ricardo"
+      #input
+    />
+  </mat-form-field> -->
+
+<!-- <mat-card>
+  <mat-toolbar color="primary">Lista de Pedidos</mat-toolbar>
+
+  <div *ngIf="pedidos$ | async as pedidos; else loading">
+    <mat-table [dataSource]="pedidos" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Pedido</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let pedido">{{ pedido.id }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="nome">
+        <mat-header-cell *matHeaderCellDef>
+          <strong>Cliente</strong>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let pedido">{{ pedido.nomePedido }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="endereco">
+        <mat-header-cell *matHeaderCellDef>
+          <strong>Endereco</strong>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let pedido">{{ pedido.logradouroPedido }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="volume">
+        <mat-header-cell *matHeaderCellDef>
+          <strong>Volume</strong>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let pedido">{{ pedido.volume }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="mangueira">
+        <mat-header-cell *matHeaderCellDef>
+          <strong>Mangueira</strong>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let pedido">{{ pedido.mangueira }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="valor">
+        <mat-header-cell *matHeaderCellDef>
+          <strong>Valor</strong>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let pedido">{{ pedido.valor }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef>
+          <strong>Status</strong>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let pedido">{{ pedido.status }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="acao">
+        <mat-header-cell *matHeaderCellDef class="action-column">
+          <button mat-mini-fab color="accent" aria-label="Adicionar um Pedido" (click)="onAdd()" class="action-column-header">
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let pedido">
+          <button
+            mat-icon-button
+            color="primary"
+            aria-label="Editando um Pedido"
+            (click)="onEdit(pedido)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" aria-label="Deletando um Pedido" (click)="onDelete(pedido)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+  </div>
+
+  <ng-template #loading>
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card> -->
