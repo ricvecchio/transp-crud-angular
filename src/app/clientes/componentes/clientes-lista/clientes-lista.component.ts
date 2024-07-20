@@ -8,9 +8,9 @@ import {
   ConfirmationDialogComponent,
 } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-dialog/error-dialog.component';
-import { Cliente } from '../../modelo/cliente';
+import { Cliente } from '../../../modelo/cliente';
 import { ClienteService } from '../../servicos/cliente.service';
-import { ClientePagina } from '../../modelo/cliente-pagina';
+import { ClientePagina } from '../../../modelo/cliente-pagina';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatIcon } from '@angular/material/icon';

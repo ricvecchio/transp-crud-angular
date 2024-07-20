@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './home/login/login.component';
 import { NovoUsuarioComponent } from './home/novo-usuario/novo-usuario.component';
 import { MenuComponent } from './menu/menu.component';
+import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
 
 const routes: Routes = [
   {
@@ -48,11 +49,11 @@ const routes: Routes = [
     component: ClienteFormComponent,
     resolve: { cliente: ClienteResolver },
   },
-
-  // {
-  //   path: 'cadastrar-pedidos',
-  //   component: CadastrarPedidosComponent
-  // },
+  {
+    path: 'cadastrar-pedido',
+    component: PedidoFormComponent,
+    resolve: { cliente: ClienteResolver },
+  }
   // {
   //   path: 'consultar-pedidos',
   //   component: ConsultarPedidosComponent

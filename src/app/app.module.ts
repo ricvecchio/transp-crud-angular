@@ -19,6 +19,7 @@ import { ClientesListaComponent } from './clientes/componentes/clientes-lista/cl
 import { ClienteFormComponent } from './clientes/containers/cliente-form/cliente-form.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
 
 @NgModule({
     declarations: [AppComponent],
@@ -38,7 +39,8 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
         MenuComponent,
         MensagemComponent,
         ClienteFormComponent,
-        ClientesListaComponent
+        ClientesListaComponent,
+        PedidoFormComponent
     ],
     providers: [
         provideAnimations(),

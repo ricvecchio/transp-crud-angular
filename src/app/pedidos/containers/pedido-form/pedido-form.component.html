@@ -1,4 +1,4 @@
-<!-- <section class="container cadastrar-pedidos ff-inter">
+<section class="container cadastrar-pedidos ff-inter">
   <header class="header">
     <h4><strong>Emitir Pedido:</strong></h4>
   </header>
@@ -8,16 +8,10 @@
       <div class="col-md-9">
         <mat-form-field class="form-grid" appearance="fill">
           <mat-label>Buscar Cliente</mat-label>
-          <input
-            type="text"
-            matInput
-            [formControl]="myControl"
-            [matAutocomplete]="auto"
-            autofocus
-          />
+          <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             @for (option of filteredOptions | async; track option) {
-              <mat-option [value]="option">{{ option.name }}</mat-option>
+              <mat-option [value]="option">{{option.name}}</mat-option>
             }
           </mat-autocomplete>
         </mat-form-field>
@@ -28,9 +22,8 @@
           <input
             matInput
             disableRipple
-            value="1"
-            name="idCliente"
-            formControlName="idCliente"
+            name="id"
+            formControlName="id"
           />
         </mat-form-field>
       </div>
@@ -52,10 +45,11 @@
               formControlName="nome"
               #nome
             />
-            <mat-hint align="end">{{nome.value.length || 0}} / 100</mat-hint>
-            <mat-error *ngIf="formulario.get('nome')?.invalid"> {{getMensagemErro("nome")}}</mat-error>
-            @if (formulario.get('nome')?.invalid) {
-            <mat-error>{{ formUtils.getErrorMessage(formulario, "nome") }}</mat-error>
+            <mat-hint align="end">{{ nome.value.length || 0 }} / 100</mat-hint>
+            @if (formulario.get("nome")?.invalid) {
+              <mat-error>
+                {{ formUtils.getMensagemErro(formulario, "nome") }}</mat-error
+              >
             }
           </mat-form-field>
         </div>
@@ -84,6 +78,13 @@
               placeholder="(11) 5555-1234"
               formControlName="telefone"
             />
+            @if (formulario.get("telefone")?.invalid) {
+              <mat-error>
+                {{
+                  formUtils.getMensagemErro(formulario, "telefone")
+                }}</mat-error
+              >
+            }
           </mat-form-field>
         </div>
         <div class="col-md-3">
@@ -107,21 +108,11 @@
               placeholder="Ex. pat@example.com"
               formControlName="email"
             />
-            <div
-              *ngIf="
-                (formulario?.invalid && formulario?.touched) ||
-                formulario?.dirty
-              "
-            >
-              <mat-error
-                *ngIf="
-                  formulario.hasError('email') &&
-                  !formulario.hasError('required')
-                "
+            @if (formulario.get("email")?.invalid) {
+              <mat-error>
+                {{ formUtils.getMensagemErro(formulario, "email") }}</mat-error
               >
-                E-mail é obrigatório.
-              </mat-error>
-            </div>
+            }
           </mat-form-field>
         </div>
       </div>
@@ -137,11 +128,11 @@
               formControlName="cep"
               (blur)="consultaCEP()"
             />
-            <div *ngIf="(formulario?.invalid && formulario?.touched) || formulario?.dirty">
-              <mat-error *ngIf="formulario.hasError('cep') && !formulario.hasError('required')">
-                O campo de CEP é obrigatório
-              </mat-error>
-            </div>
+            @if (formulario.get("cep")?.invalid) {
+              <mat-error>
+                {{ formUtils.getMensagemErro(formulario, "cep") }}</mat-error
+              >
+            }
           </mat-form-field>
         </div>
       </div>
@@ -151,12 +142,26 @@
           <mat-form-field class="form-grid">
             <mat-label>Logradouro:</mat-label>
             <input matInput name="logradouro" formControlName="logradouro" />
+            @if (formulario.get("logradouro")?.invalid) {
+              <mat-error>
+                {{
+                  formUtils.getMensagemErro(formulario, "logradouro")
+                }}</mat-error
+              >
+            }
           </mat-form-field>
         </div>
         <div class="col-md-3">
           <mat-form-field class="form-grid">
             <mat-label>Número:</mat-label>
             <input matInput name="numero" formControlName="numero" />
+            @if (formulario.get("numero")?.invalid) {
+              <mat-error>
+                {{
+                  formUtils.getMensagemErro(formulario, "numero")
+                }}</mat-error
+              >
+            }
           </mat-form-field>
         </div>
       </div>
@@ -307,7 +312,7 @@
 
       <br />
 
-      <tr>
+      <!-- <tr>
         <mat-slide-toggle
           color="blue"
           formControlName="deliveryAddress"
@@ -317,7 +322,7 @@
           Entregar no mesmo endereço de cadastro:
         </mat-slide-toggle>
         {{isAdressChecked}}
-      </tr>
+      </tr> -->
 
       <br />
 
@@ -332,11 +337,11 @@
               formControlName="cepPedido"
               (blur)="consultaCEP()"
             />
-            <div *ngIf="(formulario?.invalid && formulario?.touched) || formulario?.dirty">
-              <mat-error *ngIf="formulario.hasError('cep') && !formulario.hasError('required')">
-                O campo de CEP é obrigatório
-              </mat-error>
-            </div>
+            @if (formulario.get("cepPedido")?.invalid) {
+              <mat-error>
+                {{ formUtils.getMensagemErro(formulario, "cepPedido") }}</mat-error
+              >
+            }
           </mat-form-field>
         </div>
       </div>
@@ -351,6 +356,13 @@
               name="logradouroPedido"
               formControlName="logradouroPedido"
             />
+            @if (formulario.get("logradouroPedido")?.invalid) {
+              <mat-error>
+                {{
+                  formUtils.getMensagemErro(formulario, "logradouroPedido")
+                }}</mat-error
+              >
+            }
           </mat-form-field>
         </div>
         <div class="col-md-3">
@@ -363,6 +375,13 @@
               name="numeroPedido"
               formControlName="numeroPedido"
             />
+            @if (formulario.get("numeroPedido")?.invalid) {
+              <mat-error>
+                {{
+                  formUtils.getMensagemErro(formulario, "numeroPedido")
+                }}</mat-error
+              >
+            }
           </mat-form-field>
         </div>
       </div>
@@ -581,13 +600,13 @@
       </mat-list>
 
       <div class="row">
-        <div class="col-md-9">
-          <h4>PEDIDO: {{ formulario.controls.idCliente.value }}</h4>
+        <!-- <div class="col-md-9">
+          <h4>PEDIDO: {{ formulario.controls.idPedido.value }}</h4>
         </div>
         <div class="col-md-3">
           <b>DATA: </b>
           {{ dataAtual | date: "dd/MM/yyyy" }}
-        </div>
+        </div> -->
       </div>
 
       <mat-list>
@@ -599,36 +618,36 @@
       <div class="campos_previa">
         <p class="nomePedido">
           <b>CLIENTE: </b>
-          {{ formulario.nomePedido }}
-          <small> - CNPJ: {{ formulario.controls.cpfcnpjPedido.value }}</small>
+          <!-- {{ formulario.controls.nomePedido.value }}
+          <small> - CNPJ: {{ formulario.value. }}</small> -->
         </p>
       </div>
 
       <div class="campos_previa">
         <p class="endereco">
           <b>ENDEREÇO: </b>
-          {{ formulario.controls.logradouroPedido.value }},
+          <!-- {{ formulario.controls.logradouroEntrega.value }},
           {{ formulario.controls.numeroPedido.value }} -
           {{ formulario.controls.complementoPedido.value }} -
           {{ formulario.controls.bairroPedido.value }}/{{
             formulario.controls.estadoPedido.value
           }}
-          - CEP: {{ formulario.controls.cepPedido.value }}
+          - CEP: {{ formulario.controls.cepPedido.value }} -->
         </p>
       </div>
 
       <div class="row">
         <div class="col-md-4">
           <b>VOLUME: </b>
-          {{ formulario.controls.volume.value }}
+          <!-- {{ formulario.controls.volume.value }} -->
         </div>
         <div class="col-md-4">
           <b>MANGUEIRA: </b>
-          {{ formulario.controls.mangueira.value }}
+          <!-- {{ formulario.controls.mangueira.value }} -->
         </div>
         <div class="col-md-4">
           <b>PREÇO: R$ </b>
-          {{ formulario.controls.precoCx5.value }}
+          <!-- {{ formulario.controls.precoCx5.value }} -->
         </div>
       </div>
 
@@ -664,4 +683,4 @@
       </div>
     </div>
   </div>
-</section> -->
+</section>
