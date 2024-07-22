@@ -1,3 +1,15 @@
+.mat-table {
+  overflow: auto;
+  max-height: 600px;
+}
+
+.action-column {
+  flex: 0 0 125px;
+}
+
+.action-column-header {
+  margin: 0 auto;
+}
 
 mat-card {
   max-width: 80%;
@@ -11,6 +23,12 @@ mat-card {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.column-flex {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
 }
 
 .action-column {

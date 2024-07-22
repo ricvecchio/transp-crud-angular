@@ -43,4 +43,7 @@ export class PedidoService {
     return this.http.put<Pedido>(`${this.API}/${pedido.idPedido}`, pedido).pipe(first());
   }
 
+  excluir(idPedido: string) {
+    return this.http.delete(`${this.API}/${idPedido}`).pipe(first());
+  }
 }

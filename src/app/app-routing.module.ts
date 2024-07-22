@@ -10,6 +10,7 @@ import { NovoUsuarioComponent } from './home/novo-usuario/novo-usuario.component
 import { MenuComponent } from './menu/menu.component';
 import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
 import { PedidoResolver } from './clientes/guarda-rotas/pedido.resolver';
+import { PedidosListaComponent } from './pedidos/componentes/pedidos-lista/pedidos-lista.component';
 
 const routes: Routes = [
   {
@@ -58,6 +59,11 @@ const routes: Routes = [
   {
     path: 'cadastrar-pedido',
     component: PedidoFormComponent,
+    resolve: { cliente: ClienteResolver },
+  },
+  {
+    path: 'consultar-pedidos',
+    component: PedidosListaComponent,
     resolve: { cliente: ClienteResolver },
   },
 ];

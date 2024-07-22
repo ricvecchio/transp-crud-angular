@@ -1,3 +1,79 @@
+<mat-card>
+  <mat-toolbar color="primary">Lista de Pedidos</mat-toolbar>
+
+  @if (pedidos$ | async; as pedidos) {
+    <div>
+      <mat-table [dataSource]="pedidos.pedidos">
+        class="mat-elevation-z8">
+        <ng-container matColumnDef="idPedido">
+          <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.idPedido }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="nomePedido">
+          <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.nomePedido }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="mangueira">
+          <mat-header-cell *matHeaderCellDef>Mangueira</mat-header-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.mangueira }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="volume">
+          <mat-header-cell *matHeaderCellDef>Volume</mat-header-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.volume }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="acao">
+          <mat-header-cell *matHeaderCellDef class="action-column">
+            <button
+              mat-mini-fab
+              color="accent"
+              aria-label="Adicionar um pedido"
+              (click)="onAdd()"
+              class="action-column-header"
+              >
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let pedido" class="action-column">
+            <button
+              mat-icon-button
+              color="primary"
+              aria-label="Editar pedido"
+              (click)="onEdit(pedido)"
+              >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              color="warn"
+              aria-label="Remover pedido"
+              (click)="onDelete(pedido)"
+              >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      </mat-table>
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 15]"
+        showFirstLastButtons
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [length]="pedidos.totalElementos"
+        (page)="atualiza($event)"
+        aria-label="Selecione a página dos Pedidos"
+        >
+      </mat-paginator>
+    </div>
+  } @else {
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+
+</mat-card>
+
 <!-- <section class="container">
     <header class="header d-flex">
       <h2 class="ff-inter">Consultar Pedidos:</h2>
