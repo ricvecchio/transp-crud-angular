@@ -9,6 +9,7 @@ import { LoginComponent } from './home/login/login.component';
 import { NovoUsuarioComponent } from './home/novo-usuario/novo-usuario.component';
 import { MenuComponent } from './menu/menu.component';
 import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
+import { PedidoResolver } from './clientes/guarda-rotas/pedido.resolver';
 
 const routes: Routes = [
   {
@@ -49,15 +50,16 @@ const routes: Routes = [
     component: ClienteFormComponent,
     resolve: { cliente: ClienteResolver },
   },
+  // {
+  //   path: 'cadastrar-pedido',
+  //   component: PedidoFormComponent,
+  //   resolve: { pedido: PedidoResolver },
+  // }
   {
     path: 'cadastrar-pedido',
     component: PedidoFormComponent,
     resolve: { cliente: ClienteResolver },
-  }
-  // {
-  //   path: 'consultar-pedidos',
-  //   component: ConsultarPedidosComponent
-  // }
+  },
 ];
 
 @NgModule({

@@ -86,8 +86,8 @@ export class PedidoFormComponent implements OnInit {
 
 
   ngOnInit(): void {
-    const cliente: Cliente = this.route.snapshot.data['cliente'];
 
+    const cliente: Cliente = this.route.snapshot.data['cliente'];
     this.formulario = this.formBuilder.group({
       id: [cliente.id],
       nome: [cliente.nome, [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
@@ -102,8 +102,37 @@ export class PedidoFormComponent implements OnInit {
       bairro: [cliente.bairro],
       cidade: [cliente.cidade],
       estado: [cliente.estado],
-      pedidos: this.formBuilder.array(this.obterPedidos(cliente),),
+      // pedidos: this.formBuilder.array(this.obterPedidos(cliente),),
     });
+
+    // const pedido: Pedido = this.route.snapshot.data['pedido'];
+    // this.formulario = this.formBuilder.group({
+    //   idPedido: [pedido.idPedido],
+    //   nomePedido: [pedido.nomePedido],
+    //   razaoSocial: [pedido.razaoSocial],
+    //   cpfcnpjPedido: [pedido.cpfcnpjPedido],
+    //   tipoPgto: [pedido.tipoPgto],
+    //   cepPedido: [pedido.cepPedido],
+    //   logradouroPedido: [pedido.logradouroPedido],
+    //   numeroPedido: [pedido.numeroPedido],
+    //   complementoPedido: [pedido.complementoPedido],
+    //   bairroPedido: [pedido.bairroPedido],
+    //   cidadePedido: [pedido.cidadePedido],
+    //   estadoPedido: [pedido.estadoPedido],
+    //   sfobras: [pedido.sfobras],
+    //   cno: [pedido.cno],
+    //   ie: [pedido.ie],
+    //   mangueira: [pedido.mangueira],
+    //   volume: [pedido.volume],
+    //   precoCx5: [pedido.precoCx5],
+    //   precoCx10: [pedido.precoCx10],
+    //   precoCx15: [pedido.precoCx15],
+    //   precoLv5: [pedido.precoLv5],
+    //   precoLv10: [pedido.precoLv10],
+    //   precoLv15: [pedido.precoLv15],
+    //   ajudanteHora: [pedido.ajudanteHora],
+    //   observacao: [pedido.observacao]
+    // });
   }
 
     // this.filteredOptions = this.myControl.valueChanges.pipe(

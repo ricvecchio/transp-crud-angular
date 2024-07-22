@@ -221,14 +221,17 @@
         <div class="col-md-9">
           <mat-form-field class="form-grid">
             <mat-label>Nome Fantasia:</mat-label>
-            <input
+            <!-- <input
               matInput
               name="nomePedido"
               placeholder="Digite o nome fantasia"
-              id="nomePedido"
-            />
-
-            <!-- formControlName="nomePedido" -->
+              formControlName="nomePedido"
+              > -->
+              <input
+              matInput
+              name="nomePedido"
+              placeholder="Digite o nome fantasia"
+              >
           </mat-form-field>
         </div>
       </div>
@@ -642,7 +645,7 @@
       <div class="campos_previa">
         <p class="nomePedido">
           <b>CLIENTE: </b>
-          {{ formulario.value.nomePedido }}
+         <!-- {{ formulario.get("nomePedido") }} -->
           <!-- <small> - CNPJ: {{ formulario.value. }}</small> -->
         </p>
       </div>

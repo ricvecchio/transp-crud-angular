@@ -23,8 +23,8 @@ export class PedidoService {
       );
   }
 
-  buscarPorId(id: number): Observable<Pedido> {
-    const url = `${this.API}/${id}`
+  buscarPorId(idPedido: number): Observable<Pedido> {
+    const url = `${this.API}/${idPedido}`
     return this.http.get<Pedido>(url)
   }
 
