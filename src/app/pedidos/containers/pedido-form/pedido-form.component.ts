@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormControl,
@@ -8,27 +8,25 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatError, MatFormField, MatHint, MatLabel, MatPrefix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {MatSelectModule} from '@angular/material/select';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable, of, startWith } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
-import { Cliente } from '../../../modelo/cliente';
-import { PedidoService } from '../../servico/pedido.service';
-import { AsyncPipe } from '@angular/common';
 import { Pedido } from '../../../modelo/pedido';
+import { PedidoService } from '../../servico/pedido.service';
+import { ClienteService } from './../../../clientes/servicos/cliente.service';
 
 
 interface Metros {
@@ -76,6 +74,7 @@ export class PedidoFormComponent implements OnInit {
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
+    private clienteService: ClienteService,
     private consultaCepService: ConsultaCepService,
     private service: PedidoService,
     private snackBar: MatSnackBar,
@@ -87,26 +86,11 @@ export class PedidoFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // const cliente: Cliente = this.route.snapshot.data['cliente'];
-    // this.formulario = this.formBuilder.group({
-    //   id: [cliente.id],
-    //   nome: [cliente.nome, [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
-    //   cpfcnpj: [cliente.cpfcnpj, [Validators.required]],
-    //   telefone: [cliente.telefone, [Validators.required]],
-    //   celular: [cliente.celular],
-    //   email: [cliente.email, [Validators.required]],
-    //   cep: [cliente.cep, [Validators.required]],
-    //   logradouro: [cliente.logradouro, [Validators.required]],
-    //   numero: [cliente.numero],
-    //   complemento: [cliente.complemento],
-    //   bairro: [cliente.bairro],
-    //   cidade: [cliente.cidade],
-    //   estado: [cliente.estado],
-    // });
-
     const pedido: Pedido = this.route.snapshot.data['pedido'];
     this.formulario = this.formBuilder.group({
       id: [pedido.id],
+      nome: [pedido.nome],
+      cpfcnpj: [pedido.cpfcnpj],
       nomePedido: [pedido.nomePedido, [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
       razaoSocial: [pedido.razaoSocial],
       cpfcnpjPedido: [pedido.cpfcnpjPedido],
@@ -234,6 +218,18 @@ export class PedidoFormComponent implements OnInit {
     );
   }
 
+  consultaCliente() {
+    const idCliente = this.formulario.get('id')?.value;
+    if (idCliente != '') {
+      this.clienteService.buscarPorId(idCliente).subscribe((dados: any) => {
+        this.formulario.patchValue({
+          nome: dados.nome,
+          cpfcnpj: dados.cpfcnpj,
+        });
+      });
+    }
+  }
+
   selectedMetros!: string;
   metros: Metros[] = [
     { value: '15 metros', viewValue: '15 metros' },
@@ -255,15 +251,15 @@ export class PedidoFormComponent implements OnInit {
   ];
 
   consultaCEP() {
-    const cep = this.formulario.get('cep')?.value;
+    const cep = this.formulario.get('cepPedido')?.value;
     if (cep != '') {
       this.consultaCepService.getConsultaCep(cep).subscribe((dados: any) => {
         this.formulario.patchValue({
-            logradouro: dados.logradouro,
-            complemento: dados.complemento,
-            bairro: dados.bairro,
-            cidade: dados.localidade,
-            estado: dados.uf,
+          logradouroPedido: dados.logradouro,
+          complementoPedido: dados.complemento,
+          bairroPedido: dados.bairro,
+          cidadePedido: dados.localidade,
+          estadoPedido: dados.uf,
         });
       });
     }

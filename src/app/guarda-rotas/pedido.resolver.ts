@@ -18,6 +18,8 @@ export class PedidoResolver  {
     }
     return of({
       id: '',
+      nome: '',
+      cpfcnpj: '',
       nomePedido: '',
       razaoSocial: '',
       cpfcnpjPedido: '',

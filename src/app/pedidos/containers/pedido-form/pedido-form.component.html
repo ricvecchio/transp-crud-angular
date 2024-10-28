@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-md-9">
         <mat-form-field class="form-grid" appearance="fill">
-          <mat-label>Buscar Cliente</mat-label>
+          <mat-label>Nome Cliente</mat-label>
           <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
             @for (option of filteredOptions | async; track option) {
@@ -16,15 +16,23 @@
           </mat-autocomplete>
         </mat-form-field>
       </div>
+
       <div class="col-md-3">
-        <mat-form-field class="form-grid" appearance="outline">
-          <mat-label>Código Cliente</mat-label>
+        <mat-form-field class="form-grid">
+          <mat-label>ID do Cliente</mat-label>
           <input
             matInput
             disableRipple
             name="id"
+            placeholder="Digite o ID do Cliente"
             formControlName="id"
+            (blur)="consultaCliente()"
           />
+          @if (formulario.get("id")?.invalid) {
+            <mat-error>
+              {{ formUtils.getMensagemErro(formulario, "id") }}</mat-error
+            >
+          }
         </mat-form-field>
       </div>
     </div>
@@ -33,41 +41,36 @@
     <h6><strong>Informações Cliente:</strong></h6>
     <br />
 
-    <!-- <div class="espaco-dentro">
+    <div class="espaco-dentro">
       <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Nome:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="nome"
-              placeholder="Digite o Nome"
               formControlName="nome"
-              #nome
             />
-            <mat-hint align="end">{{ nome.value.length || 0 }} / 100</mat-hint>
-            @if (formulario.get("nome")?.invalid) {
-              <mat-error>
-                {{ formUtils.getMensagemErro(formulario, "nome") }}</mat-error
-              >
-            }
           </mat-form-field>
         </div>
 
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>CPF/CNPJ:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="cpfcnpj"
-              placeholder="Digite o CPF ou CNPJ"
               formControlName="cpfcnpj"
             />
           </mat-form-field>
         </div>
       </div>
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-3">
           <mat-form-field class="form-grid">
             <mat-label>Telefone:</mat-label>
@@ -115,9 +118,9 @@
             }
           </mat-form-field>
         </div>
-      </div>
+      </div> -->
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-3">
           <mat-form-field class="form-grid">
             <mat-label>CEP:</mat-label>
@@ -135,9 +138,9 @@
             }
           </mat-form-field>
         </div>
-      </div>
+      </div> -->
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-9">
           <mat-form-field class="form-grid">
             <mat-label>Logradouro:</mat-label>
@@ -164,9 +167,9 @@
             }
           </mat-form-field>
         </div>
-      </div>
+      </div> -->
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-9">
           <mat-form-field class="form-grid">
             <mat-label>Complemento:</mat-label>
@@ -184,9 +187,9 @@
             <input matInput name="bairro" formControlName="bairro" />
           </mat-form-field>
         </div>
-      </div>
+      </div> -->
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-9">
           <mat-form-field class="form-grid">
             <mat-label>Cidade:</mat-label>
@@ -209,8 +212,8 @@
             />
           </mat-form-field>
         </div>
-      </div>
-    </div> -->
+      </div> -->
+    </div>
 
     <br />
     <h6><strong>Informações Empresa:</strong></h6>

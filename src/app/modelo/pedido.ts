@@ -1,5 +1,7 @@
 export interface Pedido {
   id: string;
+  nome: string;
+  cpfcnpj: string;
   nomePedido: string;
   razaoSocial: string;
   cpfcnpjPedido: string;
