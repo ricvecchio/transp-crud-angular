@@ -5,9 +5,9 @@
     <div>
       <mat-table [dataSource]="pedidos.pedidos">
         class="mat-elevation-z8">
-        <ng-container matColumnDef="idPedido">
+        <ng-container matColumnDef="id">
           <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-          <mat-cell *matCellDef="let pedido">{{ pedido.idPedido }}</mat-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.id }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="nomePedido">
           <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>

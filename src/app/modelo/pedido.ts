@@ -1,5 +1,5 @@
 export interface Pedido {
-  idPedido: string;
+  id: string;
   nomePedido: string;
   razaoSocial: string;
   cpfcnpjPedido: string;

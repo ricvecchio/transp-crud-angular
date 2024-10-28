@@ -3,13 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ClientesListaComponent } from './clientes/componentes/clientes-lista/clientes-lista.component';
 import { ClienteFormComponent } from './clientes/containers/cliente-form/cliente-form.component';
-import { ClienteResolver } from './clientes/guarda-rotas/cliente.resolver';
+import { ClienteResolver } from './guarda-rotas/cliente.resolver';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './home/login/login.component';
 import { NovoUsuarioComponent } from './home/novo-usuario/novo-usuario.component';
 import { MenuComponent } from './menu/menu.component';
 import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
-import { PedidoResolver } from './clientes/guarda-rotas/pedido.resolver';
+import { PedidoResolver } from './guarda-rotas/pedido.resolver';
 import { PedidosListaComponent } from './pedidos/componentes/pedidos-lista/pedidos-lista.component';
 
 const routes: Routes = [
@@ -51,20 +51,20 @@ const routes: Routes = [
     component: ClienteFormComponent,
     resolve: { cliente: ClienteResolver },
   },
-  // {
-  //   path: 'cadastrar-pedido',
-  //   component: PedidoFormComponent,
-  //   resolve: { pedido: PedidoResolver },
-  // }
   {
     path: 'cadastrar-pedido',
     component: PedidoFormComponent,
-    resolve: { cliente: ClienteResolver },
+    resolve: { pedido: PedidoResolver },
   },
   {
     path: 'consultar-pedidos',
     component: PedidosListaComponent,
-    resolve: { cliente: ClienteResolver },
+    resolve: { pedido: PedidoResolver },
+  },
+  {
+    path: 'editar-pedido/:id',
+    component: PedidoFormComponent,
+    resolve: { pedido: PedidoResolver },
   },
 ];
 

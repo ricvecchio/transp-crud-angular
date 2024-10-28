@@ -10,7 +10,7 @@ import { PedidoPagina } from '../../modelo/pedido-pagina';
 })
 export class PedidoService {
 
-  private readonly API = 'api/pedidos'
+  private readonly API = '/api/pedidos'
   // private readonly API = 'http://localhost:2000/pedidos'
   // private readonly API = '/backend/db.json';
 
@@ -29,7 +29,7 @@ export class PedidoService {
   }
 
   salvar(pedido: Partial<Pedido>) {
-    if (pedido.idPedido) {
+    if (pedido.id) {
       return this.editar(pedido);
     }
     return this.criar(pedido);
@@ -40,7 +40,7 @@ export class PedidoService {
   }
 
   private editar(pedido: Partial<Pedido>) {
-    return this.http.put<Pedido>(`${this.API}/${pedido.idPedido}`, pedido).pipe(first());
+    return this.http.put<Pedido>(`${this.API}/${pedido.id}`, pedido).pipe(first());
   }
 
   excluir(idPedido: string) {

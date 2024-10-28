@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
-import { Pedido } from '../../modelo/pedido';
-import { PedidoService } from '../../pedidos/servico/pedido.service';
+import { Pedido } from '../modelo/pedido';
+import { PedidoService } from '../pedidos/servico/pedido.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +13,11 @@ export class PedidoResolver  {
   constructor(private service: PedidoService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Pedido> {
-    if (route.params && route.params['idPedido']) {
-      return this.service.buscarPorId(route.params['idPedido']);
+    if (route.params && route.params['id']) {
+      return this.service.buscarPorId(route.params['id']);
     }
     return of({
-      idPedido: '',
+      id: '',
       nomePedido: '',
       razaoSocial: '',
       cpfcnpjPedido: '',

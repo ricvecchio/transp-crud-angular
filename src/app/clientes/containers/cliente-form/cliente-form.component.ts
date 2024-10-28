@@ -59,79 +59,79 @@ export class ClienteFormComponent implements OnInit {
       bairro: [cliente.bairro],
       cidade: [cliente.cidade],
       estado: [cliente.estado],
-      pedidos: this.formBuilder.array(this.obterPedidos(cliente),),
+      // pedidos: this.formBuilder.array(this.obterPedidos(cliente),),
     });
   }
 
-  private obterPedidos(cliente: Cliente) {
-    const pedidos = [];
-    if (cliente?.pedidos) {
-      cliente.pedidos.forEach((pedido) =>
-        pedidos.push(this.criarPedido(pedido)),
-      );
-    } else {
-      pedidos.push(this.criarPedido());
-    }
-    return pedidos;
-  }
+  // private obterPedidos(cliente: Cliente) {
+  //   const pedidos = [];
+  //   if (cliente?.pedidos) {
+  //     cliente.pedidos.forEach((pedido) =>
+  //       pedidos.push(this.criarPedido(pedido)),
+  //     );
+  //   } else {
+  //     pedidos.push(this.criarPedido());
+  //   }
+  //   return pedidos;
+  // }
 
-  private criarPedido(
-    pedido: Pedido = {
-      idPedido: '',
-      nomePedido: '',
-      razaoSocial: '',
-      cpfcnpjPedido: '',
-      tipoPgto: '',
-      cepPedido: '',
-      logradouroPedido: '',
-      numeroPedido: '',
-      complementoPedido: '',
-      bairroPedido: '',
-      cidadePedido: '',
-      estadoPedido: '',
-      sfobras: '',
-      cno: '',
-      ie: '',
-      mangueira: '',
-      volume: '',
-      precoCx5: '',
-      precoCx10: '',
-      precoCx15: '',
-      precoLv5: '',
-      precoLv10: '',
-      precoLv15: '',
-      ajudanteHora: '',
-      observacao: '',
-    },
-  ) {
-    return this.formBuilder.group({
-      idPedido: [pedido.idPedido],
-      nomePedido: [pedido.nomePedido],
-      razaoSocial: [pedido.razaoSocial],
-      cpfcnpjPedido: [pedido.cpfcnpjPedido],
-      tipoPgto: [pedido.tipoPgto],
-      cepPedido: [pedido.cepPedido],
-      logradouroPedido: [pedido.logradouroPedido],
-      numeroPedido: [pedido.numeroPedido],
-      complementoPedido: [pedido.complementoPedido],
-      bairroPedido: [pedido.bairroPedido],
-      cidadePedido: [pedido.cidadePedido],
-      estadoPedido: [pedido.estadoPedido],
-      sfobras: [pedido.sfobras],
-      cno: [pedido.cno],
-      ie: [pedido.ie],
-      mangueira: [pedido.mangueira],
-      volume: [pedido.volume],
-      precoCx5: [pedido.precoCx5],
-      precoCx10: [pedido.precoCx10],
-      precoCx15: [pedido.precoCx15],
-      precoLv5: [pedido.precoLv5],
-      precoLv10: [pedido.precoLv10],
-      precoLv15: [pedido.precoLv15],
-      ajudanteHora: [pedido.ajudanteHora],
-      observacao: [pedido.observacao],
-    });
-  }
+  // private criarPedido(
+  //   pedido: Pedido = {
+  //     idPedido: '',
+  //     nomePedido: '',
+  //     razaoSocial: '',
+  //     cpfcnpjPedido: '',
+  //     tipoPgto: '',
+  //     cepPedido: '',
+  //     logradouroPedido: '',
+  //     numeroPedido: '',
+  //     complementoPedido: '',
+  //     bairroPedido: '',
+  //     cidadePedido: '',
+  //     estadoPedido: '',
+  //     sfobras: '',
+  //     cno: '',
+  //     ie: '',
+  //     mangueira: '',
+  //     volume: '',
+  //     precoCx5: '',
+  //     precoCx10: '',
+  //     precoCx15: '',
+  //     precoLv5: '',
+  //     precoLv10: '',
+  //     precoLv15: '',
+  //     ajudanteHora: '',
+  //     observacao: '',
+  //   },
+  // ) {
+  //   return this.formBuilder.group({
+  //     idPedido: [pedido.idPedido],
+  //     nomePedido: [pedido.nomePedido],
+  //     razaoSocial: [pedido.razaoSocial],
+  //     cpfcnpjPedido: [pedido.cpfcnpjPedido],
+  //     tipoPgto: [pedido.tipoPgto],
+  //     cepPedido: [pedido.cepPedido],
+  //     logradouroPedido: [pedido.logradouroPedido],
+  //     numeroPedido: [pedido.numeroPedido],
+  //     complementoPedido: [pedido.complementoPedido],
+  //     bairroPedido: [pedido.bairroPedido],
+  //     cidadePedido: [pedido.cidadePedido],
+  //     estadoPedido: [pedido.estadoPedido],
+  //     sfobras: [pedido.sfobras],
+  //     cno: [pedido.cno],
+  //     ie: [pedido.ie],
+  //     mangueira: [pedido.mangueira],
+  //     volume: [pedido.volume],
+  //     precoCx5: [pedido.precoCx5],
+  //     precoCx10: [pedido.precoCx10],
+  //     precoCx15: [pedido.precoCx15],
+  //     precoLv5: [pedido.precoLv5],
+  //     precoLv10: [pedido.precoLv10],
+  //     precoLv15: [pedido.precoLv15],
+  //     ajudanteHora: [pedido.ajudanteHora],
+  //     observacao: [pedido.observacao],
+  //   });
+  // }
 
   // getPedidosFormArray() {
   //   return (<UntypedFormArray>this.formulario.get('pedidos')).controls;

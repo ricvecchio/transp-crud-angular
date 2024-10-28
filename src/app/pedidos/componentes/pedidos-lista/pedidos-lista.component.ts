@@ -31,7 +31,7 @@ export class PedidosListaComponent implements OnInit {
 
   pedidos$: Observable<PedidoPagina> | null = null;
   readonly displayedColumns: string[] = [
-    'idPedido',
+    'id',
     'nomePedido',
     'mangueira',
     'volume',
@@ -80,7 +80,7 @@ export class PedidosListaComponent implements OnInit {
   }
 
   onEdit(pedido: Pedido) {
-    this.router.navigate(['/editar-pedido', pedido.idPedido], {
+    this.router.navigate(['/editar-pedido', pedido.id], {
       relativeTo: this.route,
     });
   }
@@ -93,7 +93,7 @@ export class PedidosListaComponent implements OnInit {
       console.log(result);
       console.log(pedido);
       if (result) {
-        this.pedidoService.excluir(pedido.idPedido).subscribe(
+        this.pedidoService.excluir(pedido.id).subscribe(
           () => {
             this.atualiza();
             this.snackBar.open('Pedido removido com sucesso!', 'X', {
