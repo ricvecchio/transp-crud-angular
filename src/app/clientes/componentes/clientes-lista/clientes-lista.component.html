@@ -13,13 +13,25 @@
           <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
           <mat-cell *matCellDef="let cliente">{{ cliente.nome }}</mat-cell>
         </ng-container>
+        <ng-container matColumnDef="cpfcnpj">
+          <mat-header-cell *matHeaderCellDef>CPF/CNPJ</mat-header-cell>
+          <mat-cell *matCellDef="let cliente">{{ cliente.cpfcnpj }}</mat-cell>
+        </ng-container>
         <ng-container matColumnDef="telefone">
           <mat-header-cell *matHeaderCellDef>Telefone</mat-header-cell>
           <mat-cell *matCellDef="let cliente">{{ cliente.telefone }}</mat-cell>
         </ng-container>
+        <ng-container matColumnDef="celular">
+          <mat-header-cell *matHeaderCellDef>Celular</mat-header-cell>
+          <mat-cell *matCellDef="let cliente">{{ cliente.celular }}</mat-cell>
+        </ng-container>
         <ng-container matColumnDef="email">
           <mat-header-cell *matHeaderCellDef>E-mail</mat-header-cell>
           <mat-cell *matCellDef="let cliente">{{ cliente.email }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="bairro">
+          <mat-header-cell *matHeaderCellDef>Bairro</mat-header-cell>
+          <mat-cell *matCellDef="let cliente">{{ cliente.bairro }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="acao">
           <mat-header-cell *matHeaderCellDef class="action-column">

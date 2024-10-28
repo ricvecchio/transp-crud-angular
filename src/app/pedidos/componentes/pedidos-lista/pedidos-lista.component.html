@@ -13,6 +13,18 @@
           <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.nomePedido }}</mat-cell>
         </ng-container>
+        <ng-container matColumnDef="razaoSocial">
+          <mat-header-cell *matHeaderCellDef>Razão Social</mat-header-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.razaoSocial }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="cpfcnpjPedido">
+          <mat-header-cell *matHeaderCellDef>CPF/CNPJ</mat-header-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.cpfcnpjPedido }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="bairroPedido">
+          <mat-header-cell *matHeaderCellDef>Bairro</mat-header-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.bairroPedido }}</mat-cell>
+        </ng-container>
         <ng-container matColumnDef="mangueira">
           <mat-header-cell *matHeaderCellDef>Mangueira</mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.mangueira }}</mat-cell>
@@ -20,6 +32,10 @@
         <ng-container matColumnDef="volume">
           <mat-header-cell *matHeaderCellDef>Volume</mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.volume }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.status }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="acao">
           <mat-header-cell *matHeaderCellDef class="action-column">

@@ -33,8 +33,11 @@ export class ClientesListaComponent implements OnInit {
   readonly displayedColumns: string[] = [
     'id',
     'nome',
+    'cpfcnpj',
     'telefone',
+    'celular',
     'email',
+    'bairro',
     'acao'
   ];
 
