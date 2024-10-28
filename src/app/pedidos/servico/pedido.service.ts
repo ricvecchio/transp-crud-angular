@@ -28,7 +28,16 @@ export class PedidoService {
     return this.http.get<Pedido>(url)
   }
 
+  emitir(pedido: Partial<Pedido>) {
+    pedido.status = 'Emitido';
+    if (pedido.id) {
+      return this.editar(pedido);
+    }
+    return this.criar(pedido);
+  }
+
   salvar(pedido: Partial<Pedido>) {
+    pedido.status = 'Salvo';
     if (pedido.id) {
       return this.editar(pedido);
     }

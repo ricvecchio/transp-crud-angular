@@ -41,7 +41,8 @@ export class PedidoResolver  {
       precoLv10: '',
       precoLv15: '',
       ajudanteHora: '',
-      observacao: ''
+      observacao: '',
+      status: ''
     });
   }
 };

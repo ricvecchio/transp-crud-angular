@@ -87,51 +87,51 @@ export class PedidoFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const cliente: Cliente = this.route.snapshot.data['cliente'];
-    this.formulario = this.formBuilder.group({
-      id: [cliente.id],
-      nome: [cliente.nome, [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
-      cpfcnpj: [cliente.cpfcnpj, [Validators.required]],
-      telefone: [cliente.telefone, [Validators.required]],
-      celular: [cliente.celular],
-      email: [cliente.email, [Validators.required]],
-      cep: [cliente.cep, [Validators.required]],
-      logradouro: [cliente.logradouro, [Validators.required]],
-      numero: [cliente.numero],
-      complemento: [cliente.complemento],
-      bairro: [cliente.bairro],
-      cidade: [cliente.cidade],
-      estado: [cliente.estado],
-    });
-
-    // const pedido: Pedido = this.route.snapshot.data['pedido'];
+    // const cliente: Cliente = this.route.snapshot.data['cliente'];
     // this.formulario = this.formBuilder.group({
-    //   idPedido: [pedido.idPedido],
-    //   nomePedido: [pedido.nomePedido, [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
-    //   razaoSocial: [pedido.razaoSocial],
-    //   cpfcnpjPedido: [pedido.cpfcnpjPedido],
-    //   tipoPgto: [pedido.tipoPgto],
-    //   cepPedido: [pedido.cepPedido],
-    //   logradouroPedido: [pedido.logradouroPedido],
-    //   numeroPedido: [pedido.numeroPedido],
-    //   complementoPedido: [pedido.complementoPedido],
-    //   bairroPedido: [pedido.bairroPedido],
-    //   cidadePedido: [pedido.cidadePedido],
-    //   estadoPedido: [pedido.estadoPedido],
-    //   sfobras: [pedido.sfobras],
-    //   cno: [pedido.cno],
-    //   ie: [pedido.ie],
-    //   mangueira: [pedido.mangueira],
-    //   volume: [pedido.volume],
-    //   precoCx5: [pedido.precoCx5],
-    //   precoCx10: [pedido.precoCx10],
-    //   precoCx15: [pedido.precoCx15],
-    //   precoLv5: [pedido.precoLv5],
-    //   precoLv10: [pedido.precoLv10],
-    //   precoLv15: [pedido.precoLv15],
-    //   ajudanteHora: [pedido.ajudanteHora],
-    //   observacao: [pedido.observacao]
+    //   id: [cliente.id],
+    //   nome: [cliente.nome, [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
+    //   cpfcnpj: [cliente.cpfcnpj, [Validators.required]],
+    //   telefone: [cliente.telefone, [Validators.required]],
+    //   celular: [cliente.celular],
+    //   email: [cliente.email, [Validators.required]],
+    //   cep: [cliente.cep, [Validators.required]],
+    //   logradouro: [cliente.logradouro, [Validators.required]],
+    //   numero: [cliente.numero],
+    //   complemento: [cliente.complemento],
+    //   bairro: [cliente.bairro],
+    //   cidade: [cliente.cidade],
+    //   estado: [cliente.estado],
     // });
+
+    const pedido: Pedido = this.route.snapshot.data['pedido'];
+    this.formulario = this.formBuilder.group({
+      id: [pedido.id],
+      nomePedido: [pedido.nomePedido, [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
+      razaoSocial: [pedido.razaoSocial],
+      cpfcnpjPedido: [pedido.cpfcnpjPedido],
+      tipoPgto: [pedido.tipoPgto],
+      cepPedido: [pedido.cepPedido],
+      logradouroPedido: [pedido.logradouroPedido],
+      numeroPedido: [pedido.numeroPedido],
+      complementoPedido: [pedido.complementoPedido],
+      bairroPedido: [pedido.bairroPedido],
+      cidadePedido: [pedido.cidadePedido],
+      estadoPedido: [pedido.estadoPedido],
+      sfobras: [pedido.sfobras],
+      cno: [pedido.cno],
+      ie: [pedido.ie],
+      mangueira: [pedido.mangueira],
+      volume: [pedido.volume],
+      precoCx5: [pedido.precoCx5],
+      precoCx10: [pedido.precoCx10],
+      precoCx15: [pedido.precoCx15],
+      precoLv5: [pedido.precoLv5],
+      precoLv10: [pedido.precoLv10],
+      precoLv15: [pedido.precoLv15],
+      ajudanteHora: [pedido.ajudanteHora],
+      observacao: [pedido.observacao]
+    });
   }
 
     // this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -282,19 +282,33 @@ export class PedidoFormComponent implements OnInit {
     this.isAdressChecked = event.checked;
   }
 
-  onSubmit() {
-    if (this.formulario.valid) {
+  // onSubmit() {
+  //   if (this.formulario.valid) {
+  //   this.service.salvar(this.formulario.value).subscribe(
+  //     (result) => this.onSucess(),
+  //     (error) => this.onError(),
+  //   );
+  //   } else {
+  //     this.formUtils.validarTodosCamposFormFields(this.formulario);
+  //   }
+  // }
+
+  onSubmitIssue() {
+    this.service.emitir(this.formulario.value).subscribe(
+      (result) => this.onSucess(),
+      (error) => this.onError(),
+    );
+  }
+
+  onSubmitSave() {
     this.service.salvar(this.formulario.value).subscribe(
       (result) => this.onSucess(),
       (error) => this.onError(),
     );
-    } else {
-      this.formUtils.validarTodosCamposFormFields(this.formulario);
-    }
   }
 
   private onSucess() {
-    this.snackBar.open('Pedido Salvo com sucesso!', '', { duration: 5000 });
+    this.snackBar.open('Pedido Salvo/Emitido com sucesso!', '', { duration: 5000 });
     this.onCancel();
   }
 

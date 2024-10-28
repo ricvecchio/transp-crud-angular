@@ -33,7 +33,7 @@
     <h6><strong>Informações Cliente:</strong></h6>
     <br />
 
-    <div class="espaco-dentro">
+    <!-- <div class="espaco-dentro">
       <div class="row">
         <div class="col-md-9">
           <mat-form-field class="form-grid">
@@ -210,7 +210,7 @@
           </mat-form-field>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <br />
     <h6><strong>Informações Empresa:</strong></h6>
@@ -221,16 +221,11 @@
         <div class="col-md-9">
           <mat-form-field class="form-grid">
             <mat-label>Nome Fantasia:</mat-label>
-            <!-- <input
+            <input
               matInput
               name="nomePedido"
               placeholder="Digite o nome fantasia"
               formControlName="nomePedido"
-              > -->
-              <input
-              matInput
-              name="nomePedido"
-              placeholder="Digite o nome fantasia"
               >
           </mat-form-field>
         </div>
@@ -244,9 +239,8 @@
               matInput
               name="razaoSocial"
               placeholder="Digite a Razão Social"
-
+              formControlName="razaoSocial"
             />
-            <!-- formControlName="razaoSocial" -->
           </mat-form-field>
         </div>
         <div class="col-md-3">
@@ -256,9 +250,8 @@
               matInput
               name="cpfcnpjPedido"
               placeholder="Digite o CPF ou CNPJ"
-
+              formControlName="cpfcnpjPedido"
             />
-            <!-- formControlName="cpfcnpjPedido" -->
           </mat-form-field>
         </div>
       </div>
@@ -341,7 +334,8 @@
               [disabled]="isAdressChecked"
               matInput
               name="cepPedido"
-
+              placeholder="Digite o CEP"
+              formControlName="cepPedido"
               (blur)="consultaCEP()"
             />
             @if (formulario.get("cepPedido")?.invalid) {
@@ -350,7 +344,6 @@
               >
             }
           </mat-form-field>
-          <!-- formControlName="cepPedido" -->
         </div>
       </div>
 
@@ -362,7 +355,7 @@
               [disabled]="isAdressChecked"
               matInput
               name="logradouroPedido"
-
+              formControlName="logradouroPedido"
             />
             @if (formulario.get("logradouroPedido")?.invalid) {
               <mat-error>
@@ -372,7 +365,6 @@
               >
             }
           </mat-form-field>
-          <!-- formControlName="logradouroPedido" -->
         </div>
         <div class="col-md-3">
           <mat-form-field class="form-grid">
@@ -382,7 +374,7 @@
               [disabled]="isAdressChecked"
               matInput
               name="numeroPedido"
-
+              formControlName="numeroPedido"
             />
             @if (formulario.get("numeroPedido")?.invalid) {
               <mat-error>
@@ -392,7 +384,7 @@
               >
             }
           </mat-form-field>
-          <!-- formControlName="numeroPedido" -->
+
         </div>
       </div>
 
@@ -406,10 +398,9 @@
               matInput
               name="complementoPedido"
               placeholder="Ex. Apto 64"
-
+              formControlName="complementoPedido"
             />
           </mat-form-field>
-          <!-- formControlName="complementoPedido" -->
         </div>
         <div class="col-md-3">
           <mat-form-field class="form-grid">
@@ -419,10 +410,9 @@
               [disabled]="isAdressChecked"
               matInput
               name="bairroPedido"
-
+              formControlName="bairroPedido"
             />
           </mat-form-field>
-          <!-- formControlName="bairroPedido" -->
         </div>
       </div>
 
@@ -436,10 +426,9 @@
               matInput
               name="cidadePedido"
               placeholder="Ex. Santo André"
-
+              formControlName="cidadePedido"
             />
           </mat-form-field>
-          <!-- formControlName="cidadePedido" -->
         </div>
         <div class="col-md-3">
           <mat-form-field class="form-grid">
@@ -450,10 +439,9 @@
               matInput
               name="estadoPedido"
               placeholder="Ex. São Paulo"
-
+              formControlName="estadoPedido"
             />
           </mat-form-field>
-          <!-- formControlName="estadoPedido" -->
         </div>
       </div>
 
@@ -465,10 +453,9 @@
               matInput
               name="sfobras"
               placeholder="Digite o SFOBRAS"
-
+              formControlName="sfobras"
             />
           </mat-form-field>
-          <!-- formControlName="sfobras" -->
         </div>
         <div class="col-md-3">
           <mat-form-field class="form-grid">
@@ -477,10 +464,9 @@
               matInput
               name="cno"
               placeholder="Digite o CNO"
-
+              formControlName="cno"
             />
           </mat-form-field>
-          <!-- formControlName="cno" -->
         </div>
         <div class="col-md-3">
           <mat-form-field class="form-grid">
@@ -489,16 +475,14 @@
               matInput
               name="ie"
               placeholder="Informe a IE"
-
+              formControlName="ie"
             />
           </mat-form-field>
-          <!-- formControlName="ie" -->
         </div>
         <div class="col-md-3">
           <mat-form-field class="form-grid">
             <mat-label>Mangueira: Metros</mat-label>
-            <!-- <select matNativeControl name="metro" formControlName="mangueira"> -->
-            <select matNativeControl name="metro" >
+            <select matNativeControl name="metro" formControlName="mangueira">
               <option value="" selected></option>
               @for (metro of metros; track metro) {
                 <option [value]="metro.value">{{ metro.viewValue }}</option>
@@ -514,7 +498,7 @@
           <mat-radio-group
             aria-labelledby="example-radio-group-label"
             name="volume"
-
+            formControlName="volume"
           >
             @for (volume of volumes; track volume) {
               <mat-radio-button [value]="volume.value">{{
@@ -522,7 +506,6 @@
               }}</mat-radio-button>
             }
           </mat-radio-group>
-          <!-- formControlName="volume" -->
         </div>
       </div>
 
@@ -531,48 +514,42 @@
           <mat-form-field class="form-grid">
             <mat-label>Preço cx-5m³</mat-label>
             <span matTextPrefix>R$ </span>
-            <!-- <input matInput name="precoCx5" formControlName="precoCx5" /> -->
-            <input matInput name="precoCx5" />
+            <input matInput name="precoCx5" formControlName="precoCx5" />
           </mat-form-field>
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid">
             <mat-label>Preço cx-10m³</mat-label>
             <span matTextPrefix>R$ </span>
-            <!-- <input matInput name="precoCx10" formControlName="precoCx10" /> -->
-            <input matInput name="precoCx10" />
+            <input matInput name="precoCx10" formControlName="precoCx10" />
           </mat-form-field>
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid">
             <mat-label>Preço cx-15m³</mat-label>
             <span matTextPrefix>R$ </span>
-            <!-- <input matInput name="precoCx15" formControlName="precoCx15" /> -->
-            <input matInput name="precoCx15" />
+            <input matInput name="precoCx15" formControlName="precoCx15" />
           </mat-form-field>
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid">
             <mat-label>Preço lav-5m³</mat-label>
             <span matTextPrefix>R$ </span>
-            <!-- <input matInput name="precoLv5" formControlName="precoLv5" /> -->
-            <input matInput name="precoLv5" />
+            <input matInput name="precoLv5" formControlName="precoLv5" />
           </mat-form-field>
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid">
             <mat-label>Preço lav-10m³</mat-label>
             <span matTextPrefix>R$ </span>
-            <!-- <input matInput name="precoLv10" formControlName="precoLv10" /> -->
-            <input matInput name="precoLv10" />
+            <input matInput name="precoLv10" formControlName="precoLv10" />
           </mat-form-field>
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid">
             <mat-label>Preço lav-15m³</mat-label>
             <span matTextPrefix>R$ </span>
-            <!-- <input matInput name="precoLv15" formControlName="precoLv15" /> -->
-            <input matInput name="precoLv15" />
+            <input matInput name="precoLv15" formControlName="precoLv15" />
           </mat-form-field>
         </div>
       </div>
@@ -585,10 +562,9 @@
               matInput
               name="ajudanteHora"
               placeholder="Informe o ajudante para hora adicional"
-
+              formControlName="ajudanteHora"
             />
           </mat-form-field>
-          <!-- formControlName="ajudanteHora" -->
         </div>
         <div class="col-md-6">
           <mat-form-field class="form-grid">
@@ -597,12 +573,17 @@
               matInput
               name="observacao"
               placeholder="Informações adicionais"
-
+              formControlName="observacao"
             />
           </mat-form-field>
-          <!-- formControlName="observacao" -->
         </div>
       </div>
+    </div>
+
+    <div class="acoes">
+      <button (click)="onSubmitIssue()" class="botao">Emite Pedido</button>
+      <button (click)="onSubmitSave()" class="botao">Salvar</button>
+      <button (click)="onCancel()" class="botao">Cancelar</button>
     </div>
   </form>
 
@@ -704,10 +685,10 @@
         alt="Rodapé da Prévia do Pedido"
       />
 
-      <div class="acoes">
+      <!-- <div class="acoes">
         <button (click)="onSubmit()" class="botao">Emite Pedido</button>
         <button (click)="onCancel()" class="botao">Cancelar</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </section>
