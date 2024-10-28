@@ -91,6 +91,16 @@ export class PedidoFormComponent implements OnInit {
       id: [pedido.id],
       nome: [pedido.nome],
       cpfcnpj: [pedido.cpfcnpj],
+      telefone: [pedido.telefone],
+      celular: [pedido.celular],
+      email: [pedido.email],
+      cep: [pedido.cep],
+      logradouro: [pedido.logradouro],
+      numero: [pedido.numero],
+      complemento: [pedido.complemento],
+      bairro: [pedido.bairro],
+      cidade: [pedido.cidade],
+      estado: [pedido.estado],
       nomePedido: [pedido.nomePedido, [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
       razaoSocial: [pedido.razaoSocial],
       cpfcnpjPedido: [pedido.cpfcnpjPedido],
@@ -225,6 +235,16 @@ export class PedidoFormComponent implements OnInit {
         this.formulario.patchValue({
           nome: dados.nome,
           cpfcnpj: dados.cpfcnpj,
+          telefone: dados.telefone,
+          celular: dados.celular,
+          email: dados.email,
+          cep: dados.cep,
+          logradouro: dados.logradouro,
+          numero: dados.numero,
+          complemento: dados.complemento,
+          bairro: dados.bairro,
+          cidade: dados.cidade,
+          estado: dados.estado
         });
       });
     }

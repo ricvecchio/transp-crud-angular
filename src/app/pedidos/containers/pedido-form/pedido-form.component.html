@@ -70,149 +70,137 @@
         </div>
       </div>
 
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Telefone:</mat-label>
-            <span matTextPrefix>+55</span>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="telefone"
-              placeholder="(11) 5555-1234"
               formControlName="telefone"
             />
-            @if (formulario.get("telefone")?.invalid) {
-              <mat-error>
-                {{
-                  formUtils.getMensagemErro(formulario, "telefone")
-                }}</mat-error
-              >
-            }
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Celular:</mat-label>
-            <span matTextPrefix>+55</span>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="celular"
-              placeholder="(XX) 9XXXX-XXXX"
               formControlName="celular"
             />
           </mat-form-field>
         </div>
         <div class="col-md-6">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>E-mail:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="email"
-              placeholder="Ex. pat@example.com"
               formControlName="email"
             />
-            @if (formulario.get("email")?.invalid) {
-              <mat-error>
-                {{ formUtils.getMensagemErro(formulario, "email") }}</mat-error
-              >
-            }
           </mat-form-field>
         </div>
-      </div> -->
+      </div>
 
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>CEP:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="cep"
-              placeholder="Digite o CEP"
               formControlName="cep"
-              (blur)="consultaCEP()"
             />
-            @if (formulario.get("cep")?.invalid) {
-              <mat-error>
-                {{ formUtils.getMensagemErro(formulario, "cep") }}</mat-error
-              >
-            }
           </mat-form-field>
         </div>
-      </div> -->
+      </div>
 
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Logradouro:</mat-label>
-            <input matInput name="logradouro" formControlName="logradouro" />
-            @if (formulario.get("logradouro")?.invalid) {
-              <mat-error>
-                {{
-                  formUtils.getMensagemErro(formulario, "logradouro")
-                }}</mat-error
-              >
-            }
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="logradouro"
+              formControlName="logradouro" />
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Número:</mat-label>
-            <input matInput name="numero" formControlName="numero" />
-            @if (formulario.get("numero")?.invalid) {
-              <mat-error>
-                {{
-                  formUtils.getMensagemErro(formulario, "numero")
-                }}</mat-error
-              >
-            }
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="numero"
+              formControlName="numero" />
           </mat-form-field>
         </div>
-      </div> -->
+      </div>
 
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Complemento:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
-              placeholder="Ex. Apto 64"
               name="complemento"
               formControlName="complemento"
             />
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Bairro:</mat-label>
-            <input matInput name="bairro" formControlName="bairro" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="bairro"
+              formControlName="bairro" />
           </mat-form-field>
         </div>
-      </div> -->
+      </div>
 
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Cidade:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
-              placeholder="Ex. Santo André"
               name="cidade"
               formControlName="cidade"
             />
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>UF:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
-              placeholder="Ex. São Paulo"
               name="estado"
               formControlName="estado"
             />
           </mat-form-field>
         </div>
-      </div> -->
+      </div>
     </div>
 
     <br />
