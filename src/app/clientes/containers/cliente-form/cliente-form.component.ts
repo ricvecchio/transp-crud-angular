@@ -143,12 +143,12 @@ export class ClienteFormComponent implements OnInit {
     this.onCancel();
   }
 
-  private onSucessIssue() {
-    this.router.navigate(['/cadastrar-pedido'], { relativeTo: this.route });
-  }
-
   onCancel() {
     this.location.back();
+  }
+
+  private onSucessIssue() {
+    this.router.navigate(['/cadastrar-pedido'], { relativeTo: this.route });
   }
 
   private onError() {
