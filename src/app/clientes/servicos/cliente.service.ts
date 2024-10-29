@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { first, Observable } from 'rxjs';
 import { Cliente } from '../../modelo/cliente';
 import { ClientePagina } from '../../modelo/cliente-pagina';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,10 @@ export class ClienteService {
     return this.criar(cliente);
   }
 
+  salvarEmitir(cliente: Partial<Cliente>) {
+    return this.criar(cliente);
+  }
+
   private criar(cliente: Partial<Cliente>) {
     return this.http.post<Cliente>(this.API, cliente).pipe(first());
   }
@@ -45,17 +50,4 @@ export class ClienteService {
     return this.http.delete(`${this.API}/${idCliente}`).pipe(first());
   }
 
-  // salvar(cliente: Partial<Cliente>) {
-  //   return this.http.post<Cliente>(this.API, cliente);
-  // }
-
-  // editar(cliente: Cliente): Observable<Cliente> {
-  //   const url = `${this.API}/${cliente.idCliente}`
-  //   return this.http.put<Cliente>(url, cliente )
-  // }
-
-  // excluir(id: number): Observable<Cliente> {
-  //   const url = `${this.API}/${id}`
-  //   return this.http.delete<Cliente>(url)
-  // }
 }

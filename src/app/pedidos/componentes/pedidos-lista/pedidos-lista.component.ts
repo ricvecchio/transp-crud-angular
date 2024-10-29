@@ -114,29 +114,6 @@ export class PedidosListaComponent implements OnInit {
 }
 
 
-// import { MatSnackBar } from '@angular/material/snack-bar';
-// import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-// import { MatDialog } from '@angular/material/dialog';
-// import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-// import { catchError, Observable, of } from 'rxjs';
-
-// import { ErrorDialogComponent } from '../../compartilhado/componentes/error-dialog/error-dialog.component';
-// import { PedidoService } from '../pedido.service';
-// import { CadastrarPedidosComponent } from '../cadastrar-pedidos/cadastrar-pedidos.component';
-// import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
-// import { Pedido } from '../model/pedido';
-
-// export interface UserData {
-//   id: string;
-//   nome: string;
-//   endereco: string;
-//   volume: string;
-//   mangueira: string;
-//   valor: string;
-//   status: string;
-//   acao: string;
-// }
-
 // @Component({
 //   selector: 'app-consultar-pedidos',
 //   templateUrl: './consultar-pedidos.component.html',

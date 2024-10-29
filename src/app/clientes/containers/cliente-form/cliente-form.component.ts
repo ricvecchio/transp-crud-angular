@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Cliente } from '../../../modelo/cliente';
@@ -39,6 +39,7 @@ export class ClienteFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private location: Location,
     private route: ActivatedRoute,
+    private router: Router,
     public formUtils: FormUtilsService,
   ) {}
 
@@ -59,79 +60,8 @@ export class ClienteFormComponent implements OnInit {
       bairro: [cliente.bairro],
       cidade: [cliente.cidade],
       estado: [cliente.estado],
-      // pedidos: this.formBuilder.array(this.obterPedidos(cliente),),
     });
   }
-
-  // private obterPedidos(cliente: Cliente) {
-  //   const pedidos = [];
-  //   if (cliente?.pedidos) {
-  //     cliente.pedidos.forEach((pedido) =>
-  //       pedidos.push(this.criarPedido(pedido)),
-  //     );
-  //   } else {
-  //     pedidos.push(this.criarPedido());
-  //   }
-  //   return pedidos;
-  // }
-
-  // private criarPedido(
-  //   pedido: Pedido = {
-  //     idPedido: '',
-  //     nomePedido: '',
-  //     razaoSocial: '',
-  //     cpfcnpjPedido: '',
-  //     tipoPgto: '',
-  //     cepPedido: '',
-  //     logradouroPedido: '',
-  //     numeroPedido: '',
-  //     complementoPedido: '',
-  //     bairroPedido: '',
-  //     cidadePedido: '',
-  //     estadoPedido: '',
-  //     sfobras: '',
-  //     cno: '',
-  //     ie: '',
-  //     mangueira: '',
-  //     volume: '',
-  //     precoCx5: '',
-  //     precoCx10: '',
-  //     precoCx15: '',
-  //     precoLv5: '',
-  //     precoLv10: '',
-  //     precoLv15: '',
-  //     ajudanteHora: '',
-  //     observacao: '',
-  //   },
-  // ) {
-  //   return this.formBuilder.group({
-  //     idPedido: [pedido.idPedido],
-  //     nomePedido: [pedido.nomePedido],
-  //     razaoSocial: [pedido.razaoSocial],
-  //     cpfcnpjPedido: [pedido.cpfcnpjPedido],
-  //     tipoPgto: [pedido.tipoPgto],
-  //     cepPedido: [pedido.cepPedido],
-  //     logradouroPedido: [pedido.logradouroPedido],
-  //     numeroPedido: [pedido.numeroPedido],
-  //     complementoPedido: [pedido.complementoPedido],
-  //     bairroPedido: [pedido.bairroPedido],
-  //     cidadePedido: [pedido.cidadePedido],
-  //     estadoPedido: [pedido.estadoPedido],
-  //     sfobras: [pedido.sfobras],
-  //     cno: [pedido.cno],
-  //     ie: [pedido.ie],
-  //     mangueira: [pedido.mangueira],
-  //     volume: [pedido.volume],
-  //     precoCx5: [pedido.precoCx5],
-  //     precoCx10: [pedido.precoCx10],
-  //     precoCx15: [pedido.precoCx15],
-  //     precoLv5: [pedido.precoLv5],
-  //     precoLv10: [pedido.precoLv10],
-  //     precoLv15: [pedido.precoLv15],
-  //     ajudanteHora: [pedido.ajudanteHora],
-  //     observacao: [pedido.observacao],
-  //   });
-  // }
 
   // getPedidosFormArray() {
   //   return (<UntypedFormArray>this.formulario.get('pedidos')).controls;
@@ -146,22 +76,6 @@ export class ClienteFormComponent implements OnInit {
   //   const pedidos = this.formulario.get('pedidos') as UntypedFormArray;
   //   pedidos.removeAt(index);
   // }
-
-  // formulario = this.formBuilder.group({
-  //   idCliente: [''],
-  //   nome: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
-  //   cpfcnpj: ['', Validators.required],
-  //   telefone: ['', Validators.required],
-  //   celular: [''],
-  //   email: ['', [Validators.required, Validators.email]],
-  //   cep: ['', [Validators.required, Validators.pattern('^(d{5})(-?d{3})$')]],
-  //   logradouro: [''],
-  //   numero: [''],
-  //   complemento: [''],
-  //   bairro: [''],
-  //   cidade: [''],
-  //   estado: [''],
-  // });
 
   // clientes: Cliente[] = [];
 
@@ -180,7 +94,6 @@ export class ClienteFormComponent implements OnInit {
   //   cidade: '',
   //   estado: '',
   // };
-
 
 
   consultaCEP() {
@@ -203,7 +116,7 @@ export class ClienteFormComponent implements OnInit {
   checked = false;
   disabled = false;
 
-  onSubmit() {
+  onSubmitSave() {
     if (this.formulario.valid) {
     this.service.salvar(this.formulario.value).subscribe(
       (result) => this.onSucess(),
@@ -214,9 +127,24 @@ export class ClienteFormComponent implements OnInit {
     }
   }
 
+  onSubmitIssue() {
+    if (this.formulario.valid) {
+    this.service.salvarEmitir(this.formulario.value).subscribe(
+      (result) => this.onSucessIssue(),
+      (error) => this.onError(),
+    );
+    } else {
+      this.formUtils.validarTodosCamposFormFields(this.formulario);
+    }
+  }
+
   private onSucess() {
     this.snackBar.open('Cliente Salvo com sucesso!', '', { duration: 5000 });
     this.onCancel();
+  }
+
+  private onSucessIssue() {
+    this.router.navigate(['/cadastrar-pedido'], { relativeTo: this.route });
   }
 
   onCancel() {
