@@ -27,6 +27,11 @@ export class ClienteService {
     return this.http.get<Cliente>(url)
   }
 
+  // buscarPorNome(nome: String): Observable<Cliente> {
+  //   const url = `${this.API}/trecho/${nome}`
+  //   return this.http.get<Cliente>(url)
+  // }
+
   salvar(cliente: Partial<Cliente>) {
     if (cliente.id) {
       return this.editar(cliente);

@@ -5,8 +5,8 @@
 
   <form [formGroup]="formulario" class="full-width" id="formulario">
     <div class="row">
-      <div class="col-md-9">
-        <!-- <mat-form-field class="form-grid" appearance="fill">
+      <!-- <div class="col-md-9">
+        <mat-form-field class="form-grid" appearance="fill">
           <mat-label>Nome Cliente</mat-label>
           <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
@@ -14,8 +14,26 @@
               <mat-option [value]="option">{{option.name}}</mat-option>
             }
           </mat-autocomplete>
-        </mat-form-field> -->
-      </div>
+        </mat-form-field>
+
+
+        <mat-form-field class="form-grid">
+          <mat-label>Nome Cliente</mat-label>
+          <input
+            matInput
+            disableRipple
+            name="nome"
+            placeholder="Digite o nome do Cliente"
+            formControlName="nome"
+            (blur)="consultaClienteNome()"
+          />
+          @if (formulario.get("nome")?.invalid) {
+            <mat-error>
+              {{ formUtils.getMensagemErro(formulario, "nome") }}</mat-error
+            >
+          }
+        </mat-form-field>
+      </div> -->
 
       <div class="col-md-3">
         <mat-form-field class="form-grid">
@@ -26,7 +44,7 @@
             name="id"
             placeholder="Digite o ID do Cliente"
             formControlName="id"
-            (blur)="consultaCliente()"
+            (blur)="consultaClienteId()"
           />
           @if (formulario.get("id")?.invalid) {
             <mat-error>

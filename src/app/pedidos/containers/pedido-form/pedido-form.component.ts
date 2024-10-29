@@ -136,6 +136,34 @@ export class PedidoFormComponent implements OnInit {
     //   }),
     // );
 
+    // myControl = new FormControl<string | User>('');
+
+    // options: User[] = [
+    //   { name: 'Bruno' },
+    //   { name: 'Brunelson' },
+    //   { name: 'Pedrola' },
+    //   { name: 'Jeréba' },
+    //   { name: 'Ricardo 01' },
+    //   { name: 'Ricardo 02' },
+    //   { name: 'Ricardo 03' },
+    //   { name: 'Ricardola' },
+    //   { name: 'Salomonstro' },
+    // ];
+
+    // filteredOptions: Observable<User[]> = of([]);
+
+    // displayFn(user: User): string {
+    //   return user && user.name ? user.name : '';
+    // }
+
+    // private _filter(name: string): User[] {
+    //   const filterValue = name.toLowerCase();
+
+    //   return this.options.filter((option) =>
+    //     option.name.toLowerCase().includes(filterValue),
+    //   );
+    // }
+
     // this.isAdressChecked = this.formulario.get('deliveryAddress')?.value || false;
     // this.formulario.get('deliveryAddress')?.valueChanges.subscribe(value => {
     //   this.isAdressChecked = value || false;
@@ -145,44 +173,34 @@ export class PedidoFormComponent implements OnInit {
     // this.formulario.get('cashPayment')?.valueChanges.subscribe(value => {
     //   this.isPaymentChecked = value || false;
     // });
-  // }
+    // }
 
   isAdressChecked = false;
   isPaymentChecked = false;
 
-  myControl = new FormControl<string | User>('');
+  // consultaClienteNome() {
+  //   const nomeCliente = this.formulario.get('nome')?.value;
+  //   if (nomeCliente != '') {
+  //     this.clienteService.buscarPorNome(nomeCliente).subscribe((dados: any) => {
+  //       this.formulario.patchValue({
+  //         nome: dados.nome,
+  //         cpfcnpj: dados.cpfcnpj,
+  //         telefone: dados.telefone,
+  //         celular: dados.celular,
+  //         email: dados.email,
+  //         cep: dados.cep,
+  //         logradouro: dados.logradouro,
+  //         numero: dados.numero,
+  //         complemento: dados.complemento,
+  //         bairro: dados.bairro,
+  //         cidade: dados.cidade,
+  //         estado: dados.estado
+  //       });
+  //     });
+  //   }
+  // }
 
-  options: User[] = [
-    { name: 'Bruno' },
-    { name: 'Brunelson' },
-    { name: 'Pedrola' },
-    { name: 'Jeréba' },
-    { name: 'Ricardo 01' },
-    { name: 'Ricardo 02' },
-    { name: 'Ricardo 03' },
-    { name: 'Ricardola' },
-    { name: 'Salomonstro' },
-  ];
-
-  filteredOptions: Observable<User[]> = of([]);
-
-  alertFormValues(formGroup: FormGroup) {
-    alert(JSON.stringify(formGroup.value, null, 2));
-  }
-
-  displayFn(user: User): string {
-    return user && user.name ? user.name : '';
-  }
-
-  private _filter(name: string): User[] {
-    const filterValue = name.toLowerCase();
-
-    return this.options.filter((option) =>
-      option.name.toLowerCase().includes(filterValue),
-    );
-  }
-
-  consultaCliente() {
+  consultaClienteId() {
     const idCliente = this.formulario.get('id')?.value;
     if (idCliente != '') {
       this.clienteService.buscarPorId(idCliente).subscribe((dados: any) => {
