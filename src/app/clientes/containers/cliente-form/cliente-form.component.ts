@@ -116,21 +116,10 @@ export class ClienteFormComponent implements OnInit {
   checked = false;
   disabled = false;
 
-  onSubmitSave() {
-    if (this.formulario.valid) {
-    this.service.salvar(this.formulario.value).subscribe(
-      (result) => this.onSucess(),
-      (error) => this.onError(),
-    );
-    } else {
-      this.formUtils.validarTodosCamposFormFields(this.formulario);
-    }
-  }
-
-  onSubmitIssue() {
+  onSubmit() {
     if (this.formulario.valid) {
     this.service.salvarEmitir(this.formulario.value).subscribe(
-      (result) => this.onSucessIssue(),
+      (result) => this.onSucess(),
       (error) => this.onError(),
     );
     } else {
@@ -145,10 +134,6 @@ export class ClienteFormComponent implements OnInit {
 
   onCancel() {
     this.location.back();
-  }
-
-  private onSucessIssue() {
-    this.router.navigate(['/cadastrar-pedido'], { relativeTo: this.route });
   }
 
   private onError() {
