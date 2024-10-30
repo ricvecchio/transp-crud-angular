@@ -17,7 +17,7 @@ export class PedidoResolver  {
       return this.service.buscarPorId(route.params['id']);
     }
     return of({
-      id: '',
+      idCliente: '',
       nome: '',
       cpfcnpj: '',
       telefone: '',
@@ -30,6 +30,7 @@ export class PedidoResolver  {
       bairro: '',
       cidade: '',
       estado: '',
+      id: '',
       nomePedido: '',
       razaoSocial: '',
       cpfcnpjPedido: '',

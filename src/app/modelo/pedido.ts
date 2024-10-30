@@ -1,5 +1,5 @@
 export interface Pedido {
-  id: string;
+  idCliente: string;
   nome: string;
   cpfcnpj: string;
   telefone: string;
@@ -12,6 +12,7 @@ export interface Pedido {
   bairro: string;
   cidade: string;
   estado: string;
+  id: string;
   nomePedido: string;
   razaoSocial: string;
   cpfcnpjPedido: string;

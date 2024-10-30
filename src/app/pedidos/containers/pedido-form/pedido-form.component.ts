@@ -1,7 +1,6 @@
 import { AsyncPipe, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
-  FormControl,
   FormGroup,
   FormsModule,
   NonNullableFormBuilder,
@@ -11,23 +10,29 @@ import {
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatError, MatFormField, MatHint, MatLabel, MatPrefix } from '@angular/material/form-field';
+import {
+  MatError,
+  MatFormField,
+  MatHint,
+  MatLabel,
+  MatPrefix,
+} from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../servico/pedido.service';
 import { ClienteService } from './../../../clientes/servicos/cliente.service';
-
 
 interface Metros {
   value: string;
@@ -49,27 +54,26 @@ export interface User {
   styleUrl: './pedido-form.component.css',
   standalone: true,
   imports: [
-  FormsModule,
-  ReactiveFormsModule,
-  MatFormField,
-  MatLabel,
-  MatInput,
-  MatHint,
-  MatError,
-  MatPrefix,
-  MatDividerModule,
-  MatListModule,
-  MatRadioModule,
-  MatSlideToggleModule,
-  MatSelectModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatAutocompleteModule,
-  AsyncPipe,
-],
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatHint,
+    MatError,
+    MatPrefix,
+    MatDividerModule,
+    MatListModule,
+    MatRadioModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatAutocompleteModule,
+    AsyncPipe,
+  ],
 })
 export class PedidoFormComponent implements OnInit {
-
   formulario!: FormGroup;
 
   constructor(
@@ -80,12 +84,12 @@ export class PedidoFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private location: Location,
     private route: ActivatedRoute,
+    private router: Router,
+    public dialog: MatDialog,
     public formUtils: FormUtilsService,
   ) {}
 
-
   ngOnInit(): void {
-
     const pedido: Pedido = this.route.snapshot.data['pedido'];
     this.formulario = this.formBuilder.group({
       id: [pedido.id],
@@ -101,7 +105,14 @@ export class PedidoFormComponent implements OnInit {
       bairro: [pedido.bairro],
       cidade: [pedido.cidade],
       estado: [pedido.estado],
-      nomePedido: [pedido.nomePedido, [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
+      nomePedido: [
+        pedido.nomePedido,
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(100),
+        ],
+      ],
       razaoSocial: [pedido.razaoSocial],
       cpfcnpjPedido: [pedido.cpfcnpjPedido],
       tipoPgto: [pedido.tipoPgto],
@@ -124,56 +135,56 @@ export class PedidoFormComponent implements OnInit {
       precoLv10: [pedido.precoLv10],
       precoLv15: [pedido.precoLv15],
       ajudanteHora: [pedido.ajudanteHora],
-      observacao: [pedido.observacao]
+      observacao: [pedido.observacao],
     });
   }
 
-    // this.filteredOptions = this.myControl.valueChanges.pipe(
-    //   startWith(''),
-    //   map((value) => {
-    //     const name = typeof value === 'string' ? value : value?.name;
-    //     return name ? this._filter(name as string) : this.options.slice();
-    //   }),
-    // );
+  // this.filteredOptions = this.myControl.valueChanges.pipe(
+  //   startWith(''),
+  //   map((value) => {
+  //     const name = typeof value === 'string' ? value : value?.name;
+  //     return name ? this._filter(name as string) : this.options.slice();
+  //   }),
+  // );
 
-    // myControl = new FormControl<string | User>('');
+  // myControl = new FormControl<string | User>('');
 
-    // options: User[] = [
-    //   { name: 'Bruno' },
-    //   { name: 'Brunelson' },
-    //   { name: 'Pedrola' },
-    //   { name: 'Jeréba' },
-    //   { name: 'Ricardo 01' },
-    //   { name: 'Ricardo 02' },
-    //   { name: 'Ricardo 03' },
-    //   { name: 'Ricardola' },
-    //   { name: 'Salomonstro' },
-    // ];
+  // options: User[] = [
+  //   { name: 'Bruno' },
+  //   { name: 'Brunelson' },
+  //   { name: 'Pedrola' },
+  //   { name: 'Jeréba' },
+  //   { name: 'Ricardo 01' },
+  //   { name: 'Ricardo 02' },
+  //   { name: 'Ricardo 03' },
+  //   { name: 'Ricardola' },
+  //   { name: 'Salomonstro' },
+  // ];
 
-    // filteredOptions: Observable<User[]> = of([]);
+  // filteredOptions: Observable<User[]> = of([]);
 
-    // displayFn(user: User): string {
-    //   return user && user.name ? user.name : '';
-    // }
+  // displayFn(user: User): string {
+  //   return user && user.name ? user.name : '';
+  // }
 
-    // private _filter(name: string): User[] {
-    //   const filterValue = name.toLowerCase();
+  // private _filter(name: string): User[] {
+  //   const filterValue = name.toLowerCase();
 
-    //   return this.options.filter((option) =>
-    //     option.name.toLowerCase().includes(filterValue),
-    //   );
-    // }
+  //   return this.options.filter((option) =>
+  //     option.name.toLowerCase().includes(filterValue),
+  //   );
+  // }
 
-    // this.isAdressChecked = this.formulario.get('deliveryAddress')?.value || false;
-    // this.formulario.get('deliveryAddress')?.valueChanges.subscribe(value => {
-    //   this.isAdressChecked = value || false;
-    // });
+  // this.isAdressChecked = this.formulario.get('deliveryAddress')?.value || false;
+  // this.formulario.get('deliveryAddress')?.valueChanges.subscribe(value => {
+  //   this.isAdressChecked = value || false;
+  // });
 
-    // this.isPaymentChecked = this.formulario.get('cashPayment')?.value || false;
-    // this.formulario.get('cashPayment')?.valueChanges.subscribe(value => {
-    //   this.isPaymentChecked = value || false;
-    // });
-    // }
+  // this.isPaymentChecked = this.formulario.get('cashPayment')?.value || false;
+  // this.formulario.get('cashPayment')?.valueChanges.subscribe(value => {
+  //   this.isPaymentChecked = value || false;
+  // });
+  // }
 
   isAdressChecked = false;
   isPaymentChecked = false;
@@ -204,20 +215,34 @@ export class PedidoFormComponent implements OnInit {
     const idCliente = this.formulario.get('id')?.value;
     if (idCliente != '') {
       this.clienteService.buscarPorId(idCliente).subscribe((dados: any) => {
-        this.formulario.patchValue({
-          nome: dados.nome,
-          cpfcnpj: dados.cpfcnpj,
-          telefone: dados.telefone,
-          celular: dados.celular,
-          email: dados.email,
-          cep: dados.cep,
-          logradouro: dados.logradouro,
-          numero: dados.numero,
-          complemento: dados.complemento,
-          bairro: dados.bairro,
-          cidade: dados.cidade,
-          estado: dados.estado
-        });
+        if (dados !== null && dados != undefined) {
+          this.formulario.patchValue({
+            nome: dados.nome,
+            cpfcnpj: dados.cpfcnpj,
+            telefone: dados.telefone,
+            celular: dados.celular,
+            email: dados.email,
+            cep: dados.cep,
+            logradouro: dados.logradouro,
+            numero: dados.numero,
+            complemento: dados.complemento,
+            bairro: dados.bairro,
+            cidade: dados.cidade,
+            estado: dados.estado,
+          });
+        } else {
+          const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            data: 'Cliente não encontrado, deseja cadastrar?',
+          });
+          dialogRef.afterClosed().subscribe((result: boolean) => {
+            console.log(result);
+            if (result) {
+              this.router.navigate(['/cadastrar-cliente'], {
+                relativeTo: this.route,
+              });
+            }
+          });
+        }
       });
     }
   }
@@ -296,7 +321,9 @@ export class PedidoFormComponent implements OnInit {
   }
 
   private onSucess() {
-    this.snackBar.open('Pedido Salvo/Emitido com sucesso!', '', { duration: 5000 });
+    this.snackBar.open('Pedido Salvo/Emitido com sucesso!', '', {
+      duration: 5000,
+    });
     this.onCancel();
   }
 
