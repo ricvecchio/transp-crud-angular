@@ -340,7 +340,6 @@
           <mat-form-field class="form-grid">
             <mat-label>CEP:</mat-label>
             <input
-              [disabled]="isAdressChecked"
               matInput
               name="cepPedido"
               placeholder="Digite o CEP"
@@ -361,7 +360,6 @@
           <mat-form-field class="form-grid">
             <mat-label>Logradouro:</mat-label>
             <input
-              [disabled]="isAdressChecked"
               matInput
               name="logradouroPedido"
               formControlName="logradouroPedido"
@@ -379,8 +377,6 @@
           <mat-form-field class="form-grid">
             <mat-label>Número:</mat-label>
             <input
-              disableRipple
-              [disabled]="isAdressChecked"
               matInput
               name="numeroPedido"
               formControlName="numeroPedido"
@@ -402,8 +398,7 @@
           <mat-form-field class="form-grid">
             <mat-label>Complemento:</mat-label>
             <input
-              disableRipple
-              [disabled]="isAdressChecked"
+
               matInput
               name="complementoPedido"
               placeholder="Ex. Apto 64"
@@ -415,8 +410,7 @@
           <mat-form-field class="form-grid">
             <mat-label>Bairro:</mat-label>
             <input
-              disableRipple
-              [disabled]="isAdressChecked"
+
               matInput
               name="bairroPedido"
               formControlName="bairroPedido"
@@ -430,8 +424,7 @@
           <mat-form-field class="form-grid">
             <mat-label>Cidade:</mat-label>
             <input
-              disableRipple
-              [disabled]="isAdressChecked"
+
               matInput
               name="cidadePedido"
               placeholder="Ex. Santo André"
@@ -443,8 +436,7 @@
           <mat-form-field class="form-grid">
             <mat-label>UF:</mat-label>
             <input
-              disableRipple
-              [disabled]="isAdressChecked"
+
               matInput
               name="estadoPedido"
               placeholder="Ex. São Paulo"
