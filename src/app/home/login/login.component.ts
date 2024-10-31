@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   senha = '';
 
   constructor(
-    private authService: AutenticacaoService, 
+    private authService: AutenticacaoService,
     private router: Router
   ) {}
 

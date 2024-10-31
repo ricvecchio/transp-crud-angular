@@ -93,8 +93,6 @@ export class ClientesListaComponent implements OnInit {
       data: 'Tem certeza que deseja remover esse cliente?',
     });
     dialogRef.afterClosed().subscribe((result: boolean) => {
-      console.log(result);
-      console.log(cliente);
       if (result) {
         this.clienteService.excluir(cliente.idCliente).subscribe(
           () => {

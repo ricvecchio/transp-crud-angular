@@ -95,8 +95,6 @@ export class PedidosListaComponent implements OnInit {
       data: 'Tem certeza que deseja remover esse pedido?',
     });
     dialogRef.afterClosed().subscribe((result: boolean) => {
-      console.log(result);
-      console.log(pedido);
       if (result) {
         this.pedidoService.excluir(pedido.idPedido).subscribe(
           () => {

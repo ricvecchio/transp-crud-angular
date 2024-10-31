@@ -105,6 +105,7 @@ export class PedidoFormComponent implements OnInit {
       bairro: [pedido.bairro],
       cidade: [pedido.cidade],
       estado: [pedido.estado],
+      idPedido: [pedido.idPedido],
       nomePedido: [
         pedido.nomePedido,
         [
