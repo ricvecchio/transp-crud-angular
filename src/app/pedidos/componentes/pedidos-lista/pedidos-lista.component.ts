@@ -35,6 +35,7 @@ export class PedidosListaComponent implements OnInit {
     'nomePedido',
     'razaoSocial',
     'cpfcnpjPedido',
+    'tipoPgto',
     'bairroPedido',
     'mangueira',
     'volume',

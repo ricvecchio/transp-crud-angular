@@ -21,6 +21,10 @@
           <mat-header-cell *matHeaderCellDef><strong>CPF/CNPJ</strong></mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.cpfcnpjPedido }}</mat-cell>
         </ng-container>
+        <ng-container matColumnDef="tipoPgto">
+          <mat-header-cell *matHeaderCellDef><strong>Tipo Pgto</strong></mat-header-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.tipoPgto }}</mat-cell>
+        </ng-container>
         <ng-container matColumnDef="bairroPedido">
           <mat-header-cell *matHeaderCellDef><strong>Bairro</strong></mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.bairroPedido }}</mat-cell>

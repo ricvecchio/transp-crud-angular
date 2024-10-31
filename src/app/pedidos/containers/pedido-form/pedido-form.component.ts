@@ -177,7 +177,6 @@ export class PedidoFormComponent implements OnInit {
   // }
 
   checked = false;
-  disabled = false;
 
   isAdressChecked = false;
   onToggleChange(event: any): void {
@@ -187,23 +186,25 @@ export class PedidoFormComponent implements OnInit {
   isPaymentChecked = false;
   onPaymentCheckBoxChange(event: any): void {
     this.isPaymentChecked = event.checked;
+    this.formulario.patchValue({
+      tipoPgto: 'Á vista',
+    });
   }
 
-
-
+  // checked = false;
+  // isAdressChecked = false;
   // this.isAdressChecked = this.formulario.get('deliveryAddress')?.value || false;
   // this.formulario.get('deliveryAddress')?.valueChanges.subscribe(value => {
   //   this.isAdressChecked = value || false;
   // });
 
-
+  // disabled = false;
 
   // this.isPaymentChecked = this.formulario.get('cashPayment')?.value || false;
   // this.formulario.get('cashPayment')?.valueChanges.subscribe(value => {
   //   this.isPaymentChecked = value || false;
   // });
   // }
-
 
   // consultaClienteNome() {
   //   const nomeCliente = this.formulario.get('nome')?.value;
