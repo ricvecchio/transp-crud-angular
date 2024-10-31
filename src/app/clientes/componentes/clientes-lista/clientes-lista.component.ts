@@ -31,7 +31,7 @@ export class ClientesListaComponent implements OnInit {
 
   clientes$: Observable<ClientePagina> | null = null;
   readonly displayedColumns: string[] = [
-    'id',
+    'idCliente',
     'nome',
     'cpfcnpj',
     'telefone',
@@ -83,7 +83,7 @@ export class ClientesListaComponent implements OnInit {
   }
 
   onEdit(cliente: Cliente) {
-    this.router.navigate(['/editar-cliente', cliente.id], {
+    this.router.navigate(['/editar-cliente', cliente.idCliente], {
       relativeTo: this.route,
     });
   }
@@ -96,7 +96,7 @@ export class ClientesListaComponent implements OnInit {
       console.log(result);
       console.log(cliente);
       if (result) {
-        this.clienteService.excluir(cliente.id).subscribe(
+        this.clienteService.excluir(cliente.idCliente).subscribe(
           () => {
             this.atualiza();
             this.snackBar.open('Cliente removido com sucesso!', 'X', {

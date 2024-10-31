@@ -5,36 +5,40 @@
     <div>
       <mat-table [dataSource]="pedidos.pedidos">
         class="mat-elevation-z8">
-        <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-          <mat-cell *matCellDef="let pedido">{{ pedido.id }}</mat-cell>
+        <ng-container matColumnDef="idPedido">
+          <mat-header-cell *matHeaderCellDef><strong>ID</strong></mat-header-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.idPedido }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="nomePedido">
-          <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>Nome</strong></mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.nomePedido }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="razaoSocial">
-          <mat-header-cell *matHeaderCellDef>Razão Social</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>Razão Social</strong></mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.razaoSocial }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="cpfcnpjPedido">
-          <mat-header-cell *matHeaderCellDef>CPF/CNPJ</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>CPF/CNPJ</strong></mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.cpfcnpjPedido }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="bairroPedido">
-          <mat-header-cell *matHeaderCellDef>Bairro</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>Bairro</strong></mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.bairroPedido }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="mangueira">
-          <mat-header-cell *matHeaderCellDef>Mangueira</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>Mangueira</strong></mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.mangueira }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="volume">
-          <mat-header-cell *matHeaderCellDef>Volume</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>Volume</strong></mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.volume }}</mat-cell>
         </ng-container>
+        <ng-container matColumnDef="idCliente">
+          <mat-header-cell *matHeaderCellDef><strong>ID-Cliente</strong></mat-header-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.idCliente }}</mat-cell>
+        </ng-container>
         <ng-container matColumnDef="status">
-          <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>Status</strong></mat-header-cell>
           <mat-cell *matCellDef="let pedido">{{ pedido.status }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="acao">

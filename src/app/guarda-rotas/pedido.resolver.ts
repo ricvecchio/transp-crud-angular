@@ -13,8 +13,8 @@ export class PedidoResolver  {
   constructor(private service: PedidoService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Pedido> {
-    if (route.params && route.params['id']) {
-      return this.service.buscarPorId(route.params['id']);
+    if (route.params && route.params['idPedido']) {
+      return this.service.buscarPorId(route.params['idPedido']);
     }
     return of({
       idCliente: '',
@@ -30,7 +30,7 @@ export class PedidoResolver  {
       bairro: '',
       cidade: '',
       estado: '',
-      id: '',
+      idPedido: '',
       nomePedido: '',
       razaoSocial: '',
       cpfcnpjPedido: '',

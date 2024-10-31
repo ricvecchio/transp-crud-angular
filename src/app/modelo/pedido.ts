@@ -12,7 +12,7 @@ export interface Pedido {
   bairro: string;
   cidade: string;
   estado: string;
-  id: string;
+  idPedido: string;
   nomePedido: string;
   razaoSocial: string;
   cpfcnpjPedido: string;

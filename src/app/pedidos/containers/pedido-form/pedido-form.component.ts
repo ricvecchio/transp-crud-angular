@@ -92,7 +92,7 @@ export class PedidoFormComponent implements OnInit {
   ngOnInit(): void {
     const pedido: Pedido = this.route.snapshot.data['pedido'];
     this.formulario = this.formBuilder.group({
-      id: [pedido.id],
+      idCliente: [pedido.idCliente],
       nome: [pedido.nome],
       cpfcnpj: [pedido.cpfcnpj],
       telefone: [pedido.telefone],
@@ -212,7 +212,7 @@ export class PedidoFormComponent implements OnInit {
   // }
 
   consultaClienteId() {
-    const idCliente = this.formulario.get('id')?.value;
+    const idCliente = this.formulario.get('idCliente')?.value;
     if (idCliente != '') {
       this.clienteService.buscarPorId(idCliente).subscribe((dados: any) => {
         if (dados !== null && dados != undefined) {

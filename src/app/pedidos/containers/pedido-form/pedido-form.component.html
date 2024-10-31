@@ -43,12 +43,12 @@
             disableRipple
             name="idCliente"
             placeholder="Digite o ID do Cliente"
-            formControlName="id"
+            formControlName="idCliente"
             (blur)="consultaClienteId()"
           />
-          @if (formulario.get("id")?.invalid) {
+          @if (formulario.get("idCliente")?.invalid) {
             <mat-error>
-              {{ formUtils.getMensagemErro(formulario, "id") }}</mat-error
+              {{ formUtils.getMensagemErro(formulario, "idCliente") }}</mat-error
             >
           }
         </mat-form-field>

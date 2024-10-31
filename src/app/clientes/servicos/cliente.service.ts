@@ -22,8 +22,8 @@ export class ClienteService {
       );
   }
 
-  buscarPorId(id: number): Observable<Cliente> {
-    const url = `${this.API}/${id}`
+  buscarPorId(idCliente: number): Observable<Cliente> {
+    const url = `${this.API}/${idCliente}`
     return this.http.get<Cliente>(url)
   }
 
@@ -33,7 +33,7 @@ export class ClienteService {
   // }
 
   salvar(cliente: Partial<Cliente>) {
-    if (cliente.id) {
+    if (cliente.idCliente) {
       return this.editar(cliente);
     }
     return this.criar(cliente);
@@ -48,7 +48,7 @@ export class ClienteService {
   }
 
   private editar(cliente: Partial<Cliente>) {
-    return this.http.put<Cliente>(`${this.API}/${cliente.id}`, cliente).pipe(first());
+    return this.http.put<Cliente>(`${this.API}/${cliente.idCliente}`, cliente).pipe(first());
   }
 
   excluir(idCliente: string) {

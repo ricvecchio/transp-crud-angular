@@ -5,32 +5,32 @@
     <div>
       <mat-table [dataSource]="clientes.clientes">
         class="mat-elevation-z8">
-        <ng-container matColumnDef="id">
-          <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-          <mat-cell *matCellDef="let cliente">{{ cliente.id }}</mat-cell>
+        <ng-container matColumnDef="idCliente">
+          <mat-header-cell *matHeaderCellDef><strong>ID</strong></mat-header-cell>
+          <mat-cell *matCellDef="let cliente">{{ cliente.idCliente }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="nome">
-          <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>Nome</strong></mat-header-cell>
           <mat-cell *matCellDef="let cliente">{{ cliente.nome }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="cpfcnpj">
-          <mat-header-cell *matHeaderCellDef>CPF/CNPJ</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>CPF/CNPJ</strong></mat-header-cell>
           <mat-cell *matCellDef="let cliente">{{ cliente.cpfcnpj }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="telefone">
-          <mat-header-cell *matHeaderCellDef>Telefone</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>Telefone</strong></mat-header-cell>
           <mat-cell *matCellDef="let cliente">{{ cliente.telefone }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="celular">
-          <mat-header-cell *matHeaderCellDef>Celular</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>Celular</strong></mat-header-cell>
           <mat-cell *matCellDef="let cliente">{{ cliente.celular }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="email">
-          <mat-header-cell *matHeaderCellDef>E-mail</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>E-mail</strong></mat-header-cell>
           <mat-cell *matCellDef="let cliente">{{ cliente.email }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="bairro">
-          <mat-header-cell *matHeaderCellDef>Bairro</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef><strong>Bairro</strong></mat-header-cell>
           <mat-cell *matCellDef="let cliente">{{ cliente.bairro }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="acao">

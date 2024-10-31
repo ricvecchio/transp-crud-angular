@@ -30,7 +30,7 @@ export class PedidoService {
 
   emitir(pedido: Partial<Pedido>) {
     pedido.status = 'Emitido';
-    if (pedido.id) {
+    if (pedido.idPedido) {
       return this.editar(pedido);
     }
     return this.criar(pedido);
@@ -38,7 +38,7 @@ export class PedidoService {
 
   salvar(pedido: Partial<Pedido>) {
     pedido.status = 'Salvo';
-    if (pedido.id) {
+    if (pedido.idPedido) {
       return this.editar(pedido);
     }
     return this.criar(pedido);
@@ -49,7 +49,7 @@ export class PedidoService {
   }
 
   private editar(pedido: Partial<Pedido>) {
-    return this.http.put<Pedido>(`${this.API}/${pedido.id}`, pedido).pipe(first());
+    return this.http.put<Pedido>(`${this.API}/${pedido.idPedido}`, pedido).pipe(first());
   }
 
   excluir(idPedido: string) {

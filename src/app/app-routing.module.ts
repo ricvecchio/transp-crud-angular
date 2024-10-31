@@ -47,7 +47,7 @@ const routes: Routes = [
     resolve: { cliente: ClienteResolver },
   },
   {
-    path: 'editar-cliente/:id',
+    path: 'editar-cliente/:idCliente',
     component: ClienteFormComponent,
     resolve: { cliente: ClienteResolver },
   },
@@ -62,7 +62,7 @@ const routes: Routes = [
     resolve: { pedido: PedidoResolver },
   },
   {
-    path: 'editar-pedido/:id',
+    path: 'editar-pedido/:idPedido',
     component: PedidoFormComponent,
     resolve: { pedido: PedidoResolver },
   },

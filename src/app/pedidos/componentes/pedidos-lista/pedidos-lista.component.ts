@@ -31,7 +31,7 @@ export class PedidosListaComponent implements OnInit {
 
   pedidos$: Observable<PedidoPagina> | null = null;
   readonly displayedColumns: string[] = [
-    'id',
+    'idPedido',
     'nomePedido',
     'razaoSocial',
     'cpfcnpjPedido',
@@ -39,6 +39,7 @@ export class PedidosListaComponent implements OnInit {
     'mangueira',
     'volume',
     'status',
+    'idCliente',
     'acao'
   ];
 
@@ -84,7 +85,7 @@ export class PedidosListaComponent implements OnInit {
   }
 
   onEdit(pedido: Pedido) {
-    this.router.navigate(['/editar-pedido', pedido.id], {
+    this.router.navigate(['/editar-pedido', pedido.idPedido], {
       relativeTo: this.route,
     });
   }
@@ -97,7 +98,7 @@ export class PedidosListaComponent implements OnInit {
       console.log(result);
       console.log(pedido);
       if (result) {
-        this.pedidoService.excluir(pedido.id).subscribe(
+        this.pedidoService.excluir(pedido.idPedido).subscribe(
           () => {
             this.atualiza();
             this.snackBar.open('Pedido removido com sucesso!', 'X', {
@@ -114,83 +115,8 @@ export class PedidosListaComponent implements OnInit {
 }
 
 
-// @Component({
-//   selector: 'app-consultar-pedidos',
-//   templateUrl: './consultar-pedidos.component.html',
-//   styleUrl: './consultar-pedidos.component.css',
-// })
 // export class ConsultarPedidosComponent implements OnInit {
 //   // @Input() courses: Course[] = [];
 //   // @Output() add = new EventEmitter(false);
 //   // @Output() edit = new EventEmitter(false);
 //   // @Output() remove = new EventEmitter(false);
-
-//   pedidos$: Observable<Pedido[]> | null = null;
-//   readonly displayedColumns: string[] = [
-//     'id',
-//     'nome',
-//     'endereco',
-//     'volume',
-//     'mangueira',
-//     'valor',
-//     'status',
-//     'acao'
-//   ];
-
-//   constructor(
-//     private pedidosService: PedidoService,
-//     public dialog: MatDialog,
-//     private router: Router,
-//     private route: ActivatedRoute,
-//     private snackBar: MatSnackBar,
-//   ) {
-//     this.refresh();
-//   }
-
-//   onError(errorMsg: string) {
-//     this.dialog.open(ErrorDialogComponent, {
-//       data: errorMsg,
-//     });
-//   }
-
-//   ngOnInit(): void {}
-
-//   onAdd() {
-//     this.router.navigate(['/cadastrar-pedidos'], { relativeTo: this.route });
-//   }
-
-//   onEdit(pedido: Pedido) {
-//     this.router.navigate(['/editar-pedidos/', pedido.idPedido], { relativeTo: this.route });
-//   }
-
-//   onDelete(pedido: Pedido) {
-//     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-//       data: 'Tem certeza que deseja remover esse pedido?',
-//     });
-
-//     dialogRef.afterClosed().subscribe((result: boolean) => {
-//       if (result) {
-//         this.pedidosService.excluir(pedido.idPedido).subscribe(
-//           () => {
-//             this.refresh();
-//             this.snackBar.open('Pedido removido com sucesso!', 'X', {
-//               duration: 5000,
-//               verticalPosition: 'top',
-//               horizontalPosition: 'center',
-//             });
-//           },
-//           () => this.onError('Erro ao tentar remover o pedido.'),
-//         );
-//       }
-//     });
-//   }
-
-//   refresh() {
-//     this.pedidos$ = this.pedidosService.listar().pipe(
-//       catchError((error) => {
-//         this.onError('Erro ao carregar os pedidos.');
-//         return of([]);
-//       }),
-//     );
-//   }
-// }

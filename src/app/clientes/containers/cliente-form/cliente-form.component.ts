@@ -1,16 +1,15 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatError, MatFormField, MatHint, MatLabel, MatPrefix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
+import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Cliente } from '../../../modelo/cliente';
 import { ClienteService } from '../../servicos/cliente.service';
-import { MatInput } from '@angular/material/input';
-import { MatFormField, MatLabel, MatHint, MatError, MatPrefix } from '@angular/material/form-field';
-import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
-import { Pedido } from '../../../modelo/pedido';
 
 @Component({
     selector: 'app-cliente-form',
@@ -39,7 +38,6 @@ export class ClienteFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private location: Location,
     private route: ActivatedRoute,
-    private router: Router,
     public formUtils: FormUtilsService,
   ) {}
 
@@ -47,7 +45,7 @@ export class ClienteFormComponent implements OnInit {
     const cliente: Cliente = this.route.snapshot.data['cliente'];
 
     this.formulario = this.formBuilder.group({
-      id: [cliente.id],
+      idCliente: [cliente.idCliente],
       nome: [cliente.nome, [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
       cpfcnpj: [cliente.cpfcnpj, [Validators.required]],
       telefone: [cliente.telefone, [Validators.required]],
