@@ -191,6 +191,13 @@ export class PedidoFormComponent implements OnInit {
     });
   }
 
+  selectClick() {
+    const diaFaturado = this.formulario.get('tipoPgto')?.value;
+    this.formulario.patchValue({
+      tipoPgto: diaFaturado,
+    });
+  }
+
   // checked = false;
   // isAdressChecked = false;
   // this.isAdressChecked = this.formulario.get('deliveryAddress')?.value || false;
