@@ -1,5 +1,5 @@
 import { AsyncPipe, Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import {
   FormGroup,
   FormsModule,
@@ -33,6 +33,9 @@ import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../servico/pedido.service';
 import { ClienteService } from './../../../clientes/servicos/cliente.service';
+import { first } from 'rxjs';
+import { trigger } from '@angular/animations';
+import { initZone } from 'zone.js/lib/zone-impl';
 
 interface Metros {
   value: string;
@@ -92,7 +95,10 @@ export class PedidoFormComponent implements OnInit {
   ngOnInit(): void {
     const pedido: Pedido = this.route.snapshot.data['pedido'];
     this.formulario = this.formBuilder.group({
-      idCliente: [pedido.idCliente],
+      idCliente: [
+        pedido.idCliente,
+        [Validators.required, Validators.pattern(/^\d+$/)],
+      ],
       nome: [pedido.nome],
       cpfcnpj: [pedido.cpfcnpj],
       telefone: [pedido.telefone],
@@ -235,6 +241,8 @@ export class PedidoFormComponent implements OnInit {
   //   }
   // }
 
+  @ViewChild('focusElement') focusElement!: ElementRef;
+
   consultaClienteId() {
     const idCliente = this.formulario.get('idCliente')?.value;
     if (idCliente != '') {
@@ -259,16 +267,24 @@ export class PedidoFormComponent implements OnInit {
             data: 'Cliente não encontrado, deseja cadastrar?',
           });
           dialogRef.afterClosed().subscribe((result: boolean) => {
-            console.log(result);
             if (result) {
               this.router.navigate(['/cadastrar-cliente'], {
                 relativeTo: this.route,
+              });
+            } else {
+              this.setFocus();
+              this.formulario.patchValue({
+                idCliente: idCliente.clear_all,
               });
             }
           });
         }
       });
     }
+  }
+
+  setFocus() {
+    this.focusElement.nativeElement.focus();
   }
 
   selectedMetros!: string;

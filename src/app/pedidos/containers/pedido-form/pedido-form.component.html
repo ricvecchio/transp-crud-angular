@@ -45,6 +45,7 @@
             placeholder="Digite o ID do Cliente"
             formControlName="idCliente"
             (blur)="consultaClienteId()"
+            #focusElement
           />
           @if (formulario.get("idCliente")?.invalid) {
             <mat-error>
@@ -54,6 +55,22 @@
         </mat-form-field>
       </div>
     </div>
+
+    <!-- @if (user$ | async; as user) {
+      <div>
+        @if (user.name) {
+          <div>
+            <i class="fa fa-user-circle mr-1"> </i>
+            <a class="navbar-text">{{ user.name }}</a> <br>
+            <a (click)="logout()" class="mr-1" > Logout</a>
+          </div>
+        } @else {
+          <span class="navbar-text">
+            <a [routerLink]="['']">Login</a>
+          </span>
+        }
+      </div>
+    } -->
 
     <br />
     <h6><strong>Informações Cliente:</strong></h6>
