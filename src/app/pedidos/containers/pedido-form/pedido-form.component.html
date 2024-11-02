@@ -49,28 +49,14 @@
           />
           @if (formulario.get("idCliente")?.invalid) {
             <mat-error>
-              {{ formUtils.getMensagemErro(formulario, "idCliente") }}</mat-error
+              {{
+                formUtils.getMensagemErro(formulario, "idCliente")
+              }}</mat-error
             >
           }
         </mat-form-field>
       </div>
     </div>
-
-    <!-- @if (user$ | async; as user) {
-      <div>
-        @if (user.name) {
-          <div>
-            <i class="fa fa-user-circle mr-1"> </i>
-            <a class="navbar-text">{{ user.name }}</a> <br>
-            <a (click)="logout()" class="mr-1" > Logout</a>
-          </div>
-        } @else {
-          <span class="navbar-text">
-            <a [routerLink]="['']">Login</a>
-          </span>
-        }
-      </div>
-    } -->
 
     <br />
     <h6><strong>Informações Cliente:</strong></h6>
@@ -168,7 +154,8 @@
               readonly="true"
               matInput
               name="logradouro"
-              formControlName="logradouro" />
+              formControlName="logradouro"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-3">
@@ -179,7 +166,8 @@
               readonly="true"
               matInput
               name="numero"
-              formControlName="numero" />
+              formControlName="numero"
+            />
           </mat-form-field>
         </div>
       </div>
@@ -205,7 +193,8 @@
               readonly="true"
               matInput
               name="bairro"
-              formControlName="bairro" />
+              formControlName="bairro"
+            />
           </mat-form-field>
         </div>
       </div>
@@ -252,7 +241,7 @@
               name="nomePedido"
               placeholder="Digite o nome fantasia"
               formControlName="nomePedido"
-              >
+            />
           </mat-form-field>
         </div>
       </div>
@@ -297,8 +286,7 @@
                 class="checkbox-margin"
                 (change)="onPaymentCheckBoxChange($event)"
                 >Á Vista
-                </mat-checkbox
-              >
+              </mat-checkbox>
             </section>
           </mat-card-content>
         </div>
@@ -310,27 +298,69 @@
                 <!-- <mat-select [disabled]="isPaymentChecked" formControlName="tipoPgto"> -->
                 <mat-select formControlName="tipoPgto">
                   <mat-option value="0"> </mat-option>
-                  <mat-option (click)="selectClick()" value="10 dias">10 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="11 dias">11 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="12 dias">12 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="13 dias">13 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="14 dias">14 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="15 dias">15 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="16 dias">16 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="17 dias">17 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="18 dias">18 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="19 dias">19 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="20 dias">20 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="21 dias">21 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="22 dias">22 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="23 dias">23 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="24 dias">24 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="25 dias">25 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="26 dias">26 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="27 dias">27 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="28 dias">28 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="29 dias">29 dias</mat-option>
-                  <mat-option (click)="selectClick()" value="30 dias">30 dias</mat-option>
+                  <mat-option (click)="selectClick()" value="10 dias"
+                    >10 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="11 dias"
+                    >11 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="12 dias"
+                    >12 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="13 dias"
+                    >13 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="14 dias"
+                    >14 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="15 dias"
+                    >15 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="16 dias"
+                    >16 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="17 dias"
+                    >17 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="18 dias"
+                    >18 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="19 dias"
+                    >19 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="20 dias"
+                    >20 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="21 dias"
+                    >21 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="22 dias"
+                    >22 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="23 dias"
+                    >23 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="24 dias"
+                    >24 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="25 dias"
+                    >25 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="26 dias"
+                    >26 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="27 dias"
+                    >27 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="28 dias"
+                    >28 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="29 dias"
+                    >29 dias</mat-option
+                  >
+                  <mat-option (click)="selectClick()" value="30 dias"
+                    >30 dias</mat-option
+                  >
                 </mat-select>
               </mat-form-field>
             </section>
@@ -340,75 +370,113 @@
 
       <br />
 
-      <!-- <tr>
+      <tr>
         <mat-slide-toggle
           color="blue"
-          formControlName="deliveryAddress"
           (change)="onToggleChange($event)"
           [checked]="isAdressChecked"
         >
           Entregar no mesmo endereço de cadastro:
         </mat-slide-toggle>
-        {{isAdressChecked}}
-      </tr> -->
+      </tr>
 
       <br />
 
       <div class="row">
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
-            <mat-label>CEP:</mat-label>
-            <input
-              matInput
-              name="cepPedido"
-              placeholder="Digite o CEP"
-              formControlName="cepPedido"
-              (blur)="consultaCEP()"
-            />
-            @if (formulario.get("cepPedido")?.invalid) {
-              <mat-error>
-                {{ formUtils.getMensagemErro(formulario, "cepPedido") }}</mat-error
-              >
-            }
-          </mat-form-field>
+          @if (isAdressChecked) {
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>CEP:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="cepPedido"
+                formControlName="cepPedido"
+              />
+            </mat-form-field>
+          } @else {
+            <mat-form-field class="form-grid">
+              <mat-label>CEP:</mat-label>
+              <input
+                matInput
+                name="cepPedido"
+                placeholder="Digite o CEP"
+                formControlName="cepPedido"
+                (blur)="consultaCEP()"
+              />
+              @if (formulario.get("cepPedido")?.invalid) {
+                <mat-error>
+                  {{
+                    formUtils.getMensagemErro(formulario, "cepPedido")
+                  }}</mat-error
+                >
+              }
+            </mat-form-field>
+          }
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
-            <mat-label>Logradouro:</mat-label>
-            <input
-              matInput
-              name="logradouroPedido"
-              formControlName="logradouroPedido"
-            />
-            @if (formulario.get("logradouroPedido")?.invalid) {
-              <mat-error>
-                {{
-                  formUtils.getMensagemErro(formulario, "logradouroPedido")
-                }}</mat-error
-              >
-            }
-          </mat-form-field>
+          @if (isAdressChecked) {
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Logradouro:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="logradouroPedido"
+                formControlName="logradouroPedido"
+              />
+            </mat-form-field>
+          } @else {
+            <mat-form-field class="form-grid">
+              <mat-label>Logradouro:</mat-label>
+              <input
+                matInput
+                name="logradouroPedido"
+                formControlName="logradouroPedido"
+              />
+              @if (formulario.get("logradouroPedido")?.invalid) {
+                <mat-error>
+                  {{
+                    formUtils.getMensagemErro(formulario, "logradouroPedido")
+                  }}</mat-error
+                >
+              }
+            </mat-form-field>
+          }
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
-            <mat-label>Número:</mat-label>
-            <input
-              matInput
-              name="numeroPedido"
-              formControlName="numeroPedido"
-            />
-            @if (formulario.get("numeroPedido")?.invalid) {
-              <mat-error>
-                {{
-                  formUtils.getMensagemErro(formulario, "numeroPedido")
-                }}</mat-error
-              >
-            }
-          </mat-form-field>
-
+          @if (isAdressChecked) {
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Número:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="numeroPedido"
+                formControlName="numeroPedido"
+              />
+            </mat-form-field>
+          } @else {
+            <mat-form-field class="form-grid">
+              <mat-label>Número:</mat-label>
+              <input
+                matInput
+                name="numeroPedido"
+                formControlName="numeroPedido"
+              />
+              @if (formulario.get("numeroPedido")?.invalid) {
+                <mat-error>
+                  {{
+                    formUtils.getMensagemErro(formulario, "numeroPedido")
+                  }}</mat-error
+                >
+              }
+            </mat-form-field>
+          }
         </div>
       </div>
 
@@ -417,7 +485,6 @@
           <mat-form-field class="form-grid">
             <mat-label>Complemento:</mat-label>
             <input
-
               matInput
               name="complementoPedido"
               placeholder="Ex. Apto 64"
@@ -429,7 +496,6 @@
           <mat-form-field class="form-grid">
             <mat-label>Bairro:</mat-label>
             <input
-
               matInput
               name="bairroPedido"
               formControlName="bairroPedido"
@@ -443,7 +509,6 @@
           <mat-form-field class="form-grid">
             <mat-label>Cidade:</mat-label>
             <input
-
               matInput
               name="cidadePedido"
               placeholder="Ex. Santo André"
@@ -455,7 +520,6 @@
           <mat-form-field class="form-grid">
             <mat-label>UF:</mat-label>
             <input
-
               matInput
               name="estadoPedido"
               placeholder="Ex. São Paulo"
@@ -646,7 +710,7 @@
       <div class="campos_previa">
         <p class="nomePedido">
           <b>CLIENTE: </b>
-         <!-- {{ formulario.get("nomePedido") }} -->
+          <!-- {{ formulario.get("nomePedido") }} -->
           <!-- <small> - CNPJ: {{ formulario.value. }}</small> -->
         </p>
       </div>

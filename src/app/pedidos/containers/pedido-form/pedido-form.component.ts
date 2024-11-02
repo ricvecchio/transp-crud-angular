@@ -182,43 +182,6 @@ export class PedidoFormComponent implements OnInit {
   //   );
   // }
 
-  checked = false;
-
-  isAdressChecked = false;
-  onToggleChange(event: any): void {
-    this.isAdressChecked = event.checked;
-  }
-
-  isPaymentChecked = false;
-  onPaymentCheckBoxChange(event: any): void {
-    this.isPaymentChecked = event.checked;
-    this.formulario.patchValue({
-      tipoPgto: 'Á vista',
-    });
-  }
-
-  selectClick() {
-    const diaFaturado = this.formulario.get('tipoPgto')?.value;
-    this.formulario.patchValue({
-      tipoPgto: diaFaturado,
-    });
-  }
-
-  // checked = false;
-  // isAdressChecked = false;
-  // this.isAdressChecked = this.formulario.get('deliveryAddress')?.value || false;
-  // this.formulario.get('deliveryAddress')?.valueChanges.subscribe(value => {
-  //   this.isAdressChecked = value || false;
-  // });
-
-  // disabled = false;
-
-  // this.isPaymentChecked = this.formulario.get('cashPayment')?.value || false;
-  // this.formulario.get('cashPayment')?.valueChanges.subscribe(value => {
-  //   this.isPaymentChecked = value || false;
-  // });
-  // }
-
   // consultaClienteNome() {
   //   const nomeCliente = this.formulario.get('nome')?.value;
   //   if (nomeCliente != '') {
@@ -240,6 +203,7 @@ export class PedidoFormComponent implements OnInit {
   //     });
   //   }
   // }
+
 
   @ViewChild('focusElement') focusElement!: ElementRef;
 
@@ -287,6 +251,75 @@ export class PedidoFormComponent implements OnInit {
     this.focusElement.nativeElement.focus();
   }
 
+  checked = false;
+
+  isPaymentChecked = false;
+  onPaymentCheckBoxChange(event: any): void {
+    this.isPaymentChecked = event.checked;
+    this.formulario.patchValue({
+      tipoPgto: 'Á vista',
+    });
+  }
+
+  selectClick() {
+    const diaFaturado = this.formulario.get('tipoPgto')?.value;
+    this.formulario.patchValue({
+      tipoPgto: diaFaturado,
+    });
+  }
+
+  isAdressChecked = false;
+  onToggleChange(event: any): void {
+    this.isAdressChecked = event.checked;
+    console.log(this.isAdressChecked);
+    if (this.isAdressChecked) {
+      this.limpaEndereco();
+      this.buscaEndereco();
+    } else {
+      this.limpaEndereco();
+    }
+  }
+
+  buscaEndereco() {
+    this.limpaEndereco();
+    this.formulario.patchValue({
+      cepPedido: this.formulario.get('cep')?.value,
+      logradouroPedido: this.formulario.get('logradouro')?.value,
+      numeroPedido: this.formulario.get('numero')?.value,
+      complementoPedido: this.formulario.get('complemento')?.value,
+      bairroPedido: this.formulario.get('bairro')?.value,
+      cidadePedido: this.formulario.get('cidade')?.value,
+      estadoPedido: this.formulario.get('estado')?.value,
+    });
+  }
+
+  limpaEndereco() {
+    this.formulario.patchValue({
+      cepPedido: [''],
+      logradouroPedido: [''],
+      numeroPedido: [''],
+      complementoPedido: [''],
+      bairroPedido: [''],
+      cidadePedido: [''],
+      estadoPedido: [''],
+    });
+  }
+
+  consultaCEP() {
+    const cep = this.formulario.get('cepPedido')?.value;
+    if (cep != '') {
+      this.consultaCepService.getConsultaCep(cep).subscribe((dados: any) => {
+        this.formulario.patchValue({
+          logradouroPedido: dados.logradouro,
+          complementoPedido: dados.complemento,
+          bairroPedido: dados.bairro,
+          cidadePedido: dados.localidade,
+          estadoPedido: dados.uf,
+        });
+      });
+    }
+  }
+
   selectedMetros!: string;
   metros: Metros[] = [
     { value: '15 metros', viewValue: '15 metros' },
@@ -306,21 +339,6 @@ export class PedidoFormComponent implements OnInit {
     { value: 'lav-10m³', viewValue: 'lav-10m³' },
     { value: 'lav-15m³', viewValue: 'lav-15m³' },
   ];
-
-  consultaCEP() {
-    const cep = this.formulario.get('cepPedido')?.value;
-    if (cep != '') {
-      this.consultaCepService.getConsultaCep(cep).subscribe((dados: any) => {
-        this.formulario.patchValue({
-          logradouroPedido: dados.logradouro,
-          complementoPedido: dados.complemento,
-          bairroPedido: dados.bairro,
-          cidadePedido: dados.localidade,
-          estadoPedido: dados.uf,
-        });
-      });
-    }
-  }
 
   dataAtual: Date = new Date();
 
