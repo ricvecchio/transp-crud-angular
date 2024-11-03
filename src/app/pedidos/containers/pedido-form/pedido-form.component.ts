@@ -204,7 +204,6 @@ export class PedidoFormComponent implements OnInit {
   //   }
   // }
 
-
   @ViewChild('focusElement') focusElement!: ElementRef;
 
   consultaClienteId() {
@@ -256,9 +255,11 @@ export class PedidoFormComponent implements OnInit {
   isPaymentChecked = false;
   onPaymentCheckBoxChange(event: any): void {
     this.isPaymentChecked = event.checked;
-    this.formulario.patchValue({
-      tipoPgto: 'Á vista',
-    });
+    if (this.isPaymentChecked) {
+      this.formulario.patchValue({
+        tipoPgto: 'Á vista',
+      });
+    }
   }
 
   selectClick() {
@@ -271,7 +272,6 @@ export class PedidoFormComponent implements OnInit {
   isAdressChecked = false;
   onToggleChange(event: any): void {
     this.isAdressChecked = event.checked;
-    console.log(this.isAdressChecked);
     if (this.isAdressChecked) {
       this.limpaEndereco();
       this.buscaEndereco();
