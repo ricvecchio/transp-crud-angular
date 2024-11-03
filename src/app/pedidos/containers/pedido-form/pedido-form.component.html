@@ -418,8 +418,8 @@
       </div>
 
       <div class="row">
-        <div class="col-md-9">
-          @if (isAdressChecked) {
+        @if (isAdressChecked) {
+          <div class="col-md-9">
             <mat-form-field class="form-grid" appearance="outline">
               <mat-label>Logradouro:</mat-label>
               <input
@@ -430,12 +430,27 @@
                 formControlName="logradouroPedido"
               />
             </mat-form-field>
-          } @else {
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Número:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="numeroPedido"
+                formControlName="numeroPedido"
+              />
+            </mat-form-field>
+          </div>
+        } @else {
+          <div class="col-md-9">
             <mat-form-field class="form-grid">
               <mat-label>Logradouro:</mat-label>
               <input
                 matInput
                 name="logradouroPedido"
+                placeholder="Digite o logradouro"
                 formControlName="logradouroPedido"
               />
               @if (formulario.get("logradouroPedido")?.invalid) {
@@ -446,26 +461,14 @@
                 >
               }
             </mat-form-field>
-          }
-        </div>
-        <div class="col-md-3">
-          @if (isAdressChecked) {
-            <mat-form-field class="form-grid" appearance="outline">
-              <mat-label>Número:</mat-label>
-              <input
-                tabindex="-1"
-                readonly="true"
-                matInput
-                name="numeroPedido"
-                formControlName="numeroPedido"
-              />
-            </mat-form-field>
-          } @else {
+          </div>
+          <div class="col-md-3">
             <mat-form-field class="form-grid">
               <mat-label>Número:</mat-label>
               <input
                 matInput
                 name="numeroPedido"
+                placeholder="Digite o número"
                 formControlName="numeroPedido"
               />
               @if (formulario.get("numeroPedido")?.invalid) {
@@ -476,57 +479,112 @@
                 >
               }
             </mat-form-field>
-          }
-        </div>
+          </div>
+        }
       </div>
 
       <div class="row">
-        <div class="col-md-9">
-          <mat-form-field class="form-grid">
-            <mat-label>Complemento:</mat-label>
-            <input
-              matInput
-              name="complementoPedido"
-              placeholder="Ex. Apto 64"
-              formControlName="complementoPedido"
-            />
-          </mat-form-field>
-        </div>
-        <div class="col-md-3">
-          <mat-form-field class="form-grid">
-            <mat-label>Bairro:</mat-label>
-            <input
-              matInput
-              name="bairroPedido"
-              formControlName="bairroPedido"
-            />
-          </mat-form-field>
-        </div>
+        @if (isAdressChecked) {
+          <div class="col-md-9">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Complemento:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="complementoPedido"
+                formControlName="complementoPedido"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Bairro:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="bairroPedido"
+                formControlName="bairroPedido"
+              />
+            </mat-form-field>
+          </div>
+        } @else {
+          <div class="col-md-9">
+            <mat-form-field class="form-grid">
+              <mat-label>Complemento:</mat-label>
+              <input
+                matInput
+                name="complementoPedido"
+                placeholder="Ex. Apto 64"
+                formControlName="complementoPedido"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="form-grid">
+              <mat-label>Bairro:</mat-label>
+              <input
+                matInput
+                name="bairroPedido"
+                placeholder="Digite o bairro"
+                formControlName="bairroPedido"
+              />
+            </mat-form-field>
+          </div>
+        }
       </div>
 
       <div class="row">
-        <div class="col-md-9">
-          <mat-form-field class="form-grid">
-            <mat-label>Cidade:</mat-label>
-            <input
-              matInput
-              name="cidadePedido"
-              placeholder="Ex. Santo André"
-              formControlName="cidadePedido"
-            />
-          </mat-form-field>
-        </div>
-        <div class="col-md-3">
-          <mat-form-field class="form-grid">
-            <mat-label>UF:</mat-label>
-            <input
-              matInput
-              name="estadoPedido"
-              placeholder="Ex. São Paulo"
-              formControlName="estadoPedido"
-            />
-          </mat-form-field>
-        </div>
+        @if (isAdressChecked) {
+          <div class="col-md-9">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Cidade:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="cidadePedido"
+                formControlName="cidadePedido"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>UF:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="estadoPedido"
+                formControlName="estadoPedido"
+              />
+            </mat-form-field>
+          </div>
+        } @else {
+          <div class="col-md-9">
+            <mat-form-field class="form-grid">
+              <mat-label>Cidade:</mat-label>
+              <input
+                matInput
+                name="cidadePedido"
+                placeholder="Digite a cidade"
+                formControlName="cidadePedido"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="form-grid">
+              <mat-label>UF:</mat-label>
+              <input
+                matInput
+                name="estadoPedido"
+                placeholder="Digite o estado. Ex: SP"
+                formControlName="estadoPedido"
+              />
+            </mat-form-field>
+          </div>
+        }
       </div>
 
       <div class="row">
