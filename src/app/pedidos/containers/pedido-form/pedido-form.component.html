@@ -753,13 +753,14 @@
       </mat-list>
 
       <div class="row">
-        <!-- <div class="col-md-9">
-          <h4>PEDIDO: {{ formulario.controls.idPedido.value }}</h4>
+        <div class="col-md-9">
+          <h4>PEDIDO: {{ this.formulario.get('idPedido')?.value}} </h4>
         </div>
         <div class="col-md-3">
           <b>DATA: </b>
-          {{ dataAtual | date: "dd/MM/yyyy" }}
-        </div> -->
+          <!-- {{ dataAtual | date: 'dd/MM/yyyy' }} -->
+          {{ dataAtual }}
+        </div>
       </div>
 
       <mat-list>
@@ -771,36 +772,34 @@
       <div class="campos_previa">
         <p class="nomePedido">
           <b>CLIENTE: </b>
-          <!-- {{ formulario.get("nomePedido") }} -->
-          <!-- <small> - CNPJ: {{ formulario.value. }}</small> -->
+          {{ this.formulario.get('nomePedido')?.value }}
         </p>
       </div>
 
       <div class="campos_previa">
         <p class="endereco">
           <b>ENDEREÇO: </b>
-          <!-- {{ formulario.controls.logradouroEntrega.value }},
-          {{ formulario.controls.numeroPedido.value }} -
-          {{ formulario.controls.complementoPedido.value }} -
-          {{ formulario.controls.bairroPedido.value }}/{{
-            formulario.controls.estadoPedido.value
-          }}
-          - CEP: {{ formulario.controls.cepPedido.value }} -->
+          {{ this.formulario.get('logradouroPedido')?.value }},
+          {{ this.formulario.get('numeroPedido')?.value }},
+          {{ this.formulario.get('complementoPedido')?.value }},
+          {{ this.formulario.get('bairroPedido')?.value }},
+          {{ this.formulario.get('estadoPedido')?.value }}
+          - CEP: {{ this.formulario.get('cepPedido')?.value }}
         </p>
       </div>
 
       <div class="row">
         <div class="col-md-4">
           <b>VOLUME: </b>
-          <!-- {{ formulario.controls.volume.value }} -->
+          {{ this.formulario.get('volume')?.value }}
         </div>
         <div class="col-md-4">
           <b>MANGUEIRA: </b>
-          <!-- {{ formulario.controls.mangueira.value }} -->
+          {{ this.formulario.get('mangueira')?.value }}
         </div>
         <div class="col-md-4">
           <b>PREÇO: R$ </b>
-          <!-- {{ formulario.controls.precoCx5.value }} -->
+          {{ this.formulario.get('precoCx5')?.value }}
         </div>
       </div>
 
