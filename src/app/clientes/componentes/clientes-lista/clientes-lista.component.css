@@ -39,3 +39,14 @@ mat-card {
 .action-column-header {
   margin: 0 auto;
 }
+
+/* Estilo para centralizar o texto dentro da mat-toolbar */
+.toolbar {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center;     /* Centraliza verticalmente */
+}
+
+.toolbar-text {
+  text-align: center;
+}
