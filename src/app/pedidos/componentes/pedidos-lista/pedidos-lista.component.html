@@ -5,8 +5,7 @@
 
   @if (pedidos$ | async; as pedidos) {
     <div>
-      <mat-table [dataSource]="pedidos.pedidos"
-        class="mat-elevation-z8">
+      <mat-table [dataSource]="pedidos.pedidos" class="mat-elevation-z8">
         <ng-container matColumnDef="acaoConsulta">
           <mat-header-cell *matHeaderCellDef class="action-column">
           </mat-header-cell>
