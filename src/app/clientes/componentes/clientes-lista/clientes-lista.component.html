@@ -5,8 +5,22 @@
 
   @if (clientes$ | async; as clientes) {
     <div>
-      <mat-table [dataSource]="clientes.clientes">
-        class="mat-elevation-z8">
+      <mat-table [dataSource]="clientes.clientes" class="mat-elevation-z8">
+        <ng-container matColumnDef="acaoConsulta">
+          <mat-header-cell *matHeaderCellDef class="action-column">
+          </mat-header-cell>
+          <mat-cell *matCellDef="let cliente" class="action-column">
+            <button
+              mat-mini-fab
+              color="primary"
+              aria-label="Consulta Cliente"
+              (click)="onSearch(cliente)"
+            >
+              <mat-icon>search</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
         <ng-container matColumnDef="idCliente">
           <mat-header-cell *matHeaderCellDef
             ><strong>ID</strong></mat-header-cell
@@ -49,12 +63,12 @@
           >
           <mat-cell *matCellDef="let cliente">{{ cliente.bairro }}</mat-cell>
         </ng-container>
+
         <ng-container matColumnDef="acao">
           <mat-header-cell *matHeaderCellDef class="action-column">
             <button
               mat-mini-fab
               color="accent"
-              aria-label="Adicionar um cliente"
               (click)="onAdd()"
               class="action-column-header"
             >

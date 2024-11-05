@@ -31,6 +31,7 @@ export class ClientesListaComponent implements OnInit {
 
   clientes$: Observable<ClientePagina> | null = null;
   readonly displayedColumns: string[] = [
+    'acaoConsulta',
     'idCliente',
     'nome',
     'cpfcnpj',
@@ -83,6 +84,12 @@ export class ClientesListaComponent implements OnInit {
   }
 
   onEdit(cliente: Cliente) {
+    this.router.navigate(['/editar-cliente', cliente.idCliente], {
+      relativeTo: this.route,
+    });
+  }
+
+  onSearch(cliente: Cliente) {
     this.router.navigate(['/editar-cliente', cliente.idCliente], {
       relativeTo: this.route,
     });

@@ -5,8 +5,22 @@
 
   @if (pedidos$ | async; as pedidos) {
     <div>
-      <mat-table [dataSource]="pedidos.pedidos">
+      <mat-table [dataSource]="pedidos.pedidos"
         class="mat-elevation-z8">
+        <ng-container matColumnDef="acaoConsulta">
+          <mat-header-cell *matHeaderCellDef class="action-column">
+          </mat-header-cell>
+          <mat-cell *matCellDef="let pedido" class="action-column">
+            <button
+              mat-mini-fab
+              color="primary"
+              aria-label="Consulta Pedido"
+              (click)="onSearch(pedido)"
+            >
+              <mat-icon>search</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
         <ng-container matColumnDef="idPedido">
           <mat-header-cell *matHeaderCellDef
             ><strong>ID</strong></mat-header-cell

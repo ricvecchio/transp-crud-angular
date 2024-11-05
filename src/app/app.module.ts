@@ -20,6 +20,7 @@ import { ClienteFormComponent } from './clientes/containers/cliente-form/cliente
 import { MatNativeDateModule } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
     declarations: [AppComponent],
@@ -46,7 +47,8 @@ import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-for
         provideAnimations(),
         provideHttpClient(),
         importProvidersFrom(MatNativeDateModule),
-        provideMomentDateAdapter()
+        provideMomentDateAdapter(),
+        provideAnimationsAsync()
     ],
     bootstrap: [AppComponent],
 })

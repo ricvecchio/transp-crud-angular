@@ -3,12 +3,19 @@
   max-height: 600px;
 }
 
+/* Ajuste de layout para centralizar os botões */
 .action-column {
   flex: 0 0 125px;
 }
 
+/* Estilizando o cabeçalho do botão de adicionar */
 .action-column-header {
   margin: 0 auto;
+}
+
+/* Adicionando um pequeno espaçamento entre os botões */
+.action-column button {
+  margin-right: 8px;
 }
 
 mat-card {
@@ -25,19 +32,10 @@ mat-card {
     justify-content: center;
 }
 
-
 .column-flex {
   display: flex;
   flex-direction: column;
   min-width: 300px;
-}
-
-.action-column {
-  flex: 0 0 125px;
-}
-
-.action-column-header {
-  margin: 0 auto;
 }
 
 /* Estilo para centralizar o texto dentro da mat-toolbar */

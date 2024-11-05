@@ -39,6 +39,11 @@ mat-card {
   margin: 0 auto;
 }
 
+/* Adicionando um pequeno espaçamento entre os botões */
+.action-column button {
+  margin-right: 8px;
+}
+
 /* Estilo para centralizar o texto dentro da mat-toolbar */
 .toolbar {
   display: flex;

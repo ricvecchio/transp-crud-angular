@@ -31,6 +31,7 @@ export class PedidosListaComponent implements OnInit {
 
   pedidos$: Observable<PedidoPagina> | null = null;
   readonly displayedColumns: string[] = [
+    'acaoConsulta',
     'idPedido',
     'nomePedido',
     'razaoSocial',
@@ -86,6 +87,12 @@ export class PedidosListaComponent implements OnInit {
   }
 
   onEdit(pedido: Pedido) {
+    this.router.navigate(['/editar-pedido', pedido.idPedido], {
+      relativeTo: this.route,
+    });
+  }
+
+  onSearch(pedido: Pedido) {
     this.router.navigate(['/editar-pedido', pedido.idPedido], {
       relativeTo: this.route,
     });
