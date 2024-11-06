@@ -1,0 +1,104 @@
+<section class="container cliente-form ff-inter">
+  <form [formGroup]="formulario" class="full-width" id="formulario">
+    <br />
+    <h6><strong>Cliente ID: {{ this.formulario.get('idCliente')?.value }}</strong></h6>
+    <br />
+
+    <div class="espaco-dentro">
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Nome:</mat-label>
+            <input matInput name="nome" formControlName="nome" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>CPF/CNPJ:</mat-label>
+            <input matInput name="cpfcnpj" formControlName="cpfcnpj" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Telefone:</mat-label>
+            <input matInput name="telefone" formControlName="telefone" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Celular:</mat-label>
+            <input matInput name="celular" formControlName="celular" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="form-grid">
+            <mat-label>E-mail:</mat-label>
+            <input matInput name="email" formControlName="email" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>CEP:</mat-label>
+            <input matInput name="cep" formControlName="cep" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Logradouro:</mat-label>
+            <input matInput name="logradouro" formControlName="logradouro" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Número:</mat-label>
+            <input matInput name="numero" formControlName="numero" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Complemento:</mat-label>
+            <input matInput name="complemento" formControlName="complemento" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Bairro:</mat-label>
+            <input matInput name="bairro" formControlName="bairro" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Cidade:</mat-label>
+            <input matInput name="cidade" formControlName="cidade" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>UF:</mat-label>
+            <input matInput name="estado" formControlName="estado" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="acoes">
+      <button (click)="onBack()" class="botao">Voltar</button>
+    </div>
+  </form>
+</section>

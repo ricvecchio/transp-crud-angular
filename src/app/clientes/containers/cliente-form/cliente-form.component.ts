@@ -61,20 +61,6 @@ export class ClienteFormComponent implements OnInit {
     });
   }
 
-  // getPedidosFormArray() {
-  //   return (<UntypedFormArray>this.formulario.get('pedidos')).controls;
-  // }
-
-  // addNovoPedido() {
-  //   const pedidos = this.formulario.get('pedidos') as UntypedFormArray;
-  //   pedidos.push(this.criarPedido());
-  // }
-
-  // removePedido(index: number) {
-  //   const pedidos = this.formulario.get('pedidos') as UntypedFormArray;
-  //   pedidos.removeAt(index);
-  // }
-
   // clientes: Cliente[] = [];
 
   // @Input() dadosCliente: Cliente = {
@@ -92,7 +78,6 @@ export class ClienteFormComponent implements OnInit {
   //   cidade: '',
   //   estado: '',
   // };
-
 
   consultaCEP() {
     const cep = this.formulario.get('cep')?.value;

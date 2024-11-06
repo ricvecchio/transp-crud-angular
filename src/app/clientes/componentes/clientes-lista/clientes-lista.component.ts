@@ -90,7 +90,7 @@ export class ClientesListaComponent implements OnInit {
   }
 
   onSearch(cliente: Cliente) {
-    this.router.navigate(['/editar-cliente', cliente.idCliente], {
+    this.router.navigate(['/expandir-cliente', cliente.idCliente], {
       relativeTo: this.route,
     });
   }

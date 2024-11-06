@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ClientesListaComponent } from './clientes/componentes/clientes-lista/clientes-lista.component';
 import { ClienteFormComponent } from './clientes/containers/cliente-form/cliente-form.component';
+import { ExpandirClienteComponent } from './clientes/componentes/expandir-cliente/expandir-cliente.component';
 import { ClienteResolver } from './guarda-rotas/cliente.resolver';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './home/login/login.component';
@@ -49,6 +50,11 @@ const routes: Routes = [
   {
     path: 'editar-cliente/:idCliente',
     component: ClienteFormComponent,
+    resolve: { cliente: ClienteResolver },
+  },
+  {
+    path: 'expandir-cliente/:idCliente',
+    component: ExpandirClienteComponent,
     resolve: { cliente: ClienteResolver },
   },
   {
