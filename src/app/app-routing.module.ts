@@ -12,6 +12,7 @@ import { MenuComponent } from './menu/menu.component';
 import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
 import { PedidoResolver } from './guarda-rotas/pedido.resolver';
 import { PedidosListaComponent } from './pedidos/componentes/pedidos-lista/pedidos-lista.component';
+import { ExpandirPedidoComponent } from './pedidos/componentes/expandir-pedido/expandir-pedido.component';
 
 const routes: Routes = [
   {
@@ -70,6 +71,11 @@ const routes: Routes = [
   {
     path: 'editar-pedido/:idPedido',
     component: PedidoFormComponent,
+    resolve: { pedido: PedidoResolver },
+  },
+  {
+    path: 'expandir-pedido/:idPedido',
+    component: ExpandirPedidoComponent,
     resolve: { pedido: PedidoResolver },
   },
 ];

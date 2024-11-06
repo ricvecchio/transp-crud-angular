@@ -93,7 +93,7 @@ export class PedidosListaComponent implements OnInit {
   }
 
   onSearch(pedido: Pedido) {
-    this.router.navigate(['/editar-pedido', pedido.idPedido], {
+    this.router.navigate(['/expandir-pedido', pedido.idPedido], {
       relativeTo: this.route,
     });
   }
