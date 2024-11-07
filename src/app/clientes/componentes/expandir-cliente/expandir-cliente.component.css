@@ -10,6 +10,10 @@ flex-direction: column;
 padding: 2rem;
 }
 
+h5 {
+  text-align: center; /* Centraliza o texto horizontalmente */
+}
+
 .espaco-dentro {
 padding: 0rem 2rem 0rem;
 }

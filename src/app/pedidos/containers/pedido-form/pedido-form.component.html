@@ -1,5 +1,4 @@
 <section class="container cadastrar-pedidos ff-inter">
-
   <form [formGroup]="formulario" id="formulario">
     <h5><strong>Emitir Pedido:</strong></h5>
     <br />
@@ -753,7 +752,7 @@
 
       <div class="row">
         <div class="col-md-9">
-          <h4>PEDIDO: {{ this.formulario.get('idPedido')?.value}} </h4>
+          <h4>PEDIDO: {{ this.formulario.get("idPedido")?.value }}</h4>
         </div>
         <div class="col-md-3">
           <b>DATA: </b>
@@ -771,34 +770,34 @@
       <div class="campos_previa">
         <p class="nomePedido">
           <b>CLIENTE: </b>
-          {{ this.formulario.get('nomePedido')?.value }}
+          {{ this.formulario.get("nomePedido")?.value }}
         </p>
       </div>
 
       <div class="campos_previa">
         <p class="endereco">
           <b>ENDEREÇO: </b>
-          {{ this.formulario.get('logradouroPedido')?.value }},
-          {{ this.formulario.get('numeroPedido')?.value }},
-          {{ this.formulario.get('complementoPedido')?.value }},
-          {{ this.formulario.get('bairroPedido')?.value }},
-          {{ this.formulario.get('estadoPedido')?.value }}
-          - CEP: {{ this.formulario.get('cepPedido')?.value }}
+          {{ this.formulario.get("logradouroPedido")?.value }},
+          {{ this.formulario.get("numeroPedido")?.value }},
+          {{ this.formulario.get("complementoPedido")?.value }},
+          {{ this.formulario.get("bairroPedido")?.value }},
+          {{ this.formulario.get("estadoPedido")?.value }}
+          - CEP: {{ this.formulario.get("cepPedido")?.value }}
         </p>
       </div>
 
       <div class="row">
         <div class="col-md-4">
           <b>VOLUME: </b>
-          {{ this.formulario.get('volume')?.value }}
+          {{ this.formulario.get("volume")?.value }}
         </div>
         <div class="col-md-4">
           <b>MANGUEIRA: </b>
-          {{ this.formulario.get('mangueira')?.value }}
+          {{ this.formulario.get("mangueira")?.value }}
         </div>
         <div class="col-md-4">
           <b>PREÇO: R$ </b>
-          {{ this.formulario.get('precoCx5')?.value }}
+          {{ this.formulario.get("precoCx5")?.value }}
         </div>
       </div>
 
