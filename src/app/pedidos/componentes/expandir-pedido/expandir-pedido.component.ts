@@ -47,6 +47,30 @@ export class ExpandirPedidoComponent implements OnInit {
       bairro: [pedido.bairro],
       cidade: [pedido.cidade],
       estado: [pedido.estado],
+      nomePedido: [pedido.nomePedido],
+      razaoSocial: [pedido.razaoSocial],
+      cpfcnpjPedido: [pedido.cpfcnpjPedido],
+      tipoPgto: [pedido.tipoPgto],
+      cepPedido: [pedido.cepPedido],
+      logradouroPedido: [pedido.logradouroPedido],
+      numeroPedido: [pedido.numeroPedido],
+      complementoPedido: [pedido.complementoPedido],
+      bairroPedido: [pedido.bairroPedido],
+      cidadePedido: [pedido.cidadePedido],
+      estadoPedido: [pedido.estadoPedido],
+      sfobras: [pedido.sfobras],
+      cno: [pedido.cno],
+      ie: [pedido.ie],
+      mangueira: [pedido.mangueira],
+      volume: [pedido.volume],
+      precoCx5: [pedido.precoCx5],
+      precoCx10: [pedido.precoCx10],
+      precoCx15: [pedido.precoCx15],
+      precoLv5: [pedido.precoLv5],
+      precoLv10: [pedido.precoLv10],
+      precoLv15: [pedido.precoLv15],
+      ajudanteHora: [pedido.ajudanteHora],
+      observacao: [pedido.observacao],
     });
     this.formulario.get('idPedido')?.disable();
     this.formulario.get('idCliente')?.disable();
@@ -62,36 +86,35 @@ export class ExpandirPedidoComponent implements OnInit {
     this.formulario.get('bairro')?.disable();
     this.formulario.get('cidade')?.disable();
     this.formulario.get('estado')?.disable();
+    this.formulario.get('nomePedido')?.disable();
+    this.formulario.get('razaoSocial')?.disable();
+    this.formulario.get('cpfcnpjPedido')?.disable();
+    this.formulario.get('tipoPgto')?.disable();
+    this.formulario.get('cepPedido')?.disable();
+    this.formulario.get('logradouroPedido')?.disable();
+    this.formulario.get('numeroPedido')?.disable();
+    this.formulario.get('complementoPedido')?.disable();
+    this.formulario.get('bairroPedido')?.disable();
+    this.formulario.get('cidadePedido')?.disable();
+    this.formulario.get('estadoPedido')?.disable();
+    this.formulario.get('sfobras')?.disable();
+    this.formulario.get('cno')?.disable();
+    this.formulario.get('ie')?.disable();
+    this.formulario.get('mangueira')?.disable();
+    this.formulario.get('volume')?.disable();
+    this.formulario.get('precoCx5')?.disable();
+    this.formulario.get('precoCx10')?.disable();
+    this.formulario.get('precoCx15')?.disable();
+    this.formulario.get('precoLv5')?.disable();
+    this.formulario.get('precoLv10')?.disable();
+    this.formulario.get('precoLv15')?.disable();
+    this.formulario.get('ajudanteHora')?.disable();
+    this.formulario.get('observacao')?.disable();
+    this.formulario.get('status')?.disable();
+
   }
 
   onBack() {
     this.location.back();
   }
 }
-
-// idPedido: string;
-// nomePedido: string;
-// razaoSocial: string;
-// cpfcnpjPedido: string;
-// tipoPgto: string;
-// cepPedido: string;
-// logradouroPedido: string;
-// numeroPedido: string;
-// complementoPedido: string;
-// bairroPedido: string;
-// cidadePedido: string;
-// estadoPedido: string;
-// sfobras: string;
-// cno: string;
-// ie: string;
-// mangueira: string;
-// volume: string;
-// precoCx5: string;
-// precoCx10: string;
-// precoCx15: string;
-// precoLv5: string;
-// precoLv10: string;
-// precoLv15: string;
-// ajudanteHora: string;
-// observacao: string;
-// status: string;
