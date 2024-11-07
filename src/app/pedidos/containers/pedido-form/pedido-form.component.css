@@ -11,6 +11,10 @@
   padding: 2rem;
 }
 
+h5 {
+  text-align: center; /* Centraliza o texto horizontalmente */
+}
+
 .espaco-dentro {
   padding: 0rem 2rem 0rem;
 }
@@ -37,7 +41,7 @@
 
 .botao {
   margin: 5px;
-  margin-top: 70px;
+  margin-top: 20px;
   width: 200px;
 }
 
