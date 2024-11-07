@@ -4,12 +4,10 @@
 
 .cliente-form form {
 background: #dde0e2;
-border: none;
 border-radius: 20px;
 display: flex;
 flex-direction: column;
 padding: 2rem;
-width: 100%;
 }
 
 .espaco-dentro {
@@ -20,15 +18,8 @@ padding: 0rem 2rem 0rem;
 display: grid;
 }
 
-.full-width {
-width: 100%;
-}
-
 .acoes {
 display: flex;
-justify-content: center;
-align-items: center;
-align-content: center;
 }
 
 .botao {

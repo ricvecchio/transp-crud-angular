@@ -32,12 +32,6 @@ mat-card {
     justify-content: center;
 }
 
-.column-flex {
-  display: flex;
-  flex-direction: column;
-  min-width: 300px;
-}
-
 /* Estilo para centralizar o texto dentro da mat-toolbar */
 .toolbar {
   display: flex;

@@ -25,20 +25,6 @@ mat-card {
     justify-content: center;
 }
 
-.column-flex {
-  display: flex;
-  flex-direction: column;
-  min-width: 300px;
-}
-
-.action-column {
-  flex: 0 0 125px;
-}
-
-.action-column-header {
-  margin: 0 auto;
-}
-
 /* Adicionando um pequeno espaçamento entre os botões */
 .action-column button {
   margin-right: 8px;

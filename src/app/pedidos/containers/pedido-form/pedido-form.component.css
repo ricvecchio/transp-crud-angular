@@ -9,7 +9,6 @@
   display: flex;
   flex-direction: column;
   padding: 2rem;
-  width: 100%;
 }
 
 .espaco-dentro {
@@ -18,10 +17,6 @@
 
 .form-grid {
   display: grid;
-}
-
-.full-width {
-  width: 100%;
 }
 
 .mat-slide-toggle {
@@ -50,7 +45,7 @@
   background:#e4edf0;
   padding: 1rem;
   width: 100%;
-  margin: 0 0 6rem; 
+  margin: 0 0 6rem;
   border-radius: 20px;
   box-shadow: 15px 15px 15px #154580;
 }
