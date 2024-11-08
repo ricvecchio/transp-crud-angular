@@ -33,6 +33,7 @@ export class ExpandirClienteComponent implements OnInit {
     const cliente: Cliente = this.route.snapshot.data['cliente'];
 
     this.formulario = this.formBuilder.group({
+      dataAtualizacaoCliente: [cliente.dataAtualizacaoCliente],
       idCliente: [cliente.idCliente],
       nome: [cliente.nome],
       cpfcnpj: [cliente.cpfcnpj],
@@ -47,6 +48,7 @@ export class ExpandirClienteComponent implements OnInit {
       cidade: [cliente.cidade],
       estado: [cliente.estado],
     });
+    this.formulario.get('dataAtualizacaoCliente')?.disable();
     this.formulario.get('nome')?.disable();
     this.formulario.get('cpfcnpj')?.disable();
     this.formulario.get('telefone')?.disable();

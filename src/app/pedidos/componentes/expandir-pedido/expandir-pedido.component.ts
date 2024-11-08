@@ -33,6 +33,7 @@ export class ExpandirPedidoComponent implements OnInit {
     const pedido: Pedido = this.route.snapshot.data['pedido'];
 
     this.formulario = this.formBuilder.group({
+      dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
       idPedido: [pedido.idPedido],
       idCliente: [pedido.idCliente],
       nome: [pedido.nome],
@@ -72,6 +73,7 @@ export class ExpandirPedidoComponent implements OnInit {
       ajudanteHora: [pedido.ajudanteHora],
       observacao: [pedido.observacao],
     });
+    this.formulario.get('dataAtualizacaoPedido')?.disable();
     this.formulario.get('idPedido')?.disable();
     this.formulario.get('idCliente')?.disable();
     this.formulario.get('nome')?.disable();

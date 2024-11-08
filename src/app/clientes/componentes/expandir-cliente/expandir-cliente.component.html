@@ -1,10 +1,27 @@
 <section class="container cliente-form ff-inter">
   <form [formGroup]="formulario" id="formulario">
     <br />
-    <h5>
-      <strong>ID Cliente: {{ this.formulario.get("idCliente")?.value }}</strong>
-    </h5>
-    <br />
+    <div class="espaco-dentro">
+      <div class="row">
+        <div class="col-md-9">
+          <h5>
+            <strong
+              >ID Cliente: {{ this.formulario.get("idCliente")?.value }}</strong
+            >
+          </h5>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Data :</mat-label>
+            <input
+              matInput
+              dataAtualizacaoCliente="dataAtualizacaoCliente"
+              formControlName="dataAtualizacaoCliente"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
 
     <div class="espaco-dentro">
       <div class="row">

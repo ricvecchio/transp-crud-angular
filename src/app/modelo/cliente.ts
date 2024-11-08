@@ -1,4 +1,5 @@
 export interface Cliente {
+  dataAtualizacaoCliente: string;
   idCliente: string;
   nome: string;
   cpfcnpj: string;

@@ -1,9 +1,29 @@
 <section class="container pedido-form ff-inter">
   <form [formGroup]="formulario" id="formulario">
     <br />
-    <h5>
-      <strong>ID Pedido: {{ this.formulario.get("idPedido")?.value }}</strong>
-    </h5>
+
+    <div class="espaco-dentro">
+      <div class="row">
+        <div class="col-md-9">
+          <h5>
+            <strong
+              >ID Pedido: {{ this.formulario.get("idPedido")?.value }}</strong
+            >
+          </h5>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Data :</mat-label>
+            <input
+              matInput
+              dataAtualizacaoPedido="dataAtualizacaoPedido"
+              formControlName="dataAtualizacaoPedido"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
     <br />
 
     <h6>

@@ -17,6 +17,7 @@ export class ClienteResolver  {
       return this.service.buscarPorId(route.params['idCliente']);
     }
     return of({
+      dataAtualizacaoCliente: '',
       idCliente: '',
       nome: '',
       cpfcnpj: '',
