@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { distinctUntilChanged, switchMap } from 'rxjs';
 
 import {
   ConfirmationDialogComponent,
@@ -137,25 +138,25 @@ export class PedidoFormComponent implements OnInit {
       ajudanteHora: [pedido.ajudanteHora],
       observacao: [pedido.observacao],
     });
+
+    this.formulario
+      .get('nomeBusca')
+      ?.valueChanges.pipe(
+        distinctUntilChanged(),
+        switchMap((nomeBusca) =>
+          nomeBusca && nomeBusca.trim() !== ''
+            ? this.clienteService.buscarPorNome(nomeBusca)
+            : [],
+        ),
+      )
+      .subscribe((dados: any[]) => {
+        this.clientesEncontrados = dados.length > 0 ? dados : [];
+      });
   }
 
   @ViewChild('focusElement') focusElement!: ElementRef;
 
   clientesEncontrados: any[] = [];
-
-  consultaClienteNome() {
-    const nomeBusca = this.formulario.get('nomeBusca')?.value;
-    if (nomeBusca && nomeBusca.trim() !== '') {
-      this.clienteService.buscarPorNome(nomeBusca).subscribe((dados: any[]) => {
-        if (dados && Array.isArray(dados) && dados.length > 0) {
-          this.clientesEncontrados = dados;
-        } else {
-          this.clientesEncontrados = [];
-          console.warn('Nenhum cliente encontrado.');
-        }
-      });
-    }
-  }
 
   selecionarCliente(cliente: any) {
     this.formulario.patchValue({
