@@ -28,7 +28,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { distinctUntilChanged, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
 import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
@@ -154,6 +154,7 @@ export class PedidoFormComponent implements OnInit {
       .get('nomeBusca')
       ?.valueChanges.pipe(
         distinctUntilChanged(),
+        debounceTime(300), // Adiciona um atraso de 300ms antes de prosseguir
         switchMap((nomeBusca) =>
           nomeBusca && nomeBusca.trim() !== ''
             ? this.clienteService.buscarPorNome(nomeBusca)
@@ -357,7 +358,7 @@ export class PedidoFormComponent implements OnInit {
   }
 
   private onSucess() {
-    this.snackBar.open('Pedido Salvo/Emitido com sucesso!', '', {
+    this.snackBar.open('Pedido Salvo e Emitido com sucesso!', '', {
       duration: 5000,
     });
     this.onCancel();

@@ -1,10 +1,22 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatError, MatFormField, MatHint, MatLabel, MatPrefix } from '@angular/material/form-field';
+import {
+  FormGroup,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  MatError,
+  MatFormField,
+  MatHint,
+  MatLabel,
+  MatPrefix,
+} from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
@@ -12,11 +24,11 @@ import { Cliente } from '../../../modelo/cliente';
 import { ClienteService } from '../../servicos/cliente.service';
 
 @Component({
-    selector: 'app-cliente-form',
-    templateUrl: './cliente-form.component.html',
-    styleUrl: './cliente-form.component.css',
-    standalone: true,
-    imports: [
+  selector: 'app-cliente-form',
+  templateUrl: './cliente-form.component.html',
+  styleUrl: './cliente-form.component.css',
+  standalone: true,
+  imports: [
     FormsModule,
     ReactiveFormsModule,
     MatFormField,
@@ -24,11 +36,10 @@ import { ClienteService } from '../../servicos/cliente.service';
     MatInput,
     MatHint,
     MatError,
-    MatPrefix
-],
+    MatPrefix,
+  ],
 })
 export class ClienteFormComponent implements OnInit {
-
   formulario!: FormGroup;
 
   constructor(
@@ -38,6 +49,7 @@ export class ClienteFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private location: Location,
     private route: ActivatedRoute,
+    private router: Router,
     public formUtils: FormUtilsService,
   ) {}
 
@@ -46,7 +58,14 @@ export class ClienteFormComponent implements OnInit {
 
     this.formulario = this.formBuilder.group({
       idCliente: [cliente.idCliente],
-      nome: [cliente.nome, [Validators.required, Validators.minLength(5), Validators.maxLength(100),],],
+      nome: [
+        cliente.nome,
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(100),
+        ],
+      ],
       cpfcnpj: [cliente.cpfcnpj, [Validators.required]],
       telefone: [cliente.telefone, [Validators.required]],
       celular: [cliente.celular],
@@ -99,16 +118,30 @@ export class ClienteFormComponent implements OnInit {
   checked = false;
   disabled = false;
 
-  onSubmit() {
-    if (this.formulario.valid) {
+  onSubmitIssue() {
+    this.service.salvarEmitir(this.formulario.value).subscribe();
+    this.router.navigate(['/cadastrar-pedido'], {
+      relativeTo: this.route,
+    });
+  }
+
+  onSubmitSave() {
     this.service.salvarEmitir(this.formulario.value).subscribe(
       (result) => this.onSucess(),
       (error) => this.onError(),
     );
-    } else {
-      this.formUtils.validarTodosCamposFormFields(this.formulario);
-    }
   }
+
+  // onSubmit() {
+  //   if (this.formulario.valid) {
+  //   this.service.salvarEmitir(this.formulario.value).subscribe(
+  //     (result) => this.onSucess(),
+  //     (error) => this.onError(),
+  //   );
+  //   } else {
+  //     this.formUtils.validarTodosCamposFormFields(this.formulario);
+  //   }
+  // }
 
   private onSucess() {
     this.snackBar.open('Cliente Salvo com sucesso!', '', { duration: 5000 });
