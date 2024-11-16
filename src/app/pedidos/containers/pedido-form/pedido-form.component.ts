@@ -1,13 +1,14 @@
-import { AsyncPipe, Location } from '@angular/common';
+import { AsyncPipe, CommonModule, Location } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatError, MatFormField, MatHint, MatLabel, MatPrefix } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
+import { MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel, MatPrefix } from '@angular/material/form-field';
+import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
@@ -44,8 +45,13 @@ export interface User {
   styleUrl: './pedido-form.component.css',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatOptionModule,
     MatFormField,
     MatLabel,
     MatInput,
@@ -59,7 +65,6 @@ export interface User {
     MatSelectModule,
     MatCardModule,
     MatCheckboxModule,
-    MatAutocompleteModule,
     AsyncPipe,
   ],
 })
@@ -80,7 +85,6 @@ export class PedidoFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     const pedido: Pedido = this.route.snapshot.data['pedido'];
     this.formulario = this.formBuilder.group({
       nomeBusca: [
@@ -137,33 +141,39 @@ export class PedidoFormComponent implements OnInit {
 
   @ViewChild('focusElement') focusElement!: ElementRef;
 
+  clientesEncontrados: any[] = [];
+
   consultaClienteNome() {
     const nomeBusca = this.formulario.get('nomeBusca')?.value;
-    if (nomeBusca != '') {
+    if (nomeBusca && nomeBusca.trim() !== '') {
       this.clienteService.buscarPorNome(nomeBusca).subscribe((dados: any[]) => {
         if (dados && Array.isArray(dados) && dados.length > 0) {
-          // Exemplo: Tratar o primeiro item da lista
-          const cliente = dados[0]; // Caso você queira pegar o primeiro cliente
-          this.formulario.patchValue({
-            idCliente: cliente.idCliente,
-            nome: cliente.nome,
-            cpfcnpj: cliente.cpfcnpj,
-            telefone: cliente.telefone,
-            celular: cliente.celular,
-            email: cliente.email,
-            cep: cliente.cep,
-            logradouro: cliente.logradouro,
-            numero: cliente.numero,
-            complemento: cliente.complemento,
-            bairro: cliente.bairro,
-            cidade: cliente.cidade,
-            estado: cliente.estado,
-          });
+          this.clientesEncontrados = dados;
         } else {
+          this.clientesEncontrados = [];
           console.warn('Nenhum cliente encontrado.');
         }
       });
     }
+  }
+
+  selecionarCliente(cliente: any) {
+    this.formulario.patchValue({
+      idCliente: cliente.idCliente,
+      nome: cliente.nome,
+      cpfcnpj: cliente.cpfcnpj,
+      telefone: cliente.telefone,
+      celular: cliente.celular,
+      email: cliente.email,
+      cep: cliente.cep,
+      logradouro: cliente.logradouro,
+      numero: cliente.numero,
+      complemento: cliente.complemento,
+      bairro: cliente.bairro,
+      cidade: cliente.cidade,
+      estado: cliente.estado,
+    });
+    this.clientesEncontrados = [];
   }
 
   consultaClienteId() {

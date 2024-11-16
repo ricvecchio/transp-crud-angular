@@ -11,12 +11,22 @@
             <input
               matInput
               disableRipple
+              [matAutocomplete]="auto"
               name="nomeBusca"
               placeholder="Digite o nome do Cliente"
               formControlName="nomeBusca"
               (blur)="consultaClienteNome()"
               #focusElement
             />
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option
+                *ngFor="let cliente of clientesEncontrados"
+                [value]="cliente.nome"
+                (click)="selecionarCliente(cliente)"
+              >
+                {{ cliente.nome }} - CPF/CNPJ: {{ cliente.cpfcnpj }}
+              </mat-option>
+            </mat-autocomplete>
             @if (formulario.get("nomeBusca")?.invalid) {
               <mat-error>
                 {{
