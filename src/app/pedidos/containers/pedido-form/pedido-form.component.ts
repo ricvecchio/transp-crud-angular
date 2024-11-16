@@ -1,13 +1,26 @@
 import { AsyncPipe, CommonModule, Location } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel, MatPrefix } from '@angular/material/form-field';
+import {
+  MatError,
+  MatFormField,
+  MatFormFieldModule,
+  MatHint,
+  MatLabel,
+  MatPrefix,
+} from '@angular/material/form-field';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
@@ -17,9 +30,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { distinctUntilChanged, switchMap } from 'rxjs';
 
-import {
-  ConfirmationDialogComponent,
-} from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Pedido } from '../../../modelo/pedido';
@@ -150,7 +161,10 @@ export class PedidoFormComponent implements OnInit {
         ),
       )
       .subscribe((dados: any[]) => {
-        this.clientesEncontrados = dados.length > 0 ? dados : [];
+        this.clientesEncontrados = Array.isArray(dados) ? dados : [];
+        if (this.clientesEncontrados.length === 0) {
+          this.dialogoClienteNaoEncontrado();
+        }
       });
   }
 
@@ -197,24 +211,28 @@ export class PedidoFormComponent implements OnInit {
             estado: dados.estado,
           });
         } else {
-          const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-            data: 'Cliente não encontrado, deseja cadastrar?',
-          });
-          dialogRef.afterClosed().subscribe((result: boolean) => {
-            if (result) {
-              this.router.navigate(['/cadastrar-cliente'], {
-                relativeTo: this.route,
-              });
-            } else {
-              this.setFocus();
-              this.formulario.patchValue({
-                idCliente: idCliente.clear_all,
-              });
-            }
+          this.dialogoClienteNaoEncontrado();
+          this.formulario.patchValue({
+            idCliente: idCliente.clear_all,
           });
         }
       });
     }
+  }
+
+  dialogoClienteNaoEncontrado() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'Cliente não encontrado, deseja cadastrar?',
+    });
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.router.navigate(['/cadastrar-cliente'], {
+          relativeTo: this.route,
+        });
+      } else {
+        this.setFocus();
+      }
+    });
   }
 
   setFocus() {
