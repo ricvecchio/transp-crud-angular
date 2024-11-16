@@ -18,6 +18,7 @@ export class PedidoResolver  {
     }
     return of({
       dataAtualizacaoPedido: '',
+      nomeBusca: '',
       idCliente: '',
       nome: '',
       cpfcnpj: '',

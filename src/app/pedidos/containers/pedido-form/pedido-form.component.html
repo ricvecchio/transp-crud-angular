@@ -2,57 +2,52 @@
   <form [formGroup]="formulario" id="formulario">
     <h5><strong>Emitir Pedido:</strong></h5>
     <br />
-    <div class="row">
-      <!-- <div class="col-md-9">
-        <mat-form-field class="form-grid" appearance="fill">
-          <mat-label>Nome Cliente</mat-label>
-          <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-            @for (option of filteredOptions | async; track option) {
-              <mat-option [value]="option">{{option.name}}</mat-option>
+
+    <div class="espaco-dentro">
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Buscar cliente pelo nome</mat-label>
+            <input
+              matInput
+              disableRipple
+              name="nomeBusca"
+              placeholder="Digite o nome do Cliente"
+              formControlName="nomeBusca"
+              (blur)="consultaClienteNome()"
+              #focusElement
+            />
+            @if (formulario.get("nomeBusca")?.invalid) {
+              <mat-error>
+                {{
+                  formUtils.getMensagemErro(formulario, "nomeBusca")
+                }}</mat-error
+              >
             }
-          </mat-autocomplete>
-        </mat-form-field>
+          </mat-form-field>
+        </div>
 
-
-        <mat-form-field class="form-grid">
-          <mat-label>Nome Cliente</mat-label>
-          <input
-            matInput
-            disableRipple
-            name="nome"
-            placeholder="Digite o nome do Cliente"
-            formControlName="nome"
-            (blur)="consultaClienteNome()"
-          />
-          @if (formulario.get("nome")?.invalid) {
-            <mat-error>
-              {{ formUtils.getMensagemErro(formulario, "nome") }}</mat-error
-            >
-          }
-        </mat-form-field>
-      </div> -->
-
-      <div class="col-md-3">
-        <mat-form-field class="form-grid">
-          <mat-label>ID do Cliente</mat-label>
-          <input
-            matInput
-            disableRipple
-            name="idCliente"
-            placeholder="Digite o ID do Cliente"
-            formControlName="idCliente"
-            (blur)="consultaClienteId()"
-            #focusElement
-          />
-          @if (formulario.get("idCliente")?.invalid) {
-            <mat-error>
-              {{
-                formUtils.getMensagemErro(formulario, "idCliente")
-              }}</mat-error
-            >
-          }
-        </mat-form-field>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Buscar cliente pelo ID</mat-label>
+            <input
+              matInput
+              disableRipple
+              name="idCliente"
+              placeholder="Digite o ID do Cliente"
+              formControlName="idCliente"
+              (blur)="consultaClienteId()"
+              #focusElement
+            />
+            @if (formulario.get("idCliente")?.invalid) {
+              <mat-error>
+                {{
+                  formUtils.getMensagemErro(formulario, "idCliente")
+                }}</mat-error
+              >
+            }
+          </mat-form-field>
+        </div>
       </div>
     </div>
 

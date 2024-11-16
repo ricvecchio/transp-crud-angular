@@ -1,5 +1,6 @@
 export interface Pedido {
   dataAtualizacaoPedido: string;
+  nomeBusca: string;
   idCliente: string;
   nome: string;
   cpfcnpj: string;

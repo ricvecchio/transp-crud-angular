@@ -1,24 +1,12 @@
 import { AsyncPipe, Location } from '@angular/common';
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import {
-  FormGroup,
-  FormsModule,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import {
-  MatError,
-  MatFormField,
-  MatHint,
-  MatLabel,
-  MatPrefix,
-} from '@angular/material/form-field';
+import { MatError, MatFormField, MatHint, MatLabel, MatPrefix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
@@ -27,15 +15,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
+import {
+  ConfirmationDialogComponent,
+} from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../servico/pedido.service';
 import { ClienteService } from './../../../clientes/servicos/cliente.service';
-import { first } from 'rxjs';
-import { trigger } from '@angular/animations';
-import { initZone } from 'zone.js/lib/zone-impl';
 
 interface Metros {
   value: string;
@@ -93,12 +80,14 @@ export class PedidoFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
     const pedido: Pedido = this.route.snapshot.data['pedido'];
     this.formulario = this.formBuilder.group({
-      idCliente: [
-        pedido.idCliente,
-        [Validators.required, Validators.pattern(/^\d+$/)],
+      nomeBusca: [
+        pedido.nomeBusca,
+        [Validators.required, Validators.minLength(3)],
       ],
+      idCliente: [pedido.idCliente, [Validators.pattern(/^\d+$/)]],
       nome: [pedido.nome],
       cpfcnpj: [pedido.cpfcnpj],
       telefone: [pedido.telefone],
@@ -146,65 +135,36 @@ export class PedidoFormComponent implements OnInit {
     });
   }
 
-  // this.filteredOptions = this.myControl.valueChanges.pipe(
-  //   startWith(''),
-  //   map((value) => {
-  //     const name = typeof value === 'string' ? value : value?.name;
-  //     return name ? this._filter(name as string) : this.options.slice();
-  //   }),
-  // );
-
-  // myControl = new FormControl<string | User>('');
-
-  // options: User[] = [
-  //   { name: 'Bruno' },
-  //   { name: 'Brunelson' },
-  //   { name: 'Pedrola' },
-  //   { name: 'Jeréba' },
-  //   { name: 'Ricardo 01' },
-  //   { name: 'Ricardo 02' },
-  //   { name: 'Ricardo 03' },
-  //   { name: 'Ricardola' },
-  //   { name: 'Salomonstro' },
-  // ];
-
-  // filteredOptions: Observable<User[]> = of([]);
-
-  // displayFn(user: User): string {
-  //   return user && user.name ? user.name : '';
-  // }
-
-  // private _filter(name: string): User[] {
-  //   const filterValue = name.toLowerCase();
-
-  //   return this.options.filter((option) =>
-  //     option.name.toLowerCase().includes(filterValue),
-  //   );
-  // }
-
-  // consultaClienteNome() {
-  //   const nomeCliente = this.formulario.get('nome')?.value;
-  //   if (nomeCliente != '') {
-  //     this.clienteService.buscarPorNome(nomeCliente).subscribe((dados: any) => {
-  //       this.formulario.patchValue({
-  //         nome: dados.nome,
-  //         cpfcnpj: dados.cpfcnpj,
-  //         telefone: dados.telefone,
-  //         celular: dados.celular,
-  //         email: dados.email,
-  //         cep: dados.cep,
-  //         logradouro: dados.logradouro,
-  //         numero: dados.numero,
-  //         complemento: dados.complemento,
-  //         bairro: dados.bairro,
-  //         cidade: dados.cidade,
-  //         estado: dados.estado
-  //       });
-  //     });
-  //   }
-  // }
-
   @ViewChild('focusElement') focusElement!: ElementRef;
+
+  consultaClienteNome() {
+    const nomeBusca = this.formulario.get('nomeBusca')?.value;
+    if (nomeBusca != '') {
+      this.clienteService.buscarPorNome(nomeBusca).subscribe((dados: any[]) => {
+        if (dados && Array.isArray(dados) && dados.length > 0) {
+          // Exemplo: Tratar o primeiro item da lista
+          const cliente = dados[0]; // Caso você queira pegar o primeiro cliente
+          this.formulario.patchValue({
+            idCliente: cliente.idCliente,
+            nome: cliente.nome,
+            cpfcnpj: cliente.cpfcnpj,
+            telefone: cliente.telefone,
+            celular: cliente.celular,
+            email: cliente.email,
+            cep: cliente.cep,
+            logradouro: cliente.logradouro,
+            numero: cliente.numero,
+            complemento: cliente.complemento,
+            bairro: cliente.bairro,
+            cidade: cliente.cidade,
+            estado: cliente.estado,
+          });
+        } else {
+          console.warn('Nenhum cliente encontrado.');
+        }
+      });
+    }
+  }
 
   consultaClienteId() {
     const idCliente = this.formulario.get('idCliente')?.value;
