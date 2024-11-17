@@ -36,6 +36,7 @@ import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../servico/pedido.service';
 import { ClienteService } from './../../../clientes/servicos/cliente.service';
+import { Cliente } from '../../../modelo/cliente';
 
 interface Metros {
   value: string;
@@ -97,6 +98,18 @@ export class PedidoFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    this.route.queryParams.subscribe((params) => {
+      console.log('Dados recebidos:', params);
+
+      // const cliente: Cliente = params;
+      // // Use os dados como necessário
+      // this.formulario = this.formBuilder.group({
+      //   idCliente: [cliente.idCliente],
+      //   nome: [cliente.nome],
+    });
+
+
     const pedido: Pedido = this.route.snapshot.data['pedido'];
     this.formulario = this.formBuilder.group({
       nomeBusca: [

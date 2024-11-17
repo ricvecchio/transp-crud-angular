@@ -118,10 +118,19 @@ export class ClienteFormComponent implements OnInit {
   checked = false;
   disabled = false;
 
+  // onSubmitIssue() {
+  //   this.service.salvarEmitir(this.formulario.value).subscribe();
+  //   this.router.navigate(['/cadastrar-pedido'], {
+  //     relativeTo: this.route,
+  //   });
+  // }
+
   onSubmitIssue() {
-    this.service.salvarEmitir(this.formulario.value).subscribe();
-    this.router.navigate(['/cadastrar-pedido'], {
-      relativeTo: this.route,
+    const cliente = this.formulario.value;
+      this.service.salvarEmitir(cliente).subscribe(() => {
+      this.router.navigate(['/cadastrar-pedido'], {
+        queryParams: cliente, // Envia os dados como parâmetros na URL
+      });
     });
   }
 
