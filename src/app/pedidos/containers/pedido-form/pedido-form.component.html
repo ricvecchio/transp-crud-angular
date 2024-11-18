@@ -37,7 +37,8 @@
         </div>
 
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+
+          <!-- <mat-form-field class="form-grid">
             <mat-label>Buscar cliente pelo ID</mat-label>
             <input
               matInput
@@ -55,7 +56,19 @@
                 }}</mat-error
               >
             }
+          </mat-form-field> -->
+
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>ID Cliente:</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="idCliente"
+              formControlName="idCliente"
+            />
           </mat-form-field>
+
         </div>
       </div>
     </div>

@@ -103,9 +103,23 @@ export class ClienteFormComponent implements OnInit {
   onSubmitIssue() {
     const cliente = this.formulario.value as Cliente;
 
-    this.service.salvarEmitir(cliente).subscribe(() => {
+    this.service.salvarEmitir(cliente).subscribe((clienteCriado: Cliente) => {
       this.router.navigate(['/cadastrar-pedido'], {
-        queryParams: cliente, // Envia o objeto completo do cliente
+        queryParams: {
+          idCliente: clienteCriado.idCliente,
+          nome: clienteCriado.nome,
+          cpfcnpj: clienteCriado.cpfcnpj,
+          telefone: clienteCriado.telefone,
+          celular: clienteCriado.celular,
+          email: clienteCriado.email,
+          cep: clienteCriado.cep,
+          logradouro: clienteCriado.logradouro,
+          numero: clienteCriado.numero,
+          complemento: clienteCriado.complemento,
+          bairro: clienteCriado.bairro,
+          cidade: clienteCriado.cidade,
+          estado: clienteCriado.estado,
+        },
       });
     });
   }

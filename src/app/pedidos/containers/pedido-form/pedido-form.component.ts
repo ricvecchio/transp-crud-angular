@@ -104,7 +104,8 @@ export class PedidoFormComponent implements OnInit {
         pedido.nomeBusca,
         [Validators.required, Validators.minLength(3)],
       ],
-      idCliente: [pedido.idCliente, [Validators.pattern(/^\d+$/)]],
+      // idCliente: [pedido.idCliente, [Validators.pattern(/^\d+$/)]],
+      idCliente: [pedido.idCliente],
       nome: [pedido.nome],
       cpfcnpj: [pedido.cpfcnpj],
       telefone: [pedido.telefone],
@@ -155,8 +156,8 @@ export class PedidoFormComponent implements OnInit {
       if (params) {
         const cliente: Cliente = this.formatarCliente(params);
         this.formulario.patchValue({
-          nome: cliente.nome,
           idCliente: cliente.idCliente,
+          nome: cliente.nome,
           cpfcnpj: cliente.cpfcnpj,
           telefone: cliente.telefone,
           celular: cliente.celular,
