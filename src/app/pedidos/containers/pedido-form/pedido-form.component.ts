@@ -251,34 +251,34 @@ export class PedidoFormComponent implements OnInit {
     this.clientesEncontrados = [];
   }
 
-  consultaClienteId() {
-    const idCliente = this.formulario.get('idCliente')?.value;
-    if (idCliente != '') {
-      this.clienteService.buscarPorId(idCliente).subscribe((dados: any) => {
-        if (dados !== null && dados != undefined) {
-          this.formulario.patchValue({
-            nome: dados.nome,
-            cpfcnpj: dados.cpfcnpj,
-            telefone: dados.telefone,
-            celular: dados.celular,
-            email: dados.email,
-            cep: dados.cep,
-            logradouro: dados.logradouro,
-            numero: dados.numero,
-            complemento: dados.complemento,
-            bairro: dados.bairro,
-            cidade: dados.cidade,
-            estado: dados.estado,
-          });
-        } else {
-          this.dialogoClienteNaoEncontrado();
-          this.formulario.patchValue({
-            idCliente: idCliente.clear_all,
-          });
-        }
-      });
-    }
-  }
+  // consultaClienteId() {
+  //   const idCliente = this.formulario.get('idCliente')?.value;
+  //   if (idCliente != '') {
+  //     this.clienteService.buscarPorId(idCliente).subscribe((dados: any) => {
+  //       if (dados !== null && dados != undefined) {
+  //         this.formulario.patchValue({
+  //           nome: dados.nome,
+  //           cpfcnpj: dados.cpfcnpj,
+  //           telefone: dados.telefone,
+  //           celular: dados.celular,
+  //           email: dados.email,
+  //           cep: dados.cep,
+  //           logradouro: dados.logradouro,
+  //           numero: dados.numero,
+  //           complemento: dados.complemento,
+  //           bairro: dados.bairro,
+  //           cidade: dados.cidade,
+  //           estado: dados.estado,
+  //         });
+  //       } else {
+  //         this.dialogoClienteNaoEncontrado();
+  //         this.formulario.patchValue({
+  //           idCliente: idCliente.clear_all,
+  //         });
+  //       }
+  //     });
+  //   }
+  // }
 
   dialogoClienteNaoEncontrado() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -403,10 +403,13 @@ export class PedidoFormComponent implements OnInit {
   // }
 
   onSubmitIssue() {
-    this.service.emitir(this.formulario.value).subscribe(
-      (result) => this.onSucess(),
-      (error) => this.onError(),
-    );
+    this.service.emitir(this.formulario.value).subscribe({
+      next: (result) => {
+        this.onSucess();
+        this.router.navigate(['/menu']);
+      },
+      error: (error) => this.onError()
+    });
   }
 
   onSubmitSave() {
@@ -420,7 +423,7 @@ export class PedidoFormComponent implements OnInit {
     this.snackBar.open('Pedido Salvo e Emitido com sucesso!', '', {
       duration: 5000,
     });
-    this.onCancel();
+    this.formulario.reset();
   }
 
   onCancel() {
