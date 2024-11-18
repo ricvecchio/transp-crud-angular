@@ -98,18 +98,6 @@ export class PedidoFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
-    this.route.queryParams.subscribe((params) => {
-      console.log('Dados recebidos:', params);
-
-      // const cliente: Cliente = params;
-      // // Use os dados como necessário
-      // this.formulario = this.formBuilder.group({
-      //   idCliente: [cliente.idCliente],
-      //   nome: [cliente.nome],
-    });
-
-
     const pedido: Pedido = this.route.snapshot.data['pedido'];
     this.formulario = this.formBuilder.group({
       nomeBusca: [
@@ -163,6 +151,27 @@ export class PedidoFormComponent implements OnInit {
       observacao: [pedido.observacao],
     });
 
+    this.route.queryParams.subscribe((params) => {
+      if (params) {
+        const cliente: Cliente = this.formatarCliente(params);
+        this.formulario.patchValue({
+          nome: cliente.nome,
+          idCliente: cliente.idCliente,
+          cpfcnpj: cliente.cpfcnpj,
+          telefone: cliente.telefone,
+          celular: cliente.celular,
+          email: cliente.email,
+          cep: cliente.cep,
+          logradouro: cliente.logradouro,
+          numero: cliente.numero,
+          complemento: cliente.complemento,
+          bairro: cliente.bairro,
+          cidade: cliente.cidade,
+          estado: cliente.estado,
+        });
+      }
+    });
+
     this.formulario
       .get('nomeBusca')
       ?.valueChanges.pipe(
@@ -180,6 +189,42 @@ export class PedidoFormComponent implements OnInit {
           this.dialogoClienteNaoEncontrado();
         }
       });
+  }
+
+  // Método para formatar dados do cliente
+  private formatarCliente(clienteParams: any): Cliente {
+    return {
+      dataAtualizacaoCliente: clienteParams.dataAtualizacaoCliente || '',
+      idCliente: clienteParams.idCliente || '',
+      nome: clienteParams.nome || '',
+      cpfcnpj: this.formatarCpfCnpj(clienteParams.cpfcnpj || ''),
+      telefone: this.formatarTelefone(clienteParams.telefone || ''),
+      celular: this.formatarTelefone(clienteParams.celular || ''),
+      email: clienteParams.email || '',
+      cep: clienteParams.cep || '',
+      logradouro: clienteParams.logradouro || '',
+      numero: clienteParams.numero || '',
+      complemento: clienteParams.complemento || '',
+      bairro: clienteParams.bairro || '',
+      cidade: clienteParams.cidade || '',
+      estado: clienteParams.estado || '',
+    };
+  }
+
+  // Métodos auxiliares para formatação
+  private formatarCpfCnpj(cpfcnpj: string): string {
+    if (!cpfcnpj) return '';
+    return cpfcnpj.length === 11
+      ? cpfcnpj.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') // Formato CPF
+      : cpfcnpj.replace(
+          /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
+          '$1.$2.$3/$4-$5',
+        ); // Formato CNPJ
+  }
+
+  private formatarTelefone(telefone: string): string {
+    if (!telefone) return '';
+    return telefone.replace(/(\d{2})(\d{4,5})(\d{4})/, '($1) $2-$3'); // Formato (XX) XXXXX-XXXX
   }
 
   @ViewChild('focusElement') focusElement!: ElementRef;

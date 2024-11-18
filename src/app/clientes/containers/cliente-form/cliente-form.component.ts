@@ -80,24 +80,6 @@ export class ClienteFormComponent implements OnInit {
     });
   }
 
-  // clientes: Cliente[] = [];
-
-  // @Input() dadosCliente: Cliente = {
-  //   idCliente: '',
-  //   nome: '',
-  //   cpfcnpj: '',
-  //   telefone: '',
-  //   celular: '',
-  //   email: '',
-  //   cep: '',
-  //   logradouro: '',
-  //   numero: '',
-  //   complemento: '',
-  //   bairro: '',
-  //   cidade: '',
-  //   estado: '',
-  // };
-
   consultaCEP() {
     const cep = this.formulario.get('cep')?.value;
     if (cep != '') {
@@ -118,18 +100,12 @@ export class ClienteFormComponent implements OnInit {
   checked = false;
   disabled = false;
 
-  // onSubmitIssue() {
-  //   this.service.salvarEmitir(this.formulario.value).subscribe();
-  //   this.router.navigate(['/cadastrar-pedido'], {
-  //     relativeTo: this.route,
-  //   });
-  // }
-
   onSubmitIssue() {
-    const cliente = this.formulario.value;
-      this.service.salvarEmitir(cliente).subscribe(() => {
+    const cliente = this.formulario.value as Cliente;
+
+    this.service.salvarEmitir(cliente).subscribe(() => {
       this.router.navigate(['/cadastrar-pedido'], {
-        queryParams: cliente, // Envia os dados como parâmetros na URL
+        queryParams: cliente, // Envia o objeto completo do cliente
       });
     });
   }
