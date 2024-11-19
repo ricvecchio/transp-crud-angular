@@ -130,7 +130,7 @@ export class PedidoFormComponent implements OnInit {
       razaoSocial: [pedido.razaoSocial],
       cpfcnpjPedido: [pedido.cpfcnpjPedido],
       tipoPgto: [pedido.tipoPgto],
-      cepPedido: [pedido.cepPedido],
+      cepPedido: [this.formatarCep(pedido.cepPedido)],
       logradouroPedido: [pedido.logradouroPedido],
       numeroPedido: [pedido.numeroPedido],
       complementoPedido: [pedido.complementoPedido],
@@ -199,6 +199,8 @@ export class PedidoFormComponent implements OnInit {
       'precoLv10',
       'precoLv15',
     ]);
+
+    this.formatarCampoCep();
   }
 
   // Método para formatar dados do cliente
@@ -388,6 +390,27 @@ export class PedidoFormComponent implements OnInit {
       cidadePedido: [''],
       estadoPedido: [''],
     });
+  }
+
+  private formatarCampoCep(): void {
+    const cepControl = this.formulario.get('cepPedido');
+    if (cepControl) {
+      cepControl.valueChanges.subscribe((valor) => {
+        const formatado = this.formatarCep(valor);
+        if (formatado !== valor) {
+          cepControl.setValue(formatado, { emitEvent: false }); // Evitar loops infinitos
+        }
+      });
+    }
+  }
+
+  private formatarCep(valor: any): string {
+    if (!valor) return '';
+    valor = valor.toString().replace(/\D/g, ''); // Remove tudo que não for número
+    if (valor.length > 5) {
+      valor = valor.slice(0, 5) + '-' + valor.slice(5, 8);
+    }
+    return valor;
   }
 
   consultaCEP() {

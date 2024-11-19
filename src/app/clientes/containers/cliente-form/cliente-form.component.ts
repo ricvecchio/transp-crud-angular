@@ -73,7 +73,7 @@ export class ClienteFormComponent implements OnInit {
       telefone: [cliente.telefone, [Validators.required]],
       celular: [cliente.celular],
       email: [cliente.email, [Validators.required]],
-      cep: [cliente.cep, [Validators.required]],
+      cep: [this.formatarCep(cliente.cep)],
       logradouro: [cliente.logradouro, [Validators.required]],
       numero: [cliente.numero],
       complemento: [cliente.complemento],
@@ -81,6 +81,8 @@ export class ClienteFormComponent implements OnInit {
       cidade: [cliente.cidade],
       estado: [cliente.estado],
     });
+
+    this.formatarCampoCep();
   }
 
   onCpfCnpjInput(event: Event): void {
@@ -139,6 +141,27 @@ export class ClienteFormComponent implements OnInit {
 
     input.value = value; // Atualiza o valor visível no campo
     this.formulario.get(controlName)?.setValue(value); // Atualiza o FormControl correspondente
+  }
+
+  private formatarCampoCep(): void {
+    const cepControl = this.formulario.get('cep');
+    if (cepControl) {
+      cepControl.valueChanges.subscribe((valor) => {
+        const formatado = this.formatarCep(valor);
+        if (formatado !== valor) {
+          cepControl.setValue(formatado, { emitEvent: false }); // Evitar loops infinitos
+        }
+      });
+    }
+  }
+
+  private formatarCep(valor: any): string {
+    if (!valor) return '';
+    valor = valor.toString().replace(/\D/g, ''); // Remove tudo que não for número
+    if (valor.length > 5) {
+      valor = valor.slice(0, 5) + '-' + valor.slice(5, 8);
+    }
+    return valor;
   }
 
   consultaCEP() {
