@@ -32,6 +32,7 @@
               name="cpfcnpj"
               placeholder="Digite o CPF ou CNPJ"
               formControlName="cpfcnpj"
+              (input)="onCpfCnpjInput($event)"
             />
           </mat-form-field>
         </div>
@@ -45,16 +46,9 @@
             <input
               matInput
               name="telefone"
-              placeholder="(11) 5555-1234"
               formControlName="telefone"
+              (input)="onTelefoneOuCelularInput($event, 'telefone')"
             />
-            @if (formulario.get("telefone")?.invalid) {
-              <mat-error>
-                {{
-                  formUtils.getMensagemErro(formulario, "telefone")
-                }}</mat-error
-              >
-            }
           </mat-form-field>
         </div>
         <div class="col-md-3">
@@ -64,8 +58,8 @@
             <input
               matInput
               name="celular"
-              placeholder="(XX) 9XXXX-XXXX"
               formControlName="celular"
+              (input)="onTelefoneOuCelularInput($event, 'celular')"
             />
           </mat-form-field>
         </div>

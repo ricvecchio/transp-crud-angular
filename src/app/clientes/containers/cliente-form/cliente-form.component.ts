@@ -83,6 +83,64 @@ export class ClienteFormComponent implements OnInit {
     });
   }
 
+  onCpfCnpjInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+
+    // Aplica formatação para CPF (11 dígitos) ou CNPJ (14 dígitos)
+    if (value.length > 14) {
+      value = value.substring(0, 14); // Limita ao máximo de 14 dígitos
+    }
+
+    if (value.length > 11) {
+      // Formata como CNPJ: xx.xxx.xxx/xxxx-xx
+      value = value.replace(
+        /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2}).*/,
+        '$1.$2.$3/$4-$5',
+      );
+    } else if (value.length > 9) {
+      // Formata como CPF: xxx.xxx.xxx-xx
+      value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{2}).*/, '$1.$2.$3-$4');
+    } else if (value.length > 6) {
+      value = value.replace(/^(\d{3})(\d{3})(\d+).*/, '$1.$2.$3');
+    } else if (value.length > 3) {
+      value = value.replace(/^(\d{3})(\d+).*/, '$1.$2');
+    }
+
+    input.value = value;
+    this.formulario.get('cpfcnpj')?.setValue(value); // Atualiza o formControl
+  }
+
+  onTelefoneOuCelularInput(event: Event, controlName: string): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+
+    // Verifica qual campo está sendo editado
+    if (controlName === 'telefone' && value.length > 10) {
+      value = value.substring(0, 10); // Limita a 10 dígitos para telefone fixo
+    } else if (controlName === 'celular' && value.length > 11) {
+      value = value.substring(0, 11); // Limita a 11 dígitos para celular
+    }
+
+    // Formatação
+    if (value.length === 11) {
+      // Formato celular: (xx) xxxxx-xxxx
+      value = value.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+    } else if (value.length === 10) {
+      // Formato telefone fixo: (xx) xxxx-xxxx
+      value = value.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
+    } else if (value.length > 6) {
+      // Número intermediário
+      value = value.replace(/^(\d{2})(\d{4})(\d+)$/, '($1) $2-$3');
+    } else if (value.length > 2) {
+      // Apenas código de área e início
+      value = value.replace(/^(\d{2})(\d+)$/, '($1) $2');
+    }
+
+    input.value = value; // Atualiza o valor visível no campo
+    this.formulario.get(controlName)?.setValue(value); // Atualiza o FormControl correspondente
+  }
+
   consultaCEP() {
     const cep = this.formulario.get('cep')?.value;
     if (cep != '') {
