@@ -22,6 +22,8 @@ import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service'
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Cliente } from '../../../modelo/cliente';
 import { ClienteService } from '../../servicos/cliente.service';
+import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-cliente-form',
@@ -50,6 +52,7 @@ export class ClienteFormComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute,
     private router: Router,
+    public dialog: MatDialog,
     public formUtils: FormUtilsService,
   ) {}
 
@@ -100,37 +103,6 @@ export class ClienteFormComponent implements OnInit {
   checked = false;
   disabled = false;
 
-  onSubmitIssue() {
-    const cliente = this.formulario.value as Cliente;
-
-    this.service.salvarEmitir(cliente).subscribe((clienteCriado: Cliente) => {
-      this.router.navigate(['/cadastrar-pedido'], {
-        queryParams: {
-          idCliente: clienteCriado.idCliente,
-          nome: clienteCriado.nome,
-          cpfcnpj: clienteCriado.cpfcnpj,
-          telefone: clienteCriado.telefone,
-          celular: clienteCriado.celular,
-          email: clienteCriado.email,
-          cep: clienteCriado.cep,
-          logradouro: clienteCriado.logradouro,
-          numero: clienteCriado.numero,
-          complemento: clienteCriado.complemento,
-          bairro: clienteCriado.bairro,
-          cidade: clienteCriado.cidade,
-          estado: clienteCriado.estado,
-        },
-      });
-    });
-  }
-
-  onSubmitSave() {
-    this.service.salvarEmitir(this.formulario.value).subscribe(
-      (result) => this.onSucess(),
-      (error) => this.onError(),
-    );
-  }
-
   // onSubmit() {
   //   if (this.formulario.valid) {
   //   this.service.salvarEmitir(this.formulario.value).subscribe(
@@ -141,6 +113,10 @@ export class ClienteFormComponent implements OnInit {
   //     this.formUtils.validarTodosCamposFormFields(this.formulario);
   //   }
   // }
+
+  onSubmit() {
+    this.dialogoNavegacaoClienteSalvo();
+  }
 
   private onSucess() {
     this.snackBar.open('Cliente Salvo com sucesso!', '', { duration: 5000 });
@@ -153,5 +129,42 @@ export class ClienteFormComponent implements OnInit {
 
   private onError() {
     this.snackBar.open('Erro ao salvar o cliente!', '', { duration: 5000 });
+  }
+
+  dialogoNavegacaoClienteSalvo() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'Cliente salvo, deseja emitir o pedido?',
+    });
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        const cliente = this.formulario.value as Cliente;
+        this.service
+          .salvarEmitir(cliente)
+          .subscribe((clienteCriado: Cliente) => {
+            this.router.navigate(['/cadastrar-pedido'], {
+              queryParams: {
+                idCliente: clienteCriado.idCliente,
+                nome: clienteCriado.nome,
+                cpfcnpj: clienteCriado.cpfcnpj,
+                telefone: clienteCriado.telefone,
+                celular: clienteCriado.celular,
+                email: clienteCriado.email,
+                cep: clienteCriado.cep,
+                logradouro: clienteCriado.logradouro,
+                numero: clienteCriado.numero,
+                complemento: clienteCriado.complemento,
+                bairro: clienteCriado.bairro,
+                cidade: clienteCriado.cidade,
+                estado: clienteCriado.estado,
+              },
+            });
+          });
+      } else {
+        this.service.salvarEmitir(this.formulario.value).subscribe(
+          (result) => this.onSucess(),
+          (error) => this.onError(),
+        );
+      }
+    });
   }
 }

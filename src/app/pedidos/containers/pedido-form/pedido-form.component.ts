@@ -408,19 +408,22 @@ export class PedidoFormComponent implements OnInit {
         this.onSucess();
         this.router.navigate(['/menu']);
       },
-      error: (error) => this.onError()
+      error: (error) => this.onError(),
     });
   }
 
   onSubmitSave() {
-    this.service.salvar(this.formulario.value).subscribe(
-      (result) => this.onSucess(),
-      (error) => this.onError(),
-    );
+    this.service.salvar(this.formulario.value).subscribe({
+      next: (result) => {
+        this.onSucess();
+        this.router.navigate(['/menu']);
+      },
+      error: (error) => this.onError(),
+    });
   }
 
   private onSucess() {
-    this.snackBar.open('Pedido Salvo e Emitido com sucesso!', '', {
+    this.snackBar.open('Pedido Salvo com sucesso!', '', {
       duration: 5000,
     });
     this.formulario.reset();
