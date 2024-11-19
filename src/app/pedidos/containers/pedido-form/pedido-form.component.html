@@ -23,7 +23,9 @@
                 [value]="cliente.nome"
                 (click)="selecionarCliente(cliente)"
               >
-                {{ cliente.nome }} - CPF/CNPJ: {{ cliente.cpfcnpj }}
+                {{ cliente.nome }} <strong> - CPF/CNPJ: </strong
+                >{{ cliente.cpfcnpj }} <strong> - ID Cliente: </strong
+                >{{ cliente.idCliente }}
               </mat-option>
             </mat-autocomplete>
             @if (formulario.get("nomeBusca")?.invalid) {
@@ -37,7 +39,6 @@
         </div>
 
         <div class="col-md-3">
-
           <!-- <mat-form-field class="form-grid">
             <mat-label>Buscar cliente pelo ID</mat-label>
             <input
@@ -68,7 +69,6 @@
               formControlName="idCliente"
             />
           </mat-form-field>
-
         </div>
       </div>
     </div>
@@ -741,8 +741,12 @@
     </div>
 
     <div class="acoes">
-      <button (click)="onSubmitIssue()" type="button" class="botao">Emite Pedido</button>
-      <button (click)="onSubmitSave()" type="button" class="botao">Salvar</button>
+      <button (click)="onSubmitIssue()" type="button" class="botao">
+        Emite Pedido
+      </button>
+      <button (click)="onSubmitSave()" type="button" class="botao">
+        Salvar
+      </button>
       <button (click)="onCancel()" type="button" class="botao">Cancelar</button>
     </div>
   </form>
