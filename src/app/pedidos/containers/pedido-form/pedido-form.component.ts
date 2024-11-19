@@ -142,12 +142,12 @@ export class PedidoFormComponent implements OnInit {
       ie: [pedido.ie],
       mangueira: [pedido.mangueira],
       volume: [pedido.volume],
-      precoCx5: [pedido.precoCx5],
-      precoCx10: [pedido.precoCx10],
-      precoCx15: [pedido.precoCx15],
-      precoLv5: [pedido.precoLv5],
-      precoLv10: [pedido.precoLv10],
-      precoLv15: [pedido.precoLv15],
+      precoCx5: [this.formatarParaReais(pedido.precoCx5)],
+      precoCx10: [this.formatarParaReais(pedido.precoCx10)],
+      precoCx15: [this.formatarParaReais(pedido.precoCx15)],
+      precoLv5: [this.formatarParaReais(pedido.precoLv5)],
+      precoLv10: [this.formatarParaReais(pedido.precoLv10)],
+      precoLv15: [this.formatarParaReais(pedido.precoLv15)],
       ajudanteHora: [pedido.ajudanteHora],
       observacao: [pedido.observacao],
     });
@@ -190,6 +190,15 @@ export class PedidoFormComponent implements OnInit {
           this.dialogoClienteNaoEncontrado();
         }
       });
+
+    this.formatarCampos([
+      'precoCx5',
+      'precoCx10',
+      'precoCx15',
+      'precoLv5',
+      'precoLv10',
+      'precoLv15',
+    ]);
   }
 
   // Método para formatar dados do cliente
@@ -415,6 +424,27 @@ export class PedidoFormComponent implements OnInit {
     { value: 'lav-10m³', viewValue: 'lav-10m³' },
     { value: 'lav-15m³', viewValue: 'lav-15m³' },
   ];
+
+  private formatarCampos(campos: string[]): void {
+    campos.forEach((campo) => {
+      this.formulario.get(campo)?.valueChanges.subscribe((valor) => {
+        const formatado = this.formatarParaReais(valor);
+        if (valor !== formatado) {
+          this.formulario.get(campo)?.setValue(formatado, { emitEvent: false });
+        }
+      });
+    });
+  }
+
+  private formatarParaReais(valor: any): string {
+    if (!valor) return '';
+    valor = valor.toString().replace(/[^\d]/g, ''); // Remove caracteres não numéricos
+    const numero = parseFloat(valor) / 100;
+    return numero.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  }
 
   dataAtual: Date = new Date();
 
