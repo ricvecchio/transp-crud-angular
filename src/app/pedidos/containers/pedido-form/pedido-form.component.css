@@ -63,3 +63,19 @@ h5 {
 .container-previa .imagem {
   padding: 1rem;
 }
+
+
+
+.radio-group-horizontal {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between; /* Espaço uniforme entre os botões */
+  align-items: center;
+  margin-bottom: 1rem; /* Espaçamento em relação à linha abaixo */
+}
+
+.radio-button {
+  margin-right: 7rem; /* Ajuste para espaçamento lateral */
+  white-space: nowrap; /* Evita quebras de linha nos rótulos */
+}
+
