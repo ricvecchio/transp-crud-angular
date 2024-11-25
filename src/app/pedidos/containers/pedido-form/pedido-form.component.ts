@@ -148,6 +148,7 @@ export class PedidoFormComponent implements OnInit {
       precoLv5: [this.formatarParaReais(pedido.precoLv5)],
       precoLv10: [this.formatarParaReais(pedido.precoLv10)],
       precoLv15: [this.formatarParaReais(pedido.precoLv15)],
+      precoEscolhido: [''],
       ajudanteHora: [pedido.ajudanteHora],
       observacao: [pedido.observacao],
     });
@@ -201,6 +202,34 @@ export class PedidoFormComponent implements OnInit {
     ]);
 
     this.formatarCampoCep();
+
+    this.formulario
+      .get('volume')
+      ?.valueChanges.subscribe((volumeSelecionado) => {
+        let precoSelecionado = '';
+        switch (volumeSelecionado) {
+          case 'cx-5m³':
+            precoSelecionado = this.formulario.get('precoCx5')?.value;
+            break;
+          case 'cx-10m³':
+            precoSelecionado = this.formulario.get('precoCx10')?.value;
+            break;
+          case 'cx-15m³':
+            precoSelecionado = this.formulario.get('precoCx15')?.value;
+            break;
+          case 'lav-5m³':
+            precoSelecionado = this.formulario.get('precoLv5')?.value;
+            break;
+          case 'lav-10m³':
+            precoSelecionado = this.formulario.get('precoLv10')?.value;
+            break;
+          case 'lav-15m³':
+            precoSelecionado = this.formulario.get('precoLv15')?.value;
+            break;
+        }
+        this.formulario.get('precoEscolhido')?.setValue(precoSelecionado);
+
+      });
   }
 
   // Método para formatar dados do cliente

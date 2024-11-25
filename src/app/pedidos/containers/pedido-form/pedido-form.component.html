@@ -653,24 +653,6 @@
         </div>
       </div>
 
-      <h6>Volume:</h6>
-      <div class="row">
-        <mat-radio-group
-          aria-labelledby="example-radio-group-label"
-          name="volume"
-          formControlName="volume"
-          class="radio-group-horizontal w-100"
-        >
-          <mat-radio-button
-            *ngFor="let volume of volumes"
-            [value]="volume.value"
-            class="radio-button"
-          >
-            {{ volume.viewValue }}
-          </mat-radio-button>
-        </mat-radio-group>
-      </div>
-
       <div class="row">
         <div class="col-md-2">
           <mat-form-field class="form-grid">
@@ -738,6 +720,24 @@
             />
           </mat-form-field>
         </div>
+      </div>
+
+      <h6>Volume:</h6>
+      <div class="row">
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          name="volume"
+          formControlName="volume"
+          class="radio-group-horizontal w-100"
+        >
+          <mat-radio-button
+            *ngFor="let volume of volumes"
+            [value]="volume.value"
+            class="radio-button"
+          >
+            {{ volume.viewValue }}
+          </mat-radio-button>
+        </mat-radio-group>
       </div>
 
       <div class="row">
@@ -843,8 +843,8 @@
           {{ this.formulario.get("mangueira")?.value }}
         </div>
         <div class="col-md-4">
-          <b>PREÇO: R$ </b>
-          {{ this.formulario.get("precoCx5")?.value }}
+          <b>PREÇO: </b>
+          {{ formulario.get('precoEscolhido')?.value }}
         </div>
       </div>
 
