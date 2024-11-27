@@ -37,6 +37,7 @@ import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../servico/pedido.service';
 import { ClienteService } from './../../../clientes/servicos/cliente.service';
 import { Cliente } from '../../../modelo/cliente';
+import html2canvas from 'html2canvas';
 
 interface Metros {
   value: string;
@@ -228,7 +229,6 @@ export class PedidoFormComponent implements OnInit {
             break;
         }
         this.formulario.get('precoEscolhido')?.setValue(precoSelecionado);
-
       });
   }
 
@@ -511,7 +511,70 @@ export class PedidoFormComponent implements OnInit {
   //   }
   // }
 
+  // onSubmitIssue() {
+  //   this.service.emitir(this.formulario.value).subscribe({
+  //     next: (result) => {
+  //       this.onSucess();
+  //       this.router.navigate(['/menu']);
+  //     },
+  //     error: (error) => this.onError(),
+  //   });
+  // }
+
   onSubmitIssue() {
+    const container = document.querySelector(
+      '.container-previa',
+    ) as HTMLElement;
+
+    if (container) {
+      html2canvas(container)
+        .then((canvas) => {
+          const imageData = canvas.toDataURL('image/png');
+
+          const iframe = document.createElement('iframe');
+          iframe.style.position = 'absolute';
+          iframe.style.width = '0px';
+          iframe.style.height = '0px';
+          iframe.style.border = 'none';
+          document.body.appendChild(iframe);
+
+          const iframeDocument = iframe.contentWindow?.document;
+          if (iframeDocument) {
+            iframeDocument.open();
+            iframeDocument.write(`
+            <html>
+              <body>
+                <img src="${imageData}" style="width: 100%; max-width: 100%;" />
+              </body>
+            </html>
+          `);
+            iframeDocument.close();
+
+            iframe.onload = () => {
+              iframe.contentWindow?.print();
+
+              const iframeContentWindow = iframe.contentWindow;
+              if (
+                iframeContentWindow &&
+                iframeContentWindow.onafterprint !== undefined
+              ) {
+                iframeContentWindow.onafterprint = () => {
+                  document.body.removeChild(iframe);
+                };
+              }
+              this.emitirPedido();
+            };
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao capturar a tela:', error);
+        });
+    } else {
+      console.error('Elemento .container-previa não encontrado');
+    }
+  }
+
+  emitirPedido() {
     this.service.emitir(this.formulario.value).subscribe({
       next: (result) => {
         this.onSucess();

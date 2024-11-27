@@ -781,9 +781,8 @@
   <br />
 
   <div class="container-previa">
-    <header class="header">
-      <h4><i>Prévia do Pedido:</i></h4>
-    </header>
+    <div class="preview-image-container" style="margin-top: 20px;"></div>
+
     <div class="modelo ff-roboto-mono">
       <img
         class="col-md-12"
@@ -844,7 +843,7 @@
         </div>
         <div class="col-md-4">
           <b>PREÇO: </b>
-          {{ formulario.get('precoEscolhido')?.value }}
+          {{ formulario.get("precoEscolhido")?.value }}
         </div>
       </div>
 
@@ -873,11 +872,6 @@
         src="../../../../assets/img/rodapeprevia.png"
         alt="Rodapé da Prévia do Pedido"
       />
-
-      <!-- <div class="acoes">
-        <button (click)="onSubmit()" class="botao">Emite Pedido</button>
-        <button (click)="onCancel()" class="botao">Cancelar</button>
-      </div> -->
     </div>
   </div>
 </section>
