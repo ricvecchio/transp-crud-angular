@@ -549,7 +549,6 @@ export class PedidoFormComponent implements OnInit {
               iframeDocument.write(`
               <html>
                 <body>
-                  <h4>PEDIDO: ${idPedido}</h4>
                   <img src="${imageData}" style="width: 100%; max-width: 100%;" />
                 </body>
               </html>
