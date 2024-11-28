@@ -521,66 +521,80 @@ export class PedidoFormComponent implements OnInit {
   //   });
   // }
 
-  onSubmitIssue() {
-    const container = document.querySelector(
-      '.container-previa',
-    ) as HTMLElement;
+  async onSubmitIssue() {
+    try {
+      const idPedido = await this.emitirPedido();
 
-    if (container) {
-      html2canvas(container)
-        .then((canvas) => {
-          const imageData = canvas.toDataURL('image/png');
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
-          const iframe = document.createElement('iframe');
-          iframe.style.position = 'absolute';
-          iframe.style.width = '0px';
-          iframe.style.height = '0px';
-          iframe.style.border = 'none';
-          document.body.appendChild(iframe);
+      const container = document.querySelector(
+        '.container-previa',
+      ) as HTMLElement;
 
-          const iframeDocument = iframe.contentWindow?.document;
-          if (iframeDocument) {
-            iframeDocument.open();
-            iframeDocument.write(`
-            <html>
-              <body>
-                <img src="${imageData}" style="width: 100%; max-width: 100%;" />
-              </body>
-            </html>
-          `);
-            iframeDocument.close();
+      if (container) {
+        html2canvas(container)
+          .then((canvas) => {
+            const imageData = canvas.toDataURL('image/png');
 
-            iframe.onload = () => {
-              iframe.contentWindow?.print();
+            const iframe = document.createElement('iframe');
+            iframe.style.position = 'absolute';
+            iframe.style.width = '0px';
+            iframe.style.height = '0px';
+            iframe.style.border = 'none';
+            document.body.appendChild(iframe);
 
-              const iframeContentWindow = iframe.contentWindow;
-              if (
-                iframeContentWindow &&
-                iframeContentWindow.onafterprint !== undefined
-              ) {
-                iframeContentWindow.onafterprint = () => {
-                  document.body.removeChild(iframe);
-                };
-              }
-              this.emitirPedido();
-            };
-          }
-        })
-        .catch((error) => {
-          console.error('Erro ao capturar a tela:', error);
-        });
-    } else {
-      console.error('Elemento .container-previa não encontrado');
+            const iframeDocument = iframe.contentWindow?.document;
+            if (iframeDocument) {
+              iframeDocument.open();
+              iframeDocument.write(`
+              <html>
+                <body>
+                  <h4>PEDIDO: ${idPedido}</h4>
+                  <img src="${imageData}" style="width: 100%; max-width: 100%;" />
+                </body>
+              </html>
+            `);
+              iframeDocument.close();
+
+              iframe.onload = () => {
+                iframe.contentWindow?.print();
+
+                const iframeContentWindow = iframe.contentWindow;
+                if (
+                  iframeContentWindow &&
+                  iframeContentWindow.onafterprint !== undefined
+                ) {
+                  iframeContentWindow.onafterprint = () => {
+                    document.body.removeChild(iframe);
+                  };
+                }
+              };
+            }
+            this.router.navigate(['/menu']);
+          })
+          .catch((error) => {
+            console.error('Erro ao capturar a tela:', error);
+          });
+      } else {
+        console.error('Elemento .container-previa não encontrado');
+      }
+    } catch (error) {
+      console.error('Erro ao emitir pedido ou capturar tela:', error);
     }
   }
 
-  emitirPedido() {
-    this.service.emitir(this.formulario.value).subscribe({
-      next: (result) => {
-        this.onSucess();
-        this.router.navigate(['/menu']);
-      },
-      error: (error) => this.onError(),
+  emitirPedido(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.service.emitir(this.formulario.value).subscribe({
+        next: (result) => {
+          this.formulario.patchValue({ idPedido: result.idPedido });
+          resolve(result.idPedido);
+        },
+        error: (error) => {
+          this.onError();
+          reject(error);
+        },
+      });
     });
   }
 
