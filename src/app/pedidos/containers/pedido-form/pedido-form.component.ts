@@ -153,6 +153,54 @@ export class PedidoFormComponent implements OnInit {
       ajudanteHora: [pedido.ajudanteHora],
       observacao: [pedido.observacao],
       dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
+      status: [pedido.status],
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      if (params) {
+        const pedido: Pedido = this.formatarPedido(params);
+        this.formulario.patchValue({
+          idCliente: pedido.idCliente,
+          nome: pedido.nome,
+          cpfcnpj: pedido.cpfcnpj,
+          telefone: pedido.telefone,
+          celular: pedido.celular,
+          email: pedido.email,
+          cep: pedido.cep,
+          logradouro: pedido.logradouro,
+          numero: pedido.numero,
+          complemento: pedido.complemento,
+          bairro: pedido.bairro,
+          cidade: pedido.cidade,
+          estado: pedido.estado,
+          idPedido: pedido.idPedido,
+          nomePedido: pedido.nomePedido,
+          razaoSocial: pedido.razaoSocial,
+          cpfcnpjPedido: pedido.cpfcnpjPedido,
+          tipoPgto: pedido.tipoPgto,
+          cepPedido: pedido.cepPedido,
+          logradouroPedido: pedido.logradouroPedido,
+          numeroPedido: pedido.numeroPedido,
+          complementoPedido: pedido.complementoPedido,
+          bairroPedido: pedido.bairroPedido,
+          cidadePedido: pedido.cidadePedido,
+          estadoPedido: pedido.estadoPedido,
+          sfobras: pedido.sfobras,
+          cno: pedido.cno,
+          ie: pedido.ie,
+          mangueira: pedido.mangueira,
+          volume: pedido.volume,
+          precoCx5: pedido.precoCx5,
+          precoCx10: pedido.precoCx10,
+          precoCx15: pedido.precoCx15,
+          precoLv5: pedido.precoLv5,
+          precoLv10: pedido.precoLv10,
+          precoLv15: pedido.precoLv15,
+          ajudanteHora: pedido.ajudanteHora,
+          observacao: pedido.observacao,
+          status: pedido.status,
+        });
+      }
     });
 
     this.route.queryParams.subscribe((params) => {
@@ -231,6 +279,53 @@ export class PedidoFormComponent implements OnInit {
         }
         this.formulario.get('precoEscolhido')?.setValue(precoSelecionado);
       });
+  }
+
+  // Método para formatar dados do pedido vindo da consulta expandida.
+  private formatarPedido(pedidoParams: any): Pedido {
+    return {
+      dataAtualizacaoPedido: pedidoParams.dataAtualizacaoPedido || '',
+      nomeBusca: pedidoParams.nomeBusca || '',
+      idCliente: pedidoParams.idCliente || '',
+      nome: pedidoParams.nome || '',
+      cpfcnpj: pedidoParams.cpfcnpj || '',
+      telefone: pedidoParams.telefone || '',
+      celular: pedidoParams.celular || '',
+      email: pedidoParams.email || '',
+      cep: pedidoParams.cep || '',
+      logradouro: pedidoParams.logradouro || '',
+      numero: pedidoParams.numero || '',
+      complemento: pedidoParams.complemento || '',
+      bairro: pedidoParams.bairro || '',
+      cidade: pedidoParams.cidade || '',
+      estado: pedidoParams.estado || '',
+      idPedido: pedidoParams.idPedido || '',
+      nomePedido: pedidoParams.nomePedido || '',
+      razaoSocial: pedidoParams.razaoSocial || '',
+      cpfcnpjPedido: pedidoParams.cpfcnpjPedido || '',
+      tipoPgto: pedidoParams.tipoPgto || '',
+      cepPedido: pedidoParams.cepPedido || '',
+      logradouroPedido: pedidoParams.logradouroPedido || '',
+      numeroPedido: pedidoParams.numeroPedido || '',
+      complementoPedido: pedidoParams.complementoPedido || '',
+      bairroPedido: pedidoParams.bairroPedido || '',
+      cidadePedido: pedidoParams.cidadePedido || '',
+      estadoPedido: pedidoParams.estadoPedido || '',
+      sfobras: pedidoParams.sfobras || '',
+      cno: pedidoParams.cno || '',
+      ie: pedidoParams.ie || '',
+      mangueira: pedidoParams.mangueira || '',
+      volume: pedidoParams.volume || '',
+      precoCx5: pedidoParams.precoCx5 || '',
+      precoCx10: pedidoParams.precoCx10 || '',
+      precoCx15: pedidoParams.precoCx15 || '',
+      precoLv5: pedidoParams.precoLv5 || '',
+      precoLv10: pedidoParams.precoLv10 || '',
+      precoLv15: pedidoParams.precoLv15 || '',
+      ajudanteHora: pedidoParams.ajudanteHora || '',
+      observacao: pedidoParams.observacao || '',
+      status: pedidoParams.status || '',
+    };
   }
 
   // Método para formatar dados do cliente
@@ -501,98 +596,90 @@ export class PedidoFormComponent implements OnInit {
 
   dataAtual: Date = new Date();
 
-  // onSubmit() {
-  //   if (this.formulario.valid) {
-  //   this.service.salvar(this.formulario.value).subscribe(
-  //     (result) => this.onSucess(),
-  //     (error) => this.onError(),
-  //   );
-  //   } else {
-  //     this.formUtils.validarTodosCamposFormFields(this.formulario);
-  //   }
-  // }
+   async onSubmit(status: string) {
+    this.formulario.patchValue({ status: status });
 
-  // onSubmitIssue() {
-  //   this.service.emitir(this.formulario.value).subscribe({
-  //     next: (result) => {
-  //       this.onSucess();
-  //       this.router.navigate(['/menu']);
-  //     },
-  //     error: (error) => this.onError(),
-  //   });
-  // }
+    if (status == 'Salvo') {
+      this.service.salvar(this.formulario.value).subscribe({
+        next: (result) => {
+          this.onSucess();
+          this.router.navigate(['/menu']);
+        },
+        error: (error) => this.onError(),
+      });
+    } else {
+      try {
+        const idPedido = await this.emitirPedido(status);
 
-  async onSubmitIssue() {
-    try {
-      const idPedido = await this.emitirPedido();
+        await new Promise((resolve) => setTimeout(resolve, 100));
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+        const container = document.querySelector(
+          '.container-previa',
+        ) as HTMLElement;
 
-      const container = document.querySelector(
-        '.container-previa',
-      ) as HTMLElement;
+        if (container) {
+          html2canvas(container)
+            .then((canvas) => {
+              const imageData = canvas.toDataURL('image/png');
 
-      if (container) {
-        html2canvas(container)
-          .then((canvas) => {
-            const imageData = canvas.toDataURL('image/png');
+              const iframe = document.createElement('iframe');
+              iframe.style.position = 'absolute';
+              iframe.style.width = '0px';
+              iframe.style.height = '0px';
+              iframe.style.border = 'none';
+              document.body.appendChild(iframe);
 
-            const iframe = document.createElement('iframe');
-            iframe.style.position = 'absolute';
-            iframe.style.width = '0px';
-            iframe.style.height = '0px';
-            iframe.style.border = 'none';
-            document.body.appendChild(iframe);
+              const iframeDocument = iframe.contentWindow?.document;
+              if (iframeDocument) {
+                iframeDocument.open();
+                iframeDocument.write(`
+                <html>
+                  <body>
+                    <img src="${imageData}" style="width: 100%; max-width: 100%;" />
+                  </body>
+                </html>
+              `);
+                iframeDocument.close();
 
-            const iframeDocument = iframe.contentWindow?.document;
-            if (iframeDocument) {
-              iframeDocument.open();
-              iframeDocument.write(`
-              <html>
-                <body>
-                  <img src="${imageData}" style="width: 100%; max-width: 100%;" />
-                </body>
-              </html>
-            `);
-              iframeDocument.close();
+                iframe.onload = () => {
+                  iframe.contentWindow?.print();
 
-              iframe.onload = () => {
-                iframe.contentWindow?.print();
-
-                const iframeContentWindow = iframe.contentWindow;
-                if (
-                  iframeContentWindow &&
-                  iframeContentWindow.onafterprint !== undefined
-                ) {
-                  iframeContentWindow.onafterprint = () => {
-                    document.body.removeChild(iframe);
-                  };
-                }
-              };
-            }
-            this.router.navigate(['/menu']);
-          })
-          .catch((error) => {
-            console.error('Erro ao capturar a tela:', error);
-          });
-      } else {
-        console.error('Elemento .container-previa não encontrado');
+                  const iframeContentWindow = iframe.contentWindow;
+                  if (
+                    iframeContentWindow &&
+                    iframeContentWindow.onafterprint !== undefined
+                  ) {
+                    iframeContentWindow.onafterprint = () => {
+                      document.body.removeChild(iframe);
+                    };
+                  }
+                };
+              }
+              this.router.navigate(['/menu']);
+            })
+            .catch((error) => {
+              console.error('Erro ao capturar a tela:', error);
+            });
+        } else {
+          console.error('Elemento .container-previa não encontrado');
+        }
+      } catch (error) {
+        console.error('Erro ao emitir pedido ou capturar tela:', error);
       }
-    } catch (error) {
-      console.error('Erro ao emitir pedido ou capturar tela:', error);
     }
   }
 
-  emitirPedido(): Promise<string> {
+  emitirPedido(status: string): Promise<string> {
     return new Promise((resolve, reject) => {
-
       const dataFormatada = this.formatarData(this.dataAtual);
 
       this.formulario.patchValue({
         dataAtualizacaoPedido: dataFormatada,
       });
 
-      this.service.emitir(this.formulario.value).subscribe({
+      this.formulario.patchValue({ status: status });
+
+      this.service.salvar(this.formulario.value).subscribe({
         next: (result) => {
           this.formulario.patchValue({ idPedido: result.idPedido });
           resolve(result.idPedido);
@@ -614,16 +701,6 @@ export class PedidoFormComponent implements OnInit {
     const segundos = data.getSeconds().toString().padStart(2, '0');
 
     return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
-  }
-
-  onSubmitSave() {
-    this.service.salvar(this.formulario.value).subscribe({
-      next: (result) => {
-        this.onSucess();
-        this.router.navigate(['/menu']);
-      },
-      error: (error) => this.onError(),
-    });
   }
 
   private onSucess() {

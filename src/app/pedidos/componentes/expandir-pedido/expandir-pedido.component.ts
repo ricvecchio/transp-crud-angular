@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
@@ -6,7 +6,7 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Pedido } from '../../../modelo/pedido';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
@@ -17,7 +17,14 @@ import { MatInput } from '@angular/material/input';
   templateUrl: './expandir-pedido.component.html',
   styleUrl: './expandir-pedido.component.css',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+  ],
 })
 export class ExpandirPedidoComponent implements OnInit {
   formulario!: FormGroup;
@@ -26,6 +33,7 @@ export class ExpandirPedidoComponent implements OnInit {
     private formBuilder: NonNullableFormBuilder,
     private location: Location,
     private route: ActivatedRoute,
+    private router: Router,
     public formUtils: FormUtilsService,
   ) {}
 
@@ -72,6 +80,7 @@ export class ExpandirPedidoComponent implements OnInit {
       precoLv15: [pedido.precoLv15],
       ajudanteHora: [pedido.ajudanteHora],
       observacao: [pedido.observacao],
+      status: [pedido.status],
     });
     this.formulario.get('dataAtualizacaoPedido')?.disable();
     this.formulario.get('idPedido')?.disable();
@@ -113,7 +122,55 @@ export class ExpandirPedidoComponent implements OnInit {
     this.formulario.get('ajudanteHora')?.disable();
     this.formulario.get('observacao')?.disable();
     this.formulario.get('status')?.disable();
+  }
 
+  onSubmitIssue() {
+
+    const pedido = this.formulario.value as Pedido;
+
+    this.router.navigate(['/cadastrar-pedido'], {
+      queryParams: {
+        idPedido: pedido.idPedido,
+        idCliente: pedido.idCliente,
+        nome: pedido.nome,
+        cpfcnpj: pedido.cpfcnpj,
+        telefone: pedido.telefone,
+        celular: pedido.celular,
+        email: pedido.email,
+        cep: pedido.cep,
+        logradouro: pedido.logradouro,
+        numero: pedido.numero,
+        complemento: pedido.complemento,
+        bairro: pedido.bairro,
+        cidade: pedido.cidade,
+        estado: pedido.estado,
+        nomePedido: pedido.nomePedido,
+        razaoSocial: pedido.razaoSocial,
+        cpfcnpjPedido: pedido.cpfcnpjPedido,
+        tipoPgto: pedido.tipoPgto,
+        cepPedido: pedido.cepPedido,
+        logradouroPedido: pedido.logradouroPedido,
+        numeroPedido: pedido.numeroPedido,
+        complementoPedido: pedido.complementoPedido,
+        bairroPedido: pedido.bairroPedido,
+        cidadePedido: pedido.cidadePedido,
+        estadoPedido: pedido.estadoPedido,
+        sfobras: pedido.sfobras,
+        cno: pedido.cno,
+        ie: pedido.ie,
+        mangueira: pedido.mangueira,
+        volume: pedido.volume,
+        precoCx5: pedido.precoCx5,
+        precoCx10: pedido.precoCx10,
+        precoCx15: pedido.precoCx15,
+        precoLv5: pedido.precoLv5,
+        precoLv10: pedido.precoLv10,
+        precoLv15: pedido.precoLv15,
+        ajudanteHora: pedido.ajudanteHora,
+        observacao: pedido.observacao,
+        status: pedido.status,
+      },
+    });
   }
 
   onBack() {

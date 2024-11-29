@@ -1,6 +1,6 @@
 <section class="container cadastrar-pedidos ff-inter">
   <form [formGroup]="formulario" id="formulario">
-    <h5><strong>Emitir Pedido:</strong></h5>
+    <h5><strong>Emitir Pedido:</strong> {{ this.formulario.get("idPedido")?.value }}</h5>
     <br />
 
     <div class="espaco-dentro">
@@ -767,13 +767,15 @@
     </div>
 
     <div class="acoes">
-      <button (click)="onSubmitIssue()" type="button" class="botao">
+      <button (click)="onSubmit('Emitido')" type="button" class="botao">
         Emite Pedido
       </button>
-      <button (click)="onSubmitSave()" type="button" class="botao">
+      <button (click)="onSubmit('Salvo')" type="button" class="botao">
         Salvar
       </button>
-      <button (click)="onCancel()" type="button" class="botao">Cancelar</button>
+      <button (click)="onCancel()" type="button" class="botao">
+        Cancelar
+      </button>
     </div>
   </form>
 

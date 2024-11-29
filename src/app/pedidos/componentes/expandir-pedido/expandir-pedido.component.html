@@ -7,8 +7,8 @@
         <div class="col-md-9">
           <h5>
             <strong
-              >ID Pedido: {{ this.formulario.get("idPedido")?.value }}</strong
-            >
+              >ID Pedido: </strong> {{ this.formulario.get("idPedido")?.value }}
+              ({{ this.formulario.get("status")?.value }})
           </h5>
         </div>
         <div class="col-md-3">
@@ -345,8 +345,25 @@
       </div>
     </div>
 
-    <div class="acoes">
+    <!-- <div class="acoes">
+      <button (click)="onSubmitIssue()" type="button" class="botao">
+        Emite Pedido
+      </button>
       <button (click)="onBack()" class="botao">Voltar</button>
+    </div> -->
+    <div class="acoes">
+      <button
+        *ngIf="formulario.get('status')?.value === 'Salvo'"
+        (click)="onSubmitIssue()"
+        type="button"
+        class="botao">
+        Emite Pedido
+      </button>
+      <button
+        (click)="onBack()"
+        class="botao">
+        Voltar
+      </button>
     </div>
   </form>
 </section>
