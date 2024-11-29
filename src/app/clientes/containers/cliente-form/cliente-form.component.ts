@@ -80,6 +80,7 @@ export class ClienteFormComponent implements OnInit {
       bairro: [cliente.bairro],
       cidade: [cliente.cidade],
       estado: [cliente.estado],
+      dataAtualizacaoCliente: [cliente.dataAtualizacaoCliente],
     });
 
     this.formatarCampoCep();
@@ -179,11 +180,6 @@ export class ClienteFormComponent implements OnInit {
     }
   }
 
-  dataAtual: Date = new Date();
-
-  checked = false;
-  disabled = false;
-
   // onSubmit() {
   //   if (this.formulario.valid) {
   //   this.service.salvarEmitir(this.formulario.value).subscribe(
@@ -195,8 +191,27 @@ export class ClienteFormComponent implements OnInit {
   //   }
   // }
 
+  dataAtual: Date = new Date();
+
   onSubmit() {
+    const dataFormatada = this.formatarData(this.dataAtual);
+
+    this.formulario.patchValue({
+      dataAtualizacaoCliente: dataFormatada,
+    });
+
     this.dialogoNavegacaoClienteSalvo();
+  }
+
+  private formatarData(data: Date): string {
+    const dia = data.getDate().toString().padStart(2, '0');
+    const mes = (data.getMonth() + 1).toString().padStart(2, '0');
+    const ano = data.getFullYear();
+    const horas = data.getHours().toString().padStart(2, '0');
+    const minutos = data.getMinutes().toString().padStart(2, '0');
+    const segundos = data.getSeconds().toString().padStart(2, '0');
+
+    return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
   }
 
   private onSucess() {
