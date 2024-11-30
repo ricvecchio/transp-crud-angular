@@ -5,12 +5,9 @@
     justify-content: center;
     margin: 1rem 0 2rem;
   }
-  
+
   .d-flex{
     display: flex;
-    /* flex-direction: column; */
     gap: 3rem;
     padding: 5rem 0rem 0rem;
   }
-  
-
