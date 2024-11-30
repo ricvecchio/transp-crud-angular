@@ -5,7 +5,7 @@
 
 /* Ajuste de layout para centralizar os botões */
 .action-column {
-  flex: 0 0 125px;
+  width: 125px; /* Largura fixa para a coluna de ações */
 }
 
 /* Estilizando o cabeçalho do botão de adicionar */
@@ -19,9 +19,8 @@
 }
 
 mat-card {
-  max-width: 80%;
+  max-width: 100%;
   margin: 2em auto;
-  text-align: center;
 }
 
 .loading-spinner {
