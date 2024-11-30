@@ -15,18 +15,18 @@ footer {
     position: fixed;
     width: 100%;
   }
-  
+
   .TextoCopyright {
     justify-self: flex-start;
     padding: 0rem 1rem 0rem;
   }
-  
+
   .LogoRodape {
     justify-self: center;
     grid-area: LogoRodape;
     max-width: 70px;
   }
-  
+
   footer small {
     color: white;
   }
@@ -41,12 +41,12 @@ footer {
     .cabecalho .logo {
       padding: 2rem;
     }
-  
+
     .cabecalho p {
       font-size: 1.5rem
     }
   }
-  
+
   @media (max-width: 768px) {
     footer {
       display: flex;

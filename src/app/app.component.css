@@ -1,5 +1,22 @@
+/* Garante que o conteúdo principal ocupe todo o espaço disponível */
 main {
-    background-color: #fcfcfc;
-    background-size: contain;
-    height: 100%;
-  }
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 140px); /* Altura total menos o cabeçalho (80px) e rodapé (60px) */
+  overflow-y: hidden; /* Remove barra de rolagem vertical */
+}
+
+/* Remove possíveis margens internas do body */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Remove rolagem adicional do body */
+}
+
+/* Ajuste o container do conteúdo */
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Se precisar rolar internamente, ajuste aqui */
+}
