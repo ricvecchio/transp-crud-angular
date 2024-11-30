@@ -1,183 +1,177 @@
-<main>
-  <section class="container cliente-form ff-inter">
-    <form [formGroup]="formulario" id="formulario">
-      <h5><strong>Cadastro de Cliente:</strong></h5>
-      <br />
+<section class="container cliente-form ff-inter">
+  <form [formGroup]="formulario" id="formulario">
+    <h5><strong>Cadastro de Cliente:</strong></h5>
+    <br />
 
-      <div class="espaco-dentro">
-        <div class="row">
-          <div class="col-md-9">
-            <mat-form-field class="form-grid">
-              <mat-label>Nome:</mat-label>
-              <input
-                matInput
-                name="nome"
-                placeholder="Digite o Nome"
-                formControlName="nome"
-                #nome
-              />
-              <mat-hint align="end"
-                >{{ nome.value.length || 0 }} / 100</mat-hint
+    <div class="espaco-dentro">
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Nome:</mat-label>
+            <input
+              matInput
+              name="nome"
+              placeholder="Digite o Nome"
+              formControlName="nome"
+              #nome
+            />
+            <mat-hint align="end">{{ nome.value.length || 0 }} / 100</mat-hint>
+            @if (formulario.get("nome")?.invalid) {
+              <mat-error>
+                {{ formUtils.getMensagemErro(formulario, "nome") }}</mat-error
               >
-              @if (formulario.get("nome")?.invalid) {
-                <mat-error>
-                  {{ formUtils.getMensagemErro(formulario, "nome") }}</mat-error
-                >
-              }
-            </mat-form-field>
-          </div>
-
-          <div class="col-md-3">
-            <mat-form-field class="form-grid">
-              <mat-label>CPF/CNPJ:</mat-label>
-              <input
-                matInput
-                name="cpfcnpj"
-                placeholder="Digite o CPF ou CNPJ"
-                formControlName="cpfcnpj"
-                (input)="onCpfCnpjInput($event)"
-              />
-            </mat-form-field>
-          </div>
+            }
+          </mat-form-field>
         </div>
 
-        <div class="row">
-          <div class="col-md-3">
-            <mat-form-field class="form-grid">
-              <mat-label>Telefone:</mat-label>
-              <span matTextPrefix>+55</span>
-              <input
-                matInput
-                name="telefone"
-                formControlName="telefone"
-                (input)="onTelefoneOuCelularInput($event, 'telefone')"
-              />
-            </mat-form-field>
-          </div>
-          <div class="col-md-3">
-            <mat-form-field class="form-grid">
-              <mat-label>Celular:</mat-label>
-              <span matTextPrefix>+55</span>
-              <input
-                matInput
-                name="celular"
-                formControlName="celular"
-                (input)="onTelefoneOuCelularInput($event, 'celular')"
-              />
-            </mat-form-field>
-          </div>
-          <div class="col-md-6">
-            <mat-form-field class="form-grid">
-              <mat-label>E-mail:</mat-label>
-              <input
-                matInput
-                name="email"
-                placeholder="Ex. pat@example.com"
-                formControlName="email"
-              />
-              @if (formulario.get("email")?.invalid) {
-                <mat-error>
-                  {{
-                    formUtils.getMensagemErro(formulario, "email")
-                  }}</mat-error
-                >
-              }
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-3">
-            <mat-form-field class="form-grid">
-              <mat-label>CEP:</mat-label>
-              <input
-                matInput
-                name="cep"
-                placeholder="Digite o CEP"
-                formControlName="cep"
-                (blur)="consultaCEP()"
-              />
-              @if (formulario.get("cep")?.invalid) {
-                <mat-error>
-                  {{ formUtils.getMensagemErro(formulario, "cep") }}</mat-error
-                >
-              }
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-9">
-            <mat-form-field class="form-grid">
-              <mat-label>Logradouro:</mat-label>
-              <input matInput name="logradouro" formControlName="logradouro" />
-              @if (formulario.get("logradouro")?.invalid) {
-                <mat-error>
-                  {{
-                    formUtils.getMensagemErro(formulario, "logradouro")
-                  }}</mat-error
-                >
-              }
-            </mat-form-field>
-          </div>
-          <div class="col-md-3">
-            <mat-form-field class="form-grid">
-              <mat-label>Número:</mat-label>
-              <input matInput name="numero" formControlName="numero" />
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-9">
-            <mat-form-field class="form-grid">
-              <mat-label>Complemento:</mat-label>
-              <input
-                matInput
-                placeholder="Ex. Apto 64"
-                name="complemento"
-                formControlName="complemento"
-              />
-            </mat-form-field>
-          </div>
-          <div class="col-md-3">
-            <mat-form-field class="form-grid">
-              <mat-label>Bairro:</mat-label>
-              <input matInput name="bairro" formControlName="bairro" />
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-9">
-            <mat-form-field class="form-grid">
-              <mat-label>Cidade:</mat-label>
-              <input
-                matInput
-                placeholder="Ex. Santo André"
-                name="cidade"
-                formControlName="cidade"
-              />
-            </mat-form-field>
-          </div>
-          <div class="col-md-3">
-            <mat-form-field class="form-grid">
-              <mat-label>UF:</mat-label>
-              <input
-                matInput
-                placeholder="Ex. São Paulo"
-                name="estado"
-                formControlName="estado"
-              />
-            </mat-form-field>
-          </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>CPF/CNPJ:</mat-label>
+            <input
+              matInput
+              name="cpfcnpj"
+              placeholder="Digite o CPF ou CNPJ"
+              formControlName="cpfcnpj"
+              (input)="onCpfCnpjInput($event)"
+            />
+          </mat-form-field>
         </div>
       </div>
 
-      <div class="acoes">
-        <button (click)="onSubmit()" class="botao">Salvar</button>
-        <button (click)="onCancel()" class="botao">Cancelar</button>
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Telefone:</mat-label>
+            <span matTextPrefix>+55</span>
+            <input
+              matInput
+              name="telefone"
+              formControlName="telefone"
+              (input)="onTelefoneOuCelularInput($event, 'telefone')"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Celular:</mat-label>
+            <span matTextPrefix>+55</span>
+            <input
+              matInput
+              name="celular"
+              formControlName="celular"
+              (input)="onTelefoneOuCelularInput($event, 'celular')"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="form-grid">
+            <mat-label>E-mail:</mat-label>
+            <input
+              matInput
+              name="email"
+              placeholder="Ex. pat@example.com"
+              formControlName="email"
+            />
+            @if (formulario.get("email")?.invalid) {
+              <mat-error>
+                {{ formUtils.getMensagemErro(formulario, "email") }}</mat-error
+              >
+            }
+          </mat-form-field>
+        </div>
       </div>
-    </form>
-  </section>
-</main>
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>CEP:</mat-label>
+            <input
+              matInput
+              name="cep"
+              placeholder="Digite o CEP"
+              formControlName="cep"
+              (blur)="consultaCEP()"
+            />
+            @if (formulario.get("cep")?.invalid) {
+              <mat-error>
+                {{ formUtils.getMensagemErro(formulario, "cep") }}</mat-error
+              >
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Logradouro:</mat-label>
+            <input matInput name="logradouro" formControlName="logradouro" />
+            @if (formulario.get("logradouro")?.invalid) {
+              <mat-error>
+                {{
+                  formUtils.getMensagemErro(formulario, "logradouro")
+                }}</mat-error
+              >
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Número:</mat-label>
+            <input matInput name="numero" formControlName="numero" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Complemento:</mat-label>
+            <input
+              matInput
+              placeholder="Ex. Apto 64"
+              name="complemento"
+              formControlName="complemento"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Bairro:</mat-label>
+            <input matInput name="bairro" formControlName="bairro" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Cidade:</mat-label>
+            <input
+              matInput
+              placeholder="Ex. Santo André"
+              name="cidade"
+              formControlName="cidade"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>UF:</mat-label>
+            <input
+              matInput
+              placeholder="Ex. São Paulo"
+              name="estado"
+              formControlName="estado"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="acoes">
+      <button (click)="onSubmit()" class="botao">Salvar</button>
+      <button (click)="onCancel()" class="botao">Cancelar</button>
+    </div>
+  </form>
+</section>
