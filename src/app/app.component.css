@@ -1,6 +1,12 @@
+main {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 140px); /* Subtraindo as alturas do cabeçalho (80px) e rodapé (60px) */
+}
+
 .container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-y: auto; /* Se precisar rolar internamente, ajuste aqui */
+  overflow: hidden; /* Evita a rolagem no container principal */
 }
