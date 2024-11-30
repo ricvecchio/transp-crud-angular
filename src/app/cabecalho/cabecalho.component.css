@@ -6,11 +6,11 @@
     justify-content: space-between;
     height: 80px;
     width: 100%;
-    position: sticky;   
-    top: 0; 
+    position: sticky;
+    top: 0;
     z-index: 1;
   }
-  
+
   .cabecalho .logo {
     width: 100%;
     max-width: 108px;
@@ -26,13 +26,13 @@
 
   .cabecalho .imagem{
     width: 8%;
-    margin-left: auto; 
+    margin-left: auto;
   }
 
   .navbar-text {
     padding: 0rem 0.5rem 0rem;
   }
-    
+
   @media (max-width: 576px) {
     .cabecalho .logo {
       padding: 2rem;
@@ -41,7 +41,7 @@
       font-size: 1.5rem
     }
   }
-  
+
   @media (max-width: 768px) {
     .cabecalho .logo {
       width: 90%;
