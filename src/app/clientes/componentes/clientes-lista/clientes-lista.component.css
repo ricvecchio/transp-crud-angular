@@ -1,3 +1,16 @@
+mat-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+  padding: 1em;
+}
+
+mat-paginator {
+  margin-top: 1em;
+  align-self: flex-end;
+}
+
 .mat-table {
   overflow: auto;
   max-height: 600px;
@@ -13,11 +26,6 @@
 
 .action-column button {
   margin-right: 8px;
-}
-
-mat-card {
-  max-width: 100%;
-  margin: 1em auto;
 }
 
 .loading-spinner {
