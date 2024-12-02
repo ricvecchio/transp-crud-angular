@@ -17,7 +17,7 @@ mat-paginator {
 }
 
 .action-column {
-  width: 125px;
+  flex: 0 0 125px;
 }
 
 .action-column-header {
