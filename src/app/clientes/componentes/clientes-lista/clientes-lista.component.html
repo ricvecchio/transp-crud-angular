@@ -3,9 +3,15 @@
     <span class="toolbar-text">Lista de Clientes</span>
   </mat-toolbar>
 
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Pesquisar por Nome</mat-label>
+    <input matInput [formControl]="filterControl" placeholder="Digite o nome do cliente">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
   @if (clientes$ | async; as clientes) {
     <div>
-      <mat-table [dataSource]="clientes.clientes" class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="acaoConsulta">
           <mat-header-cell *matHeaderCellDef class="action-column">
           </mat-header-cell>

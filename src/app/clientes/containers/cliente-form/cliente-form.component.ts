@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule, Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   FormGroup,
@@ -72,7 +72,6 @@ export interface User {
     MatSelectModule,
     MatCardModule,
     MatCheckboxModule,
-    AsyncPipe,
   ],
 })
 export class ClienteFormComponent implements OnInit {

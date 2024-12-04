@@ -1,6 +1,30 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatMiniFabButton } from '@angular/material/button';
+import { MatCard } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatHeaderRow,
+  MatHeaderRowDef,
+  MatRow,
+  MatRowDef,
+  MatTable,
+  MatTableDataSource,
+} from '@angular/material/table';
+import { MatToolbar } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Observable, of, tap } from 'rxjs';
 
@@ -9,26 +33,42 @@ import {
 } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-dialog/error-dialog.component';
 import { Cliente } from '../../../modelo/cliente';
-import { ClienteService } from '../../servicos/cliente.service';
 import { ClientePagina } from '../../../modelo/cliente-pagina';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatIcon } from '@angular/material/icon';
-import { MatMiniFabButton, MatIconButton } from '@angular/material/button';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { AsyncPipe } from '@angular/common';
-import { MatToolbar } from '@angular/material/toolbar';
-import { MatCard } from '@angular/material/card';
+import { ClienteService } from '../../servicos/cliente.service';
 
 @Component({
-    selector: 'app-clientes-lista',
-    templateUrl: './clientes-lista.component.html',
-    styleUrl: './clientes-lista.component.css',
-    standalone: true,
-    imports: [MatCard, MatToolbar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatMiniFabButton, MatIcon, MatIconButton, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, MatProgressSpinner, AsyncPipe]
+  selector: 'app-clientes-lista',
+  templateUrl: './clientes-lista.component.html',
+  styleUrl: './clientes-lista.component.css',
+  standalone: true,
+  imports: [
+    MatCard,
+    MatToolbar,
+    MatTable,
+    MatLabel,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatMiniFabButton,
+    MatIcon,
+    MatAutocompleteModule,
+    MatFormField,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatPaginator,
+    MatProgressSpinner,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    AsyncPipe,
+  ],
 })
 export class ClientesListaComponent implements OnInit {
-
   clientes$: Observable<ClientePagina> | null = null;
   readonly displayedColumns: string[] = [
     'acaoConsulta',
@@ -39,13 +79,24 @@ export class ClientesListaComponent implements OnInit {
     'celular',
     'email',
     'bairro',
-    'acao'
+    'acao',
   ];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  dataSource = new MatTableDataSource<Cliente>();
+  filterControl = new FormControl(''); // Campo de filtro
 
-  pageIndex = 0;
-  pageSize = 10;
+  ngOnInit(): void {
+    this.filterControl.valueChanges.subscribe((filterValue: string | null) => {
+      this.applyFilter(filterValue);
+    });
+  }
+
+  applyFilter(filterValue: string | null) {
+    const normalizedValue = (filterValue || '').trim().toLowerCase(); // Garante que nunca será null
+    this.dataSource.filter = normalizedValue;
+    this.dataSource.filterPredicate = (data: Cliente, filter: string) =>
+      data.nome.toLowerCase().includes(filter);
+  }
 
   constructor(
     private clienteService: ClienteService,
@@ -57,18 +108,25 @@ export class ClientesListaComponent implements OnInit {
     this.atualiza();
   }
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  pageIndex = 0;
+  pageSize = 10;
+
   atualiza(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
-    this.clientes$ = this.clienteService.listar(pageEvent.pageIndex, pageEvent.pageSize)
-    .pipe(
-      tap(() => {
-        this.pageIndex = pageEvent.pageIndex;
-        this.pageSize = pageEvent.pageSize;
-      }),
-      catchError((error) => {
-        this.onError('Erro ao carregar clientes.');
-        return of( {clientes: [], totalElementos: 0, totalPaginas: 0 })
-      })
-    );
+    this.clientes$ = this.clienteService
+      .listar(pageEvent.pageIndex, pageEvent.pageSize)
+      .pipe(
+        tap((pagina) => {
+          this.pageIndex = pageEvent.pageIndex;
+          this.pageSize = pageEvent.pageSize;
+          this.dataSource.data = pagina.clientes; // Popula o dataSource com os clientes
+        }),
+        catchError((error) => {
+          this.onError('Erro ao carregar clientes.');
+          return of({ clientes: [], totalElementos: 0, totalPaginas: 0 });
+        }),
+      );
   }
 
   onError(errorMsg: string) {
@@ -76,8 +134,6 @@ export class ClientesListaComponent implements OnInit {
       data: errorMsg,
     });
   }
-
-  ngOnInit(): void {}
 
   onAdd() {
     this.router.navigate(['/cadastrar-cliente'], { relativeTo: this.route });
