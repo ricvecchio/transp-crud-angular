@@ -8,9 +8,10 @@ import {
 } from '@angular/forms';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Cliente } from '../../../modelo/cliente';
+import { Pedido } from '../../../modelo/pedido';
 
 @Component({
   selector: 'app-expandir-cliente',
@@ -26,6 +27,7 @@ export class ExpandirClienteComponent implements OnInit {
     private formBuilder: NonNullableFormBuilder,
     private location: Location,
     private route: ActivatedRoute,
+    private router: Router,
     public formUtils: FormUtilsService,
   ) {}
 
@@ -102,6 +104,53 @@ export class ExpandirClienteComponent implements OnInit {
     this.formulario.get('precoLv15')?.disable();
     this.formulario.get('observacao')?.disable();
     this.formulario.get('dataAtualizacaoCliente')?.disable();
+  }
+
+  onSubmit() {
+
+    const pedido = this.formulario.value as Pedido;
+
+    this.router.navigate(['/cadastrar-pedido'], {
+      queryParams: {
+        idPedido: pedido.idPedido,
+        nome: pedido.nome,
+        cpfCnpj: pedido.cpfCnpj,
+        razaoSocial: pedido.razaoSocial,
+        idCliente: pedido.idCliente,
+        telefone: pedido.telefone,
+        celular: pedido.celular,
+        email: pedido.email,
+        cep: pedido.cep,
+        logradouro: pedido.logradouro,
+        numero: pedido.numero,
+        complemento: pedido.complemento,
+        bairro: pedido.bairro,
+        cidade: pedido.cidade,
+        estado: pedido.estado,
+        tipoPgto: pedido.tipoPgto,
+        cepEntrega: pedido.cepEntrega,
+        logradouroEntrega: pedido.logradouroEntrega,
+        numeroEntrega: pedido.numeroEntrega,
+        complementoEntrega: pedido.complementoEntrega,
+        bairroEntrega: pedido.bairroEntrega,
+        cidadeEntrega: pedido.cidadeEntrega,
+        estadoEntrega: pedido.estadoEntrega,
+        sfobras: pedido.sfobras,
+        cno: pedido.cno,
+        ie: pedido.ie,
+        mangueira: pedido.mangueira,
+        volume: pedido.volume,
+        precoCx5: pedido.precoCx5,
+        precoCx10: pedido.precoCx10,
+        precoCx15: pedido.precoCx15,
+        precoLv5: pedido.precoLv5,
+        precoLv10: pedido.precoLv10,
+        precoLv15: pedido.precoLv15,
+        ajudante: pedido.ajudante,
+        status: pedido.status,
+        dataAtualizacaoPedido: pedido.dataAtualizacaoPedido,
+      },
+    });
   }
 
   onBack() {

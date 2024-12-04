@@ -1,26 +1,13 @@
-import { AsyncPipe, CommonModule, Location } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import {
-  FormGroup,
-  FormsModule,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { CommonModule, Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import {
-  MatError,
-  MatFormField,
-  MatFormFieldModule,
-  MatHint,
-  MatLabel,
-  MatPrefix,
-} from '@angular/material/form-field';
+import { MatError, MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
@@ -28,16 +15,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import html2canvas from 'html2canvas';
 
-import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
+import { Cliente } from '../../../modelo/cliente';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../servico/pedido.service';
 import { ClienteService } from './../../../clientes/servicos/cliente.service';
-import { Cliente } from '../../../modelo/cliente';
-import html2canvas from 'html2canvas';
 
 interface Metros {
   value: string;
@@ -69,9 +54,7 @@ export interface User {
     MatFormField,
     MatLabel,
     MatInput,
-    MatHint,
     MatError,
-    MatPrefix,
     MatDividerModule,
     MatListModule,
     MatRadioModule,
@@ -79,7 +62,6 @@ export interface User {
     MatSelectModule,
     MatCardModule,
     MatCheckboxModule,
-    AsyncPipe,
   ],
 })
 export class PedidoFormComponent implements OnInit {
@@ -318,10 +300,10 @@ export class PedidoFormComponent implements OnInit {
       nomeBusca: clienteParams.nomeBusca || '',
       idCliente: clienteParams.idCliente || '',
       nome: clienteParams.nome || '',
-      cpfCnpj: this.formatarCpfCnpj(clienteParams.cpfCnpj || ''),
+      cpfCnpj: clienteParams.cpfCnpj || '',
       razaoSocial: clienteParams.razaoSocial || '',
-      telefone: this.formatarTelefone(clienteParams.telefone || ''),
-      celular: this.formatarTelefone(clienteParams.celular || ''),
+      telefone: clienteParams.telefone || '',
+      celular: clienteParams.celular || '',
       email: clienteParams.email || '',
       cep: clienteParams.cep || '',
       logradouro: clienteParams.logradouro || '',
@@ -353,89 +335,7 @@ export class PedidoFormComponent implements OnInit {
     };
   }
 
-  // Métodos auxiliares para formatação
-  private formatarCpfCnpj(cpfCnpj: string): string {
-    if (!cpfCnpj) return '';
-    return cpfCnpj.length === 11
-      ? cpfCnpj.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') // Formato CPF
-      : cpfCnpj.replace(
-          /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
-          '$1.$2.$3/$4-$5',
-        ); // Formato CNPJ
-  }
-
-  private formatarTelefone(telefone: string): string {
-    if (!telefone) return '';
-    return telefone.replace(/(\d{2})(\d{4,5})(\d{4})/, '($1) $2-$3'); // Formato (XX) XXXXX-XXXX
-  }
-
-  @ViewChild('focusElement') focusElement!: ElementRef;
-
-  clientesEncontrados: any[] = [];
-
-  selecionarCliente(cliente: any) {
-    this.formulario.patchValue({
-      idCliente: cliente.idCliente,
-      nome: cliente.nome,
-      cpfCnpj: cliente.cpfCnpj,
-      telefone: cliente.telefone,
-      celular: cliente.celular,
-      email: cliente.email,
-      cep: cliente.cep,
-      logradouro: cliente.logradouro,
-      numero: cliente.numero,
-      complemento: cliente.complemento,
-      bairro: cliente.bairro,
-      cidade: cliente.cidade,
-      estado: cliente.estado,
-    });
-    this.clientesEncontrados = [];
-  }
-  onCpfCnpjPedidoInput(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, '');
-
-    if (value.length > 14) {
-      value = value.substring(0, 14);
-    }
-
-    if (value.length > 11) {
-      // Formata como CNPJ: xx.xxx.xxx/xxxx-xx
-      value = value.replace(
-        /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2}).*/,
-        '$1.$2.$3/$4-$5',
-      );
-    } else if (value.length > 9) {
-      // Formata como CPF: xxx.xxx.xxx-xx
-      value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{2}).*/, '$1.$2.$3-$4');
-    } else if (value.length > 6) {
-      value = value.replace(/^(\d{3})(\d{3})(\d+).*/, '$1.$2.$3');
-    } else if (value.length > 3) {
-      value = value.replace(/^(\d{3})(\d+).*/, '$1.$2');
-    }
-
-    input.value = value;
-    this.formulario.get('cpfCnpj')?.setValue(value);
-  }
-
   checked = false;
-
-  isPaymentChecked = false;
-  onPaymentCheckBoxChange(event: any): void {
-    this.isPaymentChecked = event.checked;
-    if (this.isPaymentChecked) {
-      this.formulario.patchValue({
-        tipoPgto: 'Á vista',
-      });
-    }
-  }
-
-  selectClick() {
-    const diaFaturado = this.formulario.get('tipoPgto')?.value;
-    this.formulario.patchValue({
-      tipoPgto: diaFaturado,
-    });
-  }
 
   isAdressChecked = false;
   onToggleChange(event: any): void {
@@ -509,16 +409,6 @@ export class PedidoFormComponent implements OnInit {
     }
   }
 
-  selectedMetros!: string;
-  metros: Metros[] = [
-    { value: '15 metros', viewValue: '15 metros' },
-    { value: '30 metros', viewValue: '30 metros' },
-    { value: '45 metros', viewValue: '45 metros' },
-    { value: '60 metros', viewValue: '60 metros' },
-    { value: '75 metros', viewValue: '75 metros' },
-    { value: '90 metros', viewValue: '90 metros' },
-  ];
-
   listaVolume!: string;
   volumes: Volumes[] = [
     { value: 'cx-5m³', viewValue: 'cx-5m³' },
@@ -556,7 +446,7 @@ export class PedidoFormComponent implements OnInit {
 
   dataAtual: Date = new Date();
 
-   async onSubmit(status: string) {
+  async onSubmit(status: string) {
     this.formulario.patchValue({ status: status });
 
     if (status == 'Salvo') {
