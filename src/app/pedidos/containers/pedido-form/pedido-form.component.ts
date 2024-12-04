@@ -101,14 +101,11 @@ export class PedidoFormComponent implements OnInit {
   ngOnInit(): void {
     const pedido: Pedido = this.route.snapshot.data['pedido'];
     this.formulario = this.formBuilder.group({
-      nomeBusca: [
-        pedido.nomeBusca,
-        [Validators.required, Validators.minLength(3)],
-      ],
-      // idCliente: [pedido.idCliente, [Validators.pattern(/^\d+$/)]],
-      idCliente: [pedido.idCliente],
+      idPedido: [pedido.idPedido],
       nome: [pedido.nome],
-      cpfcnpj: [pedido.cpfcnpj],
+      cpfCnpj: [pedido.cpfCnpj],
+      razaoSocial: [pedido.razaoSocial],
+      idCliente: [pedido.idCliente],
       telefone: [pedido.telefone],
       celular: [pedido.celular],
       email: [pedido.email],
@@ -119,25 +116,14 @@ export class PedidoFormComponent implements OnInit {
       bairro: [pedido.bairro],
       cidade: [pedido.cidade],
       estado: [pedido.estado],
-      idPedido: [pedido.idPedido],
-      nomePedido: [
-        pedido.nomePedido,
-        [
-          Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(100),
-        ],
-      ],
-      razaoSocial: [pedido.razaoSocial],
-      cpfcnpjPedido: [pedido.cpfcnpjPedido],
       tipoPgto: [pedido.tipoPgto],
-      cepPedido: [this.formatarCep(pedido.cepPedido)],
-      logradouroPedido: [pedido.logradouroPedido],
-      numeroPedido: [pedido.numeroPedido],
-      complementoPedido: [pedido.complementoPedido],
-      bairroPedido: [pedido.bairroPedido],
-      cidadePedido: [pedido.cidadePedido],
-      estadoPedido: [pedido.estadoPedido],
+      cepEntrega: [this.formatarCep(pedido.cepEntrega)],
+      logradouroEntrega: [pedido.logradouroEntrega],
+      numeroEntrega: [pedido.numeroEntrega],
+      complementoEntrega: [pedido.complementoEntrega],
+      bairroEntrega: [pedido.bairroEntrega],
+      cidadeEntrega: [pedido.cidadeEntrega],
+      estadoEntrega: [pedido.estadoEntrega],
       sfobras: [pedido.sfobras],
       cno: [pedido.cno],
       ie: [pedido.ie],
@@ -150,7 +136,7 @@ export class PedidoFormComponent implements OnInit {
       precoLv10: [this.formatarParaReais(pedido.precoLv10)],
       precoLv15: [this.formatarParaReais(pedido.precoLv15)],
       precoEscolhido: [''],
-      ajudanteHora: [pedido.ajudanteHora],
+      ajudante: [pedido.ajudante],
       observacao: [pedido.observacao],
       dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
       status: [pedido.status],
@@ -160,9 +146,11 @@ export class PedidoFormComponent implements OnInit {
       if (params) {
         const pedido: Pedido = this.formatarPedido(params);
         this.formulario.patchValue({
-          idCliente: pedido.idCliente,
+          idPedido: pedido.idPedido,
           nome: pedido.nome,
-          cpfcnpj: pedido.cpfcnpj,
+          cpfCnpj: pedido.cpfCnpj,
+          razaoSocial: pedido.razaoSocial,
+          idCliente: pedido.idCliente,
           telefone: pedido.telefone,
           celular: pedido.celular,
           email: pedido.email,
@@ -173,18 +161,14 @@ export class PedidoFormComponent implements OnInit {
           bairro: pedido.bairro,
           cidade: pedido.cidade,
           estado: pedido.estado,
-          idPedido: pedido.idPedido,
-          nomePedido: pedido.nomePedido,
-          razaoSocial: pedido.razaoSocial,
-          cpfcnpjPedido: pedido.cpfcnpjPedido,
           tipoPgto: pedido.tipoPgto,
-          cepPedido: pedido.cepPedido,
-          logradouroPedido: pedido.logradouroPedido,
-          numeroPedido: pedido.numeroPedido,
-          complementoPedido: pedido.complementoPedido,
-          bairroPedido: pedido.bairroPedido,
-          cidadePedido: pedido.cidadePedido,
-          estadoPedido: pedido.estadoPedido,
+          cepEntrega: pedido.cepEntrega,
+          logradouroEntrega: pedido.logradouroEntrega,
+          numeroEntrega: pedido.numeroEntrega,
+          complementoEntrega: pedido.complementoEntrega,
+          bairroEntrega: pedido.bairroEntrega,
+          cidadeEntrega: pedido.cidadeEntrega,
+          estadoEntrega: pedido.estadoEntrega,
           sfobras: pedido.sfobras,
           cno: pedido.cno,
           ie: pedido.ie,
@@ -196,7 +180,7 @@ export class PedidoFormComponent implements OnInit {
           precoLv5: pedido.precoLv5,
           precoLv10: pedido.precoLv10,
           precoLv15: pedido.precoLv15,
-          ajudanteHora: pedido.ajudanteHora,
+          ajudante: pedido.ajudante,
           observacao: pedido.observacao,
           status: pedido.status,
         });
@@ -209,7 +193,8 @@ export class PedidoFormComponent implements OnInit {
         this.formulario.patchValue({
           idCliente: cliente.idCliente,
           nome: cliente.nome,
-          cpfcnpj: cliente.cpfcnpj,
+          cpfCnpj: cliente.cpfCnpj,
+          razaoSocial: cliente.razaoSocial,
           telefone: cliente.telefone,
           celular: cliente.celular,
           email: cliente.email,
@@ -220,27 +205,29 @@ export class PedidoFormComponent implements OnInit {
           bairro: cliente.bairro,
           cidade: cliente.cidade,
           estado: cliente.estado,
+          tipoPgto: cliente.tipoPgto,
+          cepEntrega: cliente.cepEntrega,
+          logradouroEntrega: cliente.logradouroEntrega,
+          numeroEntrega: cliente.numeroEntrega,
+          complementoEntrega: cliente.complementoEntrega,
+          bairroEntrega: cliente.bairroEntrega,
+          cidadeEntrega: cliente.cidadeEntrega,
+          estadoEntrega: cliente.estadoEntrega,
+          sfobras: cliente.sfobras,
+          cno: cliente.cno,
+          ie: cliente.ie,
+          mangueira: cliente.mangueira,
+          precoCx5: cliente.precoCx5,
+          precoCx10: cliente.precoCx10,
+          precoCx15: cliente.precoCx15,
+          precoLv5: cliente.precoLv5,
+          precoLv10: cliente.precoLv10,
+          precoLv15: cliente.precoLv15,
+          observacao: cliente.observacao,
+          dataAtualizacaoCliente: cliente.dataAtualizacaoCliente,
         });
       }
     });
-
-    this.formulario
-      .get('nomeBusca')
-      ?.valueChanges.pipe(
-        distinctUntilChanged(),
-        debounceTime(300), // Adiciona um atraso de 300ms antes de prosseguir
-        switchMap((nomeBusca) =>
-          nomeBusca && nomeBusca.trim() !== ''
-            ? this.clienteService.buscarPorNome(nomeBusca)
-            : [],
-        ),
-      )
-      .subscribe((dados: any[]) => {
-        this.clientesEncontrados = Array.isArray(dados) ? dados : [];
-        if (this.clientesEncontrados.length === 0) {
-          this.dialogoClienteNaoEncontrado();
-        }
-      });
 
     this.formatarCampos([
       'precoCx5',
@@ -284,11 +271,11 @@ export class PedidoFormComponent implements OnInit {
   // Método para formatar dados do pedido vindo da consulta expandida.
   private formatarPedido(pedidoParams: any): Pedido {
     return {
-      dataAtualizacaoPedido: pedidoParams.dataAtualizacaoPedido || '',
-      nomeBusca: pedidoParams.nomeBusca || '',
-      idCliente: pedidoParams.idCliente || '',
+      idPedido: pedidoParams.idPedido || '',
       nome: pedidoParams.nome || '',
-      cpfcnpj: pedidoParams.cpfcnpj || '',
+      cpfCnpj: pedidoParams.cpfCnpj || '',
+      razaoSocial: pedidoParams.razaoSocial || '',
+      idCliente: pedidoParams.idCliente || '',
       telefone: pedidoParams.telefone || '',
       celular: pedidoParams.celular || '',
       email: pedidoParams.email || '',
@@ -299,18 +286,14 @@ export class PedidoFormComponent implements OnInit {
       bairro: pedidoParams.bairro || '',
       cidade: pedidoParams.cidade || '',
       estado: pedidoParams.estado || '',
-      idPedido: pedidoParams.idPedido || '',
-      nomePedido: pedidoParams.nomePedido || '',
-      razaoSocial: pedidoParams.razaoSocial || '',
-      cpfcnpjPedido: pedidoParams.cpfcnpjPedido || '',
       tipoPgto: pedidoParams.tipoPgto || '',
-      cepPedido: pedidoParams.cepPedido || '',
-      logradouroPedido: pedidoParams.logradouroPedido || '',
-      numeroPedido: pedidoParams.numeroPedido || '',
-      complementoPedido: pedidoParams.complementoPedido || '',
-      bairroPedido: pedidoParams.bairroPedido || '',
-      cidadePedido: pedidoParams.cidadePedido || '',
-      estadoPedido: pedidoParams.estadoPedido || '',
+      cepEntrega: pedidoParams.cepEntrega || '',
+      logradouroEntrega: pedidoParams.logradouroEntrega || '',
+      numeroEntrega: pedidoParams.numeroEntrega || '',
+      complementoEntrega: pedidoParams.complementoEntrega || '',
+      bairroEntrega: pedidoParams.bairroEntrega || '',
+      cidadeEntrega: pedidoParams.cidadeEntrega || '',
+      estadoEntrega: pedidoParams.estadoEntrega || '',
       sfobras: pedidoParams.sfobras || '',
       cno: pedidoParams.cno || '',
       ie: pedidoParams.ie || '',
@@ -322,19 +305,21 @@ export class PedidoFormComponent implements OnInit {
       precoLv5: pedidoParams.precoLv5 || '',
       precoLv10: pedidoParams.precoLv10 || '',
       precoLv15: pedidoParams.precoLv15 || '',
-      ajudanteHora: pedidoParams.ajudanteHora || '',
+      ajudante: pedidoParams.ajudante || '',
       observacao: pedidoParams.observacao || '',
       status: pedidoParams.status || '',
+      dataAtualizacaoPedido: pedidoParams.dataAtualizacaoPedido || '',
     };
   }
 
   // Método para formatar dados do cliente
   private formatarCliente(clienteParams: any): Cliente {
     return {
-      dataAtualizacaoCliente: clienteParams.dataAtualizacaoCliente || '',
+      nomeBusca: clienteParams.nomeBusca || '',
       idCliente: clienteParams.idCliente || '',
       nome: clienteParams.nome || '',
-      cpfcnpj: this.formatarCpfCnpj(clienteParams.cpfcnpj || ''),
+      cpfCnpj: this.formatarCpfCnpj(clienteParams.cpfCnpj || ''),
+      razaoSocial: clienteParams.razaoSocial || '',
       telefone: this.formatarTelefone(clienteParams.telefone || ''),
       celular: this.formatarTelefone(clienteParams.celular || ''),
       email: clienteParams.email || '',
@@ -345,15 +330,35 @@ export class PedidoFormComponent implements OnInit {
       bairro: clienteParams.bairro || '',
       cidade: clienteParams.cidade || '',
       estado: clienteParams.estado || '',
+      tipoPgto: clienteParams.tipoPgto || '',
+      cepEntrega: clienteParams.cepEntrega || '',
+      logradouroEntrega: clienteParams.logradouroEntrega || '',
+      numeroEntrega: clienteParams.numeroEntrega || '',
+      complementoEntrega: clienteParams.complementoEntrega || '',
+      bairroEntrega: clienteParams.bairroEntrega || '',
+      cidadeEntrega: clienteParams.cidadeEntrega || '',
+      estadoEntrega: clienteParams.estadoEntrega || '',
+      sfobras: clienteParams.sfobras || '',
+      cno: clienteParams.cno || '',
+      ie: clienteParams.ie || '',
+      mangueira: clienteParams.mangueira || '',
+      precoCx5: clienteParams.precoCx5 || '',
+      precoCx10: clienteParams.precoCx10 || '',
+      precoCx15: clienteParams.precoCx15 || '',
+      precoLv5: clienteParams.precoLv5 || '',
+      precoLv10: clienteParams.precoLv10 || '',
+      precoLv15: clienteParams.precoLv15 || '',
+      observacao: clienteParams.observacao || '',
+      dataAtualizacaoCliente: clienteParams.dataAtualizacaoCliente || '',
     };
   }
 
   // Métodos auxiliares para formatação
-  private formatarCpfCnpj(cpfcnpj: string): string {
-    if (!cpfcnpj) return '';
-    return cpfcnpj.length === 11
-      ? cpfcnpj.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') // Formato CPF
-      : cpfcnpj.replace(
+  private formatarCpfCnpj(cpfCnpj: string): string {
+    if (!cpfCnpj) return '';
+    return cpfCnpj.length === 11
+      ? cpfCnpj.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') // Formato CPF
+      : cpfCnpj.replace(
           /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
           '$1.$2.$3/$4-$5',
         ); // Formato CNPJ
@@ -372,7 +377,7 @@ export class PedidoFormComponent implements OnInit {
     this.formulario.patchValue({
       idCliente: cliente.idCliente,
       nome: cliente.nome,
-      cpfcnpj: cliente.cpfcnpj,
+      cpfCnpj: cliente.cpfCnpj,
       telefone: cliente.telefone,
       celular: cliente.celular,
       email: cliente.email,
@@ -386,51 +391,6 @@ export class PedidoFormComponent implements OnInit {
     });
     this.clientesEncontrados = [];
   }
-
-  // consultaClienteId() {
-  //   const idCliente = this.formulario.get('idCliente')?.value;
-  //   if (idCliente != '') {
-  //     this.clienteService.buscarPorId(idCliente).subscribe((dados: any) => {
-  //       if (dados !== null && dados != undefined) {
-  //         this.formulario.patchValue({
-  //           nome: dados.nome,
-  //           cpfcnpj: dados.cpfcnpj,
-  //           telefone: dados.telefone,
-  //           celular: dados.celular,
-  //           email: dados.email,
-  //           cep: dados.cep,
-  //           logradouro: dados.logradouro,
-  //           numero: dados.numero,
-  //           complemento: dados.complemento,
-  //           bairro: dados.bairro,
-  //           cidade: dados.cidade,
-  //           estado: dados.estado,
-  //         });
-  //       } else {
-  //         this.dialogoClienteNaoEncontrado();
-  //         this.formulario.patchValue({
-  //           idCliente: idCliente.clear_all,
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
-
-  dialogoClienteNaoEncontrado() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: 'Cliente não encontrado, deseja cadastrar?',
-    });
-    dialogRef.afterClosed().subscribe((result: boolean) => {
-      if (result) {
-        this.router.navigate(['/cadastrar-cliente'], {
-          relativeTo: this.route,
-        });
-      } else {
-        this.setFocus();
-      }
-    });
-  }
-
   onCpfCnpjPedidoInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     let value = input.value.replace(/\D/g, '');
@@ -455,11 +415,7 @@ export class PedidoFormComponent implements OnInit {
     }
 
     input.value = value;
-    this.formulario.get('cpfcnpj')?.setValue(value);
-  }
-
-  setFocus() {
-    this.focusElement.nativeElement.focus();
+    this.formulario.get('cpfCnpj')?.setValue(value);
   }
 
   checked = false;
@@ -592,6 +548,10 @@ export class PedidoFormComponent implements OnInit {
       style: 'currency',
       currency: 'BRL',
     });
+  }
+
+  onCheckboxChange(value: string) {
+    this.formulario.patchValue({ ajudante: value });
   }
 
   dataAtual: Date = new Date();

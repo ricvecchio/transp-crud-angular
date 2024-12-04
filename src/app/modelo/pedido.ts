@@ -1,9 +1,9 @@
 export interface Pedido {
-  dataAtualizacaoPedido: string;
-  nomeBusca: string;
-  idCliente: string;
+  idPedido: string;
   nome: string;
-  cpfcnpj: string;
+  cpfCnpj: string;
+  razaoSocial: string;
+  idCliente: string;
   telefone: string;
   celular: string;
   email: string;
@@ -14,18 +14,14 @@ export interface Pedido {
   bairro: string;
   cidade: string;
   estado: string;
-  idPedido: string;
-  nomePedido: string;
-  razaoSocial: string;
-  cpfcnpjPedido: string;
   tipoPgto: string;
-  cepPedido: string;
-  logradouroPedido: string;
-  numeroPedido: string;
-  complementoPedido: string;
-  bairroPedido: string;
-  cidadePedido: string;
-  estadoPedido: string;
+  cepEntrega: string;
+  logradouroEntrega: string;
+  numeroEntrega: string;
+  complementoEntrega: string;
+  bairroEntrega: string;
+  cidadeEntrega: string;
+  estadoEntrega: string;
   sfobras: string;
   cno: string;
   ie: string;
@@ -37,7 +33,8 @@ export interface Pedido {
   precoLv5: string;
   precoLv10: string;
   precoLv15: string;
-  ajudanteHora: string;
+  ajudante: string;
   observacao: string;
   status: string;
+  dataAtualizacaoPedido: string;
 }

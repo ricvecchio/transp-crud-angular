@@ -34,7 +34,7 @@ export class ClientesListaComponent implements OnInit {
     'acaoConsulta',
     'idCliente',
     'nome',
-    'cpfcnpj',
+    'cpfCnpj',
     'telefone',
     'celular',
     'email',

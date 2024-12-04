@@ -33,10 +33,10 @@ export class ExpandirClienteComponent implements OnInit {
     const cliente: Cliente = this.route.snapshot.data['cliente'];
 
     this.formulario = this.formBuilder.group({
-      dataAtualizacaoCliente: [cliente.dataAtualizacaoCliente],
       idCliente: [cliente.idCliente],
       nome: [cliente.nome],
-      cpfcnpj: [cliente.cpfcnpj],
+      cpfCnpj: [cliente.cpfCnpj],
+      razaoSocial: [cliente.razaoSocial],
       telefone: [cliente.telefone],
       celular: [cliente.celular],
       email: [cliente.email],
@@ -47,10 +47,31 @@ export class ExpandirClienteComponent implements OnInit {
       bairro: [cliente.bairro],
       cidade: [cliente.cidade],
       estado: [cliente.estado],
+      tipoPgto: [cliente.tipoPgto],
+      cepEntrega: [cliente.cepEntrega],
+      logradouroEntrega: [cliente.logradouroEntrega],
+      numeroEntrega: [cliente.numeroEntrega],
+      complementoEntrega: [cliente.complementoEntrega],
+      bairroEntrega: [cliente.bairroEntrega],
+      cidadeEntrega: [cliente.cidadeEntrega],
+      estadoEntrega: [cliente.estadoEntrega],
+      sfobras: [cliente.sfobras],
+      cno: [cliente.cno],
+      ie: [cliente.ie],
+      mangueira: [cliente.mangueira],
+      precoCx5: [cliente.precoCx5],
+      precoCx10: [cliente.precoCx10],
+      precoCx15: [cliente.precoCx15],
+      precoLv5: [cliente.precoLv5],
+      precoLv10: [cliente.precoLv10],
+      precoLv15: [cliente.precoLv15],
+      observacao: [cliente.observacao],
+      dataAtualizacaoCliente: [cliente.dataAtualizacaoCliente],
     });
-    this.formulario.get('dataAtualizacaoCliente')?.disable();
+    this.formulario.get('idCliente')?.disable();
     this.formulario.get('nome')?.disable();
-    this.formulario.get('cpfcnpj')?.disable();
+    this.formulario.get('cpfCnpj')?.disable();
+    this.formulario.get('razaoSocial')?.disable();
     this.formulario.get('telefone')?.disable();
     this.formulario.get('celular')?.disable();
     this.formulario.get('email')?.disable();
@@ -61,6 +82,26 @@ export class ExpandirClienteComponent implements OnInit {
     this.formulario.get('bairro')?.disable();
     this.formulario.get('cidade')?.disable();
     this.formulario.get('estado')?.disable();
+    this.formulario.get('tipoPgto')?.disable();
+    this.formulario.get('cepEntrega')?.disable();
+    this.formulario.get('logradouroEntrega')?.disable();
+    this.formulario.get('numeroEntrega')?.disable();
+    this.formulario.get('complementoEntrega')?.disable();
+    this.formulario.get('bairroEntrega')?.disable();
+    this.formulario.get('cidadeEntrega')?.disable();
+    this.formulario.get('estadoEntrega')?.disable();
+    this.formulario.get('sfobras')?.disable();
+    this.formulario.get('cno')?.disable();
+    this.formulario.get('ie')?.disable();
+    this.formulario.get('mangueira')?.disable();
+    this.formulario.get('precoCx5')?.disable();
+    this.formulario.get('precoCx10')?.disable();
+    this.formulario.get('precoCx15')?.disable();
+    this.formulario.get('precoLv5')?.disable();
+    this.formulario.get('precoLv10')?.disable();
+    this.formulario.get('precoLv15')?.disable();
+    this.formulario.get('observacao')?.disable();
+    this.formulario.get('dataAtualizacaoCliente')?.disable();
   }
 
   onBack() {

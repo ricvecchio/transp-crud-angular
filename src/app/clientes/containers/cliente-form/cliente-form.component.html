@@ -7,6 +7,47 @@
       <div class="row">
         <div class="col-md-9">
           <mat-form-field class="form-grid">
+            <mat-label>Buscar cliente pelo nome</mat-label>
+            <input
+              matInput
+              disableRipple
+              [matAutocomplete]="auto"
+              name="nomeBusca"
+              placeholder="Digite o nome do Cliente"
+              formControlName="nomeBusca"
+              #focusElement
+            />
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option
+                *ngFor="let cliente of clientesEncontrados"
+                [value]="cliente.nome"
+                (click)="selecionarCliente(cliente)"
+              >
+                {{ cliente.nome }} <strong> - CPF/CNPJ: </strong
+                >{{ cliente.cpfCnpj }} <strong> - ID Cliente: </strong
+                >{{ cliente.idCliente }}
+              </mat-option>
+            </mat-autocomplete>
+            @if (formulario.get("nomeBusca")?.invalid) {
+              <mat-error>
+                {{
+                  formUtils.getMensagemErro(formulario, "nomeBusca")
+                }}</mat-error
+              >
+            }
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <h6><strong>Informações Cliente:</strong></h6>
+    <br />
+
+    <div class="espaco-dentro">
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
             <mat-label>Nome:</mat-label>
             <input
               matInput
@@ -29,10 +70,24 @@
             <mat-label>CPF/CNPJ:</mat-label>
             <input
               matInput
-              name="cpfcnpj"
+              name="cpfCnpj"
               placeholder="Digite o CPF ou CNPJ"
-              formControlName="cpfcnpj"
+              formControlName="cpfCnpj"
               (input)="onCpfCnpjInput($event)"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+          <mat-form-field class="form-grid">
+            <mat-label>Razão Social:</mat-label>
+            <input
+              matInput
+              name="razaoSocial"
+              placeholder="Digite a Razão Social"
+              formControlName="razaoSocial"
             />
           </mat-form-field>
         </div>
@@ -163,6 +218,463 @@
               placeholder="Ex. São Paulo"
               name="estado"
               formControlName="estado"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <h6><strong>Endereço de Entrega:</strong></h6>
+
+    <div class="espaco-dentro">
+
+      <br />
+
+      <tr>
+        <mat-slide-toggle
+          color="blue"
+          (change)="onToggleChange($event)"
+          [checked]="isAdressChecked"
+        >
+          Entregar no mesmo endereço do cliente:
+        </mat-slide-toggle>
+      </tr>
+
+      <br />
+
+      <div class="row">
+        <div class="col-md-3">
+          @if (isAdressChecked) {
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>CEP:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="cepEntrega"
+                formControlName="cepEntrega"
+              />
+            </mat-form-field>
+          } @else {
+            <mat-form-field class="form-grid">
+              <mat-label>CEP:</mat-label>
+              <input
+                matInput
+                name="cepEntrega"
+                placeholder="Digite o CEP"
+                formControlName="cepEntrega"
+                (blur)="consultaCEP()"
+              />
+              @if (formulario.get("cepEntrega")?.invalid) {
+                <mat-error>
+                  {{
+                    formUtils.getMensagemErro(formulario, "cepEntrega")
+                  }}</mat-error
+                >
+              }
+            </mat-form-field>
+          }
+        </div>
+      </div>
+
+      <div class="row">
+        @if (isAdressChecked) {
+          <div class="col-md-9">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Logradouro:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="logradouroEntrega"
+                formControlName="logradouroEntrega"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Número:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="numeroEntrega"
+                formControlName="numeroEntrega"
+              />
+            </mat-form-field>
+          </div>
+        } @else {
+          <div class="col-md-9">
+            <mat-form-field class="form-grid">
+              <mat-label>Logradouro:</mat-label>
+              <input
+                matInput
+                name="logradouroEntrega"
+                placeholder="Digite o logradouro"
+                formControlName="logradouroEntrega"
+              />
+              @if (formulario.get("logradouroEntrega")?.invalid) {
+                <mat-error>
+                  {{
+                    formUtils.getMensagemErro(formulario, "logradouroEntrega")
+                  }}</mat-error
+                >
+              }
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="form-grid">
+              <mat-label>Número:</mat-label>
+              <input
+                matInput
+                name="numeroEntrega"
+                placeholder="Digite o número"
+                formControlName="numeroEntrega"
+              />
+              @if (formulario.get("numeroEntrega")?.invalid) {
+                <mat-error>
+                  {{
+                    formUtils.getMensagemErro(formulario, "numeroEntrega")
+                  }}</mat-error
+                >
+              }
+            </mat-form-field>
+          </div>
+        }
+      </div>
+
+      <div class="row">
+        @if (isAdressChecked) {
+          <div class="col-md-9">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Complemento:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="complementoEntrega"
+                formControlName="complementoEntrega"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Bairro:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="bairroEntrega"
+                formControlName="bairroEntrega"
+              />
+            </mat-form-field>
+          </div>
+        } @else {
+          <div class="col-md-9">
+            <mat-form-field class="form-grid">
+              <mat-label>Complemento:</mat-label>
+              <input
+                matInput
+                name="complementoEntrega"
+                placeholder="Ex. Apto 64"
+                formControlName="complementoEntrega"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="form-grid">
+              <mat-label>Bairro:</mat-label>
+              <input
+                matInput
+                name="bairroEntrega"
+                placeholder="Digite o bairro"
+                formControlName="bairroEntrega"
+              />
+            </mat-form-field>
+          </div>
+        }
+      </div>
+
+      <div class="row">
+        @if (isAdressChecked) {
+          <div class="col-md-9">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Cidade:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="cidadeEntrega"
+                formControlName="cidadeEntrega"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>UF:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                name="estadoEntrega"
+                formControlName="estadoEntrega"
+              />
+            </mat-form-field>
+          </div>
+        } @else {
+          <div class="col-md-9">
+            <mat-form-field class="form-grid">
+              <mat-label>Cidade:</mat-label>
+              <input
+                matInput
+                name="cidadeEntrega"
+                placeholder="Digite a cidade"
+                formControlName="cidadeEntrega"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="form-grid">
+              <mat-label>UF:</mat-label>
+              <input
+                matInput
+                name="estadoEntrega"
+                placeholder="Digite o estado. Ex: SP"
+                formControlName="estadoEntrega"
+              />
+            </mat-form-field>
+          </div>
+        }
+      </div>
+    </div>
+
+    <br />
+    <h6><strong>Informações Pedido:</strong></h6>
+    <br />
+
+    <div class="espaco-dentro">
+      Forma de Pagamento:
+      <div class="row">
+        <div class="col-md-2">
+          <mat-card-content>
+            <section class="form-grid">
+              <mat-checkbox
+                formControlName="tipoPgto"
+                class="checkbox-margin"
+                (change)="onPaymentCheckBoxChange($event)"
+                [checked]="isPaymentChecked"
+                >Á Vista
+              </mat-checkbox>
+            </section>
+          </mat-card-content>
+        </div>
+        <div class="col-md-2">
+          @if (!isPaymentChecked) {
+            <mat-card-content>
+              <section class="form-grid">
+                <mat-form-field>
+                  <mat-label>Faturado:</mat-label>
+                  <mat-select formControlName="tipoPgto">
+                    <mat-option value="0"> </mat-option>
+                    <mat-option (click)="selectClick()" value="10 dias"
+                      >10 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="11 dias"
+                      >11 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="12 dias"
+                      >12 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="13 dias"
+                      >13 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="14 dias"
+                      >14 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="15 dias"
+                      >15 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="16 dias"
+                      >16 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="17 dias"
+                      >17 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="18 dias"
+                      >18 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="19 dias"
+                      >19 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="20 dias"
+                      >20 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="21 dias"
+                      >21 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="22 dias"
+                      >22 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="23 dias"
+                      >23 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="24 dias"
+                      >24 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="25 dias"
+                      >25 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="26 dias"
+                      >26 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="27 dias"
+                      >27 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="28 dias"
+                      >28 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="29 dias"
+                      >29 dias</mat-option
+                    >
+                    <mat-option (click)="selectClick()" value="30 dias"
+                      >30 dias</mat-option
+                    >
+                  </mat-select>
+                </mat-form-field>
+              </section>
+            </mat-card-content>
+          }
+        </div>
+      </div>
+
+      <br />
+
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>SFOBRAS:</mat-label>
+            <input
+              matInput
+              name="sfobras"
+              placeholder="Digite o SFOBRAS"
+              formControlName="sfobras"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>CNO:</mat-label>
+            <input
+              matInput
+              name="cno"
+              placeholder="Digite o CNO"
+              formControlName="cno"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Inscrição Estadual:</mat-label>
+            <input
+              matInput
+              name="ie"
+              placeholder="Informe a IE"
+              formControlName="ie"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Mangueira: Metros</mat-label>
+            <select matNativeControl name="metro" formControlName="mangueira">
+              <option value="" selected></option>
+              @for (metro of metros; track metro) {
+                <option [value]="metro.value">{{ metro.viewValue }}</option>
+              }
+            </select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço cx-5m³</mat-label>
+            <input
+              matInput
+              name="precoCx5"
+              formControlName="precoCx5"
+              maxlength="12"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço cx-10m³</mat-label>
+            <input
+              matInput
+              name="precoCx10"
+              formControlName="precoCx10"
+              maxlength="12"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço cx-15m³</mat-label>
+            <input
+              matInput
+              name="precoCx15"
+              formControlName="precoCx15"
+              maxlength="12"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço lav-5m³</mat-label>
+            <input
+              matInput
+              name="precoLv5"
+              formControlName="precoLv5"
+              maxlength="12"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço lav-10m³</mat-label>
+            <input
+              matInput
+              name="precoLv10"
+              formControlName="precoLv10"
+              maxlength="12"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid">
+            <mat-label>Preço lav-15m³</mat-label>
+            <input
+              matInput
+              name="precoLv15"
+              formControlName="precoLv15"
+              maxlength="12"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <mat-form-field class="form-grid">
+            <mat-label>Observações:</mat-label>
+            <input
+              matInput
+              name="observacao"
+              placeholder="Informações adicionais"
+              formControlName="observacao"
             />
           </mat-form-field>
         </div>

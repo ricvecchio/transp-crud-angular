@@ -1,5 +1,5 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { AsyncPipe, CommonModule, Location } from '@angular/common';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   FormGroup,
   FormsModule,
@@ -7,23 +7,44 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
 import {
   MatError,
   MatFormField,
+  MatFormFieldModule,
   MatHint,
   MatLabel,
   MatPrefix,
 } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
+import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
+import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
+
+import { ClienteService } from './../../../clientes/servicos/cliente.service';
 import { Cliente } from '../../../modelo/cliente';
-import { ClienteService } from '../../servicos/cliente.service';
-import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+
+interface Metros {
+  value: string;
+  viewValue: string;
+}
+
+export interface User {
+  name: string;
+}
 
 @Component({
   selector: 'app-cliente-form',
@@ -31,14 +52,27 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrl: './cliente-form.component.css',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatOptionModule,
     MatFormField,
     MatLabel,
     MatInput,
     MatHint,
     MatError,
     MatPrefix,
+    MatDividerModule,
+    MatListModule,
+    MatRadioModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatCardModule,
+    MatCheckboxModule,
+    AsyncPipe,
   ],
 })
 export class ClienteFormComponent implements OnInit {
@@ -47,7 +81,7 @@ export class ClienteFormComponent implements OnInit {
   constructor(
     private formBuilder: NonNullableFormBuilder,
     private consultaCepService: ConsultaCepService,
-    private service: ClienteService,
+    private clienteService: ClienteService,
     private snackBar: MatSnackBar,
     private location: Location,
     private route: ActivatedRoute,
@@ -60,7 +94,9 @@ export class ClienteFormComponent implements OnInit {
     const cliente: Cliente = this.route.snapshot.data['cliente'];
 
     this.formulario = this.formBuilder.group({
+      nomeBusca: [cliente.nomeBusca],
       idCliente: [cliente.idCliente],
+      // idCliente: [cliente.idCliente, [Validators.pattern(/^\d+$/)]],
       nome: [
         cliente.nome,
         [
@@ -69,7 +105,8 @@ export class ClienteFormComponent implements OnInit {
           Validators.maxLength(100),
         ],
       ],
-      cpfcnpj: [cliente.cpfcnpj, [Validators.required]],
+      cpfCnpj: [cliente.cpfCnpj, [Validators.required]],
+      razaoSocial: [cliente.razaoSocial],
       telefone: [cliente.telefone, [Validators.required]],
       celular: [cliente.celular],
       email: [cliente.email, [Validators.required]],
@@ -80,10 +117,77 @@ export class ClienteFormComponent implements OnInit {
       bairro: [cliente.bairro],
       cidade: [cliente.cidade],
       estado: [cliente.estado],
+      tipoPgto: [cliente.tipoPgto],
+      cepEntrega: [this.formatarCep(cliente.cepEntrega)],
+      logradouroEntrega: [cliente.logradouroEntrega],
+      numeroEntrega: [cliente.numeroEntrega],
+      complementoEntrega: [cliente.complementoEntrega],
+      bairroEntrega: [cliente.bairroEntrega],
+      cidadeEntrega: [cliente.cidadeEntrega],
+      estadoEntrega: [cliente.estadoEntrega],
+      sfobras: [cliente.sfobras],
+      cno: [cliente.cno],
+      ie: [cliente.ie],
+      mangueira: [cliente.mangueira],
+      precoCx5: [this.formatarParaReais(cliente.precoCx5)],
+      precoCx10: [this.formatarParaReais(cliente.precoCx10)],
+      precoCx15: [this.formatarParaReais(cliente.precoCx15)],
+      precoLv5: [this.formatarParaReais(cliente.precoLv5)],
+      precoLv10: [this.formatarParaReais(cliente.precoLv10)],
+      precoLv15: [this.formatarParaReais(cliente.precoLv15)],
+      observacao: [cliente.observacao],
       dataAtualizacaoCliente: [cliente.dataAtualizacaoCliente],
     });
 
     this.formatarCampoCep();
+
+    this.formulario
+      .get('nomeBusca')
+      ?.valueChanges.pipe(
+        distinctUntilChanged(),
+        debounceTime(300), // Adiciona um atraso de 300ms antes de prosseguir
+        switchMap((nomeBusca) =>
+          nomeBusca && nomeBusca.trim() !== ''
+            ? this.clienteService.buscarPorNome(nomeBusca)
+            : [],
+        ),
+      )
+      .subscribe((dados: any[]) => {
+        this.clientesEncontrados = Array.isArray(dados) ? dados : [];
+      });
+
+    this.formatarCampos([
+      'precoCx5',
+      'precoCx10',
+      'precoCx15',
+      'precoLv5',
+      'precoLv10',
+      'precoLv15',
+    ]);
+  }
+
+  @ViewChild('focusElement') focusElement!: ElementRef;
+
+  clientesEncontrados: any[] = [];
+
+  selecionarCliente(cliente: any) {
+    this.formulario.patchValue({
+      idCliente: cliente.idCliente,
+      nome: cliente.nome,
+      cpfCnpj: cliente.cpfCnpj,
+      razaoSocial: cliente.razaoSocial,
+      telefone: cliente.telefone,
+      celular: cliente.celular,
+      email: cliente.email,
+      cep: cliente.cep,
+      logradouro: cliente.logradouro,
+      numero: cliente.numero,
+      complemento: cliente.complemento,
+      bairro: cliente.bairro,
+      cidade: cliente.cidade,
+      estado: cliente.estado,
+    });
+    this.clientesEncontrados = [];
   }
 
   onCpfCnpjInput(event: Event): void {
@@ -111,7 +215,7 @@ export class ClienteFormComponent implements OnInit {
     }
 
     input.value = value;
-    this.formulario.get('cpfcnpj')?.setValue(value); // Atualiza o formControl
+    this.formulario.get('cpfCnpj')?.setValue(value); // Atualiza o formControl
   }
 
   onTelefoneOuCelularInput(event: Event, controlName: string): void {
@@ -180,6 +284,92 @@ export class ClienteFormComponent implements OnInit {
     }
   }
 
+  selectedMetros!: string;
+  metros: Metros[] = [
+    { value: '15 metros', viewValue: '15 metros' },
+    { value: '30 metros', viewValue: '30 metros' },
+    { value: '45 metros', viewValue: '45 metros' },
+    { value: '60 metros', viewValue: '60 metros' },
+    { value: '75 metros', viewValue: '75 metros' },
+    { value: '90 metros', viewValue: '90 metros' },
+  ];
+
+  private formatarCampos(campos: string[]): void {
+    campos.forEach((campo) => {
+      this.formulario.get(campo)?.valueChanges.subscribe((valor) => {
+        const formatado = this.formatarParaReais(valor);
+        if (valor !== formatado) {
+          this.formulario.get(campo)?.setValue(formatado, { emitEvent: false });
+        }
+      });
+    });
+  }
+
+  private formatarParaReais(valor: any): string {
+    if (!valor) return '';
+    valor = valor.toString().replace(/[^\d]/g, ''); // Remove caracteres não numéricos
+    const numero = parseFloat(valor) / 100;
+    return numero.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  }
+
+  checked = false;
+
+  isPaymentChecked = false;
+  onPaymentCheckBoxChange(event: any): void {
+    this.isPaymentChecked = event.checked;
+    if (this.isPaymentChecked) {
+      this.formulario.patchValue({
+        tipoPgto: 'Á vista',
+      });
+    }
+  }
+
+  selectClick() {
+    const diaFaturado = this.formulario.get('tipoPgto')?.value;
+    this.formulario.patchValue({
+      tipoPgto: diaFaturado,
+    });
+  }
+
+  isAdressChecked = false;
+  onToggleChange(event: any): void {
+    this.isAdressChecked = event.checked;
+    if (this.isAdressChecked) {
+      this.limpaEndereco();
+      this.buscaEndereco();
+    } else {
+      this.limpaEndereco();
+    }
+  }
+
+  buscaEndereco() {
+    this.limpaEndereco();
+    this.formulario.patchValue({
+      cepEntrega: this.formulario.get('cep')?.value,
+      logradouroEntrega: this.formulario.get('logradouro')?.value,
+      numeroEntrega: this.formulario.get('numero')?.value,
+      complementoEntrega: this.formulario.get('complemento')?.value,
+      bairroEntrega: this.formulario.get('bairro')?.value,
+      cidadeEntrega: this.formulario.get('cidade')?.value,
+      estadoEntrega: this.formulario.get('estado')?.value,
+    });
+  }
+
+  limpaEndereco() {
+    this.formulario.patchValue({
+      cepEntrega: [''],
+      logradouroEntrega: [''],
+      numeroEntrega: [''],
+      complementoEntrega: [''],
+      bairroEntrega: [''],
+      cidadeEntrega: [''],
+      estadoEntrega: [''],
+    });
+  }
+
   // onSubmit() {
   //   if (this.formulario.valid) {
   //   this.service.salvarEmitir(this.formulario.value).subscribe(
@@ -234,14 +424,14 @@ export class ClienteFormComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
         const cliente = this.formulario.value as Cliente;
-        this.service
+        this.clienteService
           .salvarEmitir(cliente)
           .subscribe((clienteCriado: Cliente) => {
             this.router.navigate(['/cadastrar-pedido'], {
               queryParams: {
                 idCliente: clienteCriado.idCliente,
                 nome: clienteCriado.nome,
-                cpfcnpj: clienteCriado.cpfcnpj,
+                cpfCnpj: clienteCriado.cpfCnpj,
                 telefone: clienteCriado.telefone,
                 celular: clienteCriado.celular,
                 email: clienteCriado.email,
@@ -252,11 +442,29 @@ export class ClienteFormComponent implements OnInit {
                 bairro: clienteCriado.bairro,
                 cidade: clienteCriado.cidade,
                 estado: clienteCriado.estado,
+                tipoPgto: clienteCriado.tipoPgto,
+                cepEntrega: clienteCriado.cepEntrega,
+                logradouroEntrega: clienteCriado.logradouroEntrega,
+                numeroEntrega: clienteCriado.numeroEntrega,
+                complementoEntrega: clienteCriado.complementoEntrega,
+                bairroEntrega: clienteCriado.bairroEntrega,
+                cidadeEntrega: clienteCriado.cidadeEntrega,
+                estadoEntrega: clienteCriado.estadoEntrega,
+                sfobras: clienteCriado.sfobras,
+                cno: clienteCriado.cno,
+                ie: clienteCriado.ie,
+                mangueira: clienteCriado.mangueira,
+                precoCx5: clienteCriado.precoCx5,
+                precoCx10: clienteCriado.precoCx10,
+                precoCx15: clienteCriado.precoCx15,
+                precoLv5: clienteCriado.precoLv5,
+                precoLv10: clienteCriado.precoLv10,
+                precoLv15: clienteCriado.precoLv15,
               },
             });
           });
       } else {
-        this.service.salvarEmitir(this.formulario.value).subscribe(
+        this.clienteService.salvarEmitir(this.formulario.value).subscribe(
           (result) => this.onSucess(),
           (error) => this.onError(),
         );

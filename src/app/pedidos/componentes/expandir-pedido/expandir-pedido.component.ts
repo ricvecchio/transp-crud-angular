@@ -41,11 +41,11 @@ export class ExpandirPedidoComponent implements OnInit {
     const pedido: Pedido = this.route.snapshot.data['pedido'];
 
     this.formulario = this.formBuilder.group({
-      dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
       idPedido: [pedido.idPedido],
-      idCliente: [pedido.idCliente],
       nome: [pedido.nome],
-      cpfcnpj: [pedido.cpfcnpj],
+      cpfCnpj: [pedido.cpfCnpj],
+      razaoSocial: [pedido.razaoSocial],
+      idCliente: [pedido.idCliente],
       telefone: [pedido.telefone],
       celular: [pedido.celular],
       email: [pedido.email],
@@ -56,17 +56,14 @@ export class ExpandirPedidoComponent implements OnInit {
       bairro: [pedido.bairro],
       cidade: [pedido.cidade],
       estado: [pedido.estado],
-      nomePedido: [pedido.nomePedido],
-      razaoSocial: [pedido.razaoSocial],
-      cpfcnpjPedido: [pedido.cpfcnpjPedido],
       tipoPgto: [pedido.tipoPgto],
-      cepPedido: [pedido.cepPedido],
-      logradouroPedido: [pedido.logradouroPedido],
-      numeroPedido: [pedido.numeroPedido],
-      complementoPedido: [pedido.complementoPedido],
-      bairroPedido: [pedido.bairroPedido],
-      cidadePedido: [pedido.cidadePedido],
-      estadoPedido: [pedido.estadoPedido],
+      cepEntrega: [pedido.cepEntrega],
+      logradouroEntrega: [pedido.logradouroEntrega],
+      numeroEntrega: [pedido.numeroEntrega],
+      complementoEntrega: [pedido.complementoEntrega],
+      bairroEntrega: [pedido.bairroEntrega],
+      cidadeEntrega: [pedido.cidadeEntrega],
+      estadoEntrega: [pedido.estadoEntrega],
       sfobras: [pedido.sfobras],
       cno: [pedido.cno],
       ie: [pedido.ie],
@@ -78,15 +75,16 @@ export class ExpandirPedidoComponent implements OnInit {
       precoLv5: [pedido.precoLv5],
       precoLv10: [pedido.precoLv10],
       precoLv15: [pedido.precoLv15],
-      ajudanteHora: [pedido.ajudanteHora],
+      ajudante: [pedido.ajudante],
       observacao: [pedido.observacao],
       status: [pedido.status],
+      dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
     });
-    this.formulario.get('dataAtualizacaoPedido')?.disable();
     this.formulario.get('idPedido')?.disable();
-    this.formulario.get('idCliente')?.disable();
     this.formulario.get('nome')?.disable();
-    this.formulario.get('cpfcnpj')?.disable();
+    this.formulario.get('cpfCnpj')?.disable();
+    this.formulario.get('razaoSocial')?.disable();
+    this.formulario.get('idCliente')?.disable();
     this.formulario.get('telefone')?.disable();
     this.formulario.get('celular')?.disable();
     this.formulario.get('email')?.disable();
@@ -97,17 +95,14 @@ export class ExpandirPedidoComponent implements OnInit {
     this.formulario.get('bairro')?.disable();
     this.formulario.get('cidade')?.disable();
     this.formulario.get('estado')?.disable();
-    this.formulario.get('nomePedido')?.disable();
-    this.formulario.get('razaoSocial')?.disable();
-    this.formulario.get('cpfcnpjPedido')?.disable();
     this.formulario.get('tipoPgto')?.disable();
-    this.formulario.get('cepPedido')?.disable();
-    this.formulario.get('logradouroPedido')?.disable();
-    this.formulario.get('numeroPedido')?.disable();
-    this.formulario.get('complementoPedido')?.disable();
-    this.formulario.get('bairroPedido')?.disable();
-    this.formulario.get('cidadePedido')?.disable();
-    this.formulario.get('estadoPedido')?.disable();
+    this.formulario.get('cepEntrega')?.disable();
+    this.formulario.get('logradouroEntrega')?.disable();
+    this.formulario.get('numeroEntrega')?.disable();
+    this.formulario.get('complementoEntrega')?.disable();
+    this.formulario.get('bairroEntrega')?.disable();
+    this.formulario.get('cidadeEntrega')?.disable();
+    this.formulario.get('estadoEntrega')?.disable();
     this.formulario.get('sfobras')?.disable();
     this.formulario.get('cno')?.disable();
     this.formulario.get('ie')?.disable();
@@ -119,9 +114,10 @@ export class ExpandirPedidoComponent implements OnInit {
     this.formulario.get('precoLv5')?.disable();
     this.formulario.get('precoLv10')?.disable();
     this.formulario.get('precoLv15')?.disable();
-    this.formulario.get('ajudanteHora')?.disable();
+    this.formulario.get('ajudante')?.disable();
     this.formulario.get('observacao')?.disable();
     this.formulario.get('status')?.disable();
+    this.formulario.get('dataAtualizacaoPedido')?.disable();
   }
 
   onSubmitIssue() {
@@ -131,9 +127,10 @@ export class ExpandirPedidoComponent implements OnInit {
     this.router.navigate(['/cadastrar-pedido'], {
       queryParams: {
         idPedido: pedido.idPedido,
-        idCliente: pedido.idCliente,
         nome: pedido.nome,
-        cpfcnpj: pedido.cpfcnpj,
+        cpfCnpj: pedido.cpfCnpj,
+        razaoSocial: pedido.razaoSocial,
+        idCliente: pedido.idCliente,
         telefone: pedido.telefone,
         celular: pedido.celular,
         email: pedido.email,
@@ -144,17 +141,14 @@ export class ExpandirPedidoComponent implements OnInit {
         bairro: pedido.bairro,
         cidade: pedido.cidade,
         estado: pedido.estado,
-        nomePedido: pedido.nomePedido,
-        razaoSocial: pedido.razaoSocial,
-        cpfcnpjPedido: pedido.cpfcnpjPedido,
         tipoPgto: pedido.tipoPgto,
-        cepPedido: pedido.cepPedido,
-        logradouroPedido: pedido.logradouroPedido,
-        numeroPedido: pedido.numeroPedido,
-        complementoPedido: pedido.complementoPedido,
-        bairroPedido: pedido.bairroPedido,
-        cidadePedido: pedido.cidadePedido,
-        estadoPedido: pedido.estadoPedido,
+        cepEntrega: pedido.cepEntrega,
+        logradouroEntrega: pedido.logradouroEntrega,
+        numeroEntrega: pedido.numeroEntrega,
+        complementoEntrega: pedido.complementoEntrega,
+        bairroEntrega: pedido.bairroEntrega,
+        cidadeEntrega: pedido.cidadeEntrega,
+        estadoEntrega: pedido.estadoEntrega,
         sfobras: pedido.sfobras,
         cno: pedido.cno,
         ie: pedido.ie,
@@ -166,9 +160,10 @@ export class ExpandirPedidoComponent implements OnInit {
         precoLv5: pedido.precoLv5,
         precoLv10: pedido.precoLv10,
         precoLv15: pedido.precoLv15,
-        ajudanteHora: pedido.ajudanteHora,
+        ajudante: pedido.ajudante,
         observacao: pedido.observacao,
         status: pedido.status,
+        dataAtualizacaoPedido: pedido.dataAtualizacaoPedido,
       },
     });
   }

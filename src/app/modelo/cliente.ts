@@ -1,8 +1,9 @@
 export interface Cliente {
-  dataAtualizacaoCliente: string;
+  nomeBusca: string;
   idCliente: string;
   nome: string;
-  cpfcnpj: string;
+  cpfCnpj: string;
+  razaoSocial: string;
   telefone: string;
   celular: string;
   email: string;
@@ -13,4 +14,24 @@ export interface Cliente {
   bairro: string;
   cidade: string;
   estado: string;
+  tipoPgto: string;
+  cepEntrega: string;
+  logradouroEntrega: string;
+  numeroEntrega: string;
+  complementoEntrega: string;
+  bairroEntrega: string;
+  cidadeEntrega: string;
+  estadoEntrega: string;
+  sfobras: string;
+  cno: string;
+  ie: string;
+  mangueira: string;
+  precoCx5: string;
+  precoCx10: string;
+  precoCx15: string;
+  precoLv5: string;
+  precoLv10: string;
+  precoLv15: string;
+  observacao: string;
+  dataAtualizacaoCliente: string;
 }

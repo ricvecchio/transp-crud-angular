@@ -33,9 +33,9 @@ export class PedidosListaComponent implements OnInit {
   readonly displayedColumns: string[] = [
     'acaoConsulta',
     'idPedido',
-    'nomePedido',
+    'nome',
     'razaoSocial',
-    'cpfcnpjPedido',
+    'cpfCnpj',
     'tipoPgto',
     'bairroPedido',
     'mangueira',

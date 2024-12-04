@@ -26,11 +26,11 @@
           >
           <mat-cell *matCellDef="let pedido">{{ pedido.idPedido }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="nomePedido">
+        <ng-container matColumnDef="nome">
           <mat-header-cell *matHeaderCellDef
             ><strong>Nome</strong></mat-header-cell
           >
-          <mat-cell *matCellDef="let pedido">{{ pedido.nomePedido }}</mat-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.nome }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="razaoSocial">
           <mat-header-cell *matHeaderCellDef
@@ -38,12 +38,12 @@
           >
           <mat-cell *matCellDef="let pedido">{{ pedido.razaoSocial }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="cpfcnpjPedido">
+        <ng-container matColumnDef="cpfCnpj">
           <mat-header-cell *matHeaderCellDef
             ><strong>CPF/CNPJ</strong></mat-header-cell
           >
           <mat-cell *matCellDef="let pedido">{{
-            pedido.cpfcnpjPedido
+            pedido.cpfCnpj
           }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="tipoPgto">

@@ -8,19 +8,22 @@ import { ClienteService } from '../clientes/servicos/cliente.service';
 @Injectable({
   providedIn: 'root',
 })
-export class ClienteResolver  {
+export class ClienteResolver {
+  constructor(private service: ClienteService) {}
 
-  constructor(private service: ClienteService) { }
-
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Cliente> {
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot,
+  ): Observable<Cliente> {
     if (route.params && route.params['idCliente']) {
       return this.service.buscarPorId(route.params['idCliente']);
     }
     return of({
-      dataAtualizacaoCliente: '',
+      nomeBusca: '',
       idCliente: '',
       nome: '',
-      cpfcnpj: '',
+      cpfCnpj: '',
+      razaoSocial: '',
       telefone: '',
       celular: '',
       email: '',
@@ -30,7 +33,27 @@ export class ClienteResolver  {
       complemento: '',
       bairro: '',
       cidade: '',
-      estado: ''
+      estado: '',
+      tipoPgto: '',
+      cepEntrega: '',
+      logradouroEntrega: '',
+      numeroEntrega: '',
+      complementoEntrega: '',
+      bairroEntrega: '',
+      cidadeEntrega: '',
+      estadoEntrega: '',
+      sfobras: '',
+      cno: '',
+      ie: '',
+      mangueira: '',
+      precoCx5: '',
+      precoCx10: '',
+      precoCx15: '',
+      precoLv5: '',
+      precoLv10: '',
+      precoLv15: '',
+      observacao: '',
+      dataAtualizacaoCliente: '',
     });
   }
-};
+}
