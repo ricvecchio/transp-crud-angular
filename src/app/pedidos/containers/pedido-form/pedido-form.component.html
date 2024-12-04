@@ -4,6 +4,11 @@
       <strong>Emitir Pedido:</strong>
       {{ this.formulario.get("idPedido")?.value }}
     </h5>
+
+    <br />
+    <br />
+
+    <h6><strong>Informações Cliente:</strong></h6>
     <br />
 
     <div class="espaco-dentro">
@@ -20,15 +25,6 @@
             />
           </mat-form-field>
         </div>
-      </div>
-    </div>
-
-    <br />
-    <h6><strong>Informações Cliente:</strong></h6>
-    <br />
-
-    <div class="espaco-dentro">
-      <div class="row">
         <div class="col-md-9">
           <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Nome:</mat-label>
@@ -41,7 +37,9 @@
             />
           </mat-form-field>
         </div>
+      </div>
 
+      <div class="row">
         <div class="col-md-3">
           <mat-form-field class="form-grid" appearance="outline">
             <mat-label>CPF/CNPJ:</mat-label>
@@ -54,9 +52,6 @@
             />
           </mat-form-field>
         </div>
-      </div>
-
-      <div class="row">
         <div class="col-md-9">
           <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Razão Social:</mat-label>
@@ -439,7 +434,7 @@
       <div class="row">
         <div class="col-md-2">
           <!-- <mat-form-field class="form-grid" appearance="outline"> -->
-         <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid">
             <mat-label>Faturado:</mat-label>
             <input
               matInput
@@ -708,7 +703,7 @@
       <div class="row">
         <div class="col-md-4">
           <b>MOTORISTA: </b>
-          {{ formulario.get('ajudante')?.value }}
+          {{ formulario.get("ajudante")?.value }}
         </div>
         <div class="col-md-4">
           <b>CAMINHÃO: </b>
