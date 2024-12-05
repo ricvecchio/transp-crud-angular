@@ -1,26 +1,13 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import {
-  FormGroup,
-  FormsModule,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import {
-  MatError,
-  MatFormField,
-  MatFormFieldModule,
-  MatHint,
-  MatLabel,
-  MatPrefix,
-} from '@angular/material/form-field';
+import { MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel, MatPrefix } from '@angular/material/form-field';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
@@ -30,12 +17,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
-import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
-
-import { ClienteService } from './../../../clientes/servicos/cliente.service';
 import { Cliente } from '../../../modelo/cliente';
+import { ClienteService } from './../../../clientes/servicos/cliente.service';
 
 interface Metros {
   value: string;
@@ -389,7 +374,10 @@ export class ClienteFormComponent implements OnInit {
       dataAtualizacaoCliente: dataFormatada,
     });
 
-    this.dialogoNavegacaoClienteSalvo();
+    this.clienteService.salvarEmitir(this.formulario.value).subscribe(
+      (result) => this.onSucess(),
+      (error) => this.onError(),
+    );
   }
 
   private formatarData(data: Date): string {
@@ -414,60 +402,5 @@ export class ClienteFormComponent implements OnInit {
 
   private onError() {
     this.snackBar.open('Erro ao salvar o cliente!', '', { duration: 5000 });
-  }
-
-  dialogoNavegacaoClienteSalvo() {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: 'Cliente salvo, deseja emitir o pedido?',
-    });
-    dialogRef.afterClosed().subscribe((result: boolean) => {
-      if (result) {
-        const cliente = this.formulario.value as Cliente;
-        this.clienteService
-          .salvarEmitir(cliente)
-          .subscribe((clienteCriado: Cliente) => {
-            this.router.navigate(['/cadastrar-pedido'], {
-              queryParams: {
-                idCliente: clienteCriado.idCliente,
-                nome: clienteCriado.nome,
-                cpfCnpj: clienteCriado.cpfCnpj,
-                telefone: clienteCriado.telefone,
-                celular: clienteCriado.celular,
-                email: clienteCriado.email,
-                cep: clienteCriado.cep,
-                logradouro: clienteCriado.logradouro,
-                numero: clienteCriado.numero,
-                complemento: clienteCriado.complemento,
-                bairro: clienteCriado.bairro,
-                cidade: clienteCriado.cidade,
-                estado: clienteCriado.estado,
-                tipoPgto: clienteCriado.tipoPgto,
-                cepEntrega: clienteCriado.cepEntrega,
-                logradouroEntrega: clienteCriado.logradouroEntrega,
-                numeroEntrega: clienteCriado.numeroEntrega,
-                complementoEntrega: clienteCriado.complementoEntrega,
-                bairroEntrega: clienteCriado.bairroEntrega,
-                cidadeEntrega: clienteCriado.cidadeEntrega,
-                estadoEntrega: clienteCriado.estadoEntrega,
-                sfobras: clienteCriado.sfobras,
-                cno: clienteCriado.cno,
-                ie: clienteCriado.ie,
-                mangueira: clienteCriado.mangueira,
-                precoCx5: clienteCriado.precoCx5,
-                precoCx10: clienteCriado.precoCx10,
-                precoCx15: clienteCriado.precoCx15,
-                precoLv5: clienteCriado.precoLv5,
-                precoLv10: clienteCriado.precoLv10,
-                precoLv15: clienteCriado.precoLv15,
-              },
-            });
-          });
-      } else {
-        this.clienteService.salvarEmitir(this.formulario.value).subscribe(
-          (result) => this.onSucess(),
-          (error) => this.onError(),
-        );
-      }
-    });
   }
 }
