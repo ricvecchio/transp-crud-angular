@@ -1,6 +1,11 @@
 <section class="container cliente-form ff-inter">
   <form [formGroup]="formulario" id="formulario">
 
+    <h5>
+      <strong>Consulta do Cliente:</strong>
+      {{ this.formulario.get("idPedido")?.value }}
+    </h5>
+
     <br />
     <h6><strong>Informações Cliente:</strong></h6>
     <br />
