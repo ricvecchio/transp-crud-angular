@@ -95,6 +95,7 @@ export class ClientesListaComponent implements OnInit {
   applyFilter(filterValue: string | null) {
     const normalizedValue = (filterValue || '').trim().toLowerCase();
 
+
     this.dataSource.filterPredicate = (data: Cliente, filter: string) => {
       const searchInName = data.nome.toLowerCase().includes(filter);
       const searchInCpfCnpj = data.cpfCnpj.replace(/\D/g, '').includes(filter); // Remove máscara
