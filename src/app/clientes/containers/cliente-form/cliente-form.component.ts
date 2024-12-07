@@ -362,17 +362,6 @@ export class ClienteFormComponent implements OnInit {
     }
   }
 
-  // onSubmit() {
-  //   if (this.formulario.valid) {
-  //   this.service.salvarEmitir(this.formulario.value).subscribe(
-  //     (result) => this.onSucess(),
-  //     (error) => this.onError(),
-  //   );
-  //   } else {
-  //     this.formUtils.validarTodosCamposFormFields(this.formulario);
-  //   }
-  // }
-
   dataAtual: Date = new Date();
 
   onSubmit() {
@@ -389,7 +378,7 @@ export class ClienteFormComponent implements OnInit {
       }
     });
 
-    this.clienteService.salvarEmitir(this.formulario.value).subscribe(
+    this.clienteService.salvar(this.formulario.value).subscribe(
       (result) => this.onSucess(),
       (error) => this.onError(),
     );
