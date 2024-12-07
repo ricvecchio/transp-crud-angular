@@ -3,6 +3,22 @@
     <span class="toolbar-text">Lista de Pedidos</span>
   </mat-toolbar>
 
+  <br />
+
+  <div class="row">
+    <div class="col-md-9">
+      <mat-form-field class="form-grid">
+        <mat-label>Pesquisar Cliente</mat-label>
+        <input
+          matInput
+          [formControl]="filterControl"
+          placeholder="Digite o nome do cliente"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  </div>
+
   @if (pedidos$ | async; as pedidos) {
     <div>
       <mat-table [dataSource]="pedidos.pedidos" class="mat-elevation-z8">

@@ -95,16 +95,13 @@ export class ClientesListaComponent implements OnInit {
   applyFilter(filterValue: string | null) {
     const normalizedValue = (filterValue || '').trim().toLowerCase();
 
-
     this.dataSource.filterPredicate = (data: Cliente, filter: string) => {
       const searchInName = data.nome.toLowerCase().includes(filter);
       const searchInCpfCnpj = data.cpfCnpj.replace(/\D/g, '').includes(filter); // Remove máscara
       const searchInRazaoSocial = data.razaoSocial?.toLowerCase().includes(filter); // Adicionado razaoSocial
       const searchInLogradouro = data.logradouroEntrega?.toLowerCase().includes(filter); // Adicionado logradouro Entrega
-
       return searchInName || searchInCpfCnpj || searchInRazaoSocial || searchInLogradouro;
     };
-
     this.dataSource.filter = normalizedValue;
   }
 

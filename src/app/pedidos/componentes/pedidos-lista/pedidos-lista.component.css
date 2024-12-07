@@ -1,3 +1,16 @@
+mat-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+  padding: 1em;
+}
+
+mat-paginator {
+  margin-top: 1em;
+  align-self: flex-end;
+}
+
 .mat-table {
   overflow: auto;
   max-height: 600px;
@@ -11,9 +24,8 @@
   margin: 0 auto;
 }
 
-mat-card {
-  max-width: 100%;
-  margin: 1em auto;
+.action-column button {
+  margin-right: 8px;
 }
 
 .loading-spinner {
@@ -24,16 +36,10 @@ mat-card {
     justify-content: center;
 }
 
-/* Adicionando um pequeno espaçamento entre os botões */
-.action-column button {
-  margin-right: 8px;
-}
-
-/* Estilo para centralizar o texto dentro da mat-toolbar */
 .toolbar {
   display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center;     /* Centraliza verticalmente */
+  justify-content: center;
+  align-items: center;
 }
 
 .toolbar-text {
