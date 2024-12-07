@@ -701,7 +701,6 @@
       <div class="row">
         <div class="col-md-4">
           <b>MOTORISTA: </b>
-          {{ formulario.get("ajudante")?.value }}
         </div>
         <div class="col-md-4">
           <b>CAMINHÃO: </b>
@@ -714,7 +713,11 @@
       <br />
 
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-3">
+          <b>AJUDANTE: </b>
+          {{ formulario.get("ajudante")?.value }}
+        </div>
+        <div class="col-md-9">
           <b>OBS.: </b>
           {{ this.formulario.get("observacao")?.value }}
         </div>
