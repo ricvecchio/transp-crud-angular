@@ -306,7 +306,7 @@ export class ClienteFormComponent implements OnInit {
     this.isPaymentChecked = event.checked;
     if (this.isPaymentChecked) {
       this.formulario.patchValue({
-        tipoPgto: 'Á vista',
+        tipoPgto: 'Á VISTA',
       });
     }
   }
@@ -354,6 +354,14 @@ export class ClienteFormComponent implements OnInit {
     });
   }
 
+  convertToUppercase(controlName: string): void {
+    const control = this.formulario.get(controlName);
+    if (control) {
+      const value = control.value || '';
+      control.setValue(value.toUpperCase(), { emitEvent: false });
+    }
+  }
+
   // onSubmit() {
   //   if (this.formulario.valid) {
   //   this.service.salvarEmitir(this.formulario.value).subscribe(
@@ -372,6 +380,13 @@ export class ClienteFormComponent implements OnInit {
 
     this.formulario.patchValue({
       dataAtualizacaoCliente: dataFormatada,
+    });
+
+    const formValue = this.formulario.value;
+    Object.keys(formValue).forEach((key) => {
+      if (typeof formValue[key] === 'string') {
+        formValue[key] = formValue[key].toUpperCase();
+      }
     });
 
     this.clienteService.salvarEmitir(this.formulario.value).subscribe(
