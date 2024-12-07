@@ -260,6 +260,12 @@ export class PedidoFormComponent implements OnInit {
         }
         this.formulario.get('precoEscolhido')?.setValue(precoSelecionado);
       });
+
+      this.formulario.get('observacao')?.valueChanges.subscribe((valor: string) => {
+        if (valor) {
+          this.formulario.get('observacao')?.setValue(valor.toUpperCase(), { emitEvent: false });
+        }
+      });
   }
 
   // Método para formatar dados do pedido vindo da consulta expandida.
