@@ -125,20 +125,20 @@ export class ClienteFormComponent implements OnInit {
 
     this.formatarCampoCep();
 
-    this.formulario
-      .get('nomeBusca')
-      ?.valueChanges.pipe(
-        distinctUntilChanged(),
-        debounceTime(300), // Adiciona um atraso de 300ms antes de prosseguir
-        switchMap((nomeBusca) =>
-          nomeBusca && nomeBusca.trim() !== ''
-            ? this.clienteService.buscarPorNome(nomeBusca)
-            : [],
-        ),
-      )
-      .subscribe((dados: any[]) => {
-        this.clientesEncontrados = Array.isArray(dados) ? dados : [];
-      });
+    // this.formulario
+    //   .get('nomeBusca')
+    //   ?.valueChanges.pipe(
+    //     distinctUntilChanged(),
+    //     debounceTime(300),
+    //     switchMap((nomeBusca) =>
+    //       nomeBusca && nomeBusca.trim() !== ''
+    //         ? this.clienteService.buscarPorNome(nomeBusca)
+    //         : [],
+    //     ),
+    //   )
+    //   .subscribe((dados: any[]) => {
+    //     this.clientesEncontrados = Array.isArray(dados) ? dados : [];
+    //   });
 
     this.formatarCampos([
       'precoCx5',
@@ -150,29 +150,29 @@ export class ClienteFormComponent implements OnInit {
     ]);
   }
 
-  @ViewChild('focusElement') focusElement!: ElementRef;
+  // @ViewChild('focusElement') focusElement!: ElementRef;
 
-  clientesEncontrados: any[] = [];
+  // clientesEncontrados: any[] = [];
 
-  selecionarCliente(cliente: any) {
-    this.formulario.patchValue({
-      idCliente: cliente.idCliente,
-      nome: cliente.nome,
-      cpfCnpj: cliente.cpfCnpj,
-      razaoSocial: cliente.razaoSocial,
-      telefone: cliente.telefone,
-      celular: cliente.celular,
-      email: cliente.email,
-      cep: cliente.cep,
-      logradouro: cliente.logradouro,
-      numero: cliente.numero,
-      complemento: cliente.complemento,
-      bairro: cliente.bairro,
-      cidade: cliente.cidade,
-      estado: cliente.estado,
-    });
-    this.clientesEncontrados = [];
-  }
+  // selecionarCliente(cliente: any) {
+  //   this.formulario.patchValue({
+  //     idCliente: cliente.idCliente,
+  //     nome: cliente.nome,
+  //     cpfCnpj: cliente.cpfCnpj,
+  //     razaoSocial: cliente.razaoSocial,
+  //     telefone: cliente.telefone,
+  //     celular: cliente.celular,
+  //     email: cliente.email,
+  //     cep: cliente.cep,
+  //     logradouro: cliente.logradouro,
+  //     numero: cliente.numero,
+  //     complemento: cliente.complemento,
+  //     bairro: cliente.bairro,
+  //     cidade: cliente.cidade,
+  //     estado: cliente.estado,
+  //   });
+  //   this.clientesEncontrados = [];
+  // }
 
   onCpfCnpjInput(event: Event): void {
     const input = event.target as HTMLInputElement;
