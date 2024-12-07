@@ -586,15 +586,13 @@
           <h6>Ajudante p/ hora adicional:</h6>
           <p>
             <mat-checkbox
-              formControlName="ajudante"
-              [value]="'Sim'"
+              [checked]="formulario.value.ajudante === 'Sim'"
               (change)="onCheckboxChange('Sim')"
             >
               Sim
             </mat-checkbox>
             <mat-checkbox
-              formControlName="ajudante"
-              [value]="'Não'"
+              [checked]="formulario.value.ajudante === 'Não'"
               (change)="onCheckboxChange('Não')"
             >
               Não
