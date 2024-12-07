@@ -82,10 +82,6 @@ export class PedidosListaComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onAdd() {
-    this.router.navigate(['/cadastrar-pedido'], { relativeTo: this.route });
-  }
-
   onEdit(pedido: Pedido) {
     this.router.navigate(['/editar-pedido', pedido.idPedido], {
       relativeTo: this.route,
