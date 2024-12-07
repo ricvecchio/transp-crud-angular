@@ -68,12 +68,12 @@
           >
           <mat-cell *matCellDef="let pedido">{{ pedido.tipoPgto }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="bairroPedido">
+        <ng-container matColumnDef="logradouroEntrega">
           <mat-header-cell *matHeaderCellDef
-            ><strong>Bairro</strong></mat-header-cell
+            ><strong>Endereço</strong></mat-header-cell
           >
           <mat-cell *matCellDef="let pedido">{{
-            pedido.bairroPedido
+            pedido.logradouroEntrega
           }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="mangueira">
@@ -87,6 +87,12 @@
             ><strong>Volume</strong></mat-header-cell
           >
           <mat-cell *matCellDef="let pedido">{{ pedido.volume }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="dataAtualizacaoPedido">
+          <mat-header-cell *matHeaderCellDef
+            ><strong>Data</strong></mat-header-cell
+          >
+          <mat-cell *matCellDef="let pedido">{{ pedido.dataAtualizacaoPedido }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="idCliente">
           <mat-header-cell *matHeaderCellDef
