@@ -369,30 +369,30 @@ export class PedidoFormComponent implements OnInit {
   buscaEndereco() {
     this.limpaEndereco();
     this.formulario.patchValue({
-      cepPedido: this.formulario.get('cep')?.value,
-      logradouroPedido: this.formulario.get('logradouro')?.value,
-      numeroPedido: this.formulario.get('numero')?.value,
-      complementoPedido: this.formulario.get('complemento')?.value,
-      bairroPedido: this.formulario.get('bairro')?.value,
-      cidadePedido: this.formulario.get('cidade')?.value,
-      estadoPedido: this.formulario.get('estado')?.value,
+      cepEntrega: this.formulario.get('cep')?.value,
+      logradouroEntrega: this.formulario.get('logradouro')?.value,
+      numeroEntrega: this.formulario.get('numero')?.value,
+      complementoEntrega: this.formulario.get('complemento')?.value,
+      bairroEntrega: this.formulario.get('bairro')?.value,
+      cidadeEntrega: this.formulario.get('cidade')?.value,
+      estadoEntrega: this.formulario.get('estado')?.value,
     });
   }
 
   limpaEndereco() {
     this.formulario.patchValue({
-      cepPedido: [''],
-      logradouroPedido: [''],
-      numeroPedido: [''],
-      complementoPedido: [''],
-      bairroPedido: [''],
-      cidadePedido: [''],
-      estadoPedido: [''],
+      cepEntrega: [''],
+      logradouroEntrega: [''],
+      numeroEntrega: [''],
+      complementoEntrega: [''],
+      bairroEntrega: [''],
+      cidadeEntrega: [''],
+      estadoEntrega: [''],
     });
   }
 
   private formatarCampoCep(): void {
-    const cepControl = this.formulario.get('cepPedido');
+    const cepControl = this.formulario.get('cepEntrega');
     if (cepControl) {
       cepControl.valueChanges.subscribe((valor) => {
         const formatado = this.formatarCep(valor);
@@ -413,15 +413,15 @@ export class PedidoFormComponent implements OnInit {
   }
 
   consultaCEP() {
-    const cep = this.formulario.get('cepPedido')?.value;
+    const cep = this.formulario.get('cepEntrega')?.value;
     if (cep != '') {
       this.consultaCepService.getConsultaCep(cep).subscribe((dados: any) => {
         this.formulario.patchValue({
-          logradouroPedido: dados.logradouro,
-          complementoPedido: dados.complemento,
-          bairroPedido: dados.bairro,
-          cidadePedido: dados.localidade,
-          estadoPedido: dados.uf,
+          logradouroEntrega: dados.logradouro,
+          complementoEntrega: dados.complemento,
+          bairroEntrega: dados.bairro,
+          cidadeEntrega: dados.localidade,
+          estadoEntrega: dados.uf,
         });
       });
     }
