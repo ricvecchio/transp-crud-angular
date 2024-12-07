@@ -119,10 +119,3 @@ export class PedidosListaComponent implements OnInit {
     });
   }
 }
-
-
-// export class ConsultarPedidosComponent implements OnInit {
-//   // @Input() courses: Course[] = [];
-//   // @Output() add = new EventEmitter(false);
-//   // @Output() edit = new EventEmitter(false);
-//   // @Output() remove = new EventEmitter(false);
