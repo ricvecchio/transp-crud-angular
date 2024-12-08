@@ -124,17 +124,17 @@ export class PedidoFormComponent implements OnInit {
       status: [pedido.status],
     });
 
-    this.formulario.get('tipoPgto')?.disable();
-    this.formulario.get('sfobras')?.disable();
-    this.formulario.get('cno')?.disable();
-    this.formulario.get('ie')?.disable();
-    this.formulario.get('mangueira')?.disable();
-    this.formulario.get('precoCx5')?.disable();
-    this.formulario.get('precoCx10')?.disable();
-    this.formulario.get('precoCx15')?.disable();
-    this.formulario.get('precoLv5')?.disable();
-    this.formulario.get('precoLv10')?.disable();
-    this.formulario.get('precoLv15')?.disable();
+    // this.formulario.get('tipoPgto')?.disable();
+    // this.formulario.get('sfobras')?.disable();
+    // this.formulario.get('cno')?.disable();
+    // this.formulario.get('ie')?.disable();
+    // this.formulario.get('mangueira')?.disable();
+    // this.formulario.get('precoCx5')?.disable();
+    // this.formulario.get('precoCx10')?.disable();
+    // this.formulario.get('precoCx15')?.disable();
+    // this.formulario.get('precoLv5')?.disable();
+    // this.formulario.get('precoLv10')?.disable();
+    // this.formulario.get('precoLv15')?.disable();
 
     this.route.queryParams.subscribe((params) => {
       if (params) {
