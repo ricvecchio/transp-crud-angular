@@ -89,17 +89,16 @@ export class PedidosListaComponent implements OnInit {
     this.filterControl.valueChanges.subscribe((filterValue: string | null) => {
       this.applyFilter(filterValue);
     });
+
+    this.dataSource.filterPredicate = (data: Pedido, filter: string) => {
+      const dataAtualizacao = new Date(data.dataAtualizacaoPedido);
+      const filtroData = new Date(filter);
+      return dataAtualizacao.toDateString() === filtroData.toDateString();
+    };
   }
 
   applyFilter(filterValue: string | null) {
-    const normalizedValue = (filterValue || '').trim().toLowerCase();
-
-    this.dataSource.filterPredicate = (data: Pedido, filter: string) => {
-      const searchInName = data.nome.toLowerCase().includes(filter);
-      const searchInRazaoSocial = data.razaoSocial?.toLowerCase().includes(filter);
-      return searchInName || searchInRazaoSocial;
-    };
-
+    const normalizedValue = (filterValue || '').trim();
     this.dataSource.filter = normalizedValue;
   }
 
