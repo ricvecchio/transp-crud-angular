@@ -6,23 +6,23 @@
   <br />
 
   <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-4">
       <mat-form-field class="form-grid">
-        <mat-label>Pesquisar por data do pedido (intervalo)</mat-label>
-        <input
-          matInput
-          [formControl]="filterControl"
-          type="date"
-          placeholder="Ex.: 2024-12-08 - 2024-12-09"
-        />
-        <mat-icon matSuffix>search</mat-icon>
+        <mat-label>Data Inicial</mat-label>
+        <input matInput [formControl]="dataInicialControl" type="date" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field class="form-grid">
+        <mat-label>Data Final</mat-label>
+        <input matInput [formControl]="dataFinalControl" type="date" />
       </mat-form-field>
     </div>
   </div>
 
   @if (pedidos$ | async; as pedidos) {
     <div>
-      <mat-table [dataSource]="pedidos.pedidos" class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="acaoConsulta">
           <mat-header-cell *matHeaderCellDef class="action-column">
           </mat-header-cell>
@@ -59,9 +59,7 @@
           <mat-header-cell *matHeaderCellDef
             ><strong>CPF/CNPJ</strong></mat-header-cell
           >
-          <mat-cell *matCellDef="let pedido">{{
-            pedido.cpfCnpj
-          }}</mat-cell>
+          <mat-cell *matCellDef="let pedido">{{ pedido.cpfCnpj }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="tipoPgto">
           <mat-header-cell *matHeaderCellDef
@@ -93,7 +91,9 @@
           <mat-header-cell *matHeaderCellDef
             ><strong>Data</strong></mat-header-cell
           >
-          <mat-cell *matCellDef="let pedido">{{ pedido.dataAtualizacaoPedido }}</mat-cell>
+          <mat-cell *matCellDef="let pedido">{{
+            pedido.dataAtualizacaoPedido
+          }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="idCliente">
           <mat-header-cell *matHeaderCellDef

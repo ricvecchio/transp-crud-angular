@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -27,9 +27,7 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Observable, of, tap } from 'rxjs';
 
-import {
-  ConfirmationDialogComponent,
-} from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-dialog/error-dialog.component';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoPagina } from '../../../modelo/pedido-pagina';
@@ -66,6 +64,11 @@ import { PedidoService } from '../../servico/pedido.service';
 })
 export class PedidosListaComponent implements OnInit {
   pedidos$: Observable<PedidoPagina> | null = null;
+
+  dataSource = new MatTableDataSource<Pedido>();
+  dataInicialControl = new FormControl('', [Validators.pattern(/^\d{2}-\d{2}-\d{4}$/)]);
+  dataFinalControl = new FormControl('', [Validators.pattern(/^\d{2}-\d{2}-\d{4}$/)]);
+
   readonly displayedColumns: string[] = [
     'acaoConsulta',
     'idPedido',
@@ -82,38 +85,7 @@ export class PedidosListaComponent implements OnInit {
     'acao',
   ];
 
-  dataSource = new MatTableDataSource<Pedido>();
-  filterControl = new FormControl(''); // Campo de filtro
-
-  ngOnInit(): void {
-    this.filterControl.valueChanges.subscribe((filterValue: string | null) => {
-      this.applyFilter(filterValue);
-    });
-  }
-
-  applyFilter(filterValue: string | null) {
-    const normalizedValue = (filterValue || '').trim().toLowerCase();
-
-    this.dataSource.filterPredicate = (data: Pedido, filter: string) => {
-      if (!filter) return true;
-
-      const dataAtualizacao = new Date(data.dataAtualizacaoPedido).setHours(0, 0, 0, 0);
-      const filtroInicio = new Date(filter.split(' - ')[0]).setHours(0, 0, 0, 0);
-      const filtroFim = new Date(filter.split(' - ')[1] || filter).setHours(23, 59, 59, 999);
-
-      console.log('Data dataAtualizacao: ', dataAtualizacao);
-      console.log('Data filtroInicio: ', filtroInicio);
-      console.log('Data filtroFim: ', filtroFim);
-
-      return dataAtualizacao >= filtroInicio && dataAtualizacao <= filtroFim;
-    };
-    this.dataSource.filter = normalizedValue;
-  }
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  pageIndex = 0;
-  pageSize = 10;
 
   constructor(
     private pedidoService: PedidoService,
@@ -125,19 +97,55 @@ export class PedidosListaComponent implements OnInit {
     this.atualiza();
   }
 
+  pageIndex = 0;
+  pageSize = 10;
+
+  ngOnInit(): void {
+    this.atualiza();
+    this.dataInicialControl.valueChanges.subscribe(() => this.applyFilter());
+    this.dataFinalControl.valueChanges.subscribe(() => this.applyFilter());
+  }
+
   atualiza(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
     this.pedidos$ = this.pedidoService
       .listar(pageEvent.pageIndex, pageEvent.pageSize)
       .pipe(
-        tap(() => {
-          this.pageIndex = pageEvent.pageIndex;
-          this.pageSize = pageEvent.pageSize;
+        tap((pagina: PedidoPagina) => {
+          this.dataSource.data = pagina.pedidos;
+          this.dataSource.paginator = this.paginator;
         }),
         catchError((error) => {
           this.onError('Erro ao carregar pedidos.');
           return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
         }),
       );
+  }
+
+  applyFilter() {
+    const dataInicial = this.dataInicialControl.value
+      ? new Date(this.dataInicialControl.value)
+      : null;
+    const dataFinal = this.dataFinalControl.value
+      ? new Date(this.dataFinalControl.value)
+      : null;
+
+    this.dataSource.filterPredicate = (data: Pedido) => {
+      const dataAtualizacao = new Date(data.dataAtualizacaoPedido);
+
+      if (dataInicial && dataFinal) {
+        return (
+          dataAtualizacao >= dataInicial &&
+          dataAtualizacao <= new Date(dataFinal.setHours(23, 59, 59, 999))
+        );
+      } else if (dataInicial) {
+        return dataAtualizacao >= dataInicial;
+      } else if (dataFinal) {
+        return dataAtualizacao <= new Date(dataFinal.setHours(23, 59, 59, 999));
+      }
+      return true;
+    };
+
+    this.dataSource.filter = `${dataInicial || ''}-${dataFinal || ''}`;
   }
 
   onError(errorMsg: string) {
