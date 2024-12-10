@@ -89,16 +89,24 @@ export class PedidosListaComponent implements OnInit {
     this.filterControl.valueChanges.subscribe((filterValue: string | null) => {
       this.applyFilter(filterValue);
     });
-
-    this.dataSource.filterPredicate = (data: Pedido, filter: string) => {
-      const dataAtualizacao = new Date(data.dataAtualizacaoPedido);
-      const filtroData = new Date(filter);
-      return dataAtualizacao.toDateString() === filtroData.toDateString();
-    };
   }
 
   applyFilter(filterValue: string | null) {
-    const normalizedValue = (filterValue || '').trim();
+    const normalizedValue = (filterValue || '').trim().toLowerCase();
+
+    this.dataSource.filterPredicate = (data: Pedido, filter: string) => {
+      if (!filter) return true;
+
+      const dataAtualizacao = new Date(data.dataAtualizacaoPedido).setHours(0, 0, 0, 0);
+      const filtroInicio = new Date(filter.split(' - ')[0]).setHours(0, 0, 0, 0);
+      const filtroFim = new Date(filter.split(' - ')[1] || filter).setHours(23, 59, 59, 999);
+
+      console.log('Data dataAtualizacao: ', dataAtualizacao);
+      console.log('Data filtroInicio: ', filtroInicio);
+      console.log('Data filtroFim: ', filtroFim);
+
+      return dataAtualizacao >= filtroInicio && dataAtualizacao <= filtroFim;
+    };
     this.dataSource.filter = normalizedValue;
   }
 
