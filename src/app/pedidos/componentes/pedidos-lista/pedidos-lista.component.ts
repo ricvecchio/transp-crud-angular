@@ -89,7 +89,10 @@ export class PedidosListaComponent implements OnInit {
     'acao',
   ];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  ngOnInit(): void {
+    this.dataInicialControl.valueChanges.subscribe(() => this.applyFilter());
+    this.dataFinalControl.valueChanges.subscribe(() => this.applyFilter());
+  }
 
   constructor(
     private pedidoService: PedidoService,
@@ -101,22 +104,19 @@ export class PedidosListaComponent implements OnInit {
     this.atualiza();
   }
 
-  pageIndex = 0;
-  pageSize = 10;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  ngOnInit(): void {
-    this.atualiza();
-    this.dataInicialControl.valueChanges.subscribe(() => this.applyFilter());
-    this.dataFinalControl.valueChanges.subscribe(() => this.applyFilter());
-  }
+  pageIndex = 0;
+  pageSize = 10
 
   atualiza(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
     this.pedidos$ = this.pedidoService
       .listar(pageEvent.pageIndex, pageEvent.pageSize)
       .pipe(
-        tap((pagina: PedidoPagina) => {
+        tap((pagina) => {
+          this.pageIndex = pageEvent.pageIndex;
+          this.pageSize = pageEvent.pageSize;
           this.dataSource.data = pagina.pedidos;
-          this.dataSource.paginator = this.paginator;
         }),
         catchError((error) => {
           this.onError('Erro ao carregar pedidos.');
