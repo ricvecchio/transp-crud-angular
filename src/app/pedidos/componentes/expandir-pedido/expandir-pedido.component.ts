@@ -1,4 +1,4 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule, DatePipe, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
@@ -25,6 +25,7 @@ import { MatInput } from '@angular/material/input';
     MatLabel,
     MatInput,
   ],
+  providers: [DatePipe],
 })
 export class ExpandirPedidoComponent implements OnInit {
   formulario!: FormGroup;
@@ -35,10 +36,16 @@ export class ExpandirPedidoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public formUtils: FormUtilsService,
+    private datePipe: DatePipe,
   ) {}
 
   ngOnInit(): void {
     const pedido: Pedido = this.route.snapshot.data['pedido'];
+
+    const formattedDate = this.datePipe.transform(
+      pedido.dataAtualizacaoPedido,
+      'dd/MM/yyyy'
+    );
 
     this.formulario = this.formBuilder.group({
       idPedido: [pedido.idPedido],
@@ -78,7 +85,7 @@ export class ExpandirPedidoComponent implements OnInit {
       ajudante: [pedido.ajudante],
       observacao: [pedido.observacao],
       status: [pedido.status],
-      dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
+      dataAtualizacaoPedido: [formattedDate],
     });
     this.formulario.get('idPedido')?.disable();
     this.formulario.get('nome')?.disable();

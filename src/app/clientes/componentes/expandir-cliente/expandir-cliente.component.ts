@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
@@ -19,6 +19,7 @@ import { Pedido } from '../../../modelo/pedido';
   styleUrl: './expandir-cliente.component.css',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput],
+  providers: [DatePipe],
 })
 export class ExpandirClienteComponent implements OnInit {
   formulario!: FormGroup;
@@ -29,10 +30,16 @@ export class ExpandirClienteComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public formUtils: FormUtilsService,
+    private datePipe: DatePipe,
   ) {}
 
   ngOnInit(): void {
     const cliente: Cliente = this.route.snapshot.data['cliente'];
+
+    const formattedDate = this.datePipe.transform(
+      cliente.dataAtualizacaoCliente,
+      'dd/MM/yyyy'
+    );
 
     this.formulario = this.formBuilder.group({
       idCliente: [cliente.idCliente],
@@ -68,7 +75,7 @@ export class ExpandirClienteComponent implements OnInit {
       precoLv10: [cliente.precoLv10],
       precoLv15: [cliente.precoLv15],
       observacao: [cliente.observacao],
-      dataAtualizacaoCliente: [cliente.dataAtualizacaoCliente],
+      dataAtualizacaoCliente: [formattedDate],
     });
     this.formulario.get('idCliente')?.disable();
     this.formulario.get('nome')?.disable();
@@ -107,7 +114,6 @@ export class ExpandirClienteComponent implements OnInit {
   }
 
   onSubmit() {
-
     const pedido = this.formulario.value as Pedido;
 
     this.router.navigate(['/cadastrar-pedido'], {

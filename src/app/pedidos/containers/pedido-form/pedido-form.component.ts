@@ -462,8 +462,6 @@ export class PedidoFormComponent implements OnInit {
     this.formulario.patchValue({ ajudante: value });
   }
 
-  dataAtual: Date = new Date();
-
   async onSubmit(status: string) {
     this.formulario.patchValue({ status: status });
 
@@ -537,9 +535,12 @@ export class PedidoFormComponent implements OnInit {
     }
   }
 
+  dataAtual: Date = new Date();
+
   emitirPedido(status: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const dataFormatada = this.formatarData(this.dataAtual);
+
+      const dataFormatada = this.dataAtual.toISOString();
 
       this.formulario.patchValue({
         dataAtualizacaoPedido: dataFormatada,

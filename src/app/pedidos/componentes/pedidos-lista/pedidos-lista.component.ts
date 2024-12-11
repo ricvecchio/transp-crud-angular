@@ -66,8 +66,12 @@ export class PedidosListaComponent implements OnInit {
   pedidos$: Observable<PedidoPagina> | null = null;
 
   dataSource = new MatTableDataSource<Pedido>();
-  dataInicialControl = new FormControl('', [Validators.pattern(/^\d{2}-\d{2}-\d{4}$/)]);
-  dataFinalControl = new FormControl('', [Validators.pattern(/^\d{2}-\d{2}-\d{4}$/)]);
+  dataInicialControl = new FormControl('', [
+    Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
+  ]);
+  dataFinalControl = new FormControl('', [
+    Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
+  ]);
 
   readonly displayedColumns: string[] = [
     'acaoConsulta',
@@ -122,30 +126,42 @@ export class PedidosListaComponent implements OnInit {
   }
 
   applyFilter() {
-    const dataInicial = this.dataInicialControl.value
-      ? new Date(this.dataInicialControl.value)
+    const dataInicial: Date | null = this.dataInicialControl.value
+      ? this.parseDate(this.dataInicialControl.value)
       : null;
-    const dataFinal = this.dataFinalControl.value
-      ? new Date(this.dataFinalControl.value)
+    const dataFinal: Date | null = this.dataFinalControl.value
+      ? this.parseDate(this.dataFinalControl.value)
       : null;
 
     this.dataSource.filterPredicate = (data: Pedido) => {
-      const dataAtualizacao = new Date(data.dataAtualizacaoPedido);
+      const dataAtualizacao = this.parseDate(
+        data.dataAtualizacaoPedido.split(' ')[0],
+      ); // Ignorar hora
 
-      if (dataInicial && dataFinal) {
-        return (
-          dataAtualizacao >= dataInicial &&
-          dataAtualizacao <= new Date(dataFinal.setHours(23, 59, 59, 999))
-        );
-      } else if (dataInicial) {
-        return dataAtualizacao >= dataInicial;
-      } else if (dataFinal) {
-        return dataAtualizacao <= new Date(dataFinal.setHours(23, 59, 59, 999));
+      if (dataAtualizacao) {
+        if (dataInicial && dataFinal) {
+          return dataAtualizacao >= dataInicial && dataAtualizacao <= dataFinal;
+        } else if (dataInicial) {
+          return dataAtualizacao >= dataInicial;
+        } else if (dataFinal) {
+          return dataAtualizacao <= dataFinal;
+        }
       }
-      return true;
+
+      return false;
     };
 
     this.dataSource.filter = `${dataInicial || ''}-${dataFinal || ''}`;
+  }
+
+  private parseDate(dateString: string): Date | null {
+    if (!dateString) return null;
+
+    const [day, month, year] = dateString.split('/');
+    const date = new Date(Number(year), Number(month) - 1, Number(day));
+    date.setHours(0, 0, 0, 0);
+
+    return date;
   }
 
   onError(errorMsg: string) {
