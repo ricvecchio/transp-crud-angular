@@ -5,7 +5,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import {
+  MatFormField,
+  MatFormFieldModule,
+  MatLabel,
+} from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -28,13 +32,13 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Observable, of, tap } from 'rxjs';
 
-import {
-  ConfirmationDialogComponent,
-} from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-dialog/error-dialog.component';
 import { Cliente } from '../../../modelo/cliente';
 import { ClientePagina } from '../../../modelo/cliente-pagina';
 import { ClienteService } from '../../servicos/cliente.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-clientes-lista',
@@ -87,9 +91,18 @@ export class ClientesListaComponent implements OnInit {
   filterControl = new FormControl(''); // Campo de filtro
 
   ngOnInit(): void {
-    this.filterControl.valueChanges.subscribe((filterValue: string | null) => {
-      this.applyFilter(filterValue);
-    });
+    this.filterControl.valueChanges
+      .pipe(
+        debounceTime(300), // Aguarde 300ms para evitar requisições excessivas
+        distinctUntilChanged(), // Evite requisições desnecessárias para valores repetidos
+      )
+      .subscribe((filterValue: string | null) => {
+        console.log('Filtro digitado:', filterValue); // Log para verificar o valor capturado
+        this.atualiza(
+          { length: 0, pageIndex: 0, pageSize: this.pageSize },
+          filterValue,
+        );
+      });
   }
 
   applyFilter(filterValue: string | null) {
@@ -98,9 +111,18 @@ export class ClientesListaComponent implements OnInit {
     this.dataSource.filterPredicate = (data: Cliente, filter: string) => {
       const searchInName = data.nome.toLowerCase().includes(filter);
       const searchInCpfCnpj = data.cpfCnpj.replace(/\D/g, '').includes(filter); // Remove máscara
-      const searchInRazaoSocial = data.razaoSocial?.toLowerCase().includes(filter); // Adicionado razaoSocial
-      const searchInLogradouro = data.logradouroEntrega?.toLowerCase().includes(filter); // Adicionado logradouro Entrega
-      return searchInName || searchInCpfCnpj || searchInRazaoSocial || searchInLogradouro;
+      const searchInRazaoSocial = data.razaoSocial
+        ?.toLowerCase()
+        .includes(filter); // Adicionado razaoSocial
+      const searchInLogradouro = data.logradouroEntrega
+        ?.toLowerCase()
+        .includes(filter); // Adicionado logradouro Entrega
+      return (
+        searchInName ||
+        searchInCpfCnpj ||
+        searchInRazaoSocial ||
+        searchInLogradouro
+      );
     };
     this.dataSource.filter = normalizedValue;
   }
@@ -111,6 +133,7 @@ export class ClientesListaComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
+    private httpClient: HttpClient,
   ) {
     this.atualiza();
   }
@@ -120,20 +143,37 @@ export class ClientesListaComponent implements OnInit {
   pageIndex = 0;
   pageSize = 10;
 
-  atualiza(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
+  atualiza(
+    pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 },
+    filterValue: string | null = '',
+  ) {
+    const normalizedFilter = filterValue?.trim().toLowerCase() || '';
+
     this.clientes$ = this.clienteService
-      .listar(pageEvent.pageIndex, pageEvent.pageSize)
+      .listar(pageEvent.pageIndex, pageEvent.pageSize, normalizedFilter)
       .pipe(
         tap((pagina) => {
           this.pageIndex = pageEvent.pageIndex;
           this.pageSize = pageEvent.pageSize;
-          this.dataSource.data = pagina.clientes; // Popula o dataSource com os clientes
+          this.dataSource.data = pagina.clientes;
         }),
         catchError((error) => {
           this.onError('Erro ao carregar clientes.');
           return of({ clientes: [], totalElementos: 0, totalPaginas: 0 });
         }),
       );
+  }
+
+  listar(
+    page: number,
+    pageSize: number,
+    filter: string = '',
+  ): Observable<ClientePagina> {
+    const params = new HttpParams()
+      .set('page', page)
+      .set('pageSize', pageSize)
+      .set('filter', filter);
+    return this.httpClient.get<ClientePagina>('/api/clientes', { params });
   }
 
   onError(errorMsg: string) {
