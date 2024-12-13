@@ -16,11 +16,12 @@ export class PedidoService {
 
   constructor(private http: HttpClient) { }
 
-  listar(page = 0, pageSize = 10) {
-    return this.http.get<PedidoPagina>(this.API, { params: { page, pageSize } })
-      .pipe(
-        first(),
-      );
+  listar(page = 0, pageSize = 10, dataInicial?: string, dataFinal?: string): Observable<PedidoPagina> {
+    const params: any = { page, pageSize };
+    if (dataInicial) params.dataInicial = dataInicial;
+    if (dataFinal) params.dataFinal = dataFinal;
+
+    return this.http.get<PedidoPagina>(this.API, { params }).pipe(first());
   }
 
   buscarPorId(idPedido: number): Observable<Pedido> {

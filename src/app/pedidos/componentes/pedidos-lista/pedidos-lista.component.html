@@ -18,6 +18,11 @@
         <input matInput [formControl]="dataFinalControl" type="date" />
       </mat-form-field>
     </div>
+    <div class="col-md-4">
+      <button mat-raised-button color="primary" (click)="clearFilters()">
+        Limpar Filtros
+      </button>
+    </div>
   </div>
 
   @if (pedidos$ | async; as pedidos) {

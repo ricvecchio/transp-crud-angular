@@ -25,7 +25,16 @@ import {
 } from '@angular/material/table';
 import { MatToolbar } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Observable, of, tap } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  filter,
+  map,
+  Observable,
+  of,
+  tap,
+} from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-dialog/error-dialog.component';
@@ -89,10 +98,10 @@ export class PedidosListaComponent implements OnInit {
     'acao',
   ];
 
-  ngOnInit(): void {
-    this.dataInicialControl.valueChanges.subscribe(() => this.applyFilter());
-    this.dataFinalControl.valueChanges.subscribe(() => this.applyFilter());
-  }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  pageIndex = 0;
+  pageSize = 10;
 
   constructor(
     private pedidoService: PedidoService,
@@ -100,68 +109,116 @@ export class PedidosListaComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-  ) {
-    this.atualiza();
+  ) {}
+
+  ngOnInit(): void {
+    this.setupFilterListeners();
+    this.atualiza(); // Carrega os dados inicialmente.
   }
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  pageIndex = 0;
-  pageSize = 10
+  setupFilterListeners() {
+    combineLatest([
+      this.dataInicialControl.valueChanges.pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        filter((value) => !!value && this.isValidDate(value)),
+      ),
+      this.dataFinalControl.valueChanges.pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        filter((value) => !!value && this.isValidDate(value)),
+      ),
+    ])
+      .pipe(
+        map(([dataInicial, dataFinal]) => ({
+          dataInicial: this.parseDate(dataInicial),
+          dataFinal: this.parseDate(dataFinal),
+        })),
+      )
+      .subscribe(({ dataInicial, dataFinal }) => {
+        this.applyFilter(dataInicial, dataFinal);
+        console.log('Data Inicial:', dataInicial);
+        console.log('Data Final:', dataFinal);
+      });
+  }
 
   atualiza(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
-    this.pedidos$ = this.pedidoService
-      .listar(pageEvent.pageIndex, pageEvent.pageSize)
-      .pipe(
-        tap((pagina) => {
-          this.pageIndex = pageEvent.pageIndex;
-          this.pageSize = pageEvent.pageSize;
-          this.dataSource.data = pagina.pedidos;
-        }),
-        catchError((error) => {
-          this.onError('Erro ao carregar pedidos.');
-          return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
-        }),
-      );
+    const dataInicial = this.parseDate(this.dataInicialControl.value);
+    const dataFinal = this.parseDate(this.dataFinalControl.value);
+
+    // Se as datas estiverem vazias, não filtra, apenas carrega todos os pedidos
+    if (!dataInicial && !dataFinal) {
+      this.pedidos$ = this.pedidoService
+        .listar(pageEvent.pageIndex, pageEvent.pageSize)
+        .pipe(
+          tap((pagina) => {
+            this.pageIndex = pageEvent.pageIndex;
+            this.pageSize = pageEvent.pageSize;
+            this.dataSource.data = pagina.pedidos;
+          }),
+          catchError((error) => {
+            this.onError('Erro ao carregar pedidos.');
+            return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
+          }),
+        );
+      return;
+    }
+
+    // Se as datas forem válidas, faz a requisição com os filtros
+    if (dataInicial && dataFinal) {
+      this.pedidos$ = this.pedidoService
+        .listar(pageEvent.pageIndex, pageEvent.pageSize, dataInicial, dataFinal)
+        .pipe(
+          tap((pagina) => {
+            this.pageIndex = pageEvent.pageIndex;
+            this.pageSize = pageEvent.pageSize;
+            this.dataSource.data = pagina.pedidos;
+          }),
+          catchError((error) => {
+            this.onError('Erro ao carregar pedidos.');
+            return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
+          }),
+        );
+    }
   }
 
-  applyFilter() {
-    const dataInicial: Date | null = this.dataInicialControl.value
-      ? this.parseDate(this.dataInicialControl.value)
-      : null;
-    const dataFinal: Date | null = this.dataFinalControl.value
-      ? this.parseDate(this.dataFinalControl.value)
-      : null;
+  applyFilter(dataInicial?: string, dataFinal?: string) {
+    // Se as datas forem válidas, faz a requisição com os filtros
+    if (dataInicial && dataFinal) {
+      this.atualiza({ length: 0, pageIndex: 0, pageSize: this.pageSize });
+    } else {
+      this.clearFilters();
+    }
+  }
 
-    this.dataSource.filterPredicate = (data: Pedido) => {
-      const dataAtualizacao = this.parseDate(
-        data.dataAtualizacaoPedido.split(' ')[0],
-      ); // Ignorar hora
+  clearFilters() {
+    this.dataInicialControl.reset();
+    this.dataFinalControl.reset();
+    this.atualiza({ length: 0, pageIndex: 0, pageSize: this.pageSize });
+  }
 
-      if (dataAtualizacao) {
-        if (dataInicial && dataFinal) {
-          return dataAtualizacao >= dataInicial && dataAtualizacao <= dataFinal;
-        } else if (dataInicial) {
-          return dataAtualizacao >= dataInicial;
-        } else if (dataFinal) {
-          return dataAtualizacao <= dataFinal;
-        }
-      }
-
+  private isValidDate(dateString: string | null): boolean {
+    if (!dateString || !/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
       return false;
-    };
-
-    this.dataSource.filter = `${dataInicial || ''}-${dataFinal || ''}`;
+    }
+    const [day, month, year] = dateString.split('/').map(Number);
+    const date = new Date(year, month - 1, day);
+    return (
+      !isNaN(date.getTime()) &&
+      date.getDate() === day &&
+      date.getMonth() + 1 === month &&
+      date.getFullYear() === year
+    );
   }
 
-  private parseDate(dateString: string): Date | null {
-    if (!dateString) return null;
-
-    const [day, month, year] = dateString.split('/');
-    const date = new Date(Number(year), Number(month) - 1, Number(day));
-    date.setHours(0, 0, 0, 0);
-
-    return date;
+  private parseDate(dateString: string | null): string | undefined {
+    if (!dateString || !this.isValidDate(dateString)) return undefined;
+    const [day, month, year] = dateString.split('/').map(Number);
+    // Convertendo para o formato ISO com a hora em UTC
+    const isoString = `${year}-${month.toString().padStart(2, '0')}-${day
+      .toString()
+      .padStart(2, '0')}T00:00:00Z`;
+    return isoString;
   }
 
   onError(errorMsg: string) {
