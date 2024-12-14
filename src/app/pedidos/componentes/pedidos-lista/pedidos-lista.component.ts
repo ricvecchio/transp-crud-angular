@@ -25,18 +25,12 @@ import {
 } from '@angular/material/table';
 import { MatToolbar } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  catchError,
-  combineLatest,
-  filter,
-  map,
-  Observable,
-  of,
-  tap,
-} from 'rxjs';
+import { catchError, filter, Observable, of, tap } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
+import {
+  ConfirmationDialogComponent,
+} from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-dialog/error-dialog.component';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoPagina } from '../../../modelo/pedido-pagina';
@@ -125,7 +119,7 @@ export class PedidosListaComponent implements OnInit {
         tap((dataInicial) => {
           const parsedDataInicial = this.parseDate(dataInicial);
           this.applyFilter(parsedDataInicial);
-        })
+        }),
       )
       .subscribe();
 
@@ -138,7 +132,7 @@ export class PedidosListaComponent implements OnInit {
           const dataInicial = this.parseDate(this.dataInicialControl.value);
           const dataFinal = this.parseDate(this.dataFinalControl.value);
           this.applyFilter(dataInicial, dataFinal);
-        })
+        }),
       )
       .subscribe();
   }
