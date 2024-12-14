@@ -104,12 +104,10 @@
           <mat-cell *matCellDef="let pedido">{{ pedido.volume }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="dataAtualizacaoPedido">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Data</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{
-            pedido.dataAtualizacaoPedido
-          }}</mat-cell>
+          <mat-header-cell *matHeaderCellDef><strong>Data</strong></mat-header-cell>
+          <mat-cell *matCellDef="let pedido">
+            {{ pedido.dataAtualizacaoPedido | date: 'dd/MM/yyyy' }}
+          </mat-cell>
         </ng-container>
         <ng-container matColumnDef="idCliente">
           <mat-header-cell *matHeaderCellDef

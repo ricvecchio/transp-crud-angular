@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatMiniFabButton } from '@angular/material/button';
@@ -42,6 +42,7 @@ import { PedidoService } from '../../servico/pedido.service';
   styleUrl: './pedidos-lista.component.css',
   standalone: true,
   imports: [
+    CommonModule,
     MatFormField,
     MatLabel,
     MatInputModule,
