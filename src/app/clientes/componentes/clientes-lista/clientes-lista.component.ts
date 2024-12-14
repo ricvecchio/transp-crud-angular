@@ -178,7 +178,6 @@ export class ClientesListaComponent implements OnInit {
 
   clearFilters() {
     this.filterControl.reset();
-    // this.atualiza({ length: 0, pageIndex: 0, pageSize: this.pageSize });
   }
 
   onError(errorMsg: string) {

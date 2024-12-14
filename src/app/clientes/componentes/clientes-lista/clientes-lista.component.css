@@ -47,8 +47,8 @@ mat-paginator {
 }
 
 .form-grid {
-  width: 100%; /* Faz o campo ocupar todo o espaço disponível */
-  max-width: 500px; /* Define uma largura máxima, se necessário */
+  width: 100%;
+  max-width: 500px;
 }
 
 .clear-filters-button {
