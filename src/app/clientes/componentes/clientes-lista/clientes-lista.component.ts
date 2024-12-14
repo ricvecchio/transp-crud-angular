@@ -176,6 +176,11 @@ export class ClientesListaComponent implements OnInit {
     return this.httpClient.get<ClientePagina>('/api/clientes', { params });
   }
 
+  clearFilters() {
+    this.filterControl.reset();
+    // this.atualiza({ length: 0, pageIndex: 0, pageSize: this.pageSize });
+  }
+
   onError(errorMsg: string) {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg,

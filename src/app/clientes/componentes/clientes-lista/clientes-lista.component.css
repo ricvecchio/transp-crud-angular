@@ -45,3 +45,15 @@ mat-paginator {
 .toolbar-text {
   text-align: center;
 }
+
+.form-grid {
+  width: 100%; /* Faz o campo ocupar todo o espaço disponível */
+  max-width: 500px; /* Define uma largura máxima, se necessário */
+}
+
+.clear-filters-button {
+  padding: 2px 7px;
+  font-size: 12px;
+  height: 28px;
+  margin-left: 16px;
+}
