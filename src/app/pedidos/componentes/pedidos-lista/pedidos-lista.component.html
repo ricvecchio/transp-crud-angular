@@ -7,6 +7,15 @@
 
   <div class="d-flex">
     <div class="d-flex justify-content-center">
+      <mat-form-field class="form-grid">
+        <mat-label>Pesquisar Cliente</mat-label>
+        <input
+          matInput
+          [formControl]="filterControl"
+          placeholder="Digite o nome do cliente"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
       <mat-form-field class="form-grid small-input">
         <mat-label>Data Inicial</mat-label>
         <input
@@ -15,6 +24,7 @@
           type="text"
           (input)="onDateInput($event, 'dataInicialControl')"
         />
+        <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
       <mat-form-field class="form-grid small-input">
         <mat-label>Data Final</mat-label>
@@ -24,6 +34,7 @@
           type="text"
           (input)="onDateInput($event, 'dataFinalControl')"
         />
+        <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
     <button

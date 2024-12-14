@@ -70,6 +70,9 @@ export class PedidosListaComponent implements OnInit {
   pedidos$: Observable<PedidoPagina> | null = null;
 
   dataSource = new MatTableDataSource<Pedido>();
+
+  filterControl = new FormControl(''); // Campo de filtro
+
   dataInicialControl = new FormControl('', [
     Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
   ]);
@@ -166,6 +169,7 @@ export class PedidosListaComponent implements OnInit {
   }
 
   clearFilters() {
+    this.filterControl.reset();
     this.dataInicialControl.reset();
     this.dataFinalControl.reset();
     this.atualiza({ length: 0, pageIndex: 0, pageSize: this.pageSize });
