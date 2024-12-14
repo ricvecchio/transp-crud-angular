@@ -188,6 +188,36 @@ export class PedidosListaComponent implements OnInit {
     return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
 
+  onDateInput(event: Event, controlName: 'dataInicialControl' | 'dataFinalControl'): void {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos.
+
+    // Adiciona as barras de formatação (dd/mm/aaaa).
+    if (value.length > 2) {
+      value = value.substring(0, 2) + '/' + value.substring(2);
+    }
+    if (value.length > 5) {
+      value = value.substring(0, 5) + '/' + value.substring(5);
+    }
+
+    // Limita o valor do dia, mês e ano.
+    const parts = value.split('/').map(Number);
+    const [day, month, year] = parts;
+
+    if (day && (day < 1 || day > 31)) {
+      value = `31/${value.split('/').slice(1).join('/')}`;
+    }
+    if (month && (month < 1 || month > 12)) {
+      value = `${value.split('/')[0]}/12/${value.split('/').slice(2).join('/')}`;
+    }
+    if (year && year > 9999) {
+      value = `${value.split('/').slice(0, 2).join('/')}/9999`;
+    }
+
+    // Atualiza o controle de formulário com o valor formatado.
+    this[controlName].setValue(value, { emitEvent: false });
+  }
+
   onError(errorMsg: string) {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg,

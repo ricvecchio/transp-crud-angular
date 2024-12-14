@@ -9,13 +9,23 @@
     <div class="col-md-4">
       <mat-form-field class="form-grid">
         <mat-label>Data Inicial</mat-label>
-        <input matInput [formControl]="dataInicialControl" type="text" />
+        <input
+          matInput
+          [formControl]="dataInicialControl"
+          type="text"
+          (input)="onDateInput($event, 'dataInicialControl')"
+        />
       </mat-form-field>
     </div>
     <div class="col-md-4">
       <mat-form-field class="form-grid">
         <mat-label>Data Final</mat-label>
-        <input matInput [formControl]="dataFinalControl" type="text" />
+        <input
+          matInput
+          [formControl]="dataFinalControl"
+          type="text"
+          (input)="onDateInput($event, 'dataFinalControl')"
+        />
       </mat-form-field>
     </div>
     <div class="col-md-4">
