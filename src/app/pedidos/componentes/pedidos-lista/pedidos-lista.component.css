@@ -48,8 +48,9 @@ mat-paginator {
 
 .d-flex {
   display: flex;
-  justify-content: center; /* Centraliza os itens horizontalmente */
-  gap: 16px; /* Reduz o espaço entre as colunas */
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
 }
 
 .form-grid {
@@ -63,7 +64,7 @@ mat-paginator {
 }
 
 .clear-filters-button {
-  padding: 4px 12px; /* Reduz o tamanho do botão */
-  font-size: 14px;   /* Ajusta o tamanho do texto */
-  margin-bottom: 16px; /* Adiciona espaçamento abaixo */
+  padding: 2px 7px;
+  font-size: 12px;
+  height: 28px;
 }

@@ -5,8 +5,8 @@
 
   <br />
 
-  <div class="d-flex justify-content-center">
-    <div class="input-container">
+  <div class="d-flex">
+    <div class="d-flex justify-content-center">
       <mat-form-field class="form-grid small-input">
         <mat-label>Data Inicial</mat-label>
         <input
@@ -16,8 +16,6 @@
           (input)="onDateInput($event, 'dataInicialControl')"
         />
       </mat-form-field>
-    </div>
-    <div class="input-container">
       <mat-form-field class="form-grid small-input">
         <mat-label>Data Final</mat-label>
         <input
@@ -28,14 +26,14 @@
         />
       </mat-form-field>
     </div>
-  </div>
-
-  <div class="d-flex justify-content-center">
-    <div class="input-container">
-      <button mat-raised-button color="primary" class="clear-filters-button" (click)="clearFilters()">
-        Limpar Filtros
-      </button>
-    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      class="clear-filters-button"
+      (click)="clearFilters()"
+    >
+      Limpar Filtros
+    </button>
   </div>
 
   @if (pedidos$ | async; as pedidos) {
