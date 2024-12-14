@@ -117,26 +117,27 @@ export class PedidosListaComponent implements OnInit {
   }
 
   setupFilterListeners() {
-    combineLatest([
-      this.dataInicialControl.valueChanges.pipe(
-        debounceTime(300),
-        distinctUntilChanged()
-      ),
-      this.dataFinalControl.valueChanges.pipe(
-        debounceTime(300),
-        distinctUntilChanged()
-      ),
-    ])
+    this.dataInicialControl.valueChanges
       .pipe(
-        filter(([dataInicial, dataFinal]) => {
-          const isValidInicial = !dataInicial || this.isValidDate(dataInicial);
-          const isValidFinal = !dataFinal || this.isValidDate(dataFinal);
-          return isValidInicial && isValidFinal;
-        }),
-        tap(([dataInicial, dataFinal]) => {
+        debounceTime(300),
+        distinctUntilChanged(),
+        filter((dataInicial) => this.isValidDate(dataInicial)),
+        tap((dataInicial) => {
           const parsedDataInicial = this.parseDate(dataInicial);
-          const parsedDataFinal = this.parseDate(dataFinal);
-          this.applyFilter(parsedDataInicial, parsedDataFinal);
+          this.applyFilter(parsedDataInicial);
+        })
+      )
+      .subscribe();
+
+    this.dataFinalControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        filter((dataFinal) => this.isValidDate(dataFinal)),
+        tap(() => {
+          const dataInicial = this.parseDate(this.dataInicialControl.value);
+          const dataFinal = this.parseDate(this.dataFinalControl.value);
+          this.applyFilter(dataInicial, dataFinal);
         })
       )
       .subscribe();
@@ -162,7 +163,11 @@ export class PedidosListaComponent implements OnInit {
   }
 
   applyFilter(dataInicial?: string, dataFinal?: string) {
-    this.atualiza({ length: 0, pageIndex: 0, pageSize: this.pageSize });
+    this.atualiza({
+      length: 0,
+      pageIndex: 0,
+      pageSize: this.pageSize,
+    });
   }
 
   clearFilters() {
