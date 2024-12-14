@@ -113,82 +113,56 @@ export class PedidosListaComponent implements OnInit {
 
   ngOnInit(): void {
     this.setupFilterListeners();
-    this.atualiza(); // Carrega os dados inicialmente.
+    this.atualiza(); //
   }
 
   setupFilterListeners() {
     combineLatest([
       this.dataInicialControl.valueChanges.pipe(
         debounceTime(300),
-        distinctUntilChanged(),
-        filter((value) => !!value && this.isValidDate(value)),
+        distinctUntilChanged()
       ),
       this.dataFinalControl.valueChanges.pipe(
         debounceTime(300),
-        distinctUntilChanged(),
-        filter((value) => !!value && this.isValidDate(value)),
+        distinctUntilChanged()
       ),
     ])
       .pipe(
-        map(([dataInicial, dataFinal]) => ({
-          dataInicial: this.parseDate(dataInicial),
-          dataFinal: this.parseDate(dataFinal),
-        })),
+        filter(([dataInicial, dataFinal]) => {
+          const isValidInicial = !dataInicial || this.isValidDate(dataInicial);
+          const isValidFinal = !dataFinal || this.isValidDate(dataFinal);
+          return isValidInicial && isValidFinal;
+        }),
+        tap(([dataInicial, dataFinal]) => {
+          const parsedDataInicial = this.parseDate(dataInicial);
+          const parsedDataFinal = this.parseDate(dataFinal);
+          this.applyFilter(parsedDataInicial, parsedDataFinal);
+        })
       )
-      .subscribe(({ dataInicial, dataFinal }) => {
-        this.applyFilter(dataInicial, dataFinal);
-        console.log('Data Inicial:', dataInicial);
-        console.log('Data Final:', dataFinal);
-      });
+      .subscribe();
   }
 
   atualiza(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
     const dataInicial = this.parseDate(this.dataInicialControl.value);
     const dataFinal = this.parseDate(this.dataFinalControl.value);
 
-    // Se as datas estiverem vazias, não filtra, apenas carrega todos os pedidos
-    if (!dataInicial && !dataFinal) {
-      this.pedidos$ = this.pedidoService
-        .listar(pageEvent.pageIndex, pageEvent.pageSize)
-        .pipe(
-          tap((pagina) => {
-            this.pageIndex = pageEvent.pageIndex;
-            this.pageSize = pageEvent.pageSize;
-            this.dataSource.data = pagina.pedidos;
-          }),
-          catchError((error) => {
-            this.onError('Erro ao carregar pedidos.');
-            return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
-          }),
-        );
-      return;
-    }
-
-    // Se as datas forem válidas, faz a requisição com os filtros
-    if (dataInicial && dataFinal) {
-      this.pedidos$ = this.pedidoService
-        .listar(pageEvent.pageIndex, pageEvent.pageSize, dataInicial, dataFinal)
-        .pipe(
-          tap((pagina) => {
-            this.pageIndex = pageEvent.pageIndex;
-            this.pageSize = pageEvent.pageSize;
-            this.dataSource.data = pagina.pedidos;
-          }),
-          catchError((error) => {
-            this.onError('Erro ao carregar pedidos.');
-            return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
-          }),
-        );
-    }
+    this.pedidos$ = this.pedidoService
+      .listar(pageEvent.pageIndex, pageEvent.pageSize, dataInicial, dataFinal)
+      .pipe(
+        tap((pagina) => {
+          this.pageIndex = pageEvent.pageIndex;
+          this.pageSize = pageEvent.pageSize;
+          this.dataSource.data = pagina.pedidos;
+        }),
+        catchError((error) => {
+          this.onError('Erro ao carregar pedidos.');
+          return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
+        }),
+      );
   }
 
   applyFilter(dataInicial?: string, dataFinal?: string) {
-    // Se as datas forem válidas, faz a requisição com os filtros
-    if (dataInicial && dataFinal) {
-      this.atualiza({ length: 0, pageIndex: 0, pageSize: this.pageSize });
-    } else {
-      this.clearFilters();
-    }
+    this.atualiza({ length: 0, pageIndex: 0, pageSize: this.pageSize });
   }
 
   clearFilters() {
@@ -198,9 +172,7 @@ export class PedidosListaComponent implements OnInit {
   }
 
   private isValidDate(dateString: string | null): boolean {
-    if (!dateString || !/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
-      return false;
-    }
+    if (!dateString || !/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) return false;
     const [day, month, year] = dateString.split('/').map(Number);
     const date = new Date(year, month - 1, day);
     return (
@@ -214,11 +186,7 @@ export class PedidosListaComponent implements OnInit {
   private parseDate(dateString: string | null): string | undefined {
     if (!dateString || !this.isValidDate(dateString)) return undefined;
     const [day, month, year] = dateString.split('/').map(Number);
-    // Convertendo para o formato ISO com a hora em UTC
-    const isoString = `${year}-${month.toString().padStart(2, '0')}-${day
-      .toString()
-      .padStart(2, '0')}T00:00:00Z`;
-    return isoString;
+    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
 
   onError(errorMsg: string) {
