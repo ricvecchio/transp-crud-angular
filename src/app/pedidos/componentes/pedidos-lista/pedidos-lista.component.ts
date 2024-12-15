@@ -28,9 +28,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, filter, Observable, of, tap } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-import {
-  ConfirmationDialogComponent,
-} from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-dialog/error-dialog.component';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoPagina } from '../../../modelo/pedido-pagina';
@@ -139,19 +137,38 @@ export class PedidosListaComponent implements OnInit {
         }),
       )
       .subscribe();
+
+    this.filterControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        tap(() => {
+          const clienteFiltro = this.filterControl.value?.trim() || undefined;
+          this.applyFilter(clienteFiltro);
+        }),
+      )
+      .subscribe();
   }
 
   atualiza(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
     const dataInicial = this.parseDate(this.dataInicialControl.value);
     const dataFinal = this.parseDate(this.dataFinalControl.value);
+    const clienteFiltro = this.filterControl.value?.trim() || undefined;
 
+    // Sempre chama o back-end, mesmo sem filtros
     this.pedidos$ = this.pedidoService
-      .listar(pageEvent.pageIndex, pageEvent.pageSize, dataInicial, dataFinal)
+      .listar(
+        pageEvent.pageIndex,
+        pageEvent.pageSize,
+        clienteFiltro,
+        dataInicial,
+        dataFinal,
+      )
       .pipe(
         tap((pagina) => {
           this.pageIndex = pageEvent.pageIndex;
           this.pageSize = pageEvent.pageSize;
-          this.dataSource.data = pagina.pedidos;
+          this.dataSource.data = pagina.pedidos; // Atualiza a tabela com os dados recebidos
         }),
         catchError((error) => {
           this.onError('Erro ao carregar pedidos.');
@@ -160,7 +177,7 @@ export class PedidosListaComponent implements OnInit {
       );
   }
 
-  applyFilter(dataInicial?: string, dataFinal?: string) {
+  applyFilter(clienteFiltro?: string, dataInicial?: string, dataFinal?: string) {
     this.atualiza({
       length: 0,
       pageIndex: 0,
@@ -193,7 +210,10 @@ export class PedidosListaComponent implements OnInit {
     return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
 
-  onDateInput(event: Event, controlName: 'dataInicialControl' | 'dataFinalControl'): void {
+  onDateInput(
+    event: Event,
+    controlName: 'dataInicialControl' | 'dataFinalControl',
+  ): void {
     const input = event.target as HTMLInputElement;
     let value = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos.
 
