@@ -4,7 +4,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -33,6 +33,13 @@ import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-d
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoPagina } from '../../../modelo/pedido-pagina';
 import { PedidoService } from '../../servico/pedido.service';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+
+interface Status {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-pedidos-lista',
@@ -41,6 +48,8 @@ import { PedidoService } from '../../servico/pedido.service';
   standalone: true,
   imports: [
     CommonModule,
+    MatOptionModule,
+    MatSelectModule,
     MatFormField,
     MatLabel,
     MatInputModule,
@@ -70,6 +79,7 @@ export class PedidosListaComponent implements OnInit {
   dataSource = new MatTableDataSource<Pedido>();
 
   filterControl = new FormControl(''); // Campo de filtro
+  statusControl = new FormControl('');
 
   dataInicialControl = new FormControl('', [
     Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
@@ -154,8 +164,8 @@ export class PedidosListaComponent implements OnInit {
     const dataInicial = this.parseDate(this.dataInicialControl.value);
     const dataFinal = this.parseDate(this.dataFinalControl.value);
     const clienteFiltro = this.filterControl.value?.trim() || undefined;
+    const statusFiltro = this.statusControl.value || undefined;
 
-    // Sempre chama o back-end, mesmo sem filtros
     this.pedidos$ = this.pedidoService
       .listar(
         pageEvent.pageIndex,
@@ -163,21 +173,28 @@ export class PedidosListaComponent implements OnInit {
         clienteFiltro,
         dataInicial,
         dataFinal,
+        statusFiltro // Adicionado aqui
       )
       .pipe(
         tap((pagina) => {
           this.pageIndex = pageEvent.pageIndex;
           this.pageSize = pageEvent.pageSize;
-          this.dataSource.data = pagina.pedidos; // Atualiza a tabela com os dados recebidos
+          this.dataSource.data = pagina.pedidos;
         }),
         catchError((error) => {
           this.onError('Erro ao carregar pedidos.');
           return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
-        }),
+        })
       );
   }
 
-  applyFilter(clienteFiltro?: string, dataInicial?: string, dataFinal?: string) {
+  applyFilter(
+    clienteFiltro?: string,
+    dataInicial?: string,
+    dataFinal?: string,
+    status?: string
+  ) {
+    // Passa os parâmetros necessários para o método `atualiza`.
     this.atualiza({
       length: 0,
       pageIndex: 0,
@@ -242,6 +259,13 @@ export class PedidosListaComponent implements OnInit {
     // Atualiza o controle de formulário com o valor formatado.
     this[controlName].setValue(value, { emitEvent: false });
   }
+
+  selectedStatus: string = 'Emitido';
+  listaStatus: Status[] = [
+    { value: 'Emitido', viewValue: 'Emitido' },
+    { value: 'Cancelado', viewValue: 'Cancelado' },
+    { value: 'Salvo', viewValue: 'Salvo' },
+  ];
 
   onError(errorMsg: string) {
     this.dialog.open(ErrorDialogComponent, {

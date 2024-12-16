@@ -36,6 +36,14 @@
         />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
+      <mat-form-field class="form-grid small-input">
+        <mat-label>Status</mat-label>
+        <mat-select [(value)]="selectedStatus">
+          <mat-option *ngFor="let status of listaStatus" [value]="status.value">
+            {{ status.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <button
       mat-raised-button
