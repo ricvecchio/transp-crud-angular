@@ -79,7 +79,7 @@ export class PedidosListaComponent implements OnInit {
   dataSource = new MatTableDataSource<Pedido>();
 
   filterControl = new FormControl('');
-  statusControl = new FormControl('');
+  statusControl = new FormControl('Emitido');
 
   dataInicialControl = new FormControl('', [
     Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
@@ -270,7 +270,6 @@ export class PedidosListaComponent implements OnInit {
     this[controlName].setValue(value, { emitEvent: false });
   }
 
-  selectedStatus: string = 'Emitido';
   listaStatus: Status[] = [
     { value: 'Emitido', viewValue: 'Emitido' },
     { value: 'Cancelado', viewValue: 'Cancelado' },
