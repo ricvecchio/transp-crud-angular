@@ -3,12 +3,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
+import { MatOptionModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   MatCell,
@@ -33,8 +35,6 @@ import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-d
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoPagina } from '../../../modelo/pedido-pagina';
 import { PedidoService } from '../../servico/pedido.service';
-import { MatOptionModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
 
 interface Status {
   value: string;
@@ -78,7 +78,7 @@ export class PedidosListaComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Pedido>();
 
-  filterControl = new FormControl(''); // Campo de filtro
+  filterControl = new FormControl('');
   statusControl = new FormControl('');
 
   dataInicialControl = new FormControl('', [
@@ -158,6 +158,17 @@ export class PedidosListaComponent implements OnInit {
         }),
       )
       .subscribe();
+
+    this.statusControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        tap(() => {
+          const statusFiltro = this.statusControl.value?.trim() || undefined;
+          this.applyFilter(statusFiltro);
+        }),
+      )
+      .subscribe();
   }
 
   atualiza(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
@@ -173,7 +184,7 @@ export class PedidosListaComponent implements OnInit {
         clienteFiltro,
         dataInicial,
         dataFinal,
-        statusFiltro // Adicionado aqui
+        statusFiltro,
       )
       .pipe(
         tap((pagina) => {
@@ -184,7 +195,7 @@ export class PedidosListaComponent implements OnInit {
         catchError((error) => {
           this.onError('Erro ao carregar pedidos.');
           return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
-        })
+        }),
       );
   }
 
@@ -192,9 +203,8 @@ export class PedidosListaComponent implements OnInit {
     clienteFiltro?: string,
     dataInicial?: string,
     dataFinal?: string,
-    status?: string
+    status?: string,
   ) {
-    // Passa os parâmetros necessários para o método `atualiza`.
     this.atualiza({
       length: 0,
       pageIndex: 0,
