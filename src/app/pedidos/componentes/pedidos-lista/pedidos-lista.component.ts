@@ -175,7 +175,7 @@ export class PedidosListaComponent implements OnInit {
     const dataInicial = this.parseDate(this.dataInicialControl.value);
     const dataFinal = this.parseDate(this.dataFinalControl.value);
     const clienteFiltro = this.filterControl.value?.trim() || undefined;
-    const statusFiltro = this.statusControl.value || undefined;
+    const statusFiltro = this.statusControl.value?.trim() || undefined;
 
     this.pedidos$ = this.pedidoService
       .listar(

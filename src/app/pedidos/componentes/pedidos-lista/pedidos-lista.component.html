@@ -38,7 +38,7 @@
       </mat-form-field>
       <mat-form-field class="form-grid small-input">
         <mat-label>Status</mat-label>
-        <mat-select [(value)]="selectedStatus">
+        <mat-select [formControl]="statusControl">
           <mat-option *ngFor="let status of listaStatus" [value]="status.value">
             {{ status.viewValue }}
           </mat-option>
@@ -123,9 +123,11 @@
           <mat-cell *matCellDef="let pedido">{{ pedido.volume }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="dataAtualizacaoPedido">
-          <mat-header-cell *matHeaderCellDef><strong>Data</strong></mat-header-cell>
+          <mat-header-cell *matHeaderCellDef
+            ><strong>Data</strong></mat-header-cell
+          >
           <mat-cell *matCellDef="let pedido">
-            {{ pedido.dataAtualizacaoPedido | date: 'dd/MM/yyyy' }}
+            {{ pedido.dataAtualizacaoPedido | date: "dd/MM/yyyy" }}
           </mat-cell>
         </ng-container>
         <ng-container matColumnDef="idCliente">
