@@ -466,6 +466,10 @@ export class PedidoFormComponent implements OnInit {
     this.formulario.patchValue({ status: status });
 
     if (status == 'Salvo') {
+      const dataFormatada = this.dataAtual.toISOString();
+      this.formulario.patchValue({
+        dataAtualizacaoPedido: dataFormatada,
+      });
       this.service.salvar(this.formulario.value).subscribe({
         next: (result) => {
           this.onSucess();
