@@ -213,10 +213,16 @@ export class PedidosListaComponent implements OnInit {
   }
 
   clearFilters() {
-    this.filterControl.reset();
-    this.dataInicialControl.reset();
-    this.dataFinalControl.reset();
-    this.statusControl.reset('Emitido');
+    this.filterControl.reset('', { emitEvent: false });
+    this.dataInicialControl.reset('', { emitEvent: false });
+    this.dataFinalControl.reset('', { emitEvent: false });
+    this.statusControl.reset('Emitido', { emitEvent: false });
+
+    this.atualiza({
+      length: 0,
+      pageIndex: 0,
+      pageSize: this.pageSize,
+    });
   }
 
   private isValidDate(dateString: string | null): boolean {
@@ -266,7 +272,6 @@ export class PedidosListaComponent implements OnInit {
       value = `${value.split('/').slice(0, 2).join('/')}/9999`;
     }
 
-    // Atualiza o controle de formulário com o valor formatado.
     this[controlName].setValue(value, { emitEvent: false });
   }
 
