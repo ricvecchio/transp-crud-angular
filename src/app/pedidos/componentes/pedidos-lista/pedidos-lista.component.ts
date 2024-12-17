@@ -119,7 +119,7 @@ export class PedidosListaComponent implements OnInit {
 
   ngOnInit(): void {
     this.setupFilterListeners();
-    this.atualiza(); //
+    this.atualiza();
   }
 
   setupFilterListeners() {
@@ -171,6 +171,19 @@ export class PedidosListaComponent implements OnInit {
       .subscribe();
   }
 
+  applyFilter(
+    clienteFiltro?: string,
+    dataInicial?: string,
+    dataFinal?: string,
+    status?: string,
+  ) {
+    this.atualiza({
+      length: 0,
+      pageIndex: 0,
+      pageSize: this.pageSize,
+    });
+  }
+
   atualiza(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
     const dataInicial = this.parseDate(this.dataInicialControl.value);
     const dataFinal = this.parseDate(this.dataFinalControl.value);
@@ -199,24 +212,11 @@ export class PedidosListaComponent implements OnInit {
       );
   }
 
-  applyFilter(
-    clienteFiltro?: string,
-    dataInicial?: string,
-    dataFinal?: string,
-    status?: string,
-  ) {
-    this.atualiza({
-      length: 0,
-      pageIndex: 0,
-      pageSize: this.pageSize,
-    });
-  }
-
   clearFilters() {
     this.filterControl.reset();
     this.dataInicialControl.reset();
     this.dataFinalControl.reset();
-    this.atualiza({ length: 0, pageIndex: 0, pageSize: this.pageSize });
+    this.statusControl.reset('Emitido');
   }
 
   private isValidDate(dateString: string | null): boolean {
