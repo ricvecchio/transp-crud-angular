@@ -1,13 +1,23 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatError, MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import {
+  MatError,
+  MatFormField,
+  MatFormFieldModule,
+  MatLabel,
+} from '@angular/material/form-field';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
@@ -252,9 +262,13 @@ export class PedidoFormComponent implements OnInit {
         this.formulario.get('precoEscolhido')?.setValue(precoSelecionado);
       });
 
-      this.formulario.get('observacao')?.valueChanges.subscribe((valor: string) => {
+    this.formulario
+      .get('observacao')
+      ?.valueChanges.subscribe((valor: string) => {
         if (valor) {
-          this.formulario.get('observacao')?.setValue(valor.toUpperCase(), { emitEvent: false });
+          this.formulario
+            .get('observacao')
+            ?.setValue(valor.toUpperCase(), { emitEvent: false });
         }
       });
   }
@@ -496,7 +510,10 @@ export class PedidoFormComponent implements OnInit {
                 iframeDocument.write(`
                 <html>
                   <body>
-                    <img src="${imageData}" style="width: 100%; max-width: 100%;" />
+                    <div style="display: flex; flex-direction: column;">
+                      <img src="${imageData}" style="width: 100%; max-width: 100%; margin-bottom: 20px;" />
+                      <img src="${imageData}" style="width: 100%; max-width: 100%;" />
+                    </div>
                   </body>
                 </html>
               `);
@@ -534,7 +551,6 @@ export class PedidoFormComponent implements OnInit {
 
   emitirPedido(status: string): Promise<string> {
     return new Promise((resolve, reject) => {
-
       const dataFormatada = this.dataAtual.toISOString();
 
       this.formulario.patchValue({
