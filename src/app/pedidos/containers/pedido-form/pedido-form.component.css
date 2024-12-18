@@ -69,6 +69,7 @@ h5 {
   display: flex;
   flex-wrap: wrap;
   margin: 2rem 0rem;
+  font-size: 1.3rem; /* Aumenta o tamanho dos textos */
 }
 
 .container-previa .imagem {
