@@ -151,6 +151,7 @@
               color="primary"
               aria-label="Editar pedido"
               (click)="onEdit(pedido)"
+              *ngIf="statusControl.value !== 'Cancelado'"
             >
               <mat-icon>edit</mat-icon>
             </button>
@@ -159,6 +160,7 @@
               color="warn"
               aria-label="Remover pedido"
               (click)="onDelete(pedido)"
+              *ngIf="statusControl.value !== 'Cancelado'"
             >
               <mat-icon>delete</mat-icon>
             </button>
