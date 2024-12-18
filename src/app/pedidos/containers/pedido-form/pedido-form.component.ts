@@ -24,18 +24,9 @@ import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../servico/pedido.service';
 import { ClienteService } from './../../../clientes/servicos/cliente.service';
 
-interface Metros {
-  value: string;
-  viewValue: string;
-}
-
 interface Volumes {
   value: string;
   viewValue: string;
-}
-
-export interface User {
-  name: string;
 }
 
 @Component({
@@ -563,17 +554,6 @@ export class PedidoFormComponent implements OnInit {
         },
       });
     });
-  }
-
-  private formatarData(data: Date): string {
-    const dia = data.getDate().toString().padStart(2, '0');
-    const mes = (data.getMonth() + 1).toString().padStart(2, '0');
-    const ano = data.getFullYear();
-    const horas = data.getHours().toString().padStart(2, '0');
-    const minutos = data.getMinutes().toString().padStart(2, '0');
-    const segundos = data.getSeconds().toString().padStart(2, '0');
-
-    return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
   }
 
   private onSucess() {
