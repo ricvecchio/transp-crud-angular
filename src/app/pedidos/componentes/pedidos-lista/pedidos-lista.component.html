@@ -53,6 +53,14 @@
     >
       Limpar Filtros
     </button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="menu-button"
+      (click)="onMenu()"
+    >
+      Menu
+    </button>
   </div>
 
   @if (pedidos$ | async; as pedidos) {

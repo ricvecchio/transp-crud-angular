@@ -68,3 +68,11 @@ mat-paginator {
   font-size: 12px;
   height: 28px;
 }
+
+.menu-button {
+  background: #b5b7b9;
+  padding: 2px 7px;
+  font-size: 12px;
+  height: 28px;
+  margin-left: 16px;
+}

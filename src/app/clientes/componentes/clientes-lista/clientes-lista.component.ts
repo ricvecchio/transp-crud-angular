@@ -199,4 +199,10 @@ export class ClientesListaComponent implements OnInit {
       }
     });
   }
+
+  onMenu() {
+    this.router.navigate(['/menu'], {
+      relativeTo: this.route,
+    });
+  }
 }

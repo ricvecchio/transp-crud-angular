@@ -319,4 +319,10 @@ export class PedidosListaComponent implements OnInit {
       }
     });
   }
+
+  onMenu() {
+    this.router.navigate(['/menu'], {
+      relativeTo: this.route,
+    });
+  }
 }
