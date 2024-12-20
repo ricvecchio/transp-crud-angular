@@ -78,12 +78,9 @@ export class ClientesListaComponent implements OnInit {
     'acaoConsulta',
     'idCliente',
     'nome',
-    'cpfCnpj',
     'razaoSocial',
-    'telefone',
-    'celular',
-    'email',
-    'logradouroEntrega',
+    'cpfCnpj',
+    'enderecoEntrega',
     'acao',
   ];
 

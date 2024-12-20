@@ -111,25 +111,15 @@
           >
           <mat-cell *matCellDef="let pedido">{{ pedido.tipoPgto }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="logradouroEntrega">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Endereço</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{
-            pedido.logradouroEntrega
-          }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="mangueira">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Mangueira</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{ pedido.mangueira }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="volume">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Volume</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{ pedido.volume }}</mat-cell>
+        <ng-container matColumnDef="enderecoEntrega">
+          <mat-header-cell *matHeaderCellDef><strong>Endereço</strong></mat-header-cell>
+          <mat-cell *matCellDef="let pedido">
+            {{
+              pedido.logradouroEntrega
+                ? pedido.logradouroEntrega + ', ' + pedido.numeroEntrega + ' - ' + pedido.bairroEntrega
+                : 'Endereço não informado'
+            }}
+          </mat-cell>
         </ng-container>
         <ng-container matColumnDef="dataAtualizacaoPedido">
           <mat-header-cell *matHeaderCellDef

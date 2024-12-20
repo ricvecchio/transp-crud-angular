@@ -66,12 +66,6 @@
           >
           <mat-cell *matCellDef="let cliente">{{ cliente.nome }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="cpfCnpj">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>CPF/CNPJ</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let cliente">{{ cliente.cpfCnpj }}</mat-cell>
-        </ng-container>
         <ng-container matColumnDef="razaoSocial">
           <mat-header-cell *matHeaderCellDef
             ><strong>Razão Social</strong></mat-header-cell
@@ -80,31 +74,21 @@
             cliente.razaoSocial
           }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="telefone">
+        <ng-container matColumnDef="cpfCnpj">
           <mat-header-cell *matHeaderCellDef
-            ><strong>Telefone</strong></mat-header-cell
+            ><strong>CPF/CNPJ</strong></mat-header-cell
           >
-          <mat-cell *matCellDef="let cliente">{{ cliente.telefone }}</mat-cell>
+          <mat-cell *matCellDef="let cliente">{{ cliente.cpfCnpj }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="celular">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Celular</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let cliente">{{ cliente.celular }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="email">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>E-mail</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let cliente">{{ cliente.email }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="logradouroEntrega">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Endereço</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let cliente">{{
-            cliente.logradouroEntrega
-          }}</mat-cell>
+        <ng-container matColumnDef="enderecoEntrega">
+          <mat-header-cell *matHeaderCellDef><strong>Endereço</strong></mat-header-cell>
+          <mat-cell *matCellDef="let cliente">
+            {{
+              cliente.logradouroEntrega
+                ? cliente.logradouroEntrega + ', ' + cliente.numeroEntrega + ' - ' + cliente.bairroEntrega
+                : 'Endereço não informado'
+            }}
+          </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="acao">
