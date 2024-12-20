@@ -38,7 +38,7 @@
   @if (clientes$ | async; as clientes) {
     <div>
       <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container matColumnDef="acaoConsulta">
+        <ng-container matColumnDef="acaoConsulta" class="mat-column-acaoConsulta">
           <mat-header-cell *matHeaderCellDef class="action-column">
           </mat-header-cell>
           <mat-cell *matCellDef="let cliente" class="action-column">
@@ -54,7 +54,7 @@
           </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="idCliente">
+        <ng-container matColumnDef="idCliente" class="mat-column-idCliente">
           <mat-header-cell *matHeaderCellDef
             ><strong>ID</strong></mat-header-cell
           >
@@ -74,7 +74,7 @@
             cliente.razaoSocial
           }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="cpfCnpj">
+        <ng-container matColumnDef="cpfCnpj" class="mat-column-cpfCnpj">
           <mat-header-cell *matHeaderCellDef
             ><strong>CPF/CNPJ</strong></mat-header-cell
           >
@@ -91,7 +91,7 @@
           </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="acao">
+        <ng-container matColumnDef="acao" class="mat-column-acao">
           <mat-header-cell *matHeaderCellDef class="action-column">
             <button
               mat-mini-fab

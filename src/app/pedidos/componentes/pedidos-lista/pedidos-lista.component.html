@@ -66,7 +66,7 @@
   @if (pedidos$ | async; as pedidos) {
     <div>
       <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container matColumnDef="acaoConsulta">
+        <ng-container matColumnDef="acaoConsulta" class="mat-column-acaoConsulta">
           <mat-header-cell *matHeaderCellDef class="action-column">
           </mat-header-cell>
           <mat-cell *matCellDef="let pedido" class="action-column">
@@ -81,7 +81,8 @@
             </button>
           </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="idPedido">
+
+        <ng-container matColumnDef="idPedido" class="mat-column-idPedido">
           <mat-header-cell *matHeaderCellDef
             ><strong>ID</strong></mat-header-cell
           >
@@ -99,17 +100,11 @@
           >
           <mat-cell *matCellDef="let pedido">{{ pedido.razaoSocial }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="cpfCnpj">
+        <ng-container matColumnDef="cpfCnpj" class="mat-column-cpfCnpj">
           <mat-header-cell *matHeaderCellDef
             ><strong>CPF/CNPJ</strong></mat-header-cell
           >
           <mat-cell *matCellDef="let pedido">{{ pedido.cpfCnpj }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="tipoPgto">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Tipo Pgto</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{ pedido.tipoPgto }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="enderecoEntrega">
           <mat-header-cell *matHeaderCellDef><strong>Endereço</strong></mat-header-cell>
@@ -125,23 +120,24 @@
           <mat-header-cell *matHeaderCellDef
             ><strong>Data</strong></mat-header-cell
           >
-          <mat-cell *matCellDef="let pedido">
+          <mat-cell *matCellDef="let pedido" class="mat-column-dataPedido">
             {{ pedido.dataAtualizacaoPedido | date: "dd/MM/yyyy" }}
           </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="idCliente">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>ID-Cliente</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{ pedido.idCliente }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="status">
+        <ng-container matColumnDef="status" class="mat-column-status">
           <mat-header-cell *matHeaderCellDef
             ><strong>Status</strong></mat-header-cell
           >
           <mat-cell *matCellDef="let pedido">{{ pedido.status }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="acao">
+        <ng-container matColumnDef="idCliente" class="mat-column-idCliente">
+          <mat-header-cell *matHeaderCellDef
+            ><strong>ID-Cliente</strong></mat-header-cell
+          >
+          <mat-cell *matCellDef="let pedido">{{ pedido.idCliente }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="acao" class="mat-column-acao">
           <mat-header-cell *matHeaderCellDef class="action-column">
           </mat-header-cell>
           <mat-cell *matCellDef="let pedido" class="action-column">

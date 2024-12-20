@@ -76,3 +76,19 @@ mat-paginator {
 .action-button mat-icon {
   font-size: 22px; /* Reduz o tamanho do ícone */
 }
+
+.mat-column-acaoConsulta {
+  max-width: 65px;
+}
+
+.mat-column-idCliente {
+  max-width: 65px;
+}
+
+.mat-column-cpfCnpj {
+  max-width: 170px;
+}
+
+.mat-column-acao {
+  max-width: 105px;
+}
