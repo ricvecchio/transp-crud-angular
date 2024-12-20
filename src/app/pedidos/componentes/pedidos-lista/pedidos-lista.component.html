@@ -74,6 +74,7 @@
               mat-mini-fab
               color="primary"
               aria-label="Consulta Pedido"
+              class="action-button"
               (click)="onSearch(pedido)"
             >
               <mat-icon>search</mat-icon>
@@ -158,6 +159,7 @@
               mat-mini-fab
               color="primary"
               aria-label="Editar pedido"
+              class="action-button"
               (click)="onEdit(pedido)"
               *ngIf="statusControl.value !== 'Cancelado'"
             >
@@ -167,6 +169,7 @@
               mat-mini-fab
               color="warn"
               aria-label="Remover pedido"
+              class="action-button"
               (click)="onDelete(pedido)"
               *ngIf="statusControl.value !== 'Cancelado'"
             >
