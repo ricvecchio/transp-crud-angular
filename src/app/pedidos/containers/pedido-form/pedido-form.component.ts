@@ -32,7 +32,6 @@ import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Cliente } from '../../../modelo/cliente';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../servico/pedido.service';
-import { ClienteService } from './../../../clientes/servicos/cliente.service';
 
 interface Volumes {
   value: string;
@@ -70,7 +69,6 @@ export class PedidoFormComponent implements OnInit {
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
-    private clienteService: ClienteService,
     private consultaCepService: ConsultaCepService,
     private service: PedidoService,
     private snackBar: MatSnackBar,
@@ -125,20 +123,8 @@ export class PedidoFormComponent implements OnInit {
       status: [pedido.status],
     });
 
-    // this.formulario.get('tipoPgto')?.disable();
-    // this.formulario.get('sfobras')?.disable();
-    // this.formulario.get('cno')?.disable();
-    // this.formulario.get('ie')?.disable();
-    // this.formulario.get('mangueira')?.disable();
-    // this.formulario.get('precoCx5')?.disable();
-    // this.formulario.get('precoCx10')?.disable();
-    // this.formulario.get('precoCx15')?.disable();
-    // this.formulario.get('precoLv5')?.disable();
-    // this.formulario.get('precoLv10')?.disable();
-    // this.formulario.get('precoLv15')?.disable();
-
     this.route.queryParams.subscribe((params) => {
-      if (params) {
+      if (params && Object.keys(params).length > 0) {
         const pedido: Pedido = this.formatarPedido(params);
         this.formulario.patchValue({
           idPedido: pedido.idPedido,
@@ -183,7 +169,7 @@ export class PedidoFormComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe((params) => {
-      if (params) {
+      if (params && Object.keys(params).length > 0) {
         const cliente: Cliente = this.formatarCliente(params);
         this.formulario.patchValue({
           idCliente: cliente.idCliente,
