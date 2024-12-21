@@ -1,12 +1,6 @@
 <mat-card>
-  <mat-toolbar color="primary" class="toolbar">
-    <span class="toolbar-text">Lista de Clientes</span>
-  </mat-toolbar>
-
-  <br />
-
-  <div class="row">
-    <div class="col-md-9">
+  <div class="d-flex">
+    <div class="d-flex justify-content-center">
       <mat-form-field class="form-grid">
         <mat-label>Pesquisar Cliente</mat-label>
         <input
@@ -16,6 +10,7 @@
         />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
+    </div>
       <button
         mat-raised-button
         color="primary"
@@ -32,7 +27,6 @@
       >
         Menu
       </button>
-    </div>
   </div>
 
   @if (clientes$ | async; as clientes) {

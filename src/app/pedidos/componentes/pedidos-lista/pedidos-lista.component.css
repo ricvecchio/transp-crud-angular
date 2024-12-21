@@ -1,21 +1,20 @@
 mat-card {
   display: flex;
   flex-direction: column;
-  height: 100%;
   margin: 0;
   padding: 1em;
+  height: calc(100vh - 100px); /* Ajuste para considerar o tamanho do rodapé */
+  box-sizing: border-box;
+  overflow-y: auto; /* Para garantir que o conteúdo seja rolável */
+}
+
+.mat-table {
+  flex: 1;
+  overflow: auto;
 }
 
 mat-paginator {
   margin-top: 1em;
-  align-self: flex-end;
-}
-
-.mat-table {
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-  width: 100%;
 }
 
 .toolbar {
@@ -109,7 +108,7 @@ mat-paginator {
 }
 
 .mat-column-cpfCnpj {
-  flex: 1.5;
+  flex: 1.4;
 }
 
 .mat-column-enderecoEntrega {

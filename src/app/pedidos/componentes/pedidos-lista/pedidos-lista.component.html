@@ -1,10 +1,4 @@
 <mat-card>
-  <mat-toolbar color="primary" class="toolbar">
-    <span class="toolbar-text">Lista de Pedidos</span>
-  </mat-toolbar>
-
-  <br />
-
   <div class="d-flex">
     <div class="d-flex justify-content-center">
       <mat-form-field class="form-grid">
@@ -107,12 +101,18 @@
           <mat-cell *matCellDef="let pedido">{{ pedido.cpfCnpj }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="enderecoEntrega">
-          <mat-header-cell *matHeaderCellDef><strong>Endereço</strong></mat-header-cell>
+          <mat-header-cell *matHeaderCellDef
+            ><strong>Endereço</strong></mat-header-cell
+          >
           <mat-cell *matCellDef="let pedido">
             {{
               pedido.logradouroEntrega
-                ? pedido.logradouroEntrega + ', ' + pedido.numeroEntrega + ' - ' + pedido.bairroEntrega
-                : 'Endereço não informado'
+                ? pedido.logradouroEntrega +
+                  ", " +
+                  pedido.numeroEntrega +
+                  " - " +
+                  pedido.bairroEntrega
+                : "Endereço não informado"
             }}
           </mat-cell>
         </ng-container>
