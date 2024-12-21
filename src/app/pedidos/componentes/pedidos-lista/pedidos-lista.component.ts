@@ -97,7 +97,6 @@ export class PedidosListaComponent implements OnInit {
     'enderecoEntrega',
     'dataAtualizacaoPedido',
     'status',
-    'idCliente',
     'acao',
   ];
 

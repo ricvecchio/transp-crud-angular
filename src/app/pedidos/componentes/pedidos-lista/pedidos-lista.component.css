@@ -96,11 +96,23 @@ mat-paginator {
   max-width: 65px;
 }
 
+.mat-column-nome {
+  max-width: 180px;
+}
+
+.mat-column-razaoSocial {
+  max-width: 180px;
+}
+
 .mat-column-cpfCnpj {
   max-width: 170px;
 }
 
-.mat-column-dataPedido {
+.mat-column-enderecoEntrega {
+  max-width: 170px;
+}
+
+.mat-column-dataAtualizacaoPedido {
   max-width: 100px;
 }
 

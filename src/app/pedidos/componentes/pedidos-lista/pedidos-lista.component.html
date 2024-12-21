@@ -66,7 +66,7 @@
   @if (pedidos$ | async; as pedidos) {
     <div>
       <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container matColumnDef="acaoConsulta" class="mat-column-acaoConsulta">
+        <ng-container matColumnDef="acaoConsulta">
           <mat-header-cell *matHeaderCellDef class="action-column">
           </mat-header-cell>
           <mat-cell *matCellDef="let pedido" class="action-column">
@@ -82,7 +82,7 @@
           </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="idPedido" class="mat-column-idPedido">
+        <ng-container matColumnDef="idPedido">
           <mat-header-cell *matHeaderCellDef
             ><strong>ID</strong></mat-header-cell
           >
@@ -100,7 +100,7 @@
           >
           <mat-cell *matCellDef="let pedido">{{ pedido.razaoSocial }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="cpfCnpj" class="mat-column-cpfCnpj">
+        <ng-container matColumnDef="cpfCnpj">
           <mat-header-cell *matHeaderCellDef
             ><strong>CPF/CNPJ</strong></mat-header-cell
           >
@@ -120,21 +120,15 @@
           <mat-header-cell *matHeaderCellDef
             ><strong>Data</strong></mat-header-cell
           >
-          <mat-cell *matCellDef="let pedido" class="mat-column-dataPedido">
+          <mat-cell *matCellDef="let pedido">
             {{ pedido.dataAtualizacaoPedido | date: "dd/MM/yyyy" }}
           </mat-cell>
         </ng-container>
-        <ng-container matColumnDef="status" class="mat-column-status">
+        <ng-container matColumnDef="status">
           <mat-header-cell *matHeaderCellDef
             ><strong>Status</strong></mat-header-cell
           >
           <mat-cell *matCellDef="let pedido">{{ pedido.status }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="idCliente" class="mat-column-idCliente">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>ID-Cliente</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{ pedido.idCliente }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="acao" class="mat-column-acao">

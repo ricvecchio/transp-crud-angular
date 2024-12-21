@@ -85,8 +85,20 @@ mat-paginator {
   max-width: 65px;
 }
 
+.mat-column-nome {
+  max-width: 200px;
+}
+
+.mat-column-razaoSocial {
+  max-width: 200px;
+}
+
 .mat-column-cpfCnpj {
   max-width: 170px;
+}
+
+.mat-column-enderecoEntrega {
+  max-width: 280px;
 }
 
 .mat-column-acao {
