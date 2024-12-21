@@ -303,7 +303,6 @@ export class PedidoFormComponent implements OnInit {
     };
   }
 
-  // Método para formatar dados do cliente
   private formatarCliente(clienteParams: any): Cliente {
     return {
       nomeBusca: clienteParams.nomeBusca || '',
