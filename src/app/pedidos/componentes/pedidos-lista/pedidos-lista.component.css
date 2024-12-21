@@ -12,28 +12,10 @@ mat-paginator {
 }
 
 .mat-table {
+  display: flex;
+  flex-direction: column;
   overflow: auto;
-  max-height: 600px;
-}
-
-.action-column {
-  flex: 0 0 125px;
-}
-
-.action-column-header {
-  margin: 0 auto;
-}
-
-.action-column button {
-  margin-right: 8px;
-}
-
-.loading-spinner {
-    background: #dde0e2;
-    padding: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 100%;
 }
 
 .toolbar {
@@ -57,7 +39,6 @@ mat-paginator {
   width: 100%;
 }
 
-/* Ajusta o tamanho dos campos de input */
 .small-input {
   max-width: 160px;
   width: 100%;
@@ -77,6 +58,13 @@ mat-paginator {
   margin-left: 16px;
 }
 
+.action-column {
+  display: flex;
+  justify-content: center; /* Centraliza os botões horizontalmente */
+  gap: 8px; /* Espaçamento entre botões */
+  align-items: center; /* Alinha os botões verticalmente */
+}
+
 .action-button {
   width: 32px; /* Define a largura do botão */
   height: 32px; /* Define a altura do botão */
@@ -88,42 +76,58 @@ mat-paginator {
   font-size: 22px; /* Reduz o tamanho do ícone */
 }
 
-.mat-column-acaoConsulta {
-  max-width: 65px;
+.mat-header-row,
+.mat-row {
+  display: flex;
+  width: 100%;
+}
+
+.mat-header-cell,
+.mat-cell {
+  flex: 1; /* Permite que as colunas cresçam igualmente */
+  overflow: hidden; /* Evita o estouro de texto */
+  text-overflow: ellipsis; /* Adiciona reticências para texto longo */
+  white-space: nowrap; /* Mantém o texto em uma única linha */
+}
+
+.mat-column-acaoConsulta,
+.mat-column-acao {
+  flex: 0 0 90px;
+  text-align: center;
 }
 
 .mat-column-idPedido {
-  max-width: 65px;
+  flex: 0 0 65px;
 }
 
 .mat-column-nome {
-  max-width: 180px;
+  flex: 2;
 }
 
 .mat-column-razaoSocial {
-  max-width: 180px;
+  flex: 2;
 }
 
 .mat-column-cpfCnpj {
-  max-width: 170px;
+  flex: 1.5;
 }
 
 .mat-column-enderecoEntrega {
-  max-width: 170px;
+  flex: 3;
 }
 
 .mat-column-dataAtualizacaoPedido {
-  max-width: 100px;
+  flex: 0 0 100px;
 }
 
 .mat-column-status {
-  max-width: 85px;
+  flex: 0 0 100px;
 }
 
-.mat-column-idCliente {
-  max-width: 65px;
-}
-
-.mat-column-acao {
-  max-width: 105px;
+.loading-spinner {
+  background: #dde0e2;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
