@@ -77,40 +77,6 @@ export class ExpandirClienteComponent implements OnInit {
       observacao: [cliente.observacao],
       dataAtualizacaoCliente: [formattedDate],
     });
-    this.formulario.get('idCliente')?.disable();
-    this.formulario.get('nome')?.disable();
-    this.formulario.get('cpfCnpj')?.disable();
-    this.formulario.get('razaoSocial')?.disable();
-    this.formulario.get('telefone')?.disable();
-    this.formulario.get('celular')?.disable();
-    this.formulario.get('email')?.disable();
-    this.formulario.get('cep')?.disable();
-    this.formulario.get('logradouro')?.disable();
-    this.formulario.get('numero')?.disable();
-    this.formulario.get('complemento')?.disable();
-    this.formulario.get('bairro')?.disable();
-    this.formulario.get('cidade')?.disable();
-    this.formulario.get('estado')?.disable();
-    this.formulario.get('tipoPgto')?.disable();
-    this.formulario.get('cepEntrega')?.disable();
-    this.formulario.get('logradouroEntrega')?.disable();
-    this.formulario.get('numeroEntrega')?.disable();
-    this.formulario.get('complementoEntrega')?.disable();
-    this.formulario.get('bairroEntrega')?.disable();
-    this.formulario.get('cidadeEntrega')?.disable();
-    this.formulario.get('estadoEntrega')?.disable();
-    this.formulario.get('sfobras')?.disable();
-    this.formulario.get('cno')?.disable();
-    this.formulario.get('ie')?.disable();
-    this.formulario.get('mangueira')?.disable();
-    this.formulario.get('precoCx5')?.disable();
-    this.formulario.get('precoCx10')?.disable();
-    this.formulario.get('precoCx15')?.disable();
-    this.formulario.get('precoLv5')?.disable();
-    this.formulario.get('precoLv10')?.disable();
-    this.formulario.get('precoLv15')?.disable();
-    this.formulario.get('observacao')?.disable();
-    this.formulario.get('dataAtualizacaoCliente')?.disable();
   }
 
   onSubmit() {

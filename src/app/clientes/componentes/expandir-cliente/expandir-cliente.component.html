@@ -1,6 +1,5 @@
 <section class="cliente-form">
   <form [formGroup]="formulario" id="formulario">
-
     <h5>
       <strong>Consulta do Cliente:</strong>
       {{ this.formulario.get("idPedido")?.value }}
@@ -13,15 +12,23 @@
     <div class="espaco-dentro">
       <div class="row">
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>ID Cliente:</mat-label>
-            <input matInput name="idCliente" formControlName="idCliente">
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="idCliente"
+              formControlName="idCliente"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Data:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               dataAtualizacaoCliente="dataAtualizacaoCliente"
               formControlName="dataAtualizacaoCliente"
@@ -35,100 +42,178 @@
     <div class="espaco-dentro">
       <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Nome:</mat-label>
-            <input matInput name="nome" formControlName="nome" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="nome"
+              formControlName="nome"
+            />
           </mat-form-field>
         </div>
 
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>CPF/CNPJ:</mat-label>
-            <input matInput name="cpfCnpj" formControlName="cpfCnpj" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="cpfCnpj"
+              formControlName="cpfCnpj"
+            />
           </mat-form-field>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Razão Social:</mat-label>
-            <input matInput name="razaoSocial" formControlName="razaoSocial" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="razaoSocial"
+              formControlName="razaoSocial"
+            />
           </mat-form-field>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Telefone:</mat-label>
-            <input matInput name="telefone" formControlName="telefone" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="telefone"
+              formControlName="telefone"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Celular:</mat-label>
-            <input matInput name="celular" formControlName="celular" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="celular"
+              formControlName="celular"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-6">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>E-mail:</mat-label>
-            <input matInput name="email" formControlName="email" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="email"
+              formControlName="email"
+            />
           </mat-form-field>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>CEP:</mat-label>
-            <input matInput name="cep" formControlName="cep" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="cep"
+              formControlName="cep"
+            />
           </mat-form-field>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Logradouro:</mat-label>
-            <input matInput name="logradouro" formControlName="logradouro" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="logradouro"
+              formControlName="logradouro"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Número:</mat-label>
-            <input matInput name="numero" formControlName="numero" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="numero"
+              formControlName="numero"
+            />
           </mat-form-field>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Complemento:</mat-label>
-            <input matInput name="complemento" formControlName="complemento" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="complemento"
+              formControlName="complemento"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Bairro:</mat-label>
-            <input matInput name="bairro" formControlName="bairro" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="bairro"
+              formControlName="bairro"
+            />
           </mat-form-field>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Cidade:</mat-label>
-            <input matInput name="cidade" formControlName="cidade" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="cidade"
+              formControlName="cidade"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>UF:</mat-label>
-            <input matInput name="estado" formControlName="estado" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="estado"
+              formControlName="estado"
+            />
           </mat-form-field>
         </div>
       </div>
@@ -141,17 +226,25 @@
     <div class="espaco-dentro">
       <div class="row">
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>CEP:</mat-label>
-            <input matInput name="cepEntrega" formControlName="cepEntrega" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="cepEntrega"
+              formControlName="cepEntrega"
+            />
           </mat-form-field>
         </div>
       </div>
       <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Logradouro:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="logradouroEntrega"
               formControlName="logradouroEntrega"
@@ -159,9 +252,11 @@
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Número:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="numeroEntrega"
               formControlName="numeroEntrega"
@@ -171,9 +266,11 @@
       </div>
       <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Complemento:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="complementoEntrega"
               formControlName="complementoEntrega"
@@ -181,9 +278,11 @@
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Bairro:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="bairroEntrega"
               formControlName="bairroEntrega"
@@ -193,9 +292,11 @@
       </div>
       <div class="row">
         <div class="col-md-9">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Cidade:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="cidadeEntrega"
               formControlName="cidadeEntrega"
@@ -203,9 +304,11 @@
           </mat-form-field>
         </div>
         <div class="col-md-3">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>UF:</mat-label>
             <input
+              tabindex="-1"
+              readonly="true"
               matInput
               name="estadoEntrega"
               formControlName="estadoEntrega"
@@ -222,90 +325,160 @@
     <div class="espaco-dentro">
       <div class="row">
         <div class="col-md-2">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Faturado:</mat-label>
-            <input matInput name="tipoPgto" formControlName="tipoPgto" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="tipoPgto"
+              formControlName="tipoPgto"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-2">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>SFOBRAS:</mat-label>
-            <input matInput name="sfobras" formControlName="sfobras" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="sfobras"
+              formControlName="sfobras"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-2">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>CNO:</mat-label>
-            <input matInput name="cno" formControlName="cno" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="cno"
+              formControlName="cno"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-2">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Inscrição Estadual:</mat-label>
-            <input matInput name="ie" formControlName="ie" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="ie"
+              formControlName="ie"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-2">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Mangueira: Metros</mat-label>
-            <input matInput name="mangueira" formControlName="mangueira" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="mangueira"
+              formControlName="mangueira"
+            />
           </mat-form-field>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-2">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Preço cx-5m³</mat-label>
-            <input matInput name="precoCx5" formControlName="precoCx5" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoCx5"
+              formControlName="precoCx5"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-2">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Preço cx-10m³</mat-label>
-            <input matInput name="precoCx10" formControlName="precoCx10" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoCx10"
+              formControlName="precoCx10"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-2">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Preço cx-15m³</mat-label>
-            <input matInput name="precoCx15" formControlName="precoCx15" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoCx15"
+              formControlName="precoCx15"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-2">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Preço lav-5m³</mat-label>
-            <input matInput name="precoLv5" formControlName="precoLv5" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoLv5"
+              formControlName="precoLv5"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-2">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Preço lav-10m³</mat-label>
-            <input matInput name="precoLv10" formControlName="precoLv10" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoLv10"
+              formControlName="precoLv10"
+            />
           </mat-form-field>
         </div>
         <div class="col-md-2">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Preço lav-15m³</mat-label>
-            <input matInput name="precoLv15" formControlName="precoLv15" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoLv15"
+              formControlName="precoLv15"
+            />
           </mat-form-field>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-12">
-          <mat-form-field class="form-grid">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Observações:</mat-label>
-            <input matInput name="observacao" formControlName="observacao" />
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="observacao"
+              formControlName="observacao"
+            />
           </mat-form-field>
         </div>
       </div>
     </div>
 
     <div class="acoes">
-      <button (click)="onSubmit()" class="botao">
-        Emite Pedido
-      </button>
+      <button (click)="onSubmit()" class="botao">Emite Pedido</button>
       <button (click)="onBack()" class="botao">Voltar</button>
     </div>
   </form>

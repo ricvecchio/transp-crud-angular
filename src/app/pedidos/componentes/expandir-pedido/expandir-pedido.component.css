@@ -6,7 +6,7 @@
 }
 
 .pedido-form form {
-background: #dde0e2;
+background: #e7e9ecc9;
 border-radius: 20px;
 display: flex;
 flex-direction: column;
@@ -38,7 +38,7 @@ display: grid;
   width: 200px;
 }
 
-input[disabled], textarea[disabled], select[disabled] {
+/* input[disabled], textarea[disabled], select[disabled] {
   color: rgb(0, 0, 0) !important;
   opacity: 1;
-}
+} */
