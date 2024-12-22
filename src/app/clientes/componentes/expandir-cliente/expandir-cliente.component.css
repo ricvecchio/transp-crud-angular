@@ -37,3 +37,8 @@ display: grid;
   margin-top: 20px;
   width: 200px;
 }
+
+input[disabled], textarea[disabled], select[disabled] {
+  color: rgb(0, 0, 0) !important;
+  opacity: 1;
+}
