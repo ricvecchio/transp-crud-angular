@@ -95,14 +95,12 @@ mat-paginator {
   text-align: center;
 }
 
-.mat-column-idPedido {
+.mat-column-idPedido,
+.mat-column-idCliente {
   flex: 0 0 65px;
 }
 
-.mat-column-nome {
-  flex: 2;
-}
-
+.mat-column-nome,
 .mat-column-razaoSocial {
   flex: 2;
 }

@@ -78,9 +78,15 @@
 
         <ng-container matColumnDef="idPedido">
           <mat-header-cell *matHeaderCellDef
-            ><strong>ID</strong></mat-header-cell
+            ><strong>Pedido</strong></mat-header-cell
           >
           <mat-cell *matCellDef="let pedido">{{ pedido.idPedido }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="idCliente">
+          <mat-header-cell *matHeaderCellDef
+            ><strong>Cliente</strong></mat-header-cell
+          >
+          <mat-cell *matCellDef="let pedido">{{ pedido.idCliente }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="nome">
           <mat-header-cell *matHeaderCellDef
