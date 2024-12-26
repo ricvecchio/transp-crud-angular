@@ -270,12 +270,12 @@ export class ClienteFormComponent implements OnInit {
 
   selectedMetros!: string;
   metros: Metros[] = [
-    { value: '15 metros', viewValue: '15 metros' },
-    { value: '30 metros', viewValue: '30 metros' },
-    { value: '45 metros', viewValue: '45 metros' },
-    { value: '60 metros', viewValue: '60 metros' },
-    { value: '75 metros', viewValue: '75 metros' },
-    { value: '90 metros', viewValue: '90 metros' },
+    { value: '15 M', viewValue: '15 M' },
+    { value: '30 M', viewValue: '30 M' },
+    { value: '45 M', viewValue: '45 M' },
+    { value: '60 M', viewValue: '60 M' },
+    { value: '75 M', viewValue: '75 M' },
+    { value: '90 M', viewValue: '90 M' },
   ];
 
   private formatarCampos(campos: string[]): void {

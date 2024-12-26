@@ -226,22 +226,22 @@ export class PedidoFormComponent implements OnInit {
       ?.valueChanges.subscribe((volumeSelecionado) => {
         let precoSelecionado = '';
         switch (volumeSelecionado) {
-          case 'cx-5m³':
+          case 'CX-5m³':
             precoSelecionado = this.formulario.get('precoCx5')?.value;
             break;
-          case 'cx-10m³':
+          case 'CX-10m³':
             precoSelecionado = this.formulario.get('precoCx10')?.value;
             break;
-          case 'cx-15m³':
+          case 'CX-15m³':
             precoSelecionado = this.formulario.get('precoCx15')?.value;
             break;
-          case 'lav-5m³':
+          case 'LAV-5m³':
             precoSelecionado = this.formulario.get('precoLv5')?.value;
             break;
-          case 'lav-10m³':
+          case 'LAV-10m³':
             precoSelecionado = this.formulario.get('precoLv10')?.value;
             break;
-          case 'lav-15m³':
+          case 'LAV-15m³':
             precoSelecionado = this.formulario.get('precoLv15')?.value;
             break;
         }
@@ -419,12 +419,12 @@ export class PedidoFormComponent implements OnInit {
 
   listaVolume!: string;
   volumes: Volumes[] = [
-    { value: 'cx-5m³', viewValue: 'cx-5m³' },
-    { value: 'cx-10m³', viewValue: 'cx-10m³' },
-    { value: 'cx-15m³', viewValue: 'cx-15m³' },
-    { value: 'lav-5m³', viewValue: 'lav-5m³' },
-    { value: 'lav-10m³', viewValue: 'lav-10m³' },
-    { value: 'lav-15m³', viewValue: 'lav-15m³' },
+    { value: 'CX-5m³', viewValue: 'CX-5m³' },
+    { value: 'CX-10m³', viewValue: 'CX-10m³' },
+    { value: 'CX-15m³', viewValue: 'CX-15m³' },
+    { value: 'LAV-5m³', viewValue: 'LAV-5m³' },
+    { value: 'LAV-10m³', viewValue: 'LAV-10m³' },
+    { value: 'LAV-15m³', viewValue: 'LAV-15m³' },
   ];
 
   private formatarCampos(campos: string[]): void {

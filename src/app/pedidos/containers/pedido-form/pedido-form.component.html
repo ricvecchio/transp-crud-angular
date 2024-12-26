@@ -597,14 +597,14 @@
           <h6>Ajudante p/ hora adicional:</h6>
           <p>
             <mat-checkbox
-              [checked]="formulario.value.ajudante === 'Sim'"
-              (change)="onCheckboxChange('Sim')"
+              [checked]="formulario.value.ajudante === 'SIM'"
+              (change)="onCheckboxChange('SIM')"
             >
               Sim
             </mat-checkbox>
             <mat-checkbox
-              [checked]="formulario.value.ajudante === 'Não'"
-              (change)="onCheckboxChange('Não')"
+              [checked]="formulario.value.ajudante === 'NÃO'"
+              (change)="onCheckboxChange('NÃO')"
             >
               Não
             </mat-checkbox>
@@ -640,7 +640,7 @@
   <br />
 
   <div class="container-previa">
-    <div class="preview-image-container" style="margin-top: 20px"></div>
+    <div class="preview-image-container" style="margin-top: 10px"></div>
 
     <div class="modelo ff-roboto-mono">
       <img
@@ -655,72 +655,102 @@
         <mat-divider></mat-divider>
       </mat-list>
 
-      <div class="row">
-        <div class="col-md-9">
-          <h4>PEDIDO: {{ this.formulario.get("idPedido")?.value }}</h4>
-        </div>
-        <div class="col-md-3">
-          <b>DATA: </b>
-          {{ dataAtual | date: "dd/MM/yyyy" }}
-        </div>
+      <div
+        class="d-flex align-items-center justify-content-between container-previa-texto"
+      >
+        <b>PEDIDO: {{ this.formulario.get("idPedido")?.value }}</b>
+        <b>DATA: {{ dataAtual | date: "dd/MM/yyyy" }}</b>
       </div>
 
       <mat-list>
         <mat-divider></mat-divider>
       </mat-list>
 
-      <div class="campos_previa">
-        <p class="nome">
+      <div class="col-md-12 d-flex align-items-center">
+        <div class="container-previa-texto-fixo">
           <b>CLIENTE: </b>
+        </div>
+        <div class="container-previa-texto">
           {{ this.formulario.get("nome")?.value }}
-        </p>
+        </div>
       </div>
 
-      <div class="campos_previa">
-        <p class="endereco">
+      <div class="col-md-12 d-flex">
+        <div class="container-previa-texto-fixo">
           <b>ENDEREÇO: </b>
+        </div>
+        <div class="container-previa-texto">
           {{ this.formulario.get("logradouroEntrega")?.value }},
           {{ this.formulario.get("numeroEntrega")?.value }},
           {{ this.formulario.get("complementoEntrega")?.value }},
           {{ this.formulario.get("bairroEntrega")?.value }},
           {{ this.formulario.get("estadoEntrega")?.value }}
           - CEP: {{ this.formulario.get("cepEntrega")?.value }}
-        </p>
-      </div>
-
-      <div class="row">
-        <div class="col-md-4">
-          <b>VOLUME: </b>
-          {{ this.formulario.get("volume")?.value }}
-        </div>
-        <div class="col-md-4">
-          <b>MANGUEIRA: </b>
-          {{ this.formulario.get("mangueira")?.value }}
-        </div>
-        <div class="col-md-4">
-          <b>PREÇO: </b>
-          {{ formulario.get("precoEscolhido")?.value }}
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-4">
-          <b>MOTORISTA: </b>
+      <br />
+
+      <div class="d-flex">
+        <div class="col-md-4 d-flex align-items-center">
+          <div class="container-previa-texto-fixo">
+            <b>VOLUME: </b>
+          </div>
+          <div class="container-previa-texto">
+            {{ this.formulario.get("volume")?.value }}
+          </div>
         </div>
-        <div class="col-md-4">
-          <b>CAMINHÃO: </b>
+
+        <div class="col-md-4 d-flex align-items-center">
+          <div class="container-previa-texto-fixo">
+            <b>MANGUEIRA: </b>
+          </div>
+          <div class="container-previa-texto">
+            {{ this.formulario.get("mangueira")?.value }}
+          </div>
         </div>
-        <div class="col-md-4">
-          <b>PLACA: </b>
+
+        <div class="col-md-4 d-flex align-items-center">
+          <div class="container-previa-texto-fixo">
+            <b>PREÇO: </b>
+          </div>
+          <div class="container-previa-texto">
+            {{ formulario.get("precoEscolhido")?.value }}
+          </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-3">
+      <div class="d-flex align-items-center">
+        <div class="col-md-4">
+          <div class="container-previa-texto-fixo">
+            <b>MOTORISTA: </b>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="container-previa-texto-fixo">
+            <b>CAMINHÃO: </b>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="container-previa-texto-fixo">
+            <b>PLACA: </b>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center">
+        <div class="container-previa-texto-fixo">
           <b>AJUDANTE: </b>
+        </div>
+        <div class="container-previa-texto">
           {{ formulario.get("ajudante")?.value }}
         </div>
-        <div class="col-md-9">
+      </div>
+
+      <br />
+
+      <div class="container-previa-obs">
+        <div class="col-md-12">
           <b>OBS.: </b>
           {{ this.formulario.get("observacao")?.value }}
         </div>
