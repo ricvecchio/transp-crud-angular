@@ -264,6 +264,7 @@
                 matInput
                 name="logradouroEntrega"
                 formControlName="logradouroEntrega"
+                (input)="convertToUppercase('logradouroEntrega')"
               />
             </mat-form-field>
           </div>
@@ -288,6 +289,7 @@
                 name="logradouroEntrega"
                 placeholder="Digite o logradouro"
                 formControlName="logradouroEntrega"
+                (input)="convertToUppercase('logradouroEntrega')"
               />
               @if (formulario.get("logradouroEntrega")?.invalid) {
                 <mat-error>
@@ -330,6 +332,7 @@
                 matInput
                 name="complementoEntrega"
                 formControlName="complementoEntrega"
+                (input)="convertToUppercase('complementoEntrega')"
               />
             </mat-form-field>
           </div>
@@ -342,6 +345,7 @@
                 matInput
                 name="bairroEntrega"
                 formControlName="bairroEntrega"
+                (input)="convertToUppercase('bairroEntrega')"
               />
             </mat-form-field>
           </div>
@@ -354,6 +358,7 @@
                 name="complementoEntrega"
                 placeholder="Ex. Apto 64"
                 formControlName="complementoEntrega"
+                (input)="convertToUppercase('complementoEntrega')"
               />
             </mat-form-field>
           </div>
@@ -365,6 +370,7 @@
                 name="bairroEntrega"
                 placeholder="Digite o bairro"
                 formControlName="bairroEntrega"
+                (input)="convertToUppercase('bairroEntrega')"
               />
             </mat-form-field>
           </div>
@@ -382,6 +388,7 @@
                 matInput
                 name="cidadeEntrega"
                 formControlName="cidadeEntrega"
+                (input)="convertToUppercase('cidadeEntrega')"
               />
             </mat-form-field>
           </div>
@@ -394,6 +401,7 @@
                 matInput
                 name="estadoEntrega"
                 formControlName="estadoEntrega"
+                (input)="convertToUppercase('estadoEntrega')"
               />
             </mat-form-field>
           </div>
@@ -406,6 +414,7 @@
                 name="cidadeEntrega"
                 placeholder="Digite a cidade"
                 formControlName="cidadeEntrega"
+                (input)="convertToUppercase('cidadeEntrega')"
               />
             </mat-form-field>
           </div>
@@ -417,6 +426,7 @@
                 name="estadoEntrega"
                 placeholder="Digite o estado. Ex: SP"
                 formControlName="estadoEntrega"
+                (input)="convertToUppercase('estadoEntrega')"
               />
             </mat-form-field>
           </div>
@@ -619,6 +629,7 @@
               name="observacao"
               placeholder="Informações adicionais"
               formControlName="observacao"
+              (input)="convertToUppercase('observacao')"
             />
           </mat-form-field>
         </div>
