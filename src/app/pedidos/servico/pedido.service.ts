@@ -36,6 +36,11 @@ export class PedidoService {
     return this.http.get<Pedido>(url);
   }
 
+  buscarUltimosPedidos(idCliente: number, limite: number): Observable<Pedido[]> {
+    const params = { idCliente: idCliente.toString(), limite: limite.toString() };
+    return this.http.get<Pedido[]>(`${this.API}/ultimos`, { params });
+  }
+
   salvar(pedido: Partial<Pedido>) {
     if (pedido.idPedido) {
       return this.editar(pedido);

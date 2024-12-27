@@ -477,6 +477,61 @@
       </div>
     </div>
 
+    <br />
+    <h6><strong>Últimos 3 Pedidos:</strong></h6>
+    <br />
+
+    <div class="espaco-dentro">
+      <ng-container *ngFor="let pedido of ultimosPedidos; let i = index">
+        <div class="row">
+          <div class="col-md-2">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Data do Pedido:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                [value]="pedido.dataPedido"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Volume:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                [value]="pedido.volume"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Valor:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                [value]="pedido.valor"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-2">
+            <mat-form-field class="form-grid" appearance="outline">
+              <mat-label>Pedido:</mat-label>
+              <input
+                tabindex="-1"
+                readonly="true"
+                matInput
+                [value]="pedido.idPedido"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
     <div class="acoes">
       <button (click)="onSubmit()" class="botao">Emite Pedido</button>
       <button (click)="onBack()" class="botao">Voltar</button>
