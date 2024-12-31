@@ -1,56 +1,54 @@
 footer {
-    background-image: url(/assets/img/fundo-rodape.png);
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-    gap: 0px 0px;
-    grid-template-areas:
-      "TextoCopyright LogoRodape .";
-    align-items: center;
+  background-image: url(/assets/img/fundo-rodape.png);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas: "TextoCopyright LogoRodape .";
+  align-items: center;
 
-    border-top: 1px solid #333;
-    bottom: 0;
-    left: 0;
-    height: 50px;
-    position: fixed;
-    width: 100%;
+  border-top: 1px solid #333;
+  bottom: 0;
+  left: 0;
+  height: 50px;
+  position: fixed;
+  width: 100%;
+}
+
+.TextoCopyright {
+  justify-self: flex-start;
+  padding: 0rem 1rem 0rem;
+}
+
+.LogoRodape {
+  justify-self: center;
+  grid-area: LogoRodape;
+  max-width: 50px;
+}
+
+footer small {
+  color: white;
+}
+
+.TextoRodape {
+  justify-self: right;
+  padding: 0rem 1rem 0rem;
+}
+
+@media (max-width: 576px) {
+  .cabecalho .logo {
+    padding: 2rem;
   }
 
-  .TextoCopyright {
-    justify-self: flex-start;
-    padding: 0rem 1rem 0rem;
+  .cabecalho p {
+    font-size: 1.5rem;
   }
+}
 
-  .LogoRodape {
-    justify-self: center;
-    grid-area: LogoRodape;
-    max-width: 50px;
+@media (max-width: 768px) {
+  footer {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1rem;
   }
-
-  footer small {
-    color: white;
-  }
-
-  .TextoRodape {
-    justify-self: right;
-    padding: 0rem 1rem 0rem;
-  }
-
-
-  @media (max-width: 576px) {
-    .cabecalho .logo {
-      padding: 2rem;
-    }
-
-    .cabecalho p {
-      font-size: 1.5rem
-    }
-  }
-
-  @media (max-width: 768px) {
-    footer {
-      display: flex;
-      flex-direction: column-reverse;
-      gap: 1rem;
-    }
-  }
+}

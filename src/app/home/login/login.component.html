@@ -1,5 +1,4 @@
 <section class="container login ff-inter">
-
   <h3 class="text-center">Login</h3>
 
   <div class="input">
@@ -12,47 +11,43 @@
         name="usuario"
         #campoUsuario="ngModel"
         required
-        />
-        @if (campoUsuario.invalid && campoUsuario.touched) {
-          <app-mensagem
-            class="erro"
-            mensagem="Usuário obrigatório"
-          ></app-mensagem>
-        }
+      />
+      @if (campoUsuario.invalid && campoUsuario.touched) {
+        <app-mensagem
+          class="erro"
+          mensagem="Usuário obrigatório"
+        ></app-mensagem>
+      }
 
-        <label for="password">Senha:</label>
-        <input
-          type="password"
-          class="input"
-          placeholder="Senha"
-          [(ngModel)]="senha"
-          name="senha"
-          #campoSenha="ngModel"
-          required
-          />
+      <label for="password">Senha:</label>
+      <input
+        type="password"
+        class="input"
+        placeholder="Senha"
+        [(ngModel)]="senha"
+        name="senha"
+        #campoSenha="ngModel"
+        required
+      />
 
-          @if (campoSenha.invalid && campoSenha.touched) {
-            <app-mensagem
-              class="erro"
-              mensagem="Senha obrigatória"
-            ></app-mensagem>
-          }
+      @if (campoSenha.invalid && campoSenha.touched) {
+        <app-mensagem class="erro" mensagem="Senha obrigatória"></app-mensagem>
+      }
 
-          <button
-            type="submit"
-            class="botao btn-primary btn-block"
-            [disabled]="loginForm.invalid"
-            >
-            Login
-          </button>
-        </form>
+      <button
+        type="submit"
+        class="botao btn-primary btn-block"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+    </form>
 
-        <div class="usuario">
-          <p>
-            Não é um usuário?
-            <a [routerLink]="['/home/novousuario']">Se cadastre!</a>
-          </p>
-        </div>
-      </div>
-
-    </section>
+    <div class="usuario">
+      <p>
+        Não é um usuário?
+        <a [routerLink]="['/home/novousuario']">Se cadastre!</a>
+      </p>
+    </div>
+  </div>
+</section>

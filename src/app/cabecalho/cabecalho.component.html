@@ -1,16 +1,27 @@
 <header class="cabecalho ff-inter">
-
-  <img class="logo" src="../../../assets/img/logo-cabecalho.png" alt="Imagem com um gota dagua">
-  <img class="logo-texto" src="../../../assets/img/logo-saotome.png" alt="Imagem com o texto São Tomé">
-  <img class="imagem" src="../../../assets/img/caminhao-cabecalho.png" alt="Imagem de um caminhão">
+  <img
+    class="logo"
+    src="../../../assets/img/logo-cabecalho.png"
+    alt="Imagem com um gota dagua"
+  />
+  <img
+    class="logo-texto"
+    src="../../../assets/img/logo-saotome.png"
+    alt="Imagem com o texto São Tomé"
+  />
+  <img
+    class="imagem"
+    src="../../../assets/img/caminhao-cabecalho.png"
+    alt="Imagem de um caminhão"
+  />
 
   @if (user$ | async; as user) {
     <div>
       @if (user.name) {
         <div>
           <i class="fa fa-user-circle mr-1"> </i>
-          <a class="navbar-text">{{ user.name }}</a> <br>
-          <a (click)="logout()" class="mr-1" > Logout</a>
+          <a class="navbar-text">{{ user.name }}</a> <br />
+          <a (click)="logout()" class="mr-1"> Logout</a>
         </div>
       } @else {
         <span class="navbar-text">
@@ -19,5 +30,4 @@
       }
     </div>
   }
-
 </header>

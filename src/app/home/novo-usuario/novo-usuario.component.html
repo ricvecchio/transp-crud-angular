@@ -4,80 +4,60 @@
   <form class="input" [formGroup]="novoUsuarioForm" (submit)="cadastrar()">
     <input placeholder="e-mail" class="input" formControlName="email" />
     @if (
-      novoUsuarioForm.get('email')?.errors?.['required'] &&
-      novoUsuarioForm.get('email')?.touched
-      ) {
-      <app-mensagem
-        mensagem="E-mail obrigatório"
-        >
-      </app-mensagem>
+      novoUsuarioForm.get("email")?.errors?.["required"] &&
+      novoUsuarioForm.get("email")?.touched
+    ) {
+      <app-mensagem mensagem="E-mail obrigatório"> </app-mensagem>
     }
     @if (
-      novoUsuarioForm.get('email')?.errors?.['email'] &&
-      novoUsuarioForm.get('email')?.touched
-      ) {
-      <app-mensagem
-        mensagem="E-mail no formato incorreto"
-        >
-      </app-mensagem>
+      novoUsuarioForm.get("email")?.errors?.["email"] &&
+      novoUsuarioForm.get("email")?.touched
+    ) {
+      <app-mensagem mensagem="E-mail no formato incorreto"> </app-mensagem>
     }
 
     <input
       placeholder="Nome Completo"
       formControlName="fullName"
       class="input"
-      />
-      @if (
-        novoUsuarioForm.get('fullName')?.errors &&
-        novoUsuarioForm.get('fullName')?.touched
-        ) {
-        <app-mensagem
-          mensagem="Nome incorreto"
-          >
-        </app-mensagem>
-      }
+    />
+    @if (
+      novoUsuarioForm.get("fullName")?.errors &&
+      novoUsuarioForm.get("fullName")?.touched
+    ) {
+      <app-mensagem mensagem="Nome incorreto"> </app-mensagem>
+    }
 
-      <input
-        placeholder="Usuário"
-        class="input"
-        formControlName="userName"
-        />
-        @if (
-          novoUsuarioForm.get('userName')?.errors?.['minusculo'] &&
-          novoUsuarioForm.get('userName')?.touched
-          ) {
-          <app-mensagem
-            mensagem="Usuário deve ser em letra minúscula"
-            >
-          </app-mensagem>
-        }
-        @if (novoUsuarioForm.get('userName')?.errors?.['usuarioExistente']) {
-          <app-mensagem
-            mensagem="Usuário já existe"
-          ></app-mensagem>
-        }
+    <input placeholder="Usuário" class="input" formControlName="userName" />
+    @if (
+      novoUsuarioForm.get("userName")?.errors?.["minusculo"] &&
+      novoUsuarioForm.get("userName")?.touched
+    ) {
+      <app-mensagem mensagem="Usuário deve ser em letra minúscula">
+      </app-mensagem>
+    }
+    @if (novoUsuarioForm.get("userName")?.errors?.["usuarioExistente"]) {
+      <app-mensagem mensagem="Usuário já existe"></app-mensagem>
+    }
 
-        <input
-          type="password"
-          placeholder="Senha"
-          class="input"
-          formControlName="password"
-          />
-          @if (novoUsuarioForm.errors?.['senhaIgualUsuario']) {
-            <app-mensagem
-              mensagem="Senha deve ser diferente do usuário"
-              >
-            </app-mensagem>
-          }
+    <input
+      type="password"
+      placeholder="Senha"
+      class="input"
+      formControlName="password"
+    />
+    @if (novoUsuarioForm.errors?.["senhaIgualUsuario"]) {
+      <app-mensagem mensagem="Senha deve ser diferente do usuário">
+      </app-mensagem>
+    }
 
-          <button type="submit" class="botao btn-primary btn-block">Cadastro</button>
-        </form>
+    <button type="submit" class="botao btn-primary btn-block">Cadastro</button>
+  </form>
 
-        <!-- <p>Já um usuário? <a [routerLink]="['']"> Faça Login</a></p> -->
-        <div class="usuario">
-          <p>
-            Já um usuário?
-            <a [routerLink]="['']"> Faça Login</a>
-          </p>
-        </div>
-      </section>
+  <div class="usuario">
+    <p>
+      Já um usuário?
+      <a [routerLink]="['']"> Faça Login</a>
+    </p>
+  </div>
+</section>

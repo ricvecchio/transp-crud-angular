@@ -1,54 +1,48 @@
-  .login {
-    padding: 1rem 1rem 1rem;
-  }
-  
-  .login form {
-    background: #bbbfc2;
-    border: none;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 2rem 2rem;
-    margin: 1rem 8rem 1rem;
-  }
-  
-  .login form label {
-    color: #000000;
-    font-weight: bold;
-    margin: 0 0 1rem;
-  }
-  
-  .login form .input {
-    border: none;
-    height: 40px;
-    padding: 1rem 1rem;
-    border-radius: 10px;
-    margin: 0em 0em 1em;
-  }
+.login {
+  padding: 1rem 1rem 1rem;
+}
 
-  .acoes {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-  }  
+.login form {
+  background: #bbbfc2;
+  border: none;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 2rem 2rem;
+  margin: 1rem 8rem 1rem;
+}
 
-  .botao {
-    margin-top: 60px;
-    width: 200px;
-  }
+.login form label {
+  color: #000000;
+  font-weight: bold;
+  margin: 0 0 1rem;
+}
 
-  .erro {
-    margin: -1em 0em 1em;
-  }
+.login form .input {
+  border: none;
+  height: 40px;
+  padding: 1rem 1rem;
+  border-radius: 10px;
+  margin: 0em 0em 1em;
+}
 
-  .usuario {
-    width: 300px; 
-    margin-left: auto;
-    margin-right: auto; 
-  }
+.acoes {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
 
-  /* .text-center {
-    margin: 0em 0em 1em;
-  } */
-  
+.botao {
+  margin-top: 60px;
+  width: 200px;
+}
 
+.erro {
+  margin: -1em 0em 1em;
+}
+
+.usuario {
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}

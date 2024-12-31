@@ -9,7 +9,6 @@ import { ClientePagina } from '../../modelo/cliente-pagina';
   providedIn: 'root',
 })
 export class ClienteService {
-
   private readonly API = '/api/clientes';
 
   constructor(private http: HttpClient) {}
