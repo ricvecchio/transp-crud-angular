@@ -6,11 +6,12 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormUtilsService } from '../../../compartilhado/form-utils-service';
-import { Pedido } from '../../../modelo/pedido';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { FormUtilsService } from '../../../compartilhado/form-utils-service';
+import { Pedido } from '../../../modelo/pedido';
 
 @Component({
   selector: 'app-expandir-pedido',
@@ -44,7 +45,7 @@ export class ExpandirPedidoComponent implements OnInit {
 
     const formattedDate = this.datePipe.transform(
       pedido.dataAtualizacaoPedido,
-      'dd/MM/yyyy'
+      'dd/MM/yyyy',
     );
 
     this.formulario = this.formBuilder.group({
@@ -90,7 +91,6 @@ export class ExpandirPedidoComponent implements OnInit {
   }
 
   onSubmitIssue() {
-
     const pedido = this.formulario.value as Pedido;
 
     this.router.navigate(['/cadastrar-pedido'], {

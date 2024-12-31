@@ -15,7 +15,7 @@
 }
 
 h5 {
-  text-align: center; /* Centraliza o texto horizontalmente */
+  text-align: center;
 }
 
 .espaco-dentro {
@@ -37,14 +37,14 @@ h5 {
 
 .radio-group-horizontal {
   display: flex;
-  flex-wrap: nowrap; /* Evita quebra de linha */
-  justify-content: flex-start; /* Alinha os botões à esquerda */
-  gap: 1.5rem; /* Espaçamento uniforme entre os botões */
-  padding: 0.5rem 0; /* Espaçamento interno */
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
 }
 
 .radio-button {
-  margin: 0; /* Remove margens para evitar deslocamento */
+  margin: 0;
 }
 
 .acoes {
@@ -78,14 +78,14 @@ h5 {
 }
 
 .container-previa-texto-fixo {
-  font-size: 2.0rem; /* Aumenta o tamanho dos textos */
-  margin-right: 1rem; /* Ajuste o valor para o espaçamento desejado */
+  font-size: 2.0rem;
+  margin-right: 1rem;
 }
 
 .container-previa-texto {
-  font-size: 3.0rem; /* Aumenta o tamanho dos textos */
+  font-size: 3.0rem;
 }
 
 .container-previa-obs {
-  font-size: 2.0rem; /* Aumenta o tamanho dos textos */
+  font-size: 2.0rem;
 }

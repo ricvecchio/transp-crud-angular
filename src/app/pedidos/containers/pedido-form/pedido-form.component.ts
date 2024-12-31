@@ -249,7 +249,6 @@ export class PedidoFormComponent implements OnInit {
       });
   }
 
-  // Método para formatar dados do pedido vindo da consulta expandida.
   private formatarPedido(pedidoParams: any): Pedido {
     return {
       idPedido: pedidoParams.idPedido || '',
@@ -377,7 +376,7 @@ export class PedidoFormComponent implements OnInit {
       cepControl.valueChanges.subscribe((valor) => {
         const formatado = this.formatarCep(valor);
         if (formatado !== valor) {
-          cepControl.setValue(formatado, { emitEvent: false }); // Evitar loops infinitos
+          cepControl.setValue(formatado, { emitEvent: false });
         }
       });
     }
@@ -385,7 +384,7 @@ export class PedidoFormComponent implements OnInit {
 
   private formatarCep(valor: any): string {
     if (!valor) return '';
-    valor = valor.toString().replace(/\D/g, ''); // Remove tudo que não for número
+    valor = valor.toString().replace(/\D/g, '');
     if (valor.length > 5) {
       valor = valor.slice(0, 5) + '-' + valor.slice(5, 8);
     }
@@ -430,7 +429,7 @@ export class PedidoFormComponent implements OnInit {
 
   private formatarParaReais(valor: any): string {
     if (!valor) return '';
-    valor = valor.toString().replace(/[^\d]/g, ''); // Remove caracteres não numéricos
+    valor = valor.toString().replace(/[^\d]/g, '');
     const numero = parseFloat(valor) / 100;
     return numero.toLocaleString('pt-BR', {
       style: 'currency',

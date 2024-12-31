@@ -6,23 +6,23 @@
 }
 
 .pedido-form form {
-background: #e7e9ecc9;
-border-radius: 20px;
-display: flex;
-flex-direction: column;
-padding: 2rem;
+  background: #e7e9ecc9;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
 }
 
 h5 {
-  text-align: center; /* Centraliza o texto horizontalmente */
+  text-align: center;
 }
 
 .espaco-dentro {
-padding: 0rem 2rem 0rem;
+  padding: 0rem 2rem 0rem;
 }
 
 .form-grid {
-display: grid;
+  display: grid;
 }
 
 .acoes {
@@ -37,8 +37,3 @@ display: grid;
   margin-top: 20px;
   width: 200px;
 }
-
-/* input[disabled], textarea[disabled], select[disabled] {
-  color: rgb(0, 0, 0) !important;
-  opacity: 1;
-} */

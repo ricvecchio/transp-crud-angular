@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, delay, first, of, tap } from 'rxjs';
+import { first, Observable } from 'rxjs';
+
 import { Pedido } from '../../modelo/pedido';
 import { PedidoPagina } from '../../modelo/pedido-pagina';
 
@@ -9,8 +10,6 @@ import { PedidoPagina } from '../../modelo/pedido-pagina';
 })
 export class PedidoService {
   private readonly API = '/api/pedidos';
-  // private readonly API = 'http://localhost:2000/pedidos'
-  // private readonly API = '/backend/db.json';
 
   constructor(private http: HttpClient) {}
 
@@ -36,8 +35,14 @@ export class PedidoService {
     return this.http.get<Pedido>(url);
   }
 
-  buscarUltimosPedidos(idCliente: number, limite: number): Observable<Pedido[]> {
-    const params = { idCliente: idCliente.toString(), limite: limite.toString() };
+  buscarUltimosPedidos(
+    idCliente: number,
+    limite: number,
+  ): Observable<Pedido[]> {
+    const params = {
+      idCliente: idCliente.toString(),
+      limite: limite.toString(),
+    };
     return this.http.get<Pedido[]>(`${this.API}/ultimos`, { params });
   }
 

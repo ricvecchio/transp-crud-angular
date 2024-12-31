@@ -245,9 +245,8 @@ export class PedidosListaComponent implements OnInit {
     controlName: 'dataInicialControl' | 'dataFinalControl',
   ): void {
     const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos.
+    let value = input.value.replace(/\D/g, '');
 
-    // Adiciona as barras de formatação (dd/mm/aaaa).
     if (value.length > 2) {
       value = value.substring(0, 2) + '/' + value.substring(2);
     }
@@ -255,7 +254,6 @@ export class PedidosListaComponent implements OnInit {
       value = value.substring(0, 5) + '/' + value.substring(5);
     }
 
-    // Limita o valor do dia, mês e ano.
     const parts = value.split('/').map(Number);
     const [day, month, year] = parts;
 
