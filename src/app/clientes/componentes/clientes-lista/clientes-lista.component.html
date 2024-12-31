@@ -11,28 +11,31 @@
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
-      <button
-        mat-raised-button
-        color="primary"
-        class="clear-filters-button"
-        (click)="clearFilters()"
-      >
-        Limpar Filtros
-      </button>
-      <button
-        mat-raised-button
-        color="primary"
-        class="menu-button"
-        (click)="onMenu()"
-      >
-        Menu
-      </button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="clear-filters-button"
+      (click)="clearFilters()"
+    >
+      Limpar Filtros
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="menu-button"
+      (click)="onMenu()"
+    >
+      Menu
+    </button>
   </div>
 
   @if (clientes$ | async; as clientes) {
     <div>
       <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container matColumnDef="acaoConsulta" class="mat-column-acaoConsulta">
+        <ng-container
+          matColumnDef="acaoConsulta"
+          class="mat-column-acaoConsulta"
+        >
           <mat-header-cell *matHeaderCellDef class="action-column">
           </mat-header-cell>
           <mat-cell *matCellDef="let cliente" class="action-column">
@@ -75,12 +78,18 @@
           <mat-cell *matCellDef="let cliente">{{ cliente.cpfCnpj }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="enderecoEntrega">
-          <mat-header-cell *matHeaderCellDef><strong>Endereço</strong></mat-header-cell>
+          <mat-header-cell *matHeaderCellDef
+            ><strong>Endereço</strong></mat-header-cell
+          >
           <mat-cell *matCellDef="let cliente">
             {{
               cliente.logradouroEntrega
-                ? cliente.logradouroEntrega + ', ' + cliente.numeroEntrega + ' - ' + cliente.bairroEntrega
-                : 'Endereço não informado'
+                ? cliente.logradouroEntrega +
+                  ", " +
+                  cliente.numeroEntrega +
+                  " - " +
+                  cliente.bairroEntrega
+                : "Endereço não informado"
             }}
           </mat-cell>
         </ng-container>

@@ -1,6 +1,7 @@
 import { Directive } from '@angular/core';
 import { AbstractControl, AsyncValidator, NG_ASYNC_VALIDATORS, ValidationErrors } from '@angular/forms';
 import { map, Observable } from 'rxjs';
+
 import { ConsultaCepService } from '../compartilhado/consulta-cep.service';
 
 @Directive({

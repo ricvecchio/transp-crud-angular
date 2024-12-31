@@ -42,16 +42,4 @@ export class FormUtilsService {
 
     return 'Campo Inválido';
   }
-
-  // getFormArrayFieldErrorMessage(formGroup: UntypedFormGroup, formArrayName: string,
-  //   fieldName: string, index: number) {
-  //   const formArray = formGroup.get(formArrayName) as UntypedFormArray;
-  //   const field = formArray.controls[index].get(fieldName) as UntypedFormControl;
-  //   return this.getErrorMessageFromField(field);
-  // }
-
-  // isFormArrayRequired(formGroup: UntypedFormGroup, formArrayName: string) {
-  //   const formArray = formGroup.get(formArrayName) as UntypedFormArray;
-  //   return !formArray.valid && formArray.hasError('required') && formArray.touched;
-  // }
 }

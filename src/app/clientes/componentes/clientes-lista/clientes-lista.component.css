@@ -3,9 +3,9 @@ mat-card {
   flex-direction: column;
   margin: 0;
   padding: 1em;
-  height: calc(100vh - 100px); /* Ajuste para considerar o tamanho do rodapé */
+  height: calc(100vh - 100px);
   box-sizing: border-box;
-  overflow-y: auto; /* Para garantir que o conteúdo seja rolável */
+  overflow-y: auto;
 }
 
 .mat-table {
@@ -54,20 +54,20 @@ mat-paginator {
 
 .action-column {
   display: flex;
-  justify-content: center; /* Centraliza os botões horizontalmente */
-  gap: 8px; /* Espaçamento entre botões */
-  align-items: center; /* Alinha os botões verticalmente */
+  justify-content: center;
+  gap: 8px;
+  align-items: center;
 }
 
 .action-button {
-  width: 32px; /* Define a largura do botão */
-  height: 32px; /* Define a altura do botão */
-  min-width: 32px; /* Ajusta o tamanho mínimo */
-  line-height: 32px; /* Centraliza verticalmente */
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  line-height: 32px;
 }
 
 .action-button mat-icon {
-  font-size: 22px; /* Reduz o tamanho do ícone */
+  font-size: 22px;
 }
 
 .mat-header-row,
@@ -78,10 +78,10 @@ mat-paginator {
 
 .mat-header-cell,
 .mat-cell {
-  flex: 1; /* Permite que as colunas cresçam igualmente */
-  overflow: hidden; /* Evita o estouro de texto */
-  text-overflow: ellipsis; /* Adiciona reticências para texto longo */
-  white-space: nowrap; /* Mantém o texto em uma única linha */
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mat-column-acaoConsulta,

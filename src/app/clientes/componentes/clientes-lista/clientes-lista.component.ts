@@ -1,4 +1,5 @@
 import { AsyncPipe } from '@angular/common';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -30,15 +31,20 @@ import {
 } from '@angular/material/table';
 import { MatToolbar } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Observable, of, tap } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  Observable,
+  of,
+  tap,
+} from 'rxjs';
 
 import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-dialog/error-dialog.component';
 import { Cliente } from '../../../modelo/cliente';
 import { ClientePagina } from '../../../modelo/cliente-pagina';
 import { ClienteService } from '../../servicos/cliente.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-clientes-lista',
@@ -85,14 +91,11 @@ export class ClientesListaComponent implements OnInit {
   ];
 
   dataSource = new MatTableDataSource<Cliente>();
-  filterControl = new FormControl(''); // Campo de filtro
+  filterControl = new FormControl('');
 
   ngOnInit(): void {
     this.filterControl.valueChanges
-      .pipe(
-        debounceTime(300), // Aguarde 300ms para evitar requisições excessivas
-        distinctUntilChanged(), // Evite requisições desnecessárias para valores repetidos
-      )
+      .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((filterValue: string | null) => {
         this.atualiza(
           { length: 0, pageIndex: 0, pageSize: this.pageSize },

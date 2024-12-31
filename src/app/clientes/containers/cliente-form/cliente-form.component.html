@@ -164,8 +164,11 @@
         <div class="col-md-3">
           <mat-form-field class="form-grid">
             <mat-label>Bairro:</mat-label>
-            <input matInput name="bairro" formControlName="bairro"
-            (input)="convertToUppercase('bairro')"
+            <input
+              matInput
+              name="bairro"
+              formControlName="bairro"
+              (input)="convertToUppercase('bairro')"
             />
           </mat-form-field>
         </div>

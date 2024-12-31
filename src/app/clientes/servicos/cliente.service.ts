@@ -1,34 +1,35 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { first, Observable } from 'rxjs';
+
 import { Cliente } from '../../modelo/cliente';
 import { ClientePagina } from '../../modelo/cliente-pagina';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClienteService {
 
-  // private readonly API = 'http://localhost:2000/clientes'
-    private readonly API = '/api/clientes'
+  private readonly API = '/api/clientes';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   listar(page = 0, pageSize = 10, filter = '') {
-    return this.http.get<ClientePagina>(this.API, {
-      params: { page, pageSize, filter }
-    }).pipe(first());
+    return this.http
+      .get<ClientePagina>(this.API, {
+        params: { page, pageSize, filter },
+      })
+      .pipe(first());
   }
 
   buscarPorId(idCliente: number): Observable<Cliente> {
-    const url = `${this.API}/${idCliente}`
-    return this.http.get<Cliente>(url)
+    const url = `${this.API}/${idCliente}`;
+    return this.http.get<Cliente>(url);
   }
 
   buscarPorNome(nomeBusca: String): Observable<Cliente[]> {
-    const url = `${this.API}/trecho/${nomeBusca}`
-    return this.http.get<Cliente[]>(url)
+    const url = `${this.API}/trecho/${nomeBusca}`;
+    return this.http.get<Cliente[]>(url);
   }
 
   salvar(cliente: Partial<Cliente>) {
@@ -47,11 +48,12 @@ export class ClienteService {
   }
 
   private editar(cliente: Partial<Cliente>) {
-    return this.http.put<Cliente>(`${this.API}/${cliente.idCliente}`, cliente).pipe(first());
+    return this.http
+      .put<Cliente>(`${this.API}/${cliente.idCliente}`, cliente)
+      .pipe(first());
   }
 
   excluir(idCliente: string) {
     return this.http.delete(`${this.API}/${idCliente}`).pipe(first());
   }
-
 }

@@ -1,13 +1,26 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormGroup,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel, MatPrefix } from '@angular/material/form-field';
+import {
+  MatError,
+  MatFormField,
+  MatFormFieldModule,
+  MatHint,
+  MatLabel,
+  MatPrefix,
+} from '@angular/material/form-field';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
@@ -15,7 +28,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
@@ -80,7 +92,6 @@ export class ClienteFormComponent implements OnInit {
     this.formulario = this.formBuilder.group({
       nomeBusca: [cliente.nomeBusca],
       idCliente: [cliente.idCliente],
-      // idCliente: [cliente.idCliente, [Validators.pattern(/^\d+$/)]],
       nome: [
         cliente.nome,
         [
@@ -125,21 +136,6 @@ export class ClienteFormComponent implements OnInit {
 
     this.formatarCampoCep();
 
-    // this.formulario
-    //   .get('nomeBusca')
-    //   ?.valueChanges.pipe(
-    //     distinctUntilChanged(),
-    //     debounceTime(300),
-    //     switchMap((nomeBusca) =>
-    //       nomeBusca && nomeBusca.trim() !== ''
-    //         ? this.clienteService.buscarPorNome(nomeBusca)
-    //         : [],
-    //     ),
-    //   )
-    //   .subscribe((dados: any[]) => {
-    //     this.clientesEncontrados = Array.isArray(dados) ? dados : [];
-    //   });
-
     this.formatarCampos([
       'precoCx5',
       'precoCx10',
@@ -150,47 +146,20 @@ export class ClienteFormComponent implements OnInit {
     ]);
   }
 
-  // @ViewChild('focusElement') focusElement!: ElementRef;
-
-  // clientesEncontrados: any[] = [];
-
-  // selecionarCliente(cliente: any) {
-  //   this.formulario.patchValue({
-  //     idCliente: cliente.idCliente,
-  //     nome: cliente.nome,
-  //     cpfCnpj: cliente.cpfCnpj,
-  //     razaoSocial: cliente.razaoSocial,
-  //     telefone: cliente.telefone,
-  //     celular: cliente.celular,
-  //     email: cliente.email,
-  //     cep: cliente.cep,
-  //     logradouro: cliente.logradouro,
-  //     numero: cliente.numero,
-  //     complemento: cliente.complemento,
-  //     bairro: cliente.bairro,
-  //     cidade: cliente.cidade,
-  //     estado: cliente.estado,
-  //   });
-  //   this.clientesEncontrados = [];
-  // }
-
   onCpfCnpjInput(event: Event): void {
     const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    let value = input.value.replace(/\D/g, '');
 
-    // Aplica formatação para CPF (11 dígitos) ou CNPJ (14 dígitos)
     if (value.length > 14) {
-      value = value.substring(0, 14); // Limita ao máximo de 14 dígitos
+      value = value.substring(0, 14);
     }
 
     if (value.length > 11) {
-      // Formata como CNPJ: xx.xxx.xxx/xxxx-xx
       value = value.replace(
         /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2}).*/,
         '$1.$2.$3/$4-$5',
       );
     } else if (value.length > 9) {
-      // Formata como CPF: xxx.xxx.xxx-xx
       value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{2}).*/, '$1.$2.$3-$4');
     } else if (value.length > 6) {
       value = value.replace(/^(\d{3})(\d{3})(\d+).*/, '$1.$2.$3');
@@ -199,37 +168,31 @@ export class ClienteFormComponent implements OnInit {
     }
 
     input.value = value;
-    this.formulario.get('cpfCnpj')?.setValue(value); // Atualiza o formControl
+    this.formulario.get('cpfCnpj')?.setValue(value);
   }
 
   onTelefoneOuCelularInput(event: Event, controlName: string): void {
     const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    let value = input.value.replace(/\D/g, '');
 
-    // Verifica qual campo está sendo editado
     if (controlName === 'telefone' && value.length > 10) {
-      value = value.substring(0, 10); // Limita a 10 dígitos para telefone fixo
+      value = value.substring(0, 10);
     } else if (controlName === 'celular' && value.length > 11) {
-      value = value.substring(0, 11); // Limita a 11 dígitos para celular
+      value = value.substring(0, 11);
     }
 
-    // Formatação
     if (value.length === 11) {
-      // Formato celular: (xx) xxxxx-xxxx
       value = value.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
     } else if (value.length === 10) {
-      // Formato telefone fixo: (xx) xxxx-xxxx
       value = value.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
     } else if (value.length > 6) {
-      // Número intermediário
       value = value.replace(/^(\d{2})(\d{4})(\d+)$/, '($1) $2-$3');
     } else if (value.length > 2) {
-      // Apenas código de área e início
       value = value.replace(/^(\d{2})(\d+)$/, '($1) $2');
     }
 
-    input.value = value; // Atualiza o valor visível no campo
-    this.formulario.get(controlName)?.setValue(value); // Atualiza o FormControl correspondente
+    input.value = value;
+    this.formulario.get(controlName)?.setValue(value);
   }
 
   private formatarCampoCep(): void {
@@ -238,7 +201,7 @@ export class ClienteFormComponent implements OnInit {
       cepControl.valueChanges.subscribe((valor) => {
         const formatado = this.formatarCep(valor);
         if (formatado !== valor) {
-          cepControl.setValue(formatado, { emitEvent: false }); // Evitar loops infinitos
+          cepControl.setValue(formatado, { emitEvent: false });
         }
       });
     }
@@ -246,7 +209,7 @@ export class ClienteFormComponent implements OnInit {
 
   private formatarCep(valor: any): string {
     if (!valor) return '';
-    valor = valor.toString().replace(/\D/g, ''); // Remove tudo que não for número
+    valor = valor.toString().replace(/\D/g, '');
     if (valor.length > 5) {
       valor = valor.slice(0, 5) + '-' + valor.slice(5, 8);
     }
@@ -291,7 +254,7 @@ export class ClienteFormComponent implements OnInit {
 
   private formatarParaReais(valor: any): string {
     if (!valor) return '';
-    valor = valor.toString().replace(/[^\d]/g, ''); // Remove caracteres não numéricos
+    valor = valor.toString().replace(/[^\d]/g, '');
     const numero = parseFloat(valor) / 100;
     return numero.toLocaleString('pt-BR', {
       style: 'currency',
@@ -382,17 +345,6 @@ export class ClienteFormComponent implements OnInit {
       (result) => this.onSucess(),
       (error) => this.onError(),
     );
-  }
-
-  private formatarData(data: Date): string {
-    const dia = data.getDate().toString().padStart(2, '0');
-    const mes = (data.getMonth() + 1).toString().padStart(2, '0');
-    const ano = data.getFullYear();
-    const horas = data.getHours().toString().padStart(2, '0');
-    const minutos = data.getMinutes().toString().padStart(2, '0');
-    const segundos = data.getSeconds().toString().padStart(2, '0');
-
-    return `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
   }
 
   private onSucess() {

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
-import { Cliente } from '../modelo/cliente';
 import { ClienteService } from '../clientes/servicos/cliente.service';
+import { Cliente } from '../modelo/cliente';
 
 @Injectable({
   providedIn: 'root',
