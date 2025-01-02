@@ -17,7 +17,8 @@ export class AutenticacaoService {
   autenticar(usuario: string, senha: string): Observable<HttpResponse<any>> {
     return this.httpClient
       .post(
-        'http://localhost:3000/user/login',
+        // 'http://localhost:3000/user/login',
+        '/user/login',
         {
           userName: usuario,
           password: senha,
