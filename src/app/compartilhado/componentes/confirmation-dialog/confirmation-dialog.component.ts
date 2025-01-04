@@ -8,11 +8,10 @@ import {
 } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-confirmation-dialog',
-  templateUrl: './confirmation-dialog.component.html',
-  styleUrl: './confirmation-dialog.component.css',
-  standalone: true,
-  imports: [MatDialogContent, MatDialogActions, MatButton],
+    selector: 'app-confirmation-dialog',
+    templateUrl: './confirmation-dialog.component.html',
+    styleUrl: './confirmation-dialog.component.css',
+    imports: [MatDialogContent, MatDialogActions, MatButton]
 })
 export class ConfirmationDialogComponent implements OnInit {
   constructor(

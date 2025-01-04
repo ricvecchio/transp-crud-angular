@@ -16,11 +16,10 @@ import { UsuarioExisteService } from './usuario-existe.service';
 import { usuarioSenhaIguaisValidator } from './usuario-senha-iguais.validator';
 
 @Component({
-  selector: 'app-novo-usuario',
-  templateUrl: './novo-usuario.component.html',
-  styleUrls: ['./novo-usuario.component.css'],
-  standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MensagemComponent, RouterLink],
+    selector: 'app-novo-usuario',
+    templateUrl: './novo-usuario.component.html',
+    styleUrls: ['./novo-usuario.component.css'],
+    imports: [FormsModule, ReactiveFormsModule, MensagemComponent, RouterLink]
 })
 export class NovoUsuarioComponent implements OnInit {
   novoUsuarioForm!: FormGroup;

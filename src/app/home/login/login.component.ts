@@ -6,11 +6,10 @@ import { AutenticacaoService } from '../../autenticacao/autenticacao.service';
 import { MensagemComponent } from '../mensagem/mensagem.component';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  standalone: true,
-  imports: [FormsModule, MensagemComponent, RouterLink],
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css'],
+    imports: [FormsModule, MensagemComponent, RouterLink]
 })
 export class LoginComponent implements OnInit {
   usuario = '';

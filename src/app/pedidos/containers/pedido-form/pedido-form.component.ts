@@ -39,30 +39,29 @@ interface Volumes {
 }
 
 @Component({
-  selector: 'app-pedido-form',
-  templateUrl: './pedido-form.component.html',
-  styleUrl: './pedido-form.component.css',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatAutocompleteModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatOptionModule,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    MatError,
-    MatDividerModule,
-    MatListModule,
-    MatRadioModule,
-    MatSlideToggleModule,
-    MatSelectModule,
-    MatCardModule,
-    MatCheckboxModule,
-  ],
+    selector: 'app-pedido-form',
+    templateUrl: './pedido-form.component.html',
+    styleUrl: './pedido-form.component.css',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatAutocompleteModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatOptionModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatError,
+        MatDividerModule,
+        MatListModule,
+        MatRadioModule,
+        MatSlideToggleModule,
+        MatSelectModule,
+        MatCardModule,
+        MatCheckboxModule,
+    ]
 })
 export class PedidoFormComponent implements OnInit {
   formulario!: FormGroup;

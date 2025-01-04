@@ -14,19 +14,18 @@ import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Pedido } from '../../../modelo/pedido';
 
 @Component({
-  selector: 'app-expandir-pedido',
-  templateUrl: './expandir-pedido.component.html',
-  styleUrl: './expandir-pedido.component.css',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatInput,
-  ],
-  providers: [DatePipe],
+    selector: 'app-expandir-pedido',
+    templateUrl: './expandir-pedido.component.html',
+    styleUrl: './expandir-pedido.component.css',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+    ],
+    providers: [DatePipe]
 })
 export class ExpandirPedidoComponent implements OnInit {
   formulario!: FormGroup;
