@@ -9,7 +9,8 @@ import { PedidoPagina } from '../../modelo/pedido-pagina';
   providedIn: 'root',
 })
 export class PedidoService {
-  private readonly API = '/api/pedidos';
+  private readonly API = 'https://transp-api-crud-spring.onrender.com/api/pedidos';
+  // private readonly API = '/api/pedidos';
 
   constructor(private http: HttpClient) {}
 
