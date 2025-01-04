@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { importProvidersFrom, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
@@ -19,31 +19,25 @@ import { NovoUsuarioComponent } from './home/novo-usuario/novo-usuario.component
 import { MenuComponent } from './menu/menu.component';
 import { RodapeComponent } from './rodape/rodape.component';
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    MatToolbarModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AsyncPipe,
-    CabecalhoComponent,
-    RodapeComponent,
-    HomeComponent,
-    LoginComponent,
-    NovoUsuarioComponent,
-    MenuComponent,
-    MensagemComponent,
-  ],
-  providers: [
-    provideAnimations(),
-    provideHttpClient(),
-    importProvidersFrom(MatNativeDateModule),
-    provideMomentDateAdapter(),
-    provideAnimationsAsync(),
-  ],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [AppComponent],
+    bootstrap: [AppComponent], imports: [AppRoutingModule,
+        BrowserModule,
+        MatToolbarModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AsyncPipe,
+        CabecalhoComponent,
+        RodapeComponent,
+        HomeComponent,
+        LoginComponent,
+        NovoUsuarioComponent,
+        MenuComponent,
+        MensagemComponent], providers: [
+        provideAnimations(),
+        provideHttpClient(),
+        importProvidersFrom(MatNativeDateModule),
+        provideMomentDateAdapter(),
+        provideAnimationsAsync(),
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}
