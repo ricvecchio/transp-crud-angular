@@ -44,6 +44,7 @@ interface Status {
     selector: 'app-pedidos-lista',
     templateUrl: './pedidos-lista.component.html',
     styleUrl: './pedidos-lista.component.css',
+    standalone: true,
     imports: [
         CommonModule,
         MatOptionModule,

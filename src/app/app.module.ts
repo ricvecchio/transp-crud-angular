@@ -1,8 +1,9 @@
-import { AsyncPipe } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { importProvidersFrom, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,25 +20,31 @@ import { NovoUsuarioComponent } from './home/novo-usuario/novo-usuario.component
 import { MenuComponent } from './menu/menu.component';
 import { RodapeComponent } from './rodape/rodape.component';
 
-@NgModule({ declarations: [AppComponent],
-    bootstrap: [AppComponent], imports: [AppRoutingModule,
-        BrowserModule,
-        MatToolbarModule,
-        FormsModule,
-        ReactiveFormsModule,
-        AsyncPipe,
-        CabecalhoComponent,
-        RodapeComponent,
-        HomeComponent,
-        LoginComponent,
-        NovoUsuarioComponent,
-        MenuComponent,
-        MensagemComponent], providers: [
-        provideAnimations(),
-        provideHttpClient(),
-        importProvidersFrom(MatNativeDateModule),
-        provideMomentDateAdapter(),
-        provideAnimationsAsync(),
-        provideHttpClient(withInterceptorsFromDi()),
-    ] })
+@NgModule({
+  declarations: [
+    AppComponent,  // Apenas o AppComponent continua em declarations
+  ],
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    MatToolbarModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CabecalhoComponent,  // Importação dos componentes standalone
+    RodapeComponent,
+    HomeComponent,
+    LoginComponent,
+    NovoUsuarioComponent,
+    MenuComponent,
+    MensagemComponent,
+  ],
+  providers: [
+    provideAnimations(),
+    provideHttpClient(),
+    importProvidersFrom(MatNativeDateModule),
+    provideAnimationsAsync(),
+    provideHttpClient(withInterceptorsFromDi()),
+  ],
+})
 export class AppModule {}
