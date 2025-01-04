@@ -9,7 +9,7 @@ import { ClientePagina } from '../../modelo/cliente-pagina';
   providedIn: 'root',
 })
 export class ClienteService {
-  private readonly API = '/transp-api-crud-spring.onrender.com/api/clientes';
+  private readonly API = 'https://transp-api-crud-spring.onrender.com/api/clientes';
   // private readonly API = '/api/clientes';
 
   constructor(private http: HttpClient) {}
