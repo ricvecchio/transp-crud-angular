@@ -22,7 +22,7 @@ import { RodapeComponent } from './rodape/rodape.component';
 
 @NgModule({
   declarations: [
-    AppComponent,  // Apenas o AppComponent continua em declarations
+    AppComponent,
   ],
   bootstrap: [AppComponent],
   imports: [
@@ -31,7 +31,7 @@ import { RodapeComponent } from './rodape/rodape.component';
     MatToolbarModule,
     FormsModule,
     ReactiveFormsModule,
-    CabecalhoComponent,  // Importação dos componentes standalone
+    CabecalhoComponent,
     RodapeComponent,
     HomeComponent,
     LoginComponent,
