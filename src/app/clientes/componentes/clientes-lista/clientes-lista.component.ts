@@ -49,6 +49,7 @@ import { ClienteService } from '../../servicos/cliente.service';
     selector: 'app-clientes-lista',
     templateUrl: './clientes-lista.component.html',
     styleUrl: './clientes-lista.component.css',
+    standalone: true,
     imports: [
         MatCard,
         MatTable,
