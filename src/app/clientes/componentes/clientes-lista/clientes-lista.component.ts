@@ -29,7 +29,6 @@ import {
   MatTable,
   MatTableDataSource,
 } from '@angular/material/table';
-import { MatToolbar } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   catchError,
@@ -52,7 +51,6 @@ import { ClienteService } from '../../servicos/cliente.service';
     styleUrl: './clientes-lista.component.css',
     imports: [
         MatCard,
-        MatToolbar,
         MatTable,
         MatLabel,
         MatColumnDef,

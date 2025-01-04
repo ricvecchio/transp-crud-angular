@@ -25,7 +25,6 @@ import {
   MatTable,
   MatTableDataSource,
 } from '@angular/material/table';
-import { MatToolbar } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, filter, Observable, of, tap } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -53,7 +52,6 @@ interface Status {
         MatLabel,
         MatInputModule,
         MatCard,
-        MatToolbar,
         MatTable,
         MatColumnDef,
         MatHeaderCellDef,
