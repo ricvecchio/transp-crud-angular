@@ -1,8 +1,8 @@
 mat-card {
+  padding: 2rem 4rem 2rem;
   display: flex;
   flex-direction: column;
   margin: 0;
-  padding: 1em;
   height: calc(100vh - 100px);
   box-sizing: border-box;
   overflow-y: auto;

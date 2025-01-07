@@ -1,4 +1,4 @@
- .pedido-form {
+.pedido-form {
   padding: 2rem 4rem 2rem;
   height: calc(100vh - 100px);
   box-sizing: border-box;
@@ -7,7 +7,6 @@
 
 .pedido-form form {
   background: #e7e9ecc9;
-  border: none;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -33,14 +32,6 @@ h5 {
 
 .checkbox-margin {
   margin: 0 10px;
-}
-
-.radio-group-horizontal {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  gap: 1.5rem;
-  padding: 0.5rem 0;
 }
 
 .radio-button {
@@ -78,7 +69,7 @@ h5 {
 }
 
 .container-previa-texto-fixo {
-  font-size: 2.0rem;
+  font-size: 2rem;
   margin-right: 1rem;
 }
 
@@ -87,5 +78,5 @@ h5 {
 }
 
 .container-previa-obs {
-  font-size: 2.0rem;
+  font-size: 2rem;
 }

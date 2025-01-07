@@ -6,11 +6,11 @@
 }
 
 .cliente-form form {
-background: #e7e9ecc9;
-border-radius: 20px;
-display: flex;
-flex-direction: column;
-padding: 2rem;
+  background: #e7e9ecc9;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
 }
 
 h5 {
@@ -18,22 +18,22 @@ h5 {
 }
 
 .espaco-dentro {
-padding: 0rem 2rem 0rem;
+  padding: 0rem 2rem 0rem;
 }
 
 .form-grid {
-display: grid;
+  display: grid;
 }
 
 .acoes {
-display: flex;
-justify-content: center;
-align-items: center;
-align-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
 
 .botao {
-margin: 5px;
-margin-top: 20px;
-width: 200px;
+  margin: 5px;
+  margin-top: 20px;
+  width: 200px;
 }
