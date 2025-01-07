@@ -1,9 +1,8 @@
-.cabecalho {
+header {
   background: url(/assets/img/fundo-cabecalho.png);
   background-size: cover;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   height: 50px;
   width: 100%;
   position: sticky;
@@ -11,12 +10,12 @@
   z-index: 1;
 }
 
-.cabecalho .logo-gota {
+.logo-gota {
   width: 100%;
   max-width: 78px;
 }
 
-.cabecalho .logo-texto {
+.logo-texto {
   max-width: 150px;
   position: absolute;
   left: 0;
@@ -24,7 +23,7 @@
   margin: auto;
 }
 
-.cabecalho .logo-caminhao {
+.logo-caminhao {
   margin-left: auto;
   width: 100%;
   max-width: 58px;
