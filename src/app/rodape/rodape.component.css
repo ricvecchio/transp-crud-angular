@@ -26,14 +26,9 @@ footer small {
   color: white;
 }
 
-.LogoRodapeContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .LogoRodape {
-  justify-self: center;
-  grid-area: LogoRodape;
-  max-width: 50px;
+  margin-left: auto;
+  width: 100%;
+  max-width: 65px;
+  padding: 0.5rem 0.5rem 0.5rem;
 }
