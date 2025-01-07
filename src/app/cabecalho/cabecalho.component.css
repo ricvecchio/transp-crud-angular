@@ -11,7 +11,7 @@
   z-index: 1;
 }
 
-.cabecalho .logo {
+.cabecalho .logo-gota {
   width: 100%;
   max-width: 78px;
 }
@@ -24,29 +24,12 @@
   margin: auto;
 }
 
-.cabecalho .imagem {
-  width: 4%;
+.cabecalho .logo-caminhao {
   margin-left: auto;
+  width: 100%;
+  max-width: 78px;
 }
 
 .navbar-text {
   padding: 0rem 0.5rem 0rem;
-}
-
-@media (max-width: 576px) {
-  .cabecalho .logo {
-    padding: 2rem;
-  }
-  .cabecalho p {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .cabecalho .logo {
-    width: 90%;
-  }
-  .cabecalho .imagem {
-    display: none;
-  }
 }

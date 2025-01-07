@@ -22,12 +22,6 @@ footer {
   padding: 1rem 1rem 0.5rem;
 }
 
-.LogoRodape {
-  justify-self: center;
-  grid-area: LogoRodape;
-  max-width: 50px;
-}
-
 footer small {
   color: white;
 }
@@ -36,4 +30,10 @@ footer small {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.LogoRodape {
+  justify-self: center;
+  grid-area: LogoRodape;
+  max-width: 50px;
 }
