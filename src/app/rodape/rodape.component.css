@@ -1,18 +1,11 @@
 footer {
   background-image: url(/assets/img/fundo-rodape.png);
-  height: 50px;
   position: fixed;
+  height: 50px;
   width: 100%;
   bottom: 0;
   left: 0;
-}
-
-.Rodape {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 }
 
 .TextoCopyright {

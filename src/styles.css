@@ -9,3 +9,12 @@
   border-radius: 10px;
   transition: 0.5s ease;
 }
+
+main {
+  margin-top: 50px; /* Altura do cabeçalho */
+  margin-bottom: 50px; /* Altura do rodapé */
+  height: calc(100vh - 100px); /* Subtraindo cabeçalho e rodapé */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,30 +1,12 @@
 mat-card {
   padding: 2rem 4rem 2rem;
-  display: flex;
-  flex-direction: column;
   margin: 0;
-  height: calc(100vh - 100px);
   box-sizing: border-box;
-  overflow-y: auto;
 }
 
 .mat-table {
   flex: 1;
   overflow: auto;
-}
-
-mat-paginator {
-  margin-top: 1em;
-}
-
-.toolbar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.toolbar-text {
-  text-align: center;
 }
 
 .d-flex {
@@ -34,22 +16,19 @@ mat-paginator {
   gap: 16px;
 }
 
+mat-paginator {
+  margin-top: 1em;
+}
+
 .form-grid {
   width: 100%;
 }
 
-.clear-filters-button {
-  padding: 2px 7px;
-  font-size: 12px;
-  height: 28px;
-}
-
-.menu-button {
+.small-button {
   background: #b5b7b9;
-  padding: 2px 7px;
   font-size: 12px;
-  height: 28px;
-  margin-left: 16px;
+  height: 40px;
+  max-width: 100px;
 }
 
 .action-column {
