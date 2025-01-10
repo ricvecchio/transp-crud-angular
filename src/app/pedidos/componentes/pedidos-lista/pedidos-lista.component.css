@@ -17,16 +17,6 @@ mat-paginator {
   margin-top: 1em;
 }
 
-.toolbar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.toolbar-text {
-  text-align: center;
-}
-
 .d-flex {
   display: flex;
   justify-content: center;
