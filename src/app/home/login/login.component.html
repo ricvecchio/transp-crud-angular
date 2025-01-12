@@ -5,7 +5,7 @@
     <label for="usuario">Nome de usuário:</label>
     <input
       class="input"
-      placeholder="Nome do usuário"
+      placeholder="Informe o usuário"
       [(ngModel)]="usuario"
       name="usuario"
       #campoUsuario="ngModel"
@@ -19,7 +19,7 @@
     <input
       type="password"
       class="input"
-      placeholder="Senha"
+      placeholder="Informe a senha"
       [(ngModel)]="senha"
       name="senha"
       #campoSenha="ngModel"
@@ -38,11 +38,4 @@
       Login
     </button>
   </form>
-
-  <div class="usuario">
-
-      Não é um usuário?
-      <a [routerLink]="['/home/novousuario']">Se cadastre!</a>
-
-  </div>
 </section>

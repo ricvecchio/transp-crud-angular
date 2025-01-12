@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { AutenticacaoService } from '../../autenticacao/autenticacao.service';
 import { MensagemComponent } from '../mensagem/mensagem.component';
@@ -9,7 +9,7 @@ import { MensagemComponent } from '../mensagem/mensagem.component';
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css'],
-    imports: [FormsModule, MensagemComponent, RouterLink]
+    imports: [FormsModule, MensagemComponent]
 })
 export class LoginComponent implements OnInit {
   usuario = '';
