@@ -28,8 +28,8 @@ export class PedidoService {
     if (dataFinal) params.dataFinal = dataFinal;
     if (statusFiltro) params.statusFiltro = statusFiltro;
 
-    // return this.http.get<PedidoPagina>('https://transp-api-crud-spring.onrender.com/api/pedidos', { params });
-    return this.http.get<PedidoPagina>('/api/pedidos', { params });
+    return this.http.get<PedidoPagina>('https://transp-api-crud-spring.onrender.com/api/pedidos', { params });
+    // return this.http.get<PedidoPagina>('/api/pedidos', { params });
   }
 
   buscarPorId(idPedido: number): Observable<Pedido> {
