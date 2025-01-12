@@ -15,6 +15,4 @@ main {
   margin-bottom: 50px; /* Altura do rodapé */
   height: calc(100vh - 100px); /* Subtraindo cabeçalho e rodapé */
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
 }

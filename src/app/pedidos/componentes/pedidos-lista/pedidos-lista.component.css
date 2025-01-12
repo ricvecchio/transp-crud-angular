@@ -34,13 +34,6 @@ mat-paginator {
   max-width: 100px;
 }
 
-.action-column {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  align-items: center;
-}
-
 .action-button {
   width: 32px;
   height: 32px;
@@ -50,6 +43,11 @@ mat-paginator {
 
 .action-button mat-icon {
   font-size: 22px;
+}
+
+.action-column {
+  justify-content: center;
+  gap: 8px;
 }
 
 .mat-column-acaoConsulta,

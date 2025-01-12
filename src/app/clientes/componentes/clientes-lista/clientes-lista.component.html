@@ -1,11 +1,11 @@
 <mat-card>
   <div class="d-flex justify-content-center">
     <mat-form-field class="form-grid">
-      <mat-label>Pesquisar Cliente</mat-label>
+      <mat-label>Buscar Cliente</mat-label>
       <input
         matInput
         [formControl]="filterControl"
-        placeholder="Digite o nome do cliente"
+        placeholder="Digite os dados do cliente"
       />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
@@ -28,116 +28,108 @@
   </div>
 
   @if (clientes$ | async; as clientes) {
-    <div>
-      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container
-          matColumnDef="acaoConsulta"
-          class="mat-column-acaoConsulta"
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="acaoConsulta">
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell *matCellDef="let cliente">
+          <button
+            mat-mini-fab
+            color="primary"
+            aria-label="Consulta Cliente"
+            class="action-button"
+            (click)="onSearch(cliente)"
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="idCliente">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Cliente</strong></mat-header-cell
         >
-          <mat-header-cell *matHeaderCellDef class="action-column">
-          </mat-header-cell>
-          <mat-cell *matCellDef="let cliente" class="action-column">
-            <button
-              mat-mini-fab
-              color="primary"
-              aria-label="Consulta Cliente"
-              class="action-button"
-              (click)="onSearch(cliente)"
-            >
-              <mat-icon>search</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
+        <mat-cell *matCellDef="let cliente">{{ cliente.idCliente }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="nome">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Nome</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let cliente">{{ cliente.nome }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="razaoSocial">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Razão Social</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let cliente">{{ cliente.razaoSocial }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="cpfCnpj">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>CPF/CNPJ</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let cliente">{{ cliente.cpfCnpj }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="enderecoEntrega">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Endereço</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let cliente">
+          {{
+            cliente.logradouroEntrega
+              ? cliente.logradouroEntrega +
+                ", " +
+                cliente.numeroEntrega +
+                " - " +
+                cliente.bairroEntrega
+              : "Endereço não informado"
+          }}
+        </mat-cell>
+      </ng-container>
 
-        <ng-container matColumnDef="idCliente">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Cliente</strong></mat-header-cell
+      <ng-container matColumnDef="acao">
+        <mat-header-cell *matHeaderCellDef>
+          <button
+            mat-mini-fab
+            color="accent"
+            class="action-button"
+            (click)="onAdd()"
           >
-          <mat-cell *matCellDef="let cliente">{{ cliente.idCliente }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="nome">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Nome</strong></mat-header-cell
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let cliente" class="action-column">
+          <button
+            mat-mini-fab
+            color="primary"
+            aria-label="Editar Cliente"
+            class="action-button"
+            (click)="onEdit(cliente)"
           >
-          <mat-cell *matCellDef="let cliente">{{ cliente.nome }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="razaoSocial">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Razão Social</strong></mat-header-cell
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-mini-fab
+            color="warn"
+            aria-label="Remover Cliente"
+            class="action-button"
+            (click)="onDelete(cliente)"
           >
-          <mat-cell *matCellDef="let cliente">{{
-            cliente.razaoSocial
-          }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="cpfCnpj">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>CPF/CNPJ</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let cliente">{{ cliente.cpfCnpj }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="enderecoEntrega">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Endereço</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let cliente">
-            {{
-              cliente.logradouroEntrega
-                ? cliente.logradouroEntrega +
-                  ", " +
-                  cliente.numeroEntrega +
-                  " - " +
-                  cliente.bairroEntrega
-                : "Endereço não informado"
-            }}
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="acao" class="mat-column-acao">
-          <mat-header-cell *matHeaderCellDef class="action-column">
-            <button
-              mat-mini-fab
-              color="accent"
-              class="action-button"
-              (click)="onAdd()"
-            >
-              <mat-icon>add</mat-icon>
-            </button>
-          </mat-header-cell>
-          <mat-cell *matCellDef="let cliente" class="action-column">
-            <button
-              mat-mini-fab
-              color="primary"
-              aria-label="Editar Cliente"
-              class="action-button"
-              (click)="onEdit(cliente)"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-mini-fab
-              color="warn"
-              aria-label="Remover Cliente"
-              class="action-button"
-              (click)="onDelete(cliente)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-      </mat-table>
-      <mat-paginator
-        [pageSizeOptions]="[5, 10, 15]"
-        showFirstLastButtons
-        [pageIndex]="pageIndex"
-        [pageSize]="pageSize"
-        [length]="clientes.totalElementos"
-        (page)="atualiza($event)"
-        aria-label="Selecione a página dos Clientes"
-      >
-      </mat-paginator>
-    </div>
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 15]"
+      showFirstLastButtons
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [length]="clientes.totalElementos"
+      (page)="atualiza($event)"
+      aria-label="Selecione a página dos Clientes"
+    >
+    </mat-paginator>
   } @else {
     <div class="loading-spinner">
       <mat-spinner></mat-spinner>

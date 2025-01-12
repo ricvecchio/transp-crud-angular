@@ -12,7 +12,6 @@ mat-card {
 .d-flex {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 16px;
 }
 
@@ -31,13 +30,6 @@ mat-paginator {
   max-width: 100px;
 }
 
-.action-column {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  align-items: center;
-}
-
 .action-button {
   width: 32px;
   height: 32px;
@@ -49,18 +41,9 @@ mat-paginator {
   font-size: 22px;
 }
 
-.mat-header-row,
-.mat-row {
-  display: flex;
-  width: 100%;
-}
-
-.mat-header-cell,
-.mat-cell {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.action-column {
+  justify-content: center;
+  gap: 8px;
 }
 
 .mat-column-acaoConsulta,
@@ -73,16 +56,13 @@ mat-paginator {
   flex: 0 0 65px;
 }
 
-.mat-column-nome {
-  flex: 2;
-}
-
+.mat-column-nome,
 .mat-column-razaoSocial {
   flex: 2;
 }
 
 .mat-column-cpfCnpj {
-  flex: 1.5;
+  flex: 1.4;
 }
 
 .mat-column-enderecoEntrega {

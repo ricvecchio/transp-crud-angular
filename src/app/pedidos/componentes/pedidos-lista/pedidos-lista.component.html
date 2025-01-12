@@ -1,11 +1,11 @@
 <mat-card>
   <div class="d-flex">
     <mat-form-field class="form-grid">
-      <mat-label>Pesquisar Cliente</mat-label>
+      <mat-label>Buscar Pedido</mat-label>
       <input
         matInput
         [formControl]="filterControl"
-        placeholder="Digite o nome do cliente"
+        placeholder="Digite os dados do pedido"
       />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
@@ -56,125 +56,123 @@
   </div>
 
   @if (pedidos$ | async; as pedidos) {
-    <div class="table-container">
-      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container matColumnDef="acaoConsulta">
-          <mat-header-cell *matHeaderCellDef class="action-column">
-          </mat-header-cell>
-          <mat-cell *matCellDef="let pedido" class="action-column">
-            <button
-              mat-mini-fab
-              color="primary"
-              aria-label="Consulta Pedido"
-              class="action-button"
-              (click)="onSearch(pedido)"
-            >
-              <mat-icon>search</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="acaoConsulta">
+        <mat-header-cell *matHeaderCellDef>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let pedido">
+          <button
+            mat-mini-fab
+            color="primary"
+            aria-label="Consulta Pedido"
+            class="action-button"
+            (click)="onSearch(pedido)"
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
 
-        <ng-container matColumnDef="idPedido">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Pedido</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{ pedido.idPedido }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="idCliente">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Cliente</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{ pedido.idCliente }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="nome">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Nome</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{ pedido.nome }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="razaoSocial">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Razão Social</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{ pedido.razaoSocial }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="cpfCnpj">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>CPF/CNPJ</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{ pedido.cpfCnpj }}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="enderecoEntrega">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Endereço</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">
-            {{
-              pedido.logradouroEntrega
-                ? pedido.logradouroEntrega +
-                  ", " +
-                  pedido.numeroEntrega +
-                  " - " +
-                  pedido.bairroEntrega
-                : "Endereço não informado"
-            }}
-          </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="dataAtualizacaoPedido">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Data</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">
-            {{ pedido.dataAtualizacaoPedido | date: "dd/MM/yyyy" }}
-          </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="status">
-          <mat-header-cell *matHeaderCellDef
-            ><strong>Status</strong></mat-header-cell
-          >
-          <mat-cell *matCellDef="let pedido">{{ pedido.status }}</mat-cell>
-        </ng-container>
+      <ng-container matColumnDef="idPedido">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Pedido</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let pedido">{{ pedido.idPedido }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="idCliente">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Cliente</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let pedido">{{ pedido.idCliente }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="nome">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Nome</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let pedido">{{ pedido.nome }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="razaoSocial">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Razão Social</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let pedido">{{ pedido.razaoSocial }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="cpfCnpj">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>CPF/CNPJ</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let pedido">{{ pedido.cpfCnpj }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="enderecoEntrega">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Endereço</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let pedido">
+          {{
+            pedido.logradouroEntrega
+              ? pedido.logradouroEntrega +
+                ", " +
+                pedido.numeroEntrega +
+                " - " +
+                pedido.bairroEntrega
+              : "Endereço não informado"
+          }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="dataAtualizacaoPedido">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Data</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let pedido">
+          {{ pedido.dataAtualizacaoPedido | date: "dd/MM/yyyy" }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Status</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let pedido">{{ pedido.status }}</mat-cell>
+      </ng-container>
 
-        <ng-container matColumnDef="acao" class="mat-column-acao">
-          <mat-header-cell *matHeaderCellDef class="action-column">
-          </mat-header-cell>
-          <mat-cell *matCellDef="let pedido" class="action-column">
-            <button
-              mat-mini-fab
-              color="primary"
-              aria-label="Editar pedido"
-              class="action-button"
-              (click)="onEdit(pedido)"
-              *ngIf="statusControl.value !== 'Cancelado'"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-mini-fab
-              color="warn"
-              aria-label="Remover pedido"
-              class="action-button"
-              (click)="onDelete(pedido)"
-              *ngIf="statusControl.value !== 'Cancelado'"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-      </mat-table>
-      <mat-paginator
-        [pageSizeOptions]="[5, 10, 15]"
-        showFirstLastButtons
-        [pageIndex]="pageIndex"
-        [pageSize]="pageSize"
-        [length]="pedidos.totalElementos"
-        (page)="atualiza($event)"
-        aria-label="Selecione a página dos Pedidos"
-      >
-      </mat-paginator>
-    </div>
+      <ng-container matColumnDef="acao" class="mat-column-acao">
+        <mat-header-cell *matHeaderCellDef>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let pedido" class="action-column">
+          <button
+            mat-mini-fab
+            color="primary"
+            aria-label="Editar pedido"
+            class="action-button"
+            (click)="onEdit(pedido)"
+            *ngIf="statusControl.value !== 'Cancelado'"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-mini-fab
+            color="warn"
+            aria-label="Remover pedido"
+            class="action-button"
+            (click)="onDelete(pedido)"
+            *ngIf="statusControl.value !== 'Cancelado'"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 15]"
+      showFirstLastButtons
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [length]="pedidos.totalElementos"
+      (page)="atualiza($event)"
+      aria-label="Selecione a página dos Pedidos"
+    >
+    </mat-paginator>
   } @else {
     <div class="loading-spinner">
       <mat-spinner></mat-spinner>
