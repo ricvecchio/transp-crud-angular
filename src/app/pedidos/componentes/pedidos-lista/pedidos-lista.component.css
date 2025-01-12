@@ -12,7 +12,6 @@ mat-card {
 .d-flex {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 16px;
 }
 
@@ -51,20 +50,6 @@ mat-paginator {
 
 .action-button mat-icon {
   font-size: 22px;
-}
-
-.mat-header-row,
-.mat-row {
-  display: flex;
-  width: 100%;
-}
-
-.mat-header-cell,
-.mat-cell {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .mat-column-acaoConsulta,
