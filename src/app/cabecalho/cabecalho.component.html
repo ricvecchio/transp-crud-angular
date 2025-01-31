@@ -17,10 +17,10 @@
 
   @if (user$ | async; as user) {
     <div>
-      @if (user.name) {
+      @if (user.username) {
         <div>
           <i class="fa fa-user-circle mr-1"> </i>
-          <a class="navbar-text">{{ user.name }}</a> <br />
+          <a class="navbar-text">{{ user.username }}</a> <br />
           <a (click)="logout()" class="mr-1"> Logout</a>
         </div>
       } @else {

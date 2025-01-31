@@ -2,24 +2,26 @@ import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
-import { UsuarioService } from '../autenticacao/usuario/usuario.service';
+import { LoginService } from '../home/login/services/login.service';
 
 @Component({
-    selector: 'app-cabecalho',
-    templateUrl: './cabecalho.component.html',
-    styleUrls: ['./cabecalho.component.css'],
-    imports: [RouterLink, AsyncPipe]
+  selector: 'app-cabecalho',
+  templateUrl: './cabecalho.component.html',
+  styleUrls: ['./cabecalho.component.css'],
+  imports: [RouterLink, AsyncPipe],
 })
 export class CabecalhoComponent {
-  user$ = this.usuarioService.retornaUsuario();
+  usuario = '';
+  senha = '';
+  user$ = this.loginService.retornaUsuario();
 
   constructor(
-    private usuarioService: UsuarioService,
+    private loginService: LoginService,
     private router: Router,
   ) {}
 
   logout() {
-    this.usuarioService.logout();
+    this.loginService.logout();
     this.router.navigate(['']);
   }
 }

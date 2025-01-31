@@ -8,11 +8,12 @@ import { ClienteResolver } from './guarda-rotas/cliente.resolver';
 import { PedidoResolver } from './guarda-rotas/pedido.resolver';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './home/login/login.component';
-import { NovoUsuarioComponent } from './home/novo-usuario/novo-usuario.component';
+import { NovoUsuarioComponent } from './home/login/novo-usuario/novo-usuario.component';
 import { MenuComponent } from './menu/menu.component';
 import { ExpandirPedidoComponent } from './pedidos/componentes/expandir-pedido/expandir-pedido.component';
 import { PedidosListaComponent } from './pedidos/componentes/pedidos-lista/pedidos-lista.component';
 import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
+import { AuthGuard } from './home/login/services/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -37,45 +38,54 @@ const routes: Routes = [
   {
     path: 'menu',
     component: MenuComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'cadastrar-cliente',
     component: ClienteFormComponent,
+    canActivate: [AuthGuard],
     resolve: { cliente: ClienteResolver },
   },
   {
     path: 'consultar-clientes',
     component: ClientesListaComponent,
+    canActivate: [AuthGuard],
     resolve: { cliente: ClienteResolver },
   },
   {
     path: 'editar-cliente/:idCliente',
     component: ClienteFormComponent,
+    canActivate: [AuthGuard],
     resolve: { cliente: ClienteResolver },
   },
   {
     path: 'expandir-cliente/:idCliente',
     component: ExpandirClienteComponent,
+    canActivate: [AuthGuard],
     resolve: { cliente: ClienteResolver },
   },
   {
     path: 'cadastrar-pedido',
     component: PedidoFormComponent,
+    canActivate: [AuthGuard],
     resolve: { pedido: PedidoResolver },
   },
   {
     path: 'consultar-pedidos',
     component: PedidosListaComponent,
+    canActivate: [AuthGuard],
     resolve: { pedido: PedidoResolver },
   },
   {
     path: 'editar-pedido/:idPedido',
     component: PedidoFormComponent,
+    canActivate: [AuthGuard],
     resolve: { pedido: PedidoResolver },
   },
   {
     path: 'expandir-pedido/:idPedido',
     component: ExpandirPedidoComponent,
+    canActivate: [AuthGuard],
     resolve: { pedido: PedidoResolver },
   },
 ];

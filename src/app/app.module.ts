@@ -15,8 +15,8 @@ import { AppComponent } from './app.component';
 import { CabecalhoComponent } from './cabecalho/cabecalho.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './home/login/login.component';
-import { MensagemComponent } from './home/mensagem/mensagem.component';
-import { NovoUsuarioComponent } from './home/novo-usuario/novo-usuario.component';
+import { MensagemComponent } from './home/login/mensagem/mensagem.component';
+import { NovoUsuarioComponent } from './home/login/novo-usuario/novo-usuario.component';
 import { MenuComponent } from './menu/menu.component';
 import { RodapeComponent } from './rodape/rodape.component';
 
