@@ -1,0 +1,78 @@
+mat-card {
+  padding: 2rem 4rem 2rem;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.mat-table {
+  flex: 1;
+  overflow: auto;
+}
+
+.d-flex {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+mat-paginator {
+  margin-top: 1em;
+}
+
+.form-grid {
+  width: 100%;
+}
+
+.small-button {
+  background: #b5b7b9;
+  font-size: 12px;
+  height: 40px;
+  max-width: 100px;
+}
+
+.action-button {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  line-height: 32px;
+}
+
+.action-button mat-icon {
+  font-size: 22px;
+}
+
+.action-column {
+  justify-content: center;
+  gap: 8px;
+}
+
+.mat-column-acaoConsulta,
+.mat-column-acao {
+  flex: 0 0 90px;
+  text-align: center;
+}
+
+.mat-column-idCliente {
+  flex: 0 0 65px;
+}
+
+.mat-column-nome,
+.mat-column-razaoSocial {
+  flex: 2;
+}
+
+.mat-column-cpfCnpj {
+  flex: 1.4;
+}
+
+.mat-column-enderecoEntrega {
+  flex: 3;
+}
+
+.loading-spinner {
+  background: #dde0e2;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

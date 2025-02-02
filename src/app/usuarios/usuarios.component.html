@@ -1,0 +1,104 @@
+<mat-card>
+  <div class="d-flex justify-content-center">
+    <mat-form-field class="form-grid">
+      <mat-label>Usuários & Permissões</mat-label>
+      <input
+        matInput
+        [formControl]="filterControl"
+        placeholder="Digite os dados do usuário"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      class="form-grid small-button"
+      (click)="clearFilters()"
+    >
+      Limpar Filtros
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="form-grid small-button"
+      (click)="onMenu()"
+    >
+      Menu
+    </button>
+  </div>
+
+  @if (usuarios$ | async; as usuarios) {
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="idUsuario">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>ID</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let usuario">{{ usuario.idUsuario }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Nome</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let usuario">{{ usuario.name }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>E-mail</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let usuario">{{ usuario.email }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="username">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Username</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let usuario">{{ usuario.username }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="permission">
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Permissão</strong></mat-header-cell
+        >
+        <mat-cell *matCellDef="let usuario">{{ usuario.permission }}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="acao">
+        <mat-cell *matCellDef="let usuario" class="action-column">
+          <button
+            mat-mini-fab
+            color="primary"
+            aria-label="Editar Cliente"
+            class="action-button"
+            (click)="onEdit(usuario)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-mini-fab
+            color="warn"
+            aria-label="Remover Cliente"
+            class="action-button"
+            (click)="onDelete(usuario)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 15]"
+      showFirstLastButtons
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [length]="usuarios.totalElementos"
+      (page)="atualiza($event)"
+      aria-label="Selecione a página dos Clientes"
+    >
+    </mat-paginator>
+  } @else {
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+</mat-card>
+

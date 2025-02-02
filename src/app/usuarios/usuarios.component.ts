@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -39,56 +39,53 @@ import {
   tap,
 } from 'rxjs';
 
-import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
-import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-dialog/error-dialog.component';
-import { Cliente } from '../../../modelo/cliente';
-import { ClientePagina } from '../../../modelo/cliente-pagina';
-import { ClienteService } from '../../servicos/cliente.service';
+import { UsuarioPagina } from '../modelo/usuario-pagina';
+import { Usuario } from '../modelo/usuario';
+import { UsuarioService } from './usuario.service';
+import { ErrorDialogComponent } from '../compartilhado/componentes/error-dialog/error-dialog.component';
+import { ConfirmationDialogComponent } from '../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
-  selector: 'app-clientes-lista',
-  templateUrl: './clientes-lista.component.html',
-  styleUrl: './clientes-lista.component.css',
-  standalone: true,
-  imports: [
-    MatCard,
-    MatTable,
-    MatLabel,
-    MatColumnDef,
-    MatHeaderCellDef,
-    MatHeaderCell,
-    MatCellDef,
-    MatCell,
-    MatMiniFabButton,
-    MatIcon,
-    MatAutocompleteModule,
-    MatFormField,
-    MatHeaderRowDef,
-    MatHeaderRow,
-    MatRowDef,
-    MatRow,
-    MatPaginator,
-    MatProgressSpinner,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    AsyncPipe,
-  ],
+    selector: 'app-usuarios',
+    templateUrl: './usuarios.component.html',
+    styleUrl: './usuarios.component.css',
+    standalone: true,
+    imports: [
+        MatCard,
+        MatTable,
+        MatLabel,
+        MatColumnDef,
+        MatHeaderCellDef,
+        MatHeaderCell,
+        MatCellDef,
+        MatCell,
+        MatMiniFabButton,
+        MatIcon,
+        MatAutocompleteModule,
+        MatFormField,
+        MatHeaderRowDef,
+        MatHeaderRow,
+        MatRowDef,
+        MatRow,
+        MatPaginator,
+        MatProgressSpinner,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        AsyncPipe,
+    ]
 })
-export class ClientesListaComponent implements OnInit {
-  clientes$: Observable<ClientePagina> | null = null;
+export class UsuariosComponent implements OnInit {
+  usuarios$: Observable<UsuarioPagina> | null = null;
   readonly displayedColumns: string[] = [
-    'acaoConsulta',
-    'idCliente',
-    'nome',
-    'razaoSocial',
-    'cpfCnpj',
-    'enderecoEntrega',
-    'acao',
+    'name',
+    'email',
+    'username',
+    'permission',
   ];
 
-  dataSource = new MatTableDataSource<Cliente>();
+  dataSource = new MatTableDataSource<Usuario>();
   filterControl = new FormControl('');
 
   ngOnInit(): void {
@@ -103,7 +100,7 @@ export class ClientesListaComponent implements OnInit {
   }
 
   constructor(
-    private clienteService: ClienteService,
+    private usuarioService: UsuarioService,
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
@@ -124,19 +121,19 @@ export class ClientesListaComponent implements OnInit {
   ) {
     const normalizedFilter = filterValue?.trim().toLowerCase() || '';
 
-    this.clientes$ = this.clienteService
+    this.usuarios$ = this.usuarioService
       .listar(pageEvent.pageIndex, pageEvent.pageSize, normalizedFilter)
       .pipe(
         tap((pagina) => {
           this.pageIndex = pageEvent.pageIndex;
           this.pageSize = pageEvent.pageSize;
-          this.dataSource.data = pagina.clientes;
+          this.dataSource.data = pagina.usuarios;
         }),
         catchError((error) => {
-          console.log('Erro ao carregar clientes: ', error); //EXCLUIR
+          console.log('Erro ao carregar usuarios: ', error); //EXCLUIR
           // AQUI: INCLUIR MSG ESPECIFICA PARA CADA RETORNO DO BACK-END (LISTA VAZIA, SEM PERMISSÃO E ETC)
-          this.onError('Erro ao carregar clientes.');
-          return of({ clientes: [], totalElementos: 0, totalPaginas: 0 });
+          this.onError('Erro ao carregar usuarios.');
+          return of({ usuarios: [], totalElementos: 0, totalPaginas: 0 });
         }),
       );
   }
@@ -151,38 +148,28 @@ export class ClientesListaComponent implements OnInit {
     });
   }
 
-  onAdd() {
-    this.router.navigate(['/cadastrar-cliente'], { relativeTo: this.route });
-  }
-
-  onEdit(cliente: Cliente) {
-    this.router.navigate(['/editar-cliente', cliente.idCliente], {
+  onEdit(usuario: Usuario) {
+    this.router.navigate(['/edit', usuario.idUsuario], {
       relativeTo: this.route,
     });
   }
 
-  onSearch(cliente: Cliente) {
-    this.router.navigate(['/expandir-cliente', cliente.idCliente], {
-      relativeTo: this.route,
-    });
-  }
-
-  onDelete(cliente: Cliente) {
+  onDelete(usuario: Usuario) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: 'Tem certeza que deseja remover esse cliente?',
+      data: 'Tem certeza que deseja remover esse usuário?',
     });
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        this.clienteService.excluir(cliente.idCliente).subscribe(
+        this.usuarioService.excluir(usuario.idUsuario).subscribe(
           () => {
             this.atualiza();
-            this.snackBar.open('Cliente removido com sucesso!', 'X', {
+            this.snackBar.open('Usuário removido com sucesso!', 'X', {
               duration: 5000,
               verticalPosition: 'top',
               horizontalPosition: 'center',
             });
           },
-          () => this.onError('Erro ao tentar remover cliente.'),
+          () => this.onError('Erro ao tentar remover o usuário.'),
         );
       }
     });
@@ -194,3 +181,4 @@ export class ClientesListaComponent implements OnInit {
     });
   }
 }
+

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { first, Observable } from 'rxjs';
 
@@ -14,22 +14,42 @@ export class ClienteService {
 
   constructor(private http: HttpClient) {}
 
+  private getAuthHeaders(): HttpHeaders {
+    const authToken = sessionStorage.getItem('auth-token'); // Obtém o token salvo
+    const username = sessionStorage.getItem('username'); // Obtém o usuário salvo
+
+    console.log('Busca ClienteService sessionStorage authToken: ' + authToken); // EXCLUIR
+    console.log('Busca ClienteService sessionStorage username: ' + username); // EXCLUIR
+
+    return new HttpHeaders({
+      Authorization: `Bearer ${authToken}`,
+      'Content-Type': 'application/json',
+      'X-User': username || '', // Adiciona o usuário no header
+    });
+  }
+
   listar(page = 0, pageSize = 10, filter = '') {
-    return this.http
-      .get<ClientePagina>(this.API, {
-        params: { page, pageSize, filter },
-      })
+    const headers = this.getAuthHeaders();
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString())
+      .set('filter', filter);
+
+      return this.http
+      .get<ClientePagina>(this.API, { headers, params })
       .pipe(first());
   }
 
   buscarPorId(idCliente: number): Observable<Cliente> {
+    const headers = this.getAuthHeaders();
     const url = `${this.API}/${idCliente}`;
-    return this.http.get<Cliente>(url);
+    return this.http.get<Cliente>(url, { headers });
   }
 
   buscarPorNome(nomeBusca: String): Observable<Cliente[]> {
+    const headers = this.getAuthHeaders();
     const url = `${this.API}/trecho/${nomeBusca}`;
-    return this.http.get<Cliente[]>(url);
+    return this.http.get<Cliente[]>(url, { headers });
   }
 
   salvar(cliente: Partial<Cliente>) {
@@ -44,16 +64,19 @@ export class ClienteService {
   }
 
   private criar(cliente: Partial<Cliente>) {
-    return this.http.post<Cliente>(this.API, cliente).pipe(first());
+    const headers = this.getAuthHeaders();
+    return this.http.post<Cliente>(this.API, cliente, { headers }).pipe(first());
   }
 
   private editar(cliente: Partial<Cliente>) {
+    const headers = this.getAuthHeaders();
     return this.http
-      .put<Cliente>(`${this.API}/${cliente.idCliente}`, cliente)
+      .put<Cliente>(`${this.API}/${cliente.idCliente}`, cliente, { headers })
       .pipe(first());
   }
 
   excluir(idCliente: string) {
-    return this.http.delete(`${this.API}/${idCliente}`).pipe(first());
+    const headers = this.getAuthHeaders();
+    return this.http.delete(`${this.API}/${idCliente}`, { headers }).pipe(first());
   }
 }
