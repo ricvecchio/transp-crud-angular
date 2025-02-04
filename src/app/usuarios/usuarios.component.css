@@ -52,21 +52,17 @@ mat-paginator {
   text-align: center;
 }
 
-.mat-column-idCliente {
-  flex: 0 0 65px;
+.mat-column-username {
+  flex: 1.0;
 }
 
-.mat-column-nome,
-.mat-column-razaoSocial {
+.mat-column-name,
+.mat-column-email {
   flex: 2;
 }
 
-.mat-column-cpfCnpj {
-  flex: 1.4;
-}
-
-.mat-column-enderecoEntrega {
-  flex: 3;
+.mat-column-permission {
+  flex: 1.0;
 }
 
 .loading-spinner {

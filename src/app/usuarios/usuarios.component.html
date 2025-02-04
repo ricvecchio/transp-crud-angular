@@ -29,11 +29,11 @@
 
   @if (usuarios$ | async; as usuarios) {
     <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-      <ng-container matColumnDef="idUsuario">
+      <ng-container matColumnDef="username">
         <mat-header-cell *matHeaderCellDef
-          ><strong>ID</strong></mat-header-cell
+          ><strong>Username</strong></mat-header-cell
         >
-        <mat-cell *matCellDef="let usuario">{{ usuario.idUsuario }}</mat-cell>
+        <mat-cell *matCellDef="let usuario">{{ usuario.username }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef
@@ -47,12 +47,6 @@
         >
         <mat-cell *matCellDef="let usuario">{{ usuario.email }}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="username">
-        <mat-header-cell *matHeaderCellDef
-          ><strong>Username</strong></mat-header-cell
-        >
-        <mat-cell *matCellDef="let usuario">{{ usuario.username }}</mat-cell>
-      </ng-container>
       <ng-container matColumnDef="permission">
         <mat-header-cell *matHeaderCellDef
           ><strong>Permissão</strong></mat-header-cell
@@ -61,11 +55,12 @@
       </ng-container>
 
       <ng-container matColumnDef="acao">
+        <mat-header-cell *matHeaderCellDef><strong>Ações</strong></mat-header-cell>
         <mat-cell *matCellDef="let usuario" class="action-column">
           <button
             mat-mini-fab
             color="primary"
-            aria-label="Editar Cliente"
+            aria-label="Editar Usuário"
             class="action-button"
             (click)="onEdit(usuario)"
           >
@@ -74,7 +69,7 @@
           <button
             mat-mini-fab
             color="warn"
-            aria-label="Remover Cliente"
+            aria-label="Remover Usuário"
             class="action-button"
             (click)="onDelete(usuario)"
           >
@@ -92,7 +87,7 @@
       [pageSize]="pageSize"
       [length]="usuarios.totalElementos"
       (page)="atualiza($event)"
-      aria-label="Selecione a página dos Clientes"
+      aria-label="Selecione a página dos Usuários"
     >
     </mat-paginator>
   } @else {

@@ -79,10 +79,11 @@ import { ConfirmationDialogComponent } from '../compartilhado/componentes/confir
 export class UsuariosComponent implements OnInit {
   usuarios$: Observable<UsuarioPagina> | null = null;
   readonly displayedColumns: string[] = [
+    'username',
     'name',
     'email',
-    'username',
     'permission',
+    'acao',
   ];
 
   dataSource = new MatTableDataSource<Usuario>();
@@ -181,4 +182,3 @@ export class UsuariosComponent implements OnInit {
     });
   }
 }
-
