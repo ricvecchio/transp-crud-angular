@@ -130,9 +130,9 @@ export class UsuariosComponent implements OnInit {
           this.dataSource.data = pagina.usuarios;
         }),
         catchError((error) => {
-          console.log('Erro ao carregar usuarios: ', error); //EXCLUIR
-          // AQUI: INCLUIR MSG ESPECIFICA PARA CADA RETORNO DO BACK-END (LISTA VAZIA, SEM PERMISSÃO E ETC)
-          this.onError('Erro ao carregar usuarios.');
+          const errorMessage =
+            error.status === 403 ? 'Usuário sem Permissão!' : 'Erro ao carregar usuários.';
+          this.onError(errorMessage);
           return of({ usuarios: [], totalElementos: 0, totalPaginas: 0 });
         }),
       );

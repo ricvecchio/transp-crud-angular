@@ -201,7 +201,9 @@ export class PedidosListaComponent implements OnInit {
           this.dataSource.data = pagina.pedidos;
         }),
         catchError((error) => {
-          this.onError('Erro ao carregar pedidos.');
+          const errorMessage =
+            error.status === 403 ? 'Usuário sem Permissão!' : 'Erro ao carregar pedidos.';
+          this.onError(errorMessage);
           return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
         }),
       );

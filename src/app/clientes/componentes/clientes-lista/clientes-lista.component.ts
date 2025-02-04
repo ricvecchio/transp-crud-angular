@@ -133,9 +133,9 @@ export class ClientesListaComponent implements OnInit {
           this.dataSource.data = pagina.clientes;
         }),
         catchError((error) => {
-          console.log('Erro ao carregar clientes: ', error); //EXCLUIR
-          // AQUI: INCLUIR MSG ESPECIFICA PARA CADA RETORNO DO BACK-END (LISTA VAZIA, SEM PERMISSÃO E ETC)
-          this.onError('Erro ao carregar clientes.');
+          const errorMessage =
+            error.status === 403 ? 'Usuário sem Permissão!' : 'Erro ao carregar clientes.';
+          this.onError(errorMessage);
           return of({ clientes: [], totalElementos: 0, totalPaginas: 0 });
         }),
       );
