@@ -139,10 +139,6 @@ export class UsuariosComponent implements OnInit {
       );
   }
 
-  clearFilters() {
-    this.filterControl.reset();
-  }
-
   onError(errorMsg: string) {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg,
