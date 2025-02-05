@@ -1,6 +1,6 @@
 export interface Usuario {
   nomeBusca: string;
-  idUsuario: string;
+  idUser: string;
   name: string;
   email: string;
   username: string;

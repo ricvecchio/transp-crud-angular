@@ -15,12 +15,12 @@ export class UsuarioResolver {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<Usuario> {
-    if (route.params && route.params['idUsuario']) {
-      return this.service.buscarPorId(route.params['idUsuario']);
+    if (route.params && route.params['idUser']) {
+      return this.service.buscarPorId(route.params['idUser']);
     }
     return of({
       nomeBusca: '',
-      idUsuario: '',
+      idUser: '',
       name: '',
       email: '',
       username: '',

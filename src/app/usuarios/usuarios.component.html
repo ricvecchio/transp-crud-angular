@@ -43,21 +43,26 @@
         <mat-header-cell *matHeaderCellDef
           ><strong>Permissão</strong></mat-header-cell
         >
-        <mat-cell *matCellDef="let usuario">{{ usuario.permission }}</mat-cell>
+        <mat-cell *matCellDef="let usuario">
+          <mat-form-field appearance="fill">
+            <mat-select
+              [(ngModel)]="usuario.permission"
+              name="permission"
+              (selectionChange)="salvarEdicao(usuario)"
+            >
+              <mat-option *ngFor="let perm of permissoes" [value]="perm">
+                {{ perm || "Sem Permissão" }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="acao">
-        <mat-header-cell *matHeaderCellDef><strong>Ações</strong></mat-header-cell>
+        <mat-header-cell *matHeaderCellDef
+          ><strong>Ações</strong></mat-header-cell
+        >
         <mat-cell *matCellDef="let usuario" class="action-column">
-          <button
-            mat-mini-fab
-            color="primary"
-            aria-label="Editar Usuário"
-            class="action-button"
-            (click)="onEdit(usuario)"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
           <button
             mat-mini-fab
             color="warn"
@@ -88,4 +93,3 @@
     </div>
   }
 </mat-card>
-

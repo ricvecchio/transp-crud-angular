@@ -1,7 +1,7 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatMiniFabButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
@@ -44,37 +44,41 @@ import { Usuario } from '../modelo/usuario';
 import { UsuarioService } from './usuario.service';
 import { ErrorDialogComponent } from '../compartilhado/componentes/error-dialog/error-dialog.component';
 import { ConfirmationDialogComponent } from '../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
-    selector: 'app-usuarios',
-    templateUrl: './usuarios.component.html',
-    styleUrl: './usuarios.component.css',
-    standalone: true,
-    imports: [
-        MatCard,
-        MatTable,
-        MatLabel,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatCellDef,
-        MatCell,
-        MatMiniFabButton,
-        MatIcon,
-        MatAutocompleteModule,
-        MatFormField,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-        MatPaginator,
-        MatProgressSpinner,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        AsyncPipe,
-    ]
+  selector: 'app-usuarios',
+  templateUrl: './usuarios.component.html',
+  styleUrl: './usuarios.component.css',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatCard,
+    MatTable,
+    MatLabel,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatMiniFabButton,
+    MatIcon,
+    MatAutocompleteModule,
+    MatFormField,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatPaginator,
+    MatProgressSpinner,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatSelectModule,
+    AsyncPipe,
+  ],
 })
 export class UsuariosComponent implements OnInit {
   usuarios$: Observable<UsuarioPagina> | null = null;
@@ -88,6 +92,7 @@ export class UsuariosComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Usuario>();
   filterControl = new FormControl('');
+  permissoes = ['', 'USER', 'ADMIN']; // Opções para o dropdown
 
   ngOnInit(): void {
     this.filterControl.valueChanges
@@ -112,7 +117,6 @@ export class UsuariosComponent implements OnInit {
   }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   pageIndex = 0;
   pageSize = 10;
 
@@ -132,7 +136,9 @@ export class UsuariosComponent implements OnInit {
         }),
         catchError((error) => {
           const errorMessage =
-            error.status === 403 ? 'Usuário sem Permissão!' : 'Erro ao carregar usuários.';
+            error.status === 403
+              ? 'Usuário sem Permissão!'
+              : 'Erro ao carregar usuários.';
           this.onError(errorMessage);
           return of({ usuarios: [], totalElementos: 0, totalPaginas: 0 });
         }),
@@ -145,10 +151,22 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  onEdit(usuario: Usuario) {
-    this.router.navigate(['/edit', usuario.idUsuario], {
-      relativeTo: this.route,
-    });
+  salvarEdicao(usuario: Usuario) {
+    console.log('Salvar Edição idUser: ' + usuario.idUser); // EXCLUIR
+    console.log('Salvar Edição permission: ' + usuario.permission); // EXCLUIR
+
+    this.usuarioService
+      .salvar({ idUser: usuario.idUser, permission: usuario.permission })
+      .subscribe(
+        () => {
+          this.snackBar.open('Permissão atualizada com sucesso!', 'X', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center',
+          });
+        },
+        () => this.onError('Erro ao atualizar permissão.'),
+      );
   }
 
   onDelete(usuario: Usuario) {
@@ -157,7 +175,7 @@ export class UsuariosComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        this.usuarioService.excluir(usuario.idUsuario).subscribe(
+        this.usuarioService.excluir(usuario.idUser).subscribe(
           () => {
             this.atualiza();
             this.snackBar.open('Usuário removido com sucesso!', 'X', {

@@ -36,9 +36,9 @@ export class UsuarioService {
       .pipe(first());
   }
 
-  buscarPorId(idUsuario: String): Observable<Usuario> {
+  buscarPorId(idUser: String): Observable<Usuario> {
     const headers = this.getAuthHeaders();
-    const url = `${this.API}/${idUsuario}`;
+    const url = `${this.API}/${idUser}`;
     return this.http.get<Usuario>(url, { headers });
   }
 
@@ -49,7 +49,9 @@ export class UsuarioService {
   }
 
   salvar(usuario: Partial<Usuario>) {
-    if (usuario.idUsuario) {
+    console.log('Salvar Service idUser: ' + usuario.idUser); // EXCLUIR
+    console.log('Salvar Service permission: ' + usuario.permission); // EXCLUIR
+    if (usuario.idUser) {
       return this.editar(usuario);
     }
     return this.criar(usuario);
@@ -69,14 +71,14 @@ export class UsuarioService {
   private editar(usuario: Partial<Usuario>) {
     const headers = this.getAuthHeaders();
     return this.http
-      .put<Usuario>(`${this.API}/${usuario.idUsuario}`, usuario, { headers })
+      .put<Usuario>(`${this.API}/${usuario.idUser}`, usuario, { headers })
       .pipe(first());
   }
 
-  excluir(idUsuario: string) {
+  excluir(idUser: string) {
     const headers = this.getAuthHeaders();
     return this.http
-      .delete(`${this.API}/${idUsuario}`, { headers })
+      .delete(`${this.API}/${idUser}`, { headers })
       .pipe(first());
   }
 }
