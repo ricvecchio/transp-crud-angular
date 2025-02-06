@@ -515,6 +515,7 @@ export class PedidoFormComponent implements OnInit {
                 };
               }
               this.router.navigate(['/menu']);
+              this.mensagemService.showSuccessMessage('Pedido Emitido com sucesso!');
             })
             .catch((error) => {
               console.error('Erro ao capturar a tela:', error);
