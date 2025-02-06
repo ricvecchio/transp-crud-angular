@@ -26,7 +26,11 @@
       Balanços / Métricas
     </button>
 
-    <button routerLink="/usuarios" class="botao-restricted">
+    <button
+      *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
+      routerLink="/usuarios"
+      class="botao-restricted"
+    >
       <span style="font-size: 1em; color: white">
         <i class="fa fa-plus fa-sm" aria-hidden="true"></i>
       </span>

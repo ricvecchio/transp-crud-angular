@@ -27,13 +27,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Cliente } from '../../../modelo/cliente';
 import { ClienteService } from './../../../clientes/servicos/cliente.service';
+import { MensagemService } from '../../../compartilhado/mensagem.service';
 
 interface Metros {
   value: string;
@@ -78,10 +78,9 @@ export class ClienteFormComponent implements OnInit {
     private formBuilder: NonNullableFormBuilder,
     private consultaCepService: ConsultaCepService,
     private clienteService: ClienteService,
-    private snackBar: MatSnackBar,
+    private mensagemService: MensagemService,
     private location: Location,
     private route: ActivatedRoute,
-    private router: Router,
     public dialog: MatDialog,
     public formUtils: FormUtilsService,
   ) {}
@@ -348,7 +347,7 @@ export class ClienteFormComponent implements OnInit {
   }
 
   private onSucess() {
-    this.snackBar.open('Cliente Salvo com sucesso!', '', { duration: 5000 });
+    this.mensagemService.showSuccessMessage('Cliente Salvo com sucesso!');
     this.onCancel();
   }
 
@@ -357,6 +356,6 @@ export class ClienteFormComponent implements OnInit {
   }
 
   private onError() {
-    this.snackBar.open('Erro ao salvar o cliente!', '', { duration: 5000 });
+    this.mensagemService.showErrorMessage('Erro ao salvar o cliente!');
   }
 }

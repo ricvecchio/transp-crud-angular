@@ -23,7 +23,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import html2canvas from 'html2canvas';
 
@@ -32,6 +31,7 @@ import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { Cliente } from '../../../modelo/cliente';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../servico/pedido.service';
+import { MensagemService } from '../../../compartilhado/mensagem.service';
 
 interface Volumes {
   value: string;
@@ -69,8 +69,8 @@ export class PedidoFormComponent implements OnInit {
   constructor(
     private formBuilder: NonNullableFormBuilder,
     private consultaCepService: ConsultaCepService,
-    private service: PedidoService,
-    private snackBar: MatSnackBar,
+    private pedidoService: PedidoService,
+    private mensagemService: MensagemService,
     private location: Location,
     private route: ActivatedRoute,
     private router: Router,
@@ -456,7 +456,7 @@ export class PedidoFormComponent implements OnInit {
       this.formulario.patchValue({
         dataAtualizacaoPedido: dataFormatada,
       });
-      this.service.salvar(this.formulario.value).subscribe({
+      this.pedidoService.salvar(this.formulario.value).subscribe({
         next: (result) => {
           this.onSucess();
           this.router.navigate(['/menu']);
@@ -540,7 +540,7 @@ export class PedidoFormComponent implements OnInit {
 
       this.formulario.patchValue({ status: status });
 
-      this.service.salvar(this.formulario.value).subscribe({
+      this.pedidoService.salvar(this.formulario.value).subscribe({
         next: (result) => {
           this.formulario.patchValue({ idPedido: result.idPedido });
           resolve(result.idPedido);
@@ -554,9 +554,7 @@ export class PedidoFormComponent implements OnInit {
   }
 
   private onSucess() {
-    this.snackBar.open('Pedido Salvo com sucesso!', '', {
-      duration: 5000,
-    });
+    this.mensagemService.showSuccessMessage('Pedido Salvo com sucesso!');
     this.formulario.reset();
   }
 
@@ -565,6 +563,6 @@ export class PedidoFormComponent implements OnInit {
   }
 
   private onError() {
-    this.snackBar.open('Erro ao salvar o pedido!', '', { duration: 5000 });
+    this.mensagemService.showErrorMessage('Erro ao salvar o pedido!');
   }
 }

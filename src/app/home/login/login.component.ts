@@ -4,6 +4,8 @@ import { Router, RouterModule } from '@angular/router';
 
 import { MensagemComponent } from './mensagem/mensagem.component';
 import { LoginService } from './services/login.service';
+import { UsuarioService } from '../../usuarios/usuario.service';
+import { MensagemService } from '../../compartilhado/mensagem.service';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +19,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private loginService: LoginService,
+    private usuarioService: UsuarioService,
+    private mensagemService: MensagemService,
     private router: Router,
   ) {}
 
@@ -25,11 +29,22 @@ export class LoginComponent implements OnInit {
   login() {
     this.loginService.login(this.usuario, this.senha).subscribe(
       () => {
-        this.router.navigate(['menu']);
+        this.usuarioService.buscarPorUsername(this.usuario).subscribe(
+          (usuario) => {
+            if (!usuario.permission || usuario.permission.trim() === '') {
+              this.mensagemService.showErrorMessage('Usuário sem Permissão!');
+            } else {
+              this.router.navigate(['menu']);
+            }
+          },
+          (error) => {
+            alert('Erro ao verificar permissões do usuário.');
+            console.log(error);
+          },
+        );
       },
-      (error) => {
-        alert('Usuário ou senha inválido');
-        console.log(error);
+      () => {
+        this.mensagemService.showErrorMessage('Usuário ou senha inválido.');
       },
     );
   }

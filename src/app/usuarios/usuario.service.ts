@@ -42,6 +42,12 @@ export class UsuarioService {
     return this.http.get<Usuario>(url, { headers });
   }
 
+  buscarPorUsername(username: String): Observable<Usuario> {
+    const headers = this.getAuthHeaders();
+    const url = `${this.API}/${username}`;
+    return this.http.get<Usuario>(url, { headers });
+  }
+
   buscarPorNome(nomeBusca: String): Observable<Usuario[]> {
     const headers = this.getAuthHeaders();
     const url = `${this.API}/trecho/${nomeBusca}`;

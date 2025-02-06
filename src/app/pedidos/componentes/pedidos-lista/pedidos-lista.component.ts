@@ -11,7 +11,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   MatCell,
   MatCellDef,
@@ -34,6 +33,7 @@ import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-d
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoPagina } from '../../../modelo/pedido-pagina';
 import { PedidoService } from '../../servico/pedido.service';
+import { MensagemService } from '../../../compartilhado/mensagem.service';
 
 interface Status {
   value: string;
@@ -109,7 +109,7 @@ export class PedidosListaComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
+    private mensagemService: MensagemService,
   ) {}
 
   ngOnInit(): void {
@@ -303,11 +303,7 @@ export class PedidosListaComponent implements OnInit {
         this.pedidoService.excluir(pedido.idPedido).subscribe(
           () => {
             this.atualiza();
-            this.snackBar.open('Pedido removido com sucesso!', 'X', {
-              duration: 5000,
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-            });
+            this.mensagemService.showSuccessMessage('Pedido removido com sucesso!');
           },
           () => this.onError('Erro ao tentar remover o pedido.'),
         );

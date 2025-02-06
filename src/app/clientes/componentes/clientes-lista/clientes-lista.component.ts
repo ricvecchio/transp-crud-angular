@@ -15,7 +15,6 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   MatCell,
   MatCellDef,
@@ -44,6 +43,7 @@ import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-d
 import { Cliente } from '../../../modelo/cliente';
 import { ClientePagina } from '../../../modelo/cliente-pagina';
 import { ClienteService } from '../../servicos/cliente.service';
+import { MensagemService } from '../../../compartilhado/mensagem.service';
 
 @Component({
   selector: 'app-clientes-lista',
@@ -107,8 +107,7 @@ export class ClientesListaComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
-    private httpClient: HttpClient,
+    private mensagemService: MensagemService,
   ) {
     this.atualiza();
   }
@@ -176,11 +175,7 @@ export class ClientesListaComponent implements OnInit {
         this.clienteService.excluir(cliente.idCliente).subscribe(
           () => {
             this.atualiza();
-            this.snackBar.open('Cliente removido com sucesso!', 'X', {
-              duration: 5000,
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-            });
+            this.mensagemService.showSuccessMessage('Cliente removido com sucesso!');
           },
           () => this.onError('Erro ao tentar remover cliente.'),
         );

@@ -14,7 +14,6 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   MatCell,
   MatCellDef,
@@ -44,6 +43,7 @@ import { UsuarioService } from './usuario.service';
 import { ErrorDialogComponent } from '../compartilhado/componentes/error-dialog/error-dialog.component';
 import { ConfirmationDialogComponent } from '../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MensagemService } from '../compartilhado/mensagem.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -109,7 +109,8 @@ export class UsuariosComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
+    public mensagemService: MensagemService,
+
   ) {
     this.atualiza();
   }
@@ -154,13 +155,10 @@ export class UsuariosComponent implements OnInit {
       .salvar({ idUser: usuario.idUser, permission: usuario.permission })
       .subscribe(
         () => {
-          this.snackBar.open('Permissão atualizada com sucesso!', 'X', {
-            duration: 3000,
-            verticalPosition: 'top',
-            horizontalPosition: 'center',
-          });
+          this.atualiza();
+          this.mensagemService.showSuccessMessage('Permissão atualizada com sucesso!');
         },
-        () => this.onError('Erro ao atualizar permissão.'),
+        () => this.onError('Erro ao atualizar a permissão.'),
       );
   }
 
@@ -168,18 +166,15 @@ export class UsuariosComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: 'Tem certeza que deseja remover esse usuário?',
     });
+
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
         this.usuarioService.excluir(usuario.idUser).subscribe(
           () => {
             this.atualiza();
-            this.snackBar.open('Usuário removido com sucesso!', 'X', {
-              duration: 5000,
-              verticalPosition: 'top',
-              horizontalPosition: 'center',
-            });
+            this.mensagemService.showSuccessMessage('Usuário removido com sucesso!');
           },
-          () => this.onError('Erro ao tentar remover o usuário.'),
+          () => this.onError('Erro ao tentar remover o usuário.')
         );
       }
     });
@@ -190,4 +185,5 @@ export class UsuariosComponent implements OnInit {
       relativeTo: this.route,
     });
   }
+
 }
