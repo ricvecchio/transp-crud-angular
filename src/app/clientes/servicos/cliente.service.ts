@@ -15,16 +15,13 @@ export class ClienteService {
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders(): HttpHeaders {
-    const authToken = sessionStorage.getItem('auth-token'); // Obtém o token salvo
-    const username = sessionStorage.getItem('username'); // Obtém o usuário salvo
-
-    console.log('Busca ClienteService sessionStorage authToken: ' + authToken); // EXCLUIR
-    console.log('Busca ClienteService sessionStorage username: ' + username); // EXCLUIR
+    const authToken = sessionStorage.getItem('auth-token');
+    const username = sessionStorage.getItem('username');
 
     return new HttpHeaders({
       Authorization: `Bearer ${authToken}`,
       'Content-Type': 'application/json',
-      'X-User': username || '', // Adiciona o usuário no header
+      'X-User': username || '',
     });
   }
 
@@ -35,7 +32,7 @@ export class ClienteService {
       .set('pageSize', pageSize.toString())
       .set('filter', filter);
 
-      return this.http
+    return this.http
       .get<ClientePagina>(this.API, { headers, params })
       .pipe(first());
   }
@@ -65,7 +62,9 @@ export class ClienteService {
 
   private criar(cliente: Partial<Cliente>) {
     const headers = this.getAuthHeaders();
-    return this.http.post<Cliente>(this.API, cliente, { headers }).pipe(first());
+    return this.http
+      .post<Cliente>(this.API, cliente, { headers })
+      .pipe(first());
   }
 
   private editar(cliente: Partial<Cliente>) {
@@ -77,6 +76,8 @@ export class ClienteService {
 
   excluir(idCliente: string) {
     const headers = this.getAuthHeaders();
-    return this.http.delete(`${this.API}/${idCliente}`, { headers }).pipe(first());
+    return this.http
+      .delete(`${this.API}/${idCliente}`, { headers })
+      .pipe(first());
   }
 }

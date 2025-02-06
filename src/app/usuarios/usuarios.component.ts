@@ -1,5 +1,4 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -111,7 +110,6 @@ export class UsuariosComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private httpClient: HttpClient,
   ) {
     this.atualiza();
   }
@@ -152,9 +150,6 @@ export class UsuariosComponent implements OnInit {
   }
 
   salvarEdicao(usuario: Usuario) {
-    console.log('Salvar Edição idUser: ' + usuario.idUser); // EXCLUIR
-    console.log('Salvar Edição permission: ' + usuario.permission); // EXCLUIR
-
     this.usuarioService
       .salvar({ idUser: usuario.idUser, permission: usuario.permission })
       .subscribe(

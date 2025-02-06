@@ -14,19 +14,16 @@ export class PedidoService {
 
   constructor(private http: HttpClient) {}
 
-    private getAuthHeaders(): HttpHeaders {
-      const authToken = sessionStorage.getItem('auth-token'); // Obtém o token salvo
-      const username = sessionStorage.getItem('username'); // Obtém o usuário salvo
+  private getAuthHeaders(): HttpHeaders {
+    const authToken = sessionStorage.getItem('auth-token');
+    const username = sessionStorage.getItem('username');
 
-    console.log('Busca ClienteService sessionStorage authToken: ' + authToken); // EXCLUIR
-    console.log('Busca ClienteService sessionStorage username: ' + username); // EXCLUIR
-
-      return new HttpHeaders({
-        Authorization: `Bearer ${authToken}`,
-        'Content-Type': 'application/json',
-        'X-User': username || '', // Adiciona o usuário no header
-      });
-    }
+    return new HttpHeaders({
+      Authorization: `Bearer ${authToken}`,
+      'Content-Type': 'application/json',
+      'X-User': username || '',
+    });
+  }
 
   listar(
     page: number,
@@ -36,7 +33,6 @@ export class PedidoService {
     dataFinal?: string,
     statusFiltro?: string,
   ): Observable<PedidoPagina> {
-
     const headers = this.getAuthHeaders();
     const params: any = { page, pageSize };
 
@@ -88,6 +84,8 @@ export class PedidoService {
 
   excluir(idPedido: string) {
     const headers = this.getAuthHeaders();
-    return this.http.delete(`${this.API}/${idPedido}`, { headers }).pipe(first());
+    return this.http
+      .delete(`${this.API}/${idPedido}`, { headers })
+      .pipe(first());
   }
 }

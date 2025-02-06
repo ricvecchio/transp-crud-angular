@@ -45,7 +45,7 @@ export class NovoUsuarioComponent implements OnInit {
       )
       .subscribe(
         () => {
-          this.loginService.logout()
+          this.loginService.logout();
           this.router.navigate(['']);
         },
         (error) => {

@@ -14,13 +14,13 @@ export class UsuarioService {
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders(): HttpHeaders {
-    const authToken = sessionStorage.getItem('auth-token'); // Obtém o token salvo
-    const username = sessionStorage.getItem('username'); // Obtém o usuário salvo
+    const authToken = sessionStorage.getItem('auth-token');
+    const username = sessionStorage.getItem('username');
 
     return new HttpHeaders({
       Authorization: `Bearer ${authToken}`,
       'Content-Type': 'application/json',
-      'X-User': username || '', // Adiciona o usuário no header
+      'X-User': username || '',
     });
   }
 
@@ -49,8 +49,6 @@ export class UsuarioService {
   }
 
   salvar(usuario: Partial<Usuario>) {
-    console.log('Salvar Service idUser: ' + usuario.idUser); // EXCLUIR
-    console.log('Salvar Service permission: ' + usuario.permission); // EXCLUIR
     if (usuario.idUser) {
       return this.editar(usuario);
     }
@@ -77,8 +75,6 @@ export class UsuarioService {
 
   excluir(idUser: string) {
     const headers = this.getAuthHeaders();
-    return this.http
-      .delete(`${this.API}/${idUser}`, { headers })
-      .pipe(first());
+    return this.http.delete(`${this.API}/${idUser}`, { headers }).pipe(first());
   }
 }

@@ -1,4 +1,4 @@
-import { Usuario } from "./usuario";
+import { Usuario } from './usuario';
 
 export interface UsuarioPagina {
   usuarios: Usuario[];

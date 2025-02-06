@@ -23,10 +23,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
-    console.log('Valor do localStorage login authToken: ' ,localStorage.getItem('auth-token'));  //EXCLUIR
-    console.log('Valor do localStorage login username: ' , localStorage.getItem('username'));  //EXCLUIR
-    console.log('Valor do sessionStorage login authToken: ' ,sessionStorage.getItem('auth-token'));  //EXCLUIR
-    console.log('Valor do sessionStorage login username: ' , sessionStorage.getItem('username'));  //EXCLUIR
     this.loginService.login(this.usuario, this.senha).subscribe(
       () => {
         this.router.navigate(['menu']);
