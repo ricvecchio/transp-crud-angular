@@ -43,8 +43,8 @@
   color: red;
 }
 
-.usuario {
-  width: 300px;
-  margin-left: auto;
-  margin-right: auto;
+.links-container {
+  display: flex;
+  gap: 50px;
+  margin-top: 8px;
 }
