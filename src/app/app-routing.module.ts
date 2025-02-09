@@ -16,6 +16,7 @@ import { ExpandirPedidoComponent } from './pedidos/componentes/expandir-pedido/e
 import { PedidosListaComponent } from './pedidos/componentes/pedidos-lista/pedidos-lista.component';
 import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { RecuperarSenhaComponent } from './home/login/recuperar-senha/recuperar-senha.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
       {
         path: 'novo-usuario',
         component: NovoUsuarioComponent,
+      },
+      {
+        path: 'recuperar-senha',
+        component: RecuperarSenhaComponent,
       },
     ],
   },

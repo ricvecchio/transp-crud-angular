@@ -1,0 +1,50 @@
+<section class="container recuperar-senha ff-inter">
+  <h3 class="text-center">Recuperar Senha</h3>
+
+  <form *ngIf="etapa === 1" (ngSubmit)="solicitarRecuperacao()">
+    <label for="email">E-mail:</label>
+    <input
+      type="email"
+      class="input"
+      placeholder="Informe seu e-mail"
+      [(ngModel)]="email"
+      name="email"
+      required
+    />
+    <label for="email">Usuário:</label>
+    <input
+      type="username"
+      class="input"
+      placeholder="Informe seu username"
+      [(ngModel)]="username"
+      name="username"
+      required
+    />
+    <button type="submit" class="botao btn-primary btn-block">Enviar</button>
+  </form>
+
+  <form *ngIf="etapa === 2" (ngSubmit)="redefinirSenha()">
+    <label for="token">Token:</label>
+    <input
+      class="input"
+      placeholder="Informe o token recebido"
+      [(ngModel)]="token"
+      name="token"
+      required
+    />
+
+    <label for="novaSenha">Nova Senha:</label>
+    <input
+      type="password"
+      class="input"
+      placeholder="Informe sua nova senha"
+      [(ngModel)]="novaSenha"
+      name="novaSenha"
+      required
+    />
+
+    <button type="submit" class="botao btn-primary btn-block">
+      Redefinir Senha
+    </button>
+  </form>
+</section>
