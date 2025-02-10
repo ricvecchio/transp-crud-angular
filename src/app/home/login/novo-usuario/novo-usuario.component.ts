@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
+import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { MensagemComponent } from '../mensagem/mensagem.component';
 import { LoginService } from '../services/login.service';
 
@@ -24,6 +25,7 @@ export class NovoUsuarioComponent implements OnInit {
     private formBuilder: FormBuilder,
     private loginService: LoginService,
     private router: Router,
+    public mensagemService: MensagemService,
   ) {}
 
   ngOnInit(): void {
@@ -49,8 +51,7 @@ export class NovoUsuarioComponent implements OnInit {
           this.router.navigate(['']);
         },
         (error) => {
-          alert('Username já cadastrado!');
-          console.log(error);
+          this.mensagemService.showErrorMessage('Username já cadastrado!');
         },
       );
   }

@@ -28,10 +28,10 @@ import html2canvas from 'html2canvas';
 
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
+import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { Cliente } from '../../../modelo/cliente';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../servico/pedido.service';
-import { MensagemService } from '../../../compartilhado/mensagem.service';
 
 interface Volumes {
   value: string;
@@ -39,29 +39,29 @@ interface Volumes {
 }
 
 @Component({
-    selector: 'app-pedido-form',
-    templateUrl: './pedido-form.component.html',
-    styleUrl: './pedido-form.component.css',
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatOptionModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatError,
-        MatDividerModule,
-        MatListModule,
-        MatRadioModule,
-        MatSlideToggleModule,
-        MatSelectModule,
-        MatCardModule,
-        MatCheckboxModule,
-    ]
+  selector: 'app-pedido-form',
+  templateUrl: './pedido-form.component.html',
+  styleUrl: './pedido-form.component.css',
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatOptionModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatDividerModule,
+    MatListModule,
+    MatRadioModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatCardModule,
+    MatCheckboxModule,
+  ],
 })
 export class PedidoFormComponent implements OnInit {
   formulario!: FormGroup;
@@ -515,16 +515,24 @@ export class PedidoFormComponent implements OnInit {
                 };
               }
               this.router.navigate(['/menu']);
-              this.mensagemService.showSuccessMessage('Pedido Emitido com sucesso!');
+              this.mensagemService.showSuccessMessage(
+                'Pedido Emitido com sucesso!',
+              );
             })
             .catch((error) => {
-              console.error('Erro ao capturar a tela:', error);
+              console.error('Erro ao capturar a tela: ', error);
+              this.mensagemService.showErrorMessage('Erro ao capturar a tela');
             });
         } else {
-          console.error('Elemento .container-previa não encontrado');
+          this.mensagemService.showErrorMessage(
+            'Elemento .container-previa não encontrado',
+          );
         }
       } catch (error) {
-        console.error('Erro ao emitir pedido ou capturar tela:', error);
+        console.error('Erro ao emitir pedido ou capturar tela: ', error);
+        this.mensagemService.showErrorMessage(
+          'Erro ao emitir pedido ou capturar tela',
+        );
       }
     }
   }

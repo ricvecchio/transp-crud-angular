@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { catchError, finalize, throwError, timeout } from 'rxjs';
+import { MensagemService } from '../../../compartilhado/mensagem.service';
 
 @Component({
   selector: 'app-recuperar-senha',
@@ -81,5 +81,4 @@ export class RecuperarSenhaComponent {
         this.router.navigate(['']);
       });
   }
-
 }

@@ -37,13 +37,12 @@ import {
   tap,
 } from 'rxjs';
 
-import { UsuarioPagina } from '../modelo/usuario-pagina';
-import { Usuario } from '../modelo/usuario';
-import { UsuarioService } from './usuario.service';
-import { ErrorDialogComponent } from '../compartilhado/componentes/error-dialog/error-dialog.component';
-import { ConfirmationDialogComponent } from '../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import { ConfirmationDialogComponent } from '../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
 import { MensagemService } from '../compartilhado/mensagem.service';
+import { Usuario } from '../modelo/usuario';
+import { UsuarioPagina } from '../modelo/usuario-pagina';
+import { UsuarioService } from './usuario.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -91,7 +90,7 @@ export class UsuariosComponent implements OnInit {
 
   dataSource = new MatTableDataSource<Usuario>();
   filterControl = new FormControl('');
-  permissoes = ['', 'USER', 'ADMIN']; // Opções para o dropdown
+  permissoes = ['', 'USER', 'ADMIN'];
 
   ngOnInit(): void {
     this.filterControl.valueChanges
@@ -110,7 +109,6 @@ export class UsuariosComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public mensagemService: MensagemService,
-
   ) {
     this.atualiza();
   }
@@ -138,16 +136,11 @@ export class UsuariosComponent implements OnInit {
             error.status === 403
               ? 'Usuário sem Permissão!'
               : 'Erro ao carregar usuários.';
-          this.onError(errorMessage);
+          this.mensagemService.showErrorMessage(errorMessage);
+          console.error('Erro ao carregar usuários.: ', error);
           return of({ usuarios: [], totalElementos: 0, totalPaginas: 0 });
         }),
       );
-  }
-
-  onError(errorMsg: string) {
-    this.dialog.open(ErrorDialogComponent, {
-      data: errorMsg,
-    });
   }
 
   salvarEdicao(usuario: Usuario) {
@@ -156,9 +149,14 @@ export class UsuariosComponent implements OnInit {
       .subscribe(
         () => {
           this.atualiza();
-          this.mensagemService.showSuccessMessage('Permissão atualizada com sucesso!');
+          this.mensagemService.showSuccessMessage(
+            'Permissão atualizada com sucesso!',
+          );
         },
-        () => this.onError('Erro ao atualizar a permissão.'),
+        () =>
+          this.mensagemService.showErrorMessage(
+            'Erro ao atualizar a permissão.',
+          ),
       );
   }
 
@@ -172,9 +170,14 @@ export class UsuariosComponent implements OnInit {
         this.usuarioService.excluir(usuario.idUser).subscribe(
           () => {
             this.atualiza();
-            this.mensagemService.showSuccessMessage('Usuário removido com sucesso!');
+            this.mensagemService.showSuccessMessage(
+              'Usuário removido com sucesso!',
+            );
           },
-          () => this.onError('Erro ao tentar remover o usuário.')
+          () =>
+            this.mensagemService.showErrorMessage(
+              'Erro ao tentar remover o usuário.',
+            ),
         );
       }
     });
@@ -185,5 +188,4 @@ export class UsuariosComponent implements OnInit {
       relativeTo: this.route,
     });
   }
-
 }

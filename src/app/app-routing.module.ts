@@ -10,13 +10,13 @@ import { UsuarioResolver } from './guarda-rotas/usuario.resolver';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './home/login/login.component';
 import { NovoUsuarioComponent } from './home/login/novo-usuario/novo-usuario.component';
+import { RecuperarSenhaComponent } from './home/login/recuperar-senha/recuperar-senha.component';
 import { AuthGuard } from './home/login/services/auth-guard.service';
 import { MenuComponent } from './menu/menu.component';
 import { ExpandirPedidoComponent } from './pedidos/componentes/expandir-pedido/expandir-pedido.component';
 import { PedidosListaComponent } from './pedidos/componentes/pedidos-lista/pedidos-lista.component';
 import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
-import { RecuperarSenhaComponent } from './home/login/recuperar-senha/recuperar-senha.component';
 
 const routes: Routes = [
   {

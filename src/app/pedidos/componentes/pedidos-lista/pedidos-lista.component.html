@@ -58,8 +58,7 @@
   @if (pedidos$ | async; as pedidos) {
     <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="acaoConsulta">
-        <mat-header-cell *matHeaderCellDef>
-        </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
         <mat-cell *matCellDef="let pedido">
           <button
             mat-mini-fab
@@ -135,8 +134,7 @@
       </ng-container>
 
       <ng-container matColumnDef="acao" class="mat-column-acao">
-        <mat-header-cell *matHeaderCellDef>
-        </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
         <mat-cell *matCellDef="let pedido" class="action-column">
           <button
             mat-mini-fab

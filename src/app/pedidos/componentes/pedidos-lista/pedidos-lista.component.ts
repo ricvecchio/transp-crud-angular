@@ -29,11 +29,10 @@ import { catchError, filter, Observable, of, tap } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
-import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-dialog/error-dialog.component';
+import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoPagina } from '../../../modelo/pedido-pagina';
 import { PedidoService } from '../../servico/pedido.service';
-import { MensagemService } from '../../../compartilhado/mensagem.service';
 
 interface Status {
   value: string;
@@ -41,35 +40,35 @@ interface Status {
 }
 
 @Component({
-    selector: 'app-pedidos-lista',
-    templateUrl: './pedidos-lista.component.html',
-    styleUrl: './pedidos-lista.component.css',
-    standalone: true,
-    imports: [
-        CommonModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatFormField,
-        MatLabel,
-        MatInputModule,
-        MatCard,
-        MatTable,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatCellDef,
-        MatCell,
-        MatMiniFabButton,
-        MatIcon,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-        MatPaginator,
-        MatProgressSpinner,
-        ReactiveFormsModule,
-        AsyncPipe,
-    ]
+  selector: 'app-pedidos-lista',
+  templateUrl: './pedidos-lista.component.html',
+  styleUrl: './pedidos-lista.component.css',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatFormField,
+    MatLabel,
+    MatInputModule,
+    MatCard,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatMiniFabButton,
+    MatIcon,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatPaginator,
+    MatProgressSpinner,
+    ReactiveFormsModule,
+    AsyncPipe,
+  ],
 })
 export class PedidosListaComponent implements OnInit {
   pedidos$: Observable<PedidoPagina> | null = null;
@@ -202,8 +201,11 @@ export class PedidosListaComponent implements OnInit {
         }),
         catchError((error) => {
           const errorMessage =
-            error.status === 403 ? 'Usuário sem Permissão!' : 'Erro ao carregar pedidos.';
-          this.onError(errorMessage);
+            error.status === 403
+              ? 'Usuário sem Permissão!'
+              : 'Erro ao carregar pedidos.';
+          this.mensagemService.showErrorMessage(errorMessage);
+          console.error('Erro ao carregar pedidos: ', error);
           return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
         }),
       );
@@ -276,12 +278,6 @@ export class PedidosListaComponent implements OnInit {
     { value: 'Salvo', viewValue: 'Salvo' },
   ];
 
-  onError(errorMsg: string) {
-    this.dialog.open(ErrorDialogComponent, {
-      data: errorMsg,
-    });
-  }
-
   onEdit(pedido: Pedido) {
     this.router.navigate(['/editar-pedido', pedido.idPedido], {
       relativeTo: this.route,
@@ -303,9 +299,14 @@ export class PedidosListaComponent implements OnInit {
         this.pedidoService.excluir(pedido.idPedido).subscribe(
           () => {
             this.atualiza();
-            this.mensagemService.showSuccessMessage('Pedido removido com sucesso!');
+            this.mensagemService.showSuccessMessage(
+              'Pedido removido com sucesso!',
+            );
           },
-          () => this.onError('Erro ao tentar remover o pedido.'),
+          () =>
+            this.mensagemService.showErrorMessage(
+              'Erro ao tentar remover o pedido.',
+            ),
         );
       }
     });

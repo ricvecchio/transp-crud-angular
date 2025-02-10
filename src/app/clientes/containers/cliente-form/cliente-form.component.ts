@@ -16,7 +16,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import {
   MatError,
   MatFormField,
-  MatFormFieldControl,
   MatFormFieldModule,
   MatHint,
   MatLabel,
@@ -27,13 +26,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
+import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { Cliente } from '../../../modelo/cliente';
 import { ClienteService } from './../../../clientes/servicos/cliente.service';
-import { MensagemService } from '../../../compartilhado/mensagem.service';
 
 interface Metros {
   value: string;
@@ -45,31 +44,31 @@ export interface User {
 }
 
 @Component({
-    selector: 'app-cliente-form',
-    templateUrl: './cliente-form.component.html',
-    styleUrl: './cliente-form.component.css',
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatAutocompleteModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatOptionModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatHint,
-        MatError,
-        MatPrefix,
-        MatDividerModule,
-        MatListModule,
-        MatRadioModule,
-        MatSlideToggleModule,
-        MatSelectModule,
-        MatCardModule,
-        MatCheckboxModule,
-    ]
+  selector: 'app-cliente-form',
+  templateUrl: './cliente-form.component.html',
+  styleUrl: './cliente-form.component.css',
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatOptionModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatHint,
+    MatError,
+    MatPrefix,
+    MatDividerModule,
+    MatListModule,
+    MatRadioModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatCardModule,
+    MatCheckboxModule,
+  ],
 })
 export class ClienteFormComponent implements OnInit {
   formulario!: FormGroup;

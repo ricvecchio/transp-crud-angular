@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
+import { MensagemService } from '../../compartilhado/mensagem.service';
+import { UsuarioService } from '../../usuarios/usuario.service';
 import { MensagemComponent } from './mensagem/mensagem.component';
 import { LoginService } from './services/login.service';
-import { UsuarioService } from '../../usuarios/usuario.service';
-import { MensagemService } from '../../compartilhado/mensagem.service';
 
 @Component({
   selector: 'app-login',
@@ -38,8 +38,9 @@ export class LoginComponent implements OnInit {
             }
           },
           (error) => {
-            alert('Erro ao verificar permissões do usuário.');
-            console.log(error);
+            this.mensagemService.showErrorMessage(
+              'Erro ao verificar permissões do usuário.',
+            );
           },
         );
       },

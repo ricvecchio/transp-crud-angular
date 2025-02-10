@@ -16,18 +16,18 @@ import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../../pedidos/servico/pedido.service';
 
 @Component({
-    selector: 'app-expandir-cliente',
-    templateUrl: './expandir-cliente.component.html',
-    styleUrl: './expandir-cliente.component.css',
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatInput,
-    ],
-    providers: [DatePipe]
+  selector: 'app-expandir-cliente',
+  templateUrl: './expandir-cliente.component.html',
+  styleUrl: './expandir-cliente.component.css',
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatInput,
+  ],
+  providers: [DatePipe],
 })
 export class ExpandirClienteComponent implements OnInit {
   formulario!: FormGroup;

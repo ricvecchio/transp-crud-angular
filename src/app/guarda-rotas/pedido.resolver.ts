@@ -8,11 +8,13 @@ import { PedidoService } from '../pedidos/servico/pedido.service';
 @Injectable({
   providedIn: 'root',
 })
-export class PedidoResolver  {
+export class PedidoResolver {
+  constructor(private service: PedidoService) {}
 
-  constructor(private service: PedidoService) { }
-
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Pedido> {
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot,
+  ): Observable<Pedido> {
     if (route.params && route.params['idPedido']) {
       return this.service.buscarPorId(route.params['idPedido']);
     }
@@ -57,4 +59,4 @@ export class PedidoResolver  {
       dataAtualizacaoPedido: '',
     });
   }
-};
+}

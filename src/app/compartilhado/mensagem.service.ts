@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root',
 })
 export class MensagemService {
-
   constructor(private snackBar: MatSnackBar) {}
 
   showSuccessMessage(message: string) {
@@ -25,5 +24,4 @@ export class MensagemService {
       horizontalPosition: 'center',
     });
   }
-
 }

@@ -1,5 +1,4 @@
 import { AsyncPipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -39,11 +38,10 @@ import {
 } from 'rxjs';
 
 import { ConfirmationDialogComponent } from '../../../compartilhado/componentes/confirmation-dialog/confirmation-dialog.component';
-import { ErrorDialogComponent } from '../../../compartilhado/componentes/error-dialog/error-dialog.component';
+import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { Cliente } from '../../../modelo/cliente';
 import { ClientePagina } from '../../../modelo/cliente-pagina';
 import { ClienteService } from '../../servicos/cliente.service';
-import { MensagemService } from '../../../compartilhado/mensagem.service';
 
 @Component({
   selector: 'app-clientes-lista',
@@ -133,8 +131,11 @@ export class ClientesListaComponent implements OnInit {
         }),
         catchError((error) => {
           const errorMessage =
-            error.status === 403 ? 'Usuário sem Permissão!' : 'Erro ao carregar clientes.';
-          this.onError(errorMessage);
+            error.status === 403
+              ? 'Usuário sem Permissão!'
+              : 'Erro ao carregar clientes.';
+          this.mensagemService.showErrorMessage(errorMessage);
+          console.error('Erro ao carregar clientes: ', error);
           return of({ clientes: [], totalElementos: 0, totalPaginas: 0 });
         }),
       );
@@ -142,12 +143,6 @@ export class ClientesListaComponent implements OnInit {
 
   clearFilters() {
     this.filterControl.reset();
-  }
-
-  onError(errorMsg: string) {
-    this.dialog.open(ErrorDialogComponent, {
-      data: errorMsg,
-    });
   }
 
   onAdd() {
@@ -175,9 +170,15 @@ export class ClientesListaComponent implements OnInit {
         this.clienteService.excluir(cliente.idCliente).subscribe(
           () => {
             this.atualiza();
-            this.mensagemService.showSuccessMessage('Cliente removido com sucesso!');
+            this.mensagemService.showSuccessMessage(
+              'Cliente removido com sucesso!',
+            );
           },
-          () => this.onError('Erro ao tentar remover cliente.'),
+          () => {
+            this.mensagemService.showErrorMessage(
+              'Erro ao tentar remover cliente.',
+            );
+          },
         );
       }
     });
