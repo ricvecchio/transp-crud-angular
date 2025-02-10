@@ -9,8 +9,8 @@ import { PedidoPagina } from '../../modelo/pedido-pagina';
   providedIn: 'root',
 })
 export class PedidoService {
-  // private readonly API = 'https://transp-api-crud-spring.onrender.com/api/pedidos';
-  private readonly API = '/api/pedidos';
+  private readonly API = 'https://transp-api-crud-spring.onrender.com/api/pedidos';
+  // private readonly API = '/api/pedidos';
 
   constructor(private http: HttpClient) {}
 
@@ -41,8 +41,8 @@ export class PedidoService {
     if (dataFinal) params.dataFinal = dataFinal;
     if (statusFiltro) params.statusFiltro = statusFiltro;
 
-    // return this.http.get<PedidoPagina>('https://transp-api-crud-spring.onrender.com/api/pedidos', { params });
-    return this.http.get<PedidoPagina>('/api/pedidos', { headers, params });
+    return this.http.get<PedidoPagina>('https://transp-api-crud-spring.onrender.com/api/pedidos', { params });
+    // return this.http.get<PedidoPagina>('/api/pedidos', { headers, params });
   }
 
   buscarPorId(idPedido: number): Observable<Pedido> {
