@@ -20,6 +20,9 @@ export class RecuperarSenhaComponent {
   etapa: number = 1; // 1 - Inserir e-mail e username, 2 - Inserir token e nova senha
   carregando: boolean = false; // Estado de carregamento
 
+  // private readonly API = '/users';
+  private readonly API = 'http://localhost:8080/users';
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -30,7 +33,7 @@ export class RecuperarSenhaComponent {
     this.carregando = true;
 
     this.http
-      .post('http://localhost:8080/users/recoverPassword', {
+      .post(this.API + '/recoverPassword', {
         email: this.email,
         username: this.username,
       })
@@ -59,7 +62,7 @@ export class RecuperarSenhaComponent {
 
   redefinirSenha() {
     this.http
-      .post('http://localhost:8080/users/resetPassword', {
+      .post(this.API + '/resetPassword', {
         token: this.token,
         newPassword: this.novaSenha,
       })

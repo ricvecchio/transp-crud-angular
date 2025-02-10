@@ -11,25 +11,26 @@ import { LoginResponse } from '../types/login-response.types';
 export class LoginService {
   private usuarioSubject = new BehaviorSubject<LoginResponse | null>(null);
 
-  apiUrl: string = 'http://localhost:8080/users';
+  // private readonly API = '/users';
+  private readonly API = 'http://localhost:8080/users';
 
   constructor(private httpClient: HttpClient) {}
 
   login(username: string, password: string) {
     return this.httpClient
-      .post<LoginResponse>(this.apiUrl + '/login', { username, password })
+      .post<LoginResponse>(this.API + '/login', { username, password })
       .pipe(
         tap((value) => {
           sessionStorage.setItem('auth-token', value.token);
           sessionStorage.setItem('username', value.username);
-          this.usuarioSubject.next(value); // Atualiza o usuário logado
+          this.usuarioSubject.next(value);
         }),
       );
   }
 
   signup(name: string, email: string, username: string, password: string) {
     return this.httpClient
-      .post<LoginResponse>(this.apiUrl + '/register', {
+      .post<LoginResponse>(this.API + '/register', {
         name,
         email,
         username,
@@ -39,7 +40,7 @@ export class LoginService {
         tap((value) => {
           sessionStorage.setItem('auth-token', value.token);
           sessionStorage.setItem('username', value.username);
-          this.usuarioSubject.next(value); // Atualiza o usuário logado
+          this.usuarioSubject.next(value);
         }),
       );
   }
@@ -49,7 +50,7 @@ export class LoginService {
     sessionStorage.removeItem('username');
     localStorage.removeItem('auth-token');
     localStorage.removeItem('username');
-    this.usuarioSubject.next(null); // Notifica que o usuário saiu
+    this.usuarioSubject.next(null);
   }
 
   retornaUsuario() {
