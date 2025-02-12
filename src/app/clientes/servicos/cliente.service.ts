@@ -9,8 +9,8 @@ import { ClientePagina } from '../../modelo/cliente-pagina';
   providedIn: 'root',
 })
 export class ClienteService {
-  private readonly API = 'http://82.29.62.50:8080/api/clientes';
-  // private readonly API = 'https://transp-api-crud-spring.onrender.com/api/clientes';
+  private readonly API = 'https://transp-api-crud-spring.onrender.com/api/clientes';
+  // private readonly API = 'http://82.29.62.50:8080/api/clientes';
   // private readonly API = '/api/clientes';
 
   constructor(private http: HttpClient) {}
