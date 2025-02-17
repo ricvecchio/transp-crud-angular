@@ -1,0 +1,44 @@
+name: "Deploy para VPS"
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Baixar o código"
+        uses: actions/checkout@v4
+
+      - name: "Instalar Node.js"
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: "Instalar dependências do Angular"
+        run: |
+          npm ci
+
+      - name: "Build do projeto Angular"
+        run: |
+          npm run build -- --configuration=production
+
+      - name: "Copiar arquivos para VPS"
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.ftp_host }}
+          username: ${{ secrets.ftp_user }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "dist/transportadora/browser"
+          target: "/home"
+
+      - name: "Configurar permissões e reiniciar servidor"
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.ftp_host }}
+          username: ${{ secrets.ftp_user }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo chown -R www-data:www-data .
+            sudo systemctl restart nginx
