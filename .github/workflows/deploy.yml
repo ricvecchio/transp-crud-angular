@@ -24,6 +24,14 @@ jobs:
         run: |
           npm run build -- --configuration=production
 
+      - name: "Testar conexão SSH"
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.ftp_host }}
+          username: ${{ secrets.ftp_user }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: "echo 'Conexão SSH bem-sucedida'"
+
       - name: "Copiar arquivos para VPS"
         uses: appleboy/scp-action@v0.1.7
         with:
