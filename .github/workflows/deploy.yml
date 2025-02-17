@@ -31,19 +31,16 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
+          ssh-add -l # Verifica se a chave foi adicionada corretamente
           ssh-keyscan -H ${{ secrets.ftp_host }} >> ~/.ssh/known_hosts
-          cat ~/.ssh/id_rsa
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: "Testar conexão SSH"
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.ftp_host }}
-          username: ${{ secrets.ftp_user }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: "echo 'Conexão SSH bem-sucedida'"
-          debug: true
+      - name: "Testar conexão SSH com debug"
+        run: |
+          ssh -v -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: "Copiar arquivos para VPS"
         uses: appleboy/scp-action@v0.1.7
