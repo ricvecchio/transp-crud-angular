@@ -24,6 +24,15 @@ jobs:
         run: |
           npm run build -- --configuration=production
 
+      - name: "Adicionar chave SSH ao ssh-agent"
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.ftp_host }} >> ~/.ssh/known_hosts
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: "Testar conexão SSH"
         uses: appleboy/ssh-action@v1.0.3
         with:
