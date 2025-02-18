@@ -11,9 +11,7 @@ import { LoginResponse } from '../types/login-response.types';
 export class LoginService {
   private usuarioSubject = new BehaviorSubject<LoginResponse | null>(null);
 
-  // private readonly API = 'https://transp-api-crud-spring.onrender.com/users';
   private readonly API = 'http://saotomecatimesaotomecatime.com/users';
-  // private readonly API = 'http://localhost:8080/users';;
 
   constructor(private httpClient: HttpClient) {}
 
