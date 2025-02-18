@@ -61,9 +61,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist/transportadora/browser/*"
           target: "/home/root/transportadora/dist/browser"
-          
-          source: "dist/transportadora/browser/*"
-          target: "/home/root/transportadora/dist/browser"
 
       - name: "[10] Verificar arquivos na VPS após deploy"
         uses: appleboy/ssh-action@v1.0.3
