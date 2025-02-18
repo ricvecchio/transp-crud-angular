@@ -13,7 +13,7 @@ export class LoginService {
 
   // private readonly API = 'https://transp-api-crud-spring.onrender.com/users';
   private readonly API = 'http://saotomecatimesaotomecatime.com/users';
-  // private readonly API = 'http://localhost:8080/users';
+  // private readonly API = 'http://localhost:8080/users';;
 
   constructor(private httpClient: HttpClient) {}
 
