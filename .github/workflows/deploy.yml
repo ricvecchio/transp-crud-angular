@@ -51,7 +51,7 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            rm -rf /home/root/transportadora/dist/browser/*
+            rm -rf /home/root/transportadora/*
 
       - name: "[9] Copiar arquivos para VPS"
         uses: appleboy/scp-action@v0.1.7
@@ -60,7 +60,7 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist/transportadora/*"
-          target: "/home/root/transportadora/dist/browser"
+          target: "/home/root/transportadora"
 
       - name: "[10] Verificar arquivos na VPS após deploy"
         uses: appleboy/ssh-action@v1.0.3
@@ -69,7 +69,7 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            mkdir -p /home/root/transportadora/dist/browser && ls -lah /home/root/transportadora/dist/browser
+            mkdir -p /home/root/transportadora && ls -lah /home/root/transportadora
 
       - name: "[11] Configurar permissões e reiniciar servidor"
         uses: appleboy/ssh-action@v1.0.3
@@ -78,7 +78,7 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo mkdir -p /home/root/transportadora/dist/browser && sudo chown -R www-data:www-data /home/root/transportadora/dist/browser
+            sudo mkdir -p /home/root/transportadora && sudo chown -R www-data:www-data /home/root/transportadora
             sudo systemctl restart nginx
 
       - name: "[12] Limpar cache do Nginx"
