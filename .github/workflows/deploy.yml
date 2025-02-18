@@ -32,6 +32,7 @@ jobs:
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.ftp_host }} >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
       # - name: "Testar conexão SSH"
       #   run: |
@@ -39,7 +40,7 @@ jobs:
 
       - name: "Testar conexão SSH com debug"
         run: |
-          ssh -v -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
+          ssh -o StrictHostKeyChecking=no -o LogLevel=DEBUG -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
