@@ -59,7 +59,7 @@ jobs:
           host: ${{ secrets.ftp_host }}
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist/transportadora/browser"
+          source: "dist/transportadora/browser/*"
           target: "/home/root/transportadora/dist/transportadora/browser"
 
       - name: "[10] Verificar arquivos na VPS após deploy"
