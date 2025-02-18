@@ -36,11 +36,11 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_ed25519
-          ssh-keyscan -H ${{ secrets.FTP_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.ftp_host }} >> ~/.ssh/known_hosts
 
       - name: "[7] Testar conexão SSH com debug"
         run: |
-          ssh -o StrictHostKeyChecking=no -o LogLevel=DEBUG -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
+          ssh -o StrictHostKeyChecking=no -o LogLevel=DEBUG -i ~/.ssh/id_ed25519 ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -51,7 +51,7 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            rm -rf /home/${{ secrets.ftp_user }}/transportadora/*
+            rm -rf /home/root/transportadora/dist/browser/*
 
       - name: "[9] Copiar arquivos para VPS"
         uses: appleboy/scp-action@v0.1.7
@@ -60,7 +60,10 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist/transportadora/browser/*"
-          target: "/home/root/transportadora/dist/transportadora/browser"
+          target: "/home/root/transportadora/dist/browser"
+          
+          source: "dist/transportadora/browser/*"
+          target: "/home/root/transportadora/dist/browser"
 
       - name: "[10] Verificar arquivos na VPS após deploy"
         uses: appleboy/ssh-action@v1.0.3
@@ -69,7 +72,7 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            ls -lah /home/${{ secrets.ftp_user }}/transportadora
+            ls -lah /home/root/transportadora/dist/browser
 
       - name: "[11] Configurar permissões e reiniciar servidor"
         uses: appleboy/ssh-action@v1.0.3
@@ -78,7 +81,7 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo chown -R www-data:www-data /home/${{ secrets.ftp_user }}/transportadora
+            sudo chown -R www-data:www-data /home/root/transportadora/dist/browser
             sudo systemctl restart nginx
 
       - name: "[12] Limpar cache do Nginx"
