@@ -27,17 +27,12 @@ jobs:
       - name: "Configurar chave SSH"
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.ftp_host }} >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-
-      # - name: "Testar conexão SSH"
-      #   run: |
-      #     ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
-
+          ssh-keyscan -H ${{ secrets.FTP_HOST }} >> ~/.ssh/known_hosts
+          
       - name: "Testar conexão SSH com debug"
         run: |
           ssh -o StrictHostKeyChecking=no -o LogLevel=DEBUG -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
