@@ -20,8 +20,8 @@ export class RecuperarSenhaComponent {
   etapa: number = 1; // 1 - Inserir e-mail e username, 2 - Inserir token e nova senha
   carregando: boolean = false; // Estado de carregamento
 
-  private readonly API = 'https://transp-api-crud-spring.onrender.com/users';
-  // private readonly API = 'http://saotomecatime.com/';;
+  // private readonly API = 'https://transp-api-crud-spring.onrender.com/users';
+  private readonly API = 'http://saotomecatimesaotomecatime.com/users';
   // private readonly API = 'https://82.29.62.50:8443/users';
   // private readonly API = 'http://localhost:8080/users';
 
