@@ -8,23 +8,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Baixar o código"
+      - name: "[1] Baixar o código"
         uses: actions/checkout@v4
 
-      - name: "Instalar Node.js"
+      - name: "[2] Instalar Node.js"
         uses: actions/setup-node@v3
         with:
           node-version: "20"
 
-      - name: "Instalar dependências do Angular"
+      - name: "[3] Instalar dependências do Angular"
         run: |
           npm ci
 
-      - name: "Build do projeto Angular"
+      - name: "[4] Build do projeto Angular"
         run: |
+          rm -rf dist
           npm run build -- --configuration=production
 
-      - name: "Configurar chave SSH para Hostinger"
+      - name: "[5] Verificar arquivos gerados pelo Angular"
+        run: |
+          ls -lah dist/transportadora/browser
+
+      - name: "[6] Configurar chave SSH para Hostinger"
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_ed25519
@@ -33,13 +38,22 @@ jobs:
           ssh-add ~/.ssh/id_ed25519
           ssh-keyscan -H ${{ secrets.FTP_HOST }} >> ~/.ssh/known_hosts
 
-      - name: "Testar conexão SSH com debug"
+      - name: "[7] Testar conexão SSH com debug"
         run: |
           ssh -o StrictHostKeyChecking=no -o LogLevel=DEBUG -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: "Copiar arquivos para VPS"
+      - name: "[8] Remover arquivos antigos antes do deploy"
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.ftp_host }}
+          username: ${{ secrets.ftp_user }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            rm -rf /home/${{ secrets.ftp_user }}/transportadora/*
+
+      - name: "[9] Copiar arquivos para VPS"
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.ftp_host }}
@@ -48,7 +62,16 @@ jobs:
           source: "dist/transportadora/browser"
           target: "/home/${{ secrets.ftp_user }}/transportadora"
 
-      - name: "Configurar permissões e reiniciar servidor"
+      - name: "[10] Verificar arquivos na VPS após deploy"
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.ftp_host }}
+          username: ${{ secrets.ftp_user }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            ls -lah /home/${{ secrets.ftp_user }}/transportadora
+
+      - name: "[11] Configurar permissões e reiniciar servidor"
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.ftp_host }}
@@ -56,4 +79,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo chown -R www-data:www-data /home/${{ secrets.ftp_user }}/transportadora
+            sudo systemctl restart nginx
+
+      - name: "[12] Limpar cache do Nginx"
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.ftp_host }}
+          username: ${{ secrets.ftp_user }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
             sudo systemctl restart nginx
