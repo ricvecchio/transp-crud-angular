@@ -24,22 +24,18 @@ jobs:
         run: |
           npm run build -- --configuration=production
 
-      - name: "Configurar chave SSH"
+      - name: "Configurar chave SSH para Hostinger"
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
           eval "$(ssh-agent -s)"
-          ssh-add ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.ftp_host }} >> ~/.ssh/known_hosts
-
-      # - name: "Testar conexão SSH"
-      #   run: |
-      #     ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
-
+          ssh-add ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.FTP_HOST }} >> ~/.ssh/known_hosts
+          
       - name: "Testar conexão SSH com debug"
         run: |
-          ssh -v -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
+          ssh -o StrictHostKeyChecking=no -o LogLevel=DEBUG -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -50,16 +46,7 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist/transportadora/browser"
-          target: "/home"
-
-      - name: "Copiar arquivos para VPS"
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.ftp_host }}
-          username: ${{ secrets.ftp_user }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist/transportadora/browser"
-          target: "/home"
+          target: "/home/${{ secrets.ftp_user }}/transportadora"
 
       - name: "Configurar permissões e reiniciar servidor"
         uses: appleboy/ssh-action@v1.0.3
@@ -68,5 +55,5 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo chown -R www-data:www-data /home/transportadora/browser
+            sudo chown -R www-data:www-data /home/${{ secrets.ftp_user }}/transportadora
             sudo systemctl restart nginx
