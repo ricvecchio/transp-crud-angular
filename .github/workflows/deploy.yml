@@ -51,16 +51,7 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "dist/transportadora/browser"
-          target: "/home"
-
-      - name: "Copiar arquivos para VPS"
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.ftp_host }}
-          username: ${{ secrets.ftp_user }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist/transportadora/browser"
-          target: "/home"
+          target: "/home/${{ secrets.ftp_user }}/transportadora"
 
       - name: "Configurar permissões e reiniciar servidor"
         uses: appleboy/ssh-action@v1.0.3
@@ -69,5 +60,5 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo chown -R www-data:www-data /home/transportadora/browser
+            sudo chown -R www-data:www-data /home/${{ secrets.ftp_user }}/transportadora
             sudo systemctl restart nginx
