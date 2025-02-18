@@ -24,23 +24,18 @@ jobs:
         run: |
           npm run build -- --configuration=production
 
-      - name: "Adicionar chave SSH ao ssh-agent"
+      - name: "Configurar chave SSH"
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
-          ssh-add -l # Verifica se a chave foi adicionada corretamente
           ssh-keyscan -H ${{ secrets.ftp_host }} >> ~/.ssh/known_hosts
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: "Testar conexão SSH com debug"
+      - name: "Testar conexão SSH"
         run: |
-          ssh -v -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.ftp_user }}@${{ secrets.ftp_host }} "echo 'Conexão SSH bem-sucedida'"
 
       - name: "Copiar arquivos para VPS"
         uses: appleboy/scp-action@v0.1.7
@@ -58,5 +53,5 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo chown -R www-data:www-data .
+            sudo chown -R www-data:www-data /home/transportadora/browser
             sudo systemctl restart nginx
