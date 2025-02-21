@@ -9,7 +9,7 @@ import { PedidoPagina } from '../../modelo/pedido-pagina';
   providedIn: 'root',
 })
 export class PedidoService {
-  private readonly API = 'http://saotomecatimesaotomecatime.com/api/pedidos';
+  private readonly API = 'https://saotomecatimesaotomecatime.com/api/pedidos';
 
   constructor(private http: HttpClient) {}
 

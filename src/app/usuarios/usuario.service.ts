@@ -8,7 +8,7 @@ import { UsuarioPagina } from '../modelo/usuario-pagina';
   providedIn: 'root',
 })
 export class UsuarioService {
-  private readonly API = 'http://saotomecatimesaotomecatime.com/api/users';
+  private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
 
   constructor(private http: HttpClient) {}
 

@@ -9,7 +9,7 @@ import { ClientePagina } from '../../modelo/cliente-pagina';
   providedIn: 'root',
 })
 export class ClienteService {
-  private readonly API = 'http://saotomecatimesaotomecatime.com/api/clientes';
+  private readonly API = 'https://saotomecatimesaotomecatime.com/api/clientes';
 
   constructor(private http: HttpClient) {}
 

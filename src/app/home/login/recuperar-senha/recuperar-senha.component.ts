@@ -20,7 +20,7 @@ export class RecuperarSenhaComponent {
   etapa: number = 1; // 1 - Inserir e-mail e username, 2 - Inserir token e nova senha
   carregando: boolean = false; // Estado de carregamento
 
-private readonly API = 'http://saotomecatimesaotomecatime.com/api/users';
+private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
 
   constructor(
     private http: HttpClient,
