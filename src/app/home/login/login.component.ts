@@ -38,14 +38,26 @@ export class LoginComponent implements OnInit {
             }
           },
           (error) => {
-            this.mensagemService.showErrorMessage(
-              'Erro ao verificar permissões do usuário.',
-            );
+            if (error.status === 0) {
+              this.mensagemService.showErrorMessage(
+                'Erro de conexão com o servidor.',
+              );
+            } else {
+              this.mensagemService.showErrorMessage(
+                'Erro ao verificar permissões do usuário.',
+              );
+            }
           },
         );
       },
-      () => {
-        this.mensagemService.showErrorMessage('Usuário ou senha inválido.');
+      (error) => {
+        if (error.status === 0) {
+          this.mensagemService.showErrorMessage(
+            'Erro de conexão com o servidor.',
+          );
+        } else {
+          this.mensagemService.showErrorMessage('Usuário ou senha inválido.');
+        }
       },
     );
   }
