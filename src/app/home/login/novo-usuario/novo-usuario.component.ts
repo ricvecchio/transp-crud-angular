@@ -51,7 +51,13 @@ export class NovoUsuarioComponent implements OnInit {
           this.router.navigate(['']);
         },
         (error) => {
-          this.mensagemService.showErrorMessage('Username já cadastrado!');
+          if (error.status === 409) {
+            this.mensagemService.showErrorMessage('Username já cadastrado!');
+          } else {
+            this.mensagemService.showErrorMessage(
+              'Erro ao cadastrar. Tente novamente mais tarde.',
+            );
+          }
         },
       );
   }
