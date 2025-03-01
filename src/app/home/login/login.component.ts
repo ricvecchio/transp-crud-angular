@@ -39,34 +39,25 @@ export class LoginComponent implements OnInit {
           },
           (error) => {
             if (error.status === 0) {
-              this.mensagemService.showErrorMessage(
-                'Erro de conexão com o servidor.',
-              );
+              this.mensagemService.showErrorMessage('Erro de conexão com o servidor.');
             } else {
-              this.mensagemService.showErrorMessage(
-                'Erro ao verificar permissões do usuário.',
-              );
+              this.mensagemService.showErrorMessage('Erro ao verificar permissões do usuário.');
             }
-          },
+          }
         );
       },
       (error) => {
-        console.log(error); // Adicionando log para depuração
-
         if (error.status === 0) {
-          this.mensagemService.showErrorMessage(
-            'Erro de conexão com o servidor.',
-          );
+          this.mensagemService.showErrorMessage('Erro de conexão com o servidor.');
         } else if (error.status === 502) {
-          this.mensagemService.showErrorMessage(
-            'Erro no servidor. Tente novamente mais tarde.',
-          );
+          this.mensagemService.showErrorMessage('Erro no servidor. Tente novamente mais tarde.');
         } else if (error.status === 401) {
           this.mensagemService.showErrorMessage('Usuário ou senha inválidos.');
         } else {
+          console.error('Erro ao realizar login:', error);
           this.mensagemService.showErrorMessage('Erro ao realizar login.');
         }
-      },
+      }
     );
   }
 }
