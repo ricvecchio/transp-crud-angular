@@ -17,6 +17,7 @@ import { ExpandirPedidoComponent } from './pedidos/componentes/expandir-pedido/e
 import { PedidosListaComponent } from './pedidos/componentes/pedidos-lista/pedidos-lista.component';
 import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { HomeResolver } from './guarda-rotas/home.resolver';
 
 const routes: Routes = [
   {
@@ -27,6 +28,9 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+    resolve: {
+      usuarios: HomeResolver
+    },
     children: [
       {
         path: '',
