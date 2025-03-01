@@ -31,6 +31,7 @@ const routes: Routes = [
     resolve: {
       usuarios: HomeResolver
     },
+    runGuardsAndResolvers: 'always',
     children: [
       {
         path: '',
