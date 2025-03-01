@@ -51,6 +51,8 @@ export class LoginComponent implements OnInit {
         );
       },
       (error) => {
+        console.log(error); // Adicionando log para depuração
+
         if (error.status === 0) {
           this.mensagemService.showErrorMessage(
             'Erro de conexão com o servidor.',
