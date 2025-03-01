@@ -59,7 +59,7 @@ jobs:
           host: ${{ secrets.ftp_host }}
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "dist/transportadora/*"
+          source: "dist/transportadora/browser/*"
           target: "/home/root/transportadora"
 
       - name: "[10] Verificar arquivos na VPS após deploy"
@@ -88,4 +88,5 @@ jobs:
           username: ${{ secrets.ftp_user }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo systemctl restart nginx
+            sudo rm -rf /var/cache/nginx/*
+            sudo nginx -s reload
