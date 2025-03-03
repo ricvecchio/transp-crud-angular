@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
         } else if (error.status === 502) {
           this.mensagemService.showErrorMessage('Erro no servidor. Tente novamente mais tarde.');
         } else if (error.status === 401) {
-          this.mensagemService.showErrorMessage('Usuário ou senha inválidos. XXX');
+          this.mensagemService.showErrorMessage('Usuário ou senha inválidos.');
         } else {
           console.error('Erro ao realizar login:', error);
           this.mensagemService.showErrorMessage('Erro ao realizar login.');
