@@ -601,19 +601,31 @@
       </div>
 
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-1">
+          <br />
+          <h6>Exibir Preço?</h6>
+          <p>
+            <mat-checkbox
+              [checked]="formulario.get('exibirPreco')?.value === 'SIM'"
+              (change)="onCheckboxChangeExibirPreco($event.checked)"
+            >
+              Sim
+            </mat-checkbox>
+          </p>
+        </div>
+        <div class="col-md-2">
           <br />
           <h6>Ajudante:</h6>
           <p>
             <mat-checkbox
               [checked]="formulario.value.ajudante === 'SIM'"
-              (change)="onCheckboxChange('SIM')"
+              (change)="onCheckboxChangeAjudante('SIM')"
             >
               Sim
             </mat-checkbox>
             <mat-checkbox
               [checked]="formulario.value.ajudante === 'NÃO'"
-              (change)="onCheckboxChange('NÃO')"
+              (change)="onCheckboxChangeAjudante('NÃO')"
             >
               Não
             </mat-checkbox>
@@ -720,7 +732,10 @@
           </div>
         </div>
 
-        <div class="col-md-4 d-flex align-items-center">
+        <div
+          class="col-md-4 d-flex align-items-center"
+          *ngIf="formulario.get('exibirPreco')?.value === 'SIM'"
+        >
           <div class="container-previa-texto-fixo">
             <b>PREÇO: </b>
           </div>

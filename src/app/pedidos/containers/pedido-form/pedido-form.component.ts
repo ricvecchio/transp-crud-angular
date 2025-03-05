@@ -116,6 +116,7 @@ export class PedidoFormComponent implements OnInit {
       precoLv10: [this.formatarParaReais(pedido.precoLv10)],
       precoLv15: [this.formatarParaReais(pedido.precoLv15)],
       precoEscolhido: [''],
+      exibirPreco: [''],
       ajudante: [pedido.ajudante],
       observacao: [pedido.observacao],
       dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
@@ -245,7 +246,8 @@ export class PedidoFormComponent implements OnInit {
             break;
         }
         this.formulario.get('precoEscolhido')?.setValue(precoSelecionado);
-      });
+      }
+    );
   }
 
   private formatarPedido(pedidoParams: any): Pedido {
@@ -444,7 +446,41 @@ export class PedidoFormComponent implements OnInit {
     }
   }
 
-  onCheckboxChange(value: string) {
+  onCheckboxChangeExibirPreco(valor: boolean) {
+    const exibirPreco = valor ? 'SIM' : 'NÃO';
+
+    let precoEscolhido = '';
+    if (exibirPreco === 'SIM') {
+      const volumeSelecionado = this.formulario.get('volume')?.value;
+      switch (volumeSelecionado) {
+        case 'CX-5m³':
+          precoEscolhido = this.formulario.get('precoCx5')?.value;
+          break;
+        case 'CX-10m³':
+          precoEscolhido = this.formulario.get('precoCx10')?.value;
+          break;
+        case 'CX-15m³':
+          precoEscolhido = this.formulario.get('precoCx15')?.value;
+          break;
+        case 'LAV-5m³':
+          precoEscolhido = this.formulario.get('precoLv5')?.value;
+          break;
+        case 'LAV-10m³':
+          precoEscolhido = this.formulario.get('precoLv10')?.value;
+          break;
+        case 'LAV-15m³':
+          precoEscolhido = this.formulario.get('precoLv15')?.value;
+          break;
+      }
+    }
+
+    this.formulario.patchValue({
+      exibirPreco: exibirPreco,
+      precoEscolhido: precoEscolhido,
+    });
+  }
+
+  onCheckboxChangeAjudante(value: string) {
     this.formulario.patchValue({ ajudante: value });
   }
 

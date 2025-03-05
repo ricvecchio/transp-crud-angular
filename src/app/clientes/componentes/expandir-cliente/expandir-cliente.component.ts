@@ -55,7 +55,7 @@ export class ExpandirClienteComponent implements OnInit {
     this.carregarUltimosPedidos(Number(cliente.idCliente));
     const formattedDate = this.datePipe.transform(
       cliente.dataAtualizacaoCliente,
-      'dd/MM/yyyy',
+      'dd/MM/yyyy HH:mm:ss',
     );
 
     this.formulario = this.formBuilder.group({
@@ -130,7 +130,7 @@ export class ExpandirClienteComponent implements OnInit {
             dataPedido:
               this.datePipe.transform(
                 pedido.dataAtualizacaoPedido,
-                'dd/MM/yyyy',
+                'dd/MM/yyyy HH:mm:ss',
               ) || '',
             volume: pedido.volume,
             valor: valor,
