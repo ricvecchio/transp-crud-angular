@@ -216,7 +216,19 @@ export class ClienteFormComponent implements OnInit {
 
   consultaCEP() {
     const cep = this.formulario.get('cep')?.value;
-    if (cep != '') {
+    const cepEntrega = this.formulario.get('cepEntrega')?.value;
+    if (!this.isAdressChecked && cepEntrega != '') {
+      this.consultaCepService.getConsultaCep(cepEntrega).subscribe((dados: any) => {
+        this.formulario.patchValue({
+          logradouroEntrega: dados.logradouro,
+          complementoEntrega: dados.complemento,
+          bairroEntrega: dados.bairro,
+          cidadeEntrega: dados.localidade,
+          estadoEntrega: dados.uf,
+        });
+      });
+    }
+    else if (cep != '') {
       this.consultaCepService.getConsultaCep(cep).subscribe((dados: any) => {
         this.formulario.patchValue({
           logradouro: dados.logradouro,
@@ -287,6 +299,7 @@ export class ClienteFormComponent implements OnInit {
       this.buscaEndereco();
     } else {
       this.limpaEndereco();
+      this.consultaCEP();
     }
   }
 

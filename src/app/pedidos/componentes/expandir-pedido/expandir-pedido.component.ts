@@ -44,7 +44,7 @@ export class ExpandirPedidoComponent implements OnInit {
 
     const formattedDate = this.datePipe.transform(
       pedido.dataAtualizacaoPedido,
-      'dd/MM/yyyy',
+      'dd/MM/yyyy HH:mm:ss'
     );
 
     this.formulario = this.formBuilder.group({

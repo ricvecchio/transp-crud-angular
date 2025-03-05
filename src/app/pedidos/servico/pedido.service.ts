@@ -9,7 +9,8 @@ import { PedidoPagina } from '../../modelo/pedido-pagina';
   providedIn: 'root',
 })
 export class PedidoService {
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/pedidos';
+  // private readonly API = 'https://saotomecatimesaotomecatime.com/api/pedidos';
+  private readonly API = 'http://localhost:8080/api/pedidos'; //EXCLUIR
 
   constructor(private http: HttpClient) {}
 
