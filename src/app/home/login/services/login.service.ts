@@ -11,8 +11,7 @@ import { LoginResponse } from '../types/login-response.types';
 export class LoginService {
   private usuarioSubject = new BehaviorSubject<LoginResponse | null>(null);
 
-  // private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
-  private readonly API = 'http://localhost:8080/api/users'; //EXCLUIR
+  private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
 
   constructor(private httpClient: HttpClient) {}
 
