@@ -571,7 +571,7 @@
             />
           </mat-form-field>
         </div>
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
           <mat-form-field class="form-grid">
             <mat-label>Mangueira: Metros</mat-label>
             <select matNativeControl name="metro" formControlName="mangueira">
@@ -580,6 +580,17 @@
                 <option [value]="metro.value">{{ metro.viewValue }}</option>
               }
             </select>
+          </mat-form-field>
+        </div> -->
+        <div class="col-md-3">
+          <mat-form-field class="form-grid">
+            <mat-label>Mangueira:</mat-label>
+            <input
+              matInput
+              name="mangueira"
+              placeholder="Informe a mangueira"
+              formControlName="mangueira"
+            />
           </mat-form-field>
         </div>
       </div>

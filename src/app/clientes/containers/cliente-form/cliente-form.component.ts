@@ -241,15 +241,15 @@ export class ClienteFormComponent implements OnInit {
     }
   }
 
-  selectedMetros!: string;
-  metros: Metros[] = [
-    { value: '15 M', viewValue: '15 M' },
-    { value: '30 M', viewValue: '30 M' },
-    { value: '45 M', viewValue: '45 M' },
-    { value: '60 M', viewValue: '60 M' },
-    { value: '75 M', viewValue: '75 M' },
-    { value: '90 M', viewValue: '90 M' },
-  ];
+  // selectedMetros!: string;
+  // metros: Metros[] = [
+  //   { value: '15 M', viewValue: '15 M' },
+  //   { value: '30 M', viewValue: '30 M' },
+  //   { value: '45 M', viewValue: '45 M' },
+  //   { value: '60 M', viewValue: '60 M' },
+  //   { value: '75 M', viewValue: '75 M' },
+  //   { value: '90 M', viewValue: '90 M' },
+  // ];
 
   private formatarCampos(campos: string[]): void {
     campos.forEach((campo) => {
