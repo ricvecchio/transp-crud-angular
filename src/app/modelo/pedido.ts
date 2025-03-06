@@ -7,6 +7,7 @@ export interface Pedido {
   telefone: string;
   celular: string;
   email: string;
+  contatosAdicionais: string;
   cep: string;
   logradouro: string;
   numero: string;

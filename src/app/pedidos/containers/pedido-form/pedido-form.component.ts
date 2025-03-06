@@ -89,6 +89,7 @@ export class PedidoFormComponent implements OnInit {
       telefone: [pedido.telefone],
       celular: [pedido.celular],
       email: [pedido.email],
+      contatosAdicionais: [pedido.contatosAdicionais],
       cep: [pedido.cep],
       logradouro: [pedido.logradouro],
       numero: [pedido.numero],
@@ -135,6 +136,7 @@ export class PedidoFormComponent implements OnInit {
           telefone: pedido.telefone,
           celular: pedido.celular,
           email: pedido.email,
+          contatosAdicionais: pedido.contatosAdicionais,
           cep: pedido.cep,
           logradouro: pedido.logradouro,
           numero: pedido.numero,
@@ -179,6 +181,7 @@ export class PedidoFormComponent implements OnInit {
           telefone: cliente.telefone,
           celular: cliente.celular,
           email: cliente.email,
+          contatosAdicionais: cliente.contatosAdicionais,
           cep: cliente.cep,
           logradouro: cliente.logradouro,
           numero: cliente.numero,
@@ -260,6 +263,7 @@ export class PedidoFormComponent implements OnInit {
       telefone: pedidoParams.telefone || '',
       celular: pedidoParams.celular || '',
       email: pedidoParams.email || '',
+      contatosAdicionais: pedidoParams.contatosAdicionais || '',
       cep: pedidoParams.cep || '',
       logradouro: pedidoParams.logradouro || '',
       numero: pedidoParams.numero || '',
@@ -303,6 +307,7 @@ export class PedidoFormComponent implements OnInit {
       telefone: clienteParams.telefone || '',
       celular: clienteParams.celular || '',
       email: clienteParams.email || '',
+      contatosAdicionais: clienteParams.contatosAdicionais || '',
       cep: clienteParams.cep || '',
       logradouro: clienteParams.logradouro || '',
       numero: clienteParams.numero || '',
@@ -398,7 +403,6 @@ export class PedidoFormComponent implements OnInit {
       this.consultaCepService.getConsultaCep(cep).subscribe((dados: any) => {
         this.formulario.patchValue({
           logradouroEntrega: dados.logradouro,
-          complementoEntrega: dados.complemento,
           bairroEntrega: dados.bairro,
           cidadeEntrega: dados.localidade,
           estadoEntrega: dados.uf,
@@ -522,18 +526,110 @@ export class PedidoFormComponent implements OnInit {
               document.body.appendChild(iframe);
 
               const iframeDocument = iframe.contentWindow?.document;
+              // if (iframeDocument) {
+              //   iframeDocument.open();
+              //   iframeDocument.write(`
+              //   <html>
+              //     <body>
+              //       <div style="display: flex; flex-direction: column;">
+              //         <img src="${imageData}" style="width: 100%; max-width: 100%; margin-bottom: 20px;" />
+              //         <img src="${imageData}" style="width: 100%; max-width: 100%;" />
+              //       </div>
+              //     </body>
+              //   </html>
+              // `);
+              //   iframeDocument.close();
               if (iframeDocument) {
                 iframeDocument.open();
                 iframeDocument.write(`
-                <html>
-                  <body>
-                    <div style="display: flex; flex-direction: column;">
-                      <img src="${imageData}" style="width: 100%; max-width: 100%; margin-bottom: 20px;" />
-                      <img src="${imageData}" style="width: 100%; max-width: 100%;" />
-                    </div>
-                  </body>
-                </html>
-              `);
+                  <html>
+                    <head>
+                      <style>
+                        @page { size: A4 portrait; margin: 0; }
+                        body {
+                          margin: 0;
+                          display: flex;
+                          flex-direction: column;
+                          height: 100vh;
+                        }
+                        .page {
+                          position: relative;
+                          width: 100%;
+                          height: 100vh;
+                        }
+                        .image-container {
+                          width: 100%;
+                          height: 50%;
+                          position: absolute;
+                          padding: 20px; /* Adiciona espaçamento para afastar das bordas */
+                          box-sizing: border-box;
+                          display: flex;
+                          justify-content: center;
+                          align-items: center;
+                        }
+                        .image {
+                          width: 100%;
+                          height: 100%;
+                          object-fit: contain;
+                          position: relative;
+                        }
+                        .corner-borders {
+                          position: absolute;
+                          width: 100%;
+                          height: 100%;
+                          top: 0;
+                          left: 0;
+                          pointer-events: none;
+                        }
+                        .corner-borders::before,
+                        .corner-borders::after {
+                          content: "";
+                          position: absolute;
+                          width: 20px;
+                          height: 20px;
+                          border-color: black;
+                          border-style: solid;
+                        }
+                        /* Cantos superiores */
+                        .corner-borders::before {
+                          top: 0;
+                          left: 0;
+                          border-width: 4px 0 0 4px;
+                        }
+                        .corner-borders::after {
+                          top: 0;
+                          right: 0;
+                          border-width: 4px 4px 0 0;
+                        }
+                        /* Criando os cantos inferiores */
+                        .corner-borders.bottom::before {
+                          bottom: 0;
+                          left: 0;
+                          top: auto;
+                          border-width: 0 0 4px 4px;
+                        }
+                        .corner-borders.bottom::after {
+                          bottom: 0;
+                          right: 0;
+                          top: auto;
+                          border-width: 0 4px 4px 0;
+                        }
+                      </style>
+                    </head>
+                    <body>
+                      <div class="page">
+                        <div class="image-container" style="top: 0;">
+                          <img src="${imageData}" class="image" />
+                          <div class="corner-borders"></div>
+                        </div>
+                        <div class="image-container" style="top: 50%;">
+                          <img src="${imageData}" class="image" />
+                          <div class="corner-borders bottom"></div>
+                        </div>
+                      </div>
+                    </body>
+                  </html>
+                `);
                 iframeDocument.close();
 
                 iframe.onload = () => {

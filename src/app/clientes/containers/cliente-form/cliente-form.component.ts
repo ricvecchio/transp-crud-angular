@@ -103,6 +103,7 @@ export class ClienteFormComponent implements OnInit {
       telefone: [cliente.telefone, [Validators.required]],
       celular: [cliente.celular],
       email: [cliente.email, [Validators.required]],
+      contatosAdicionais: [cliente.contatosAdicionais],
       cep: [this.formatarCep(cliente.cep)],
       logradouro: [cliente.logradouro, [Validators.required]],
       numero: [cliente.numero],
@@ -203,6 +204,15 @@ export class ClienteFormComponent implements OnInit {
         }
       });
     }
+    const cepEntregaControl = this.formulario.get('cepEntrega');
+    if (cepEntregaControl) {
+      cepEntregaControl.valueChanges.subscribe((valor) => {
+        const formatado = this.formatarCep(valor);
+        if (formatado !== valor) {
+          cepEntregaControl.setValue(formatado, { emitEvent: false });
+        }
+      });
+    }
   }
 
   private formatarCep(valor: any): string {
@@ -221,7 +231,6 @@ export class ClienteFormComponent implements OnInit {
       this.consultaCepService.getConsultaCep(cepEntrega).subscribe((dados: any) => {
         this.formulario.patchValue({
           logradouroEntrega: dados.logradouro,
-          complementoEntrega: dados.complemento,
           bairroEntrega: dados.bairro,
           cidadeEntrega: dados.localidade,
           estadoEntrega: dados.uf,
@@ -232,7 +241,6 @@ export class ClienteFormComponent implements OnInit {
       this.consultaCepService.getConsultaCep(cep).subscribe((dados: any) => {
         this.formulario.patchValue({
           logradouro: dados.logradouro,
-          complemento: dados.complemento,
           bairro: dados.bairro,
           cidade: dados.localidade,
           estado: dados.uf,
@@ -240,16 +248,6 @@ export class ClienteFormComponent implements OnInit {
       });
     }
   }
-
-  // selectedMetros!: string;
-  // metros: Metros[] = [
-  //   { value: '15 M', viewValue: '15 M' },
-  //   { value: '30 M', viewValue: '30 M' },
-  //   { value: '45 M', viewValue: '45 M' },
-  //   { value: '60 M', viewValue: '60 M' },
-  //   { value: '75 M', viewValue: '75 M' },
-  //   { value: '90 M', viewValue: '90 M' },
-  // ];
 
   private formatarCampos(campos: string[]): void {
     campos.forEach((campo) => {

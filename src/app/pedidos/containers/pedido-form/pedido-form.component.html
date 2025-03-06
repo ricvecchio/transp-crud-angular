@@ -105,6 +105,23 @@
       </div>
 
       <div class="row">
+        <div class="col-md-12">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Contatos Adicionais:</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="contatosAdicionais"
+              placeholder="Informações adicionais referente ao contato"
+              formControlName="contatosAdicionais"
+              (input)="convertToUppercase('contatosAdicionais')"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="col-md-3">
           <mat-form-field class="form-grid" appearance="outline">
             <mat-label>CEP:</mat-label>
@@ -680,8 +697,8 @@
       <div
         class="d-flex align-items-center justify-content-between container-previa-texto"
       >
-        <b>PEDIDO: {{ this.formulario.get("idPedido")?.value }}</b>
-        <b>DATA: {{ dataAtual | date: "dd/MM/yyyy" }}</b>
+        <b class="texto-vermelho">PEDIDO: {{ this.formulario.get("idPedido")?.value }}</b>
+        <b class="texto-azul-escuro">DATA: {{ dataAtual | date: "dd/MM/yyyy" }}</b>
       </div>
 
       <mat-list>
@@ -690,7 +707,7 @@
 
       <div class="col-md-12 d-flex align-items-center">
         <div class="container-previa-texto-fixo">
-          <b>CLIENTE: </b>
+          <b class="texto-azul-escuro">CLIENTE: </b>
         </div>
         <div class="container-previa-texto">
           {{ this.formulario.get("nome")?.value }}
@@ -699,7 +716,7 @@
 
       <div class="col-md-12 d-flex">
         <div class="container-previa-texto-fixo">
-          <b>ENDEREÇO: </b>
+          <b class="texto-azul-escuro">ENDEREÇO: </b>
         </div>
         <div class="container-previa-texto">
           {{ this.formulario.get("logradouroEntrega")?.value }},
@@ -716,7 +733,7 @@
       <div class="d-flex">
         <div class="col-md-4 d-flex align-items-center">
           <div class="container-previa-texto-fixo">
-            <b>VOLUME: </b>
+            <b class="texto-azul-escuro">VOLUME: </b>
           </div>
           <div class="container-previa-texto">
             {{ this.formulario.get("volume")?.value }}
@@ -725,7 +742,7 @@
 
         <div class="col-md-4 d-flex align-items-center">
           <div class="container-previa-texto-fixo">
-            <b>MANGUEIRA: </b>
+            <b class="texto-azul-escuro">MANGUEIRA: </b>
           </div>
           <div class="container-previa-texto">
             {{ this.formulario.get("mangueira")?.value }}
@@ -737,7 +754,7 @@
           *ngIf="formulario.get('exibirPreco')?.value === 'SIM'"
         >
           <div class="container-previa-texto-fixo">
-            <b>PREÇO: </b>
+            <b class="texto-azul-escuro">PREÇO: </b>
           </div>
           <div class="container-previa-texto">
             {{ formulario.get("precoEscolhido")?.value }}
@@ -748,24 +765,24 @@
       <div class="d-flex align-items-center">
         <div class="col-md-4">
           <div class="container-previa-texto-fixo">
-            <b>MOTORISTA: </b>
+            <b class="texto-azul-escuro">MOTORISTA: </b>
           </div>
         </div>
         <div class="col-md-4">
           <div class="container-previa-texto-fixo">
-            <b>CAMINHÃO: </b>
+            <b class="texto-azul-escuro">CAMINHÃO: </b>
           </div>
         </div>
         <div class="col-md-4">
           <div class="container-previa-texto-fixo">
-            <b>PLACA: </b>
+            <b class="texto-azul-escuro">PLACA: </b>
           </div>
         </div>
       </div>
 
       <div class="d-flex align-items-center">
         <div class="container-previa-texto-fixo">
-          <b>AJUDANTE: </b>
+          <b class="texto-azul-escuro">AJUDANTE: </b>
         </div>
         <div class="container-previa-texto">
           {{ formulario.get("ajudante")?.value }}
@@ -776,7 +793,7 @@
 
       <div class="container-previa-obs">
         <div class="col-md-12">
-          <b>OBS.: </b>
+          <b class="texto-azul-escuro">OBS.: </b>
           {{ this.formulario.get("observacao")?.value }}
         </div>
       </div>

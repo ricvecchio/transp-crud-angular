@@ -80,3 +80,11 @@ h5 {
 .container-previa-obs {
   font-size: 2rem;
 }
+
+.texto-vermelho {
+  color: rgb(156, 21, 21);
+}
+
+.texto-azul-escuro {
+  color: #0a275a;
+}

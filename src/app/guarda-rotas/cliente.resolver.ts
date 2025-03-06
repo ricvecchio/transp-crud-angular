@@ -27,6 +27,7 @@ export class ClienteResolver {
       telefone: '',
       celular: '',
       email: '',
+      contatosAdicionais: '',
       cep: '',
       logradouro: '',
       numero: '',
