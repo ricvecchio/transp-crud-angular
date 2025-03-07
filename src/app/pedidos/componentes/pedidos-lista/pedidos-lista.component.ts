@@ -203,7 +203,9 @@ export class PedidosListaComponent implements OnInit {
           const errorMessage =
             error.status === 403
               ? 'Usuário sem Permissão!'
-              : 'Erro ao carregar pedidos.';
+              : error.status === 500
+                ? 'Erro interno no servidor. Contate o suporte.'
+                : 'Erro ao carregar Pedidos.';
           this.mensagemService.showErrorMessage(errorMessage);
           console.error('Erro ao carregar pedidos: ', error);
           return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });

@@ -133,7 +133,9 @@ export class ClientesListaComponent implements OnInit {
           const errorMessage =
             error.status === 403
               ? 'Usuário sem Permissão!'
-              : 'Erro ao carregar clientes.';
+              : error.status === 500
+                ? 'Erro interno no servidor. Contate o suporte.'
+                : 'Erro ao carregar clientes.';
           this.mensagemService.showErrorMessage(errorMessage);
           console.error('Erro ao carregar clientes: ', error);
           return of({ clientes: [], totalElementos: 0, totalPaginas: 0 });
