@@ -16,11 +16,7 @@ export class MenuComponent {
 
   ngOnInit(): void {
     const username = sessionStorage.getItem('username');
+    this.permissaoUsuario = sessionStorage.getItem('permission');
 
-    if (username) {
-      this.usuarioService.buscarPorId(username).subscribe((usuario) => {
-        this.permissaoUsuario = usuario.permission;
-      });
-    }
   }
 }
