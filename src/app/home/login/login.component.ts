@@ -27,6 +27,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
+    this.usuario = this.usuario.trim();
+
     this.loginService.login(this.usuario, this.senha).subscribe(
       () => {
         this.usuarioService.buscarPorUsername(this.usuario).subscribe(
