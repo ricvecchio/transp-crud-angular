@@ -38,13 +38,13 @@ export class NovoUsuarioComponent implements OnInit {
   }
 
   cadastrar() {
+    const name = this.novoUsuarioForm.value.name.trim();
+    const email = this.novoUsuarioForm.value.email.trim();
+    const username = this.novoUsuarioForm.value.username.trim();
+    const password = this.novoUsuarioForm.value.password.trim();
+
     this.loginService
-      .signup(
-        this.novoUsuarioForm.value.name,
-        this.novoUsuarioForm.value.email,
-        this.novoUsuarioForm.value.username,
-        this.novoUsuarioForm.value.password,
-      )
+    .signup(name, email, username, password)
       .subscribe(
         () => {
           this.loginService.logout();

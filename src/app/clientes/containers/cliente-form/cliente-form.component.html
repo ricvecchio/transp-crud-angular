@@ -169,7 +169,7 @@
             <mat-label>Complemento:</mat-label>
             <input
               matInput
-              placeholder="Ex. Apto 64"
+              placeholder="Ex. Apto 55"
               name="complemento"
               formControlName="complemento"
               (input)="convertToUppercase('complemento')"
@@ -373,7 +373,7 @@
               <input
                 matInput
                 name="complementoEntrega"
-                placeholder="Ex. Apto 64"
+                placeholder="Ex. Apto 55"
                 formControlName="complementoEntrega"
                 (input)="convertToUppercase('complementoEntrega')"
               />
@@ -477,71 +477,29 @@
               <section class="form-grid">
                 <mat-form-field>
                   <mat-label>Faturado:</mat-label>
-                  <mat-select formControlName="tipoPgto">
+                  <mat-select formControlName="tipoPgto" (selectionChange)="onSelectChange()">
                     <mat-option value="0"> </mat-option>
-                    <mat-option (click)="selectClick()" value="10 dias"
-                      >10 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="11 dias"
-                      >11 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="12 dias"
-                      >12 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="13 dias"
-                      >13 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="14 dias"
-                      >14 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="15 dias"
-                      >15 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="16 dias"
-                      >16 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="17 dias"
-                      >17 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="18 dias"
-                      >18 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="19 dias"
-                      >19 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="20 dias"
-                      >20 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="21 dias"
-                      >21 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="22 dias"
-                      >22 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="23 dias"
-                      >23 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="24 dias"
-                      >24 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="25 dias"
-                      >25 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="26 dias"
-                      >26 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="27 dias"
-                      >27 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="28 dias"
-                      >28 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="29 dias"
-                      >29 dias</mat-option
-                    >
-                    <mat-option (click)="selectClick()" value="30 dias"
-                      >30 dias</mat-option
-                    >
+                    <mat-option value="10 dias">10 dias</mat-option>
+                    <mat-option value="11 dias">11 dias</mat-option>
+                    <mat-option value="12 dias">12 dias</mat-option>
+                    <mat-option value="13 dias">13 dias</mat-option>
+                    <mat-option value="14 dias">14 dias</mat-option>
+                    <mat-option value="15 dias">15 dias</mat-option>
+                    <mat-option value="16 dias">16 dias</mat-option>
+                    <mat-option value="17 dias">17 dias</mat-option>
+                    <mat-option value="18 dias">18 dias</mat-option>
+                    <mat-option value="19 dias">19 dias</mat-option>
+                    <mat-option value="20 dias">20 dias</mat-option>
+                    <mat-option value="21 dias">21 dias</mat-option>
+                    <mat-option value="22 dias">22 dias</mat-option>
+                    <mat-option value="23 dias">23 dias</mat-option>
+                    <mat-option value="24 dias">24 dias</mat-option>
+                    <mat-option value="25 dias">25 dias</mat-option>
+                    <mat-option value="26 dias">26 dias</mat-option>
+                    <mat-option value="27 dias">27 dias</mat-option>
+                    <mat-option value="28 dias">28 dias</mat-option>
+                    <mat-option value="29 dias">29 dias</mat-option>
+                    <mat-option value="30 dias">30 dias</mat-option>
                   </mat-select>
                 </mat-form-field>
               </section>
