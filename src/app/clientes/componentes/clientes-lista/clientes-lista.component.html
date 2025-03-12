@@ -107,6 +107,7 @@
             <mat-icon>edit</mat-icon>
           </button>
           <button
+          *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
             mat-mini-fab
             color="warn"
             aria-label="Remover Cliente"

@@ -89,7 +89,11 @@ export class ClientesListaComponent implements OnInit {
   dataSource = new MatTableDataSource<Cliente>();
   filterControl = new FormControl('');
 
+  permissaoUsuario: string | null = null;
+
   ngOnInit(): void {
+    this.permissaoUsuario = sessionStorage.getItem('permission');
+
     this.filterControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((filterValue: string | null) => {
