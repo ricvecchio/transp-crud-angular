@@ -73,6 +73,8 @@ interface Status {
 export class PedidosListaComponent implements OnInit {
   pedidos$: Observable<PedidoPagina> | null = null;
 
+  permissaoUsuario: string | null = null;
+
   dataSource = new MatTableDataSource<Pedido>();
 
   filterControl = new FormControl('');
@@ -112,6 +114,8 @@ export class PedidosListaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.permissaoUsuario = sessionStorage.getItem('permission');
+
     this.setupFilterListeners();
     this.atualiza();
   }

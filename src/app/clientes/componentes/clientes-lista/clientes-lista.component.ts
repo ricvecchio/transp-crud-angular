@@ -75,6 +75,8 @@ import { ClienteService } from '../../servicos/cliente.service';
   ],
 })
 export class ClientesListaComponent implements OnInit {
+  permissaoUsuario: string | null = null;
+
   clientes$: Observable<ClientePagina> | null = null;
   readonly displayedColumns: string[] = [
     'acaoConsulta',
@@ -89,11 +91,7 @@ export class ClientesListaComponent implements OnInit {
   dataSource = new MatTableDataSource<Cliente>();
   filterControl = new FormControl('');
 
-  permissaoUsuario: string | null = null;
-
   ngOnInit(): void {
-    this.permissaoUsuario = sessionStorage.getItem('permission');
-
     this.filterControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((filterValue: string | null) => {
@@ -124,6 +122,7 @@ export class ClientesListaComponent implements OnInit {
     filterValue: string | null = '',
   ) {
     const normalizedFilter = filterValue?.trim().toLowerCase() || '';
+    this.permissaoUsuario = sessionStorage.getItem('permission');
 
     this.clientes$ = this.clienteService
       .listar(pageEvent.pageIndex, pageEvent.pageSize, normalizedFilter)
