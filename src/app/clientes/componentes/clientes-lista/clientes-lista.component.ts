@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -49,6 +49,7 @@ import { ClienteService } from '../../servicos/cliente.service';
   styleUrl: './clientes-lista.component.css',
   standalone: true,
   imports: [
+    CommonModule,
     MatCard,
     MatTable,
     MatLabel,
@@ -93,6 +94,8 @@ export class ClientesListaComponent implements OnInit {
 
   ngOnInit(): void {
     this.permissaoUsuario = sessionStorage.getItem('permission');
+    console.log('Permissão do usuário:', this.permissaoUsuario); // Debug
+
 
     this.filterControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())

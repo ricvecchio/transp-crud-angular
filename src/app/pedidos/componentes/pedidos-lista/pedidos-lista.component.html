@@ -147,12 +147,15 @@
             <mat-icon>edit</mat-icon>
           </button>
           <button
+            *ngIf="
+              (permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV') &&
+              statusControl.value !== 'Cancelado'
+            "
             mat-mini-fab
             color="warn"
             aria-label="Remover pedido"
             class="action-button"
             (click)="onDelete(pedido)"
-            *ngIf="statusControl.value !== 'Cancelado'"
           >
             <mat-icon>delete</mat-icon>
           </button>
