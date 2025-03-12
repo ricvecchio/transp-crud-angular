@@ -506,6 +506,18 @@
             </mat-card-content>
           }
         </div>
+        <div class="col-md-8">
+          <mat-form-field class="form-grid">
+            <mat-label>Informações Adicionais do Faturamento:</mat-label>
+            <input
+              matInput
+              name="infoPagamento"
+              placeholder="Informações adicionais referente ao tipo de pagamento"
+              formControlName="infoPagamento"
+              (input)="convertToUppercase('infoPagamento')"
+            />
+          </mat-form-field>
+        </div>
       </div>
 
       <br />
@@ -552,6 +564,7 @@
               name="mangueira"
               placeholder="Informe a mangueira"
               formControlName="mangueira"
+              (input)="convertToUppercase('mangueira')"
             />
           </mat-form-field>
         </div>

@@ -36,6 +36,7 @@ export class ClienteResolver {
       cidade: '',
       estado: '',
       tipoPgto: '',
+      infoPagamento: '',
       cepEntrega: '',
       logradouroEntrega: '',
       numeroEntrega: '',

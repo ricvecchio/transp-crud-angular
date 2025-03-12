@@ -16,6 +16,7 @@ export interface Cliente {
   cidade: string;
   estado: string;
   tipoPgto: string;
+  infoPagamento: string;
   cepEntrega: string;
   logradouroEntrega: string;
   numeroEntrega: string;

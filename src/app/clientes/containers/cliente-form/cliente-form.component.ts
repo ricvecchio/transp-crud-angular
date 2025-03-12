@@ -112,6 +112,7 @@ export class ClienteFormComponent implements OnInit {
       cidade: [cliente.cidade],
       estado: [cliente.estado],
       tipoPgto: [cliente.tipoPgto],
+      infoPagamento: [cliente.infoPagamento],
       cepEntrega: [this.formatarCep(cliente.cepEntrega)],
       logradouroEntrega: [cliente.logradouroEntrega],
       numeroEntrega: [cliente.numeroEntrega],
@@ -273,14 +274,6 @@ export class ClienteFormComponent implements OnInit {
   checked = false;
 
   isPaymentChecked = false;
-  // onPaymentCheckBoxChange(event: any): void {
-  //   this.isPaymentChecked = event.checked;
-  //   if (this.isPaymentChecked) {
-  //     this.formulario.patchValue({
-  //       tipoPgto: 'Á VISTA',
-  //     });
-  //   }
-  // }
   onPaymentCheckBoxChange(event: any): void {
     this.isPaymentChecked = event.checked;
     if (this.isPaymentChecked) {
@@ -289,22 +282,14 @@ export class ClienteFormComponent implements OnInit {
       });
     } else {
       this.formulario.patchValue({
-        tipoPgto: null, // Remove o valor do campo quando desmarcado
+        tipoPgto: null,
       });
     }
   }
 
   onSelectChange(): void {
-    // Se o usuário selecionar um valor no dropdown, desmarca o checkbox
     this.isPaymentChecked = false;
   }
-
-  // selectClick() {
-  //   const diaFaturado = this.formulario.get('tipoPgto')?.value;
-  //   this.formulario.patchValue({
-  //     tipoPgto: diaFaturado,
-  //   });
-  // }
 
   isAdressChecked = false;
   onToggleChange(event: any): void {
