@@ -92,6 +92,8 @@ export class ClientesListaComponent implements OnInit {
   filterControl = new FormControl('');
 
   ngOnInit(): void {
+    this.permissaoUsuario = sessionStorage.getItem('permission');
+
     this.filterControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((filterValue: string | null) => {
@@ -122,7 +124,6 @@ export class ClientesListaComponent implements OnInit {
     filterValue: string | null = '',
   ) {
     const normalizedFilter = filterValue?.trim().toLowerCase() || '';
-    this.permissaoUsuario = sessionStorage.getItem('permission');
 
     this.clientes$ = this.clienteService
       .listar(pageEvent.pageIndex, pageEvent.pageSize, normalizedFilter)
