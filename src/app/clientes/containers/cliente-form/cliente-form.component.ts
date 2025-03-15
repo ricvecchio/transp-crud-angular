@@ -339,7 +339,8 @@ export class ClienteFormComponent implements OnInit {
   dataAtual: Date = new Date();
 
   onSubmit() {
-    const dataFormatada = this.dataAtual.toISOString();
+    const dataAjustada = new Date(this.dataAtual.getTime() - 3 * 60 * 60 * 1000);
+    const dataFormatada = dataAjustada.toISOString();
 
     this.formulario.patchValue({
       dataAtualizacaoCliente: dataFormatada,

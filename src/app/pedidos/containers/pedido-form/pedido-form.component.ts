@@ -497,7 +497,9 @@ export class PedidoFormComponent implements OnInit {
     this.formulario.patchValue({ status: status });
 
     if (status == 'Salvo') {
-      const dataFormatada = this.dataAtual.toISOString();
+      const dataAjustada = new Date(this.dataAtual.getTime() - 3 * 60 * 60 * 1000);
+      const dataFormatada = dataAjustada.toISOString();
+
       this.formulario.patchValue({
         dataAtualizacaoPedido: dataFormatada,
       });
@@ -678,7 +680,8 @@ export class PedidoFormComponent implements OnInit {
 
   emitirPedido(status: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const dataFormatada = this.dataAtual.toISOString();
+      const dataAjustada = new Date(this.dataAtual.getTime() - 3 * 60 * 60 * 1000);
+      const dataFormatada = dataAjustada.toISOString();
 
       this.formulario.patchValue({
         dataAtualizacaoPedido: dataFormatada,
