@@ -22,12 +22,13 @@
     <button
       *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
       routerLink="/balancos-metricas"
+      (click)="mostrarMensagem()"
       class="botao-restricted"
     >
       <span style="font-size: 1em; color: white">
         <i class="fa fa-search" aria-hidden="true"></i>
       </span>
-      Balanços / Métricas (Em construção...)
+      Balanços / Métricas
     </button>
 
     <button
@@ -40,16 +41,6 @@
       </span>
       Usuários e Permissões
     </button>
-
-    <!-- <button
-      *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
-      routerLink="/consulta-fipe"
-      class="botao-restricted"
-    >
-      <span style="font-size: 1em; color: white">
-        <i class="fa fa-search" aria-hidden="true"></i>
-      </span>
-      Consulta tabela Fipe
-    </button> -->
   </div>
+
 </section>
