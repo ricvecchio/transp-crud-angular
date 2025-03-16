@@ -1,7 +1,7 @@
-<section class="container novo-usuario ff-inter">
+<section class="novo-usuario">
   <h3 class="text-center">Novo Usuário</h3>
 
-  <form class="input" [formGroup]="novoUsuarioForm" (submit)="cadastrar()">
+  <form [formGroup]="novoUsuarioForm" (submit)="cadastrar()">
     <input placeholder="Nome Completo" formControlName="name" class="input" />
     @if (
       novoUsuarioForm.get("name")?.errors &&
@@ -50,7 +50,7 @@
     <button type="submit" class="botao btn-primary btn-block">Cadastro</button>
   </form>
 
-  <div class="usuario">
+  <div class="links-container">
     <p>
       Já um usuário?
       <a [routerLink]="['']"> Faça Login</a>

@@ -1,52 +1,51 @@
 .novo-usuario {
-  padding: 1rem 1rem 1rem;
+  padding: 2rem;
+  min-height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 .novo-usuario form {
   background: #bbbfc2;
-  border: none;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
-  padding: 2rem 2rem 2rem;
-  margin: 1rem 6rem 1rem;
+  padding: 2rem;
+  max-width: 400px;
 }
 
-.novo-usuario form label {
+.label {
   color: #000000;
   font-weight: bold;
   margin: 0 0 1rem;
 }
 
-.novo-usuario form .input {
+.input {
   border: none;
   height: 40px;
-  padding: 1rem 1rem;
+  padding: 1rem;
   border-radius: 10px;
-  margin: 0em 0em 1em;
-}
-
-.acoes {
-  display: flex;
-  justify-content: center;
-  align-content: center;
+  margin: 0 0 1rem;
 }
 
 .botao {
   margin-top: 60px;
-  width: 200px;
+  width: 100%;
+  max-width: 200px;
+  align-self: center;
 }
 
 .erro {
-  margin: -1em 0em 1em;
+  margin: -1rem 0 1rem;
+  color: red;
 }
 
-.usuario {
-  width: 300px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.text-center {
-  margin: 0em 0em 1em;
+.links-container {
+  display: flex;
+  gap: 50px;
+  margin-top: 3px;
+  font-size: 14px;
 }
