@@ -1,13 +1,11 @@
 .login {
   padding: 2rem;
-  /* min-height: calc(100vh - 100px); */
+  min-height: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-
-  min-height: auto;
 }
 
 .login form {
