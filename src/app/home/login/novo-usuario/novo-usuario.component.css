@@ -16,6 +16,7 @@
   flex-direction: column;
   padding: 2rem;
   max-width: 400px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .label {
@@ -50,4 +51,14 @@
   white-space: nowrap;
   margin-top: 3px;
   font-size: 14px;
+}
+
+@media (max-width: 480px) {
+  .novo-usuario {
+    padding: 1.0rem;
+  }
+
+  .novo-usuario form {
+    padding: 1.5rem;
+  }
 }
