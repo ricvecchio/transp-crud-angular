@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, finalize, throwError, timeout } from 'rxjs';
 import { MensagemService } from '../../../compartilhado/mensagem.service';
 
@@ -26,7 +26,17 @@ export class RecuperarSenhaComponent {
     private http: HttpClient,
     private router: Router,
     public mensagemService: MensagemService,
+    private activatedRoute: ActivatedRoute
   ) {}
+
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params['token']) {
+        this.token = params['token'];
+        this.etapa = 2;
+      }
+    });
+  }
 
   solicitarRecuperacao() {
     this.carregando = true;
