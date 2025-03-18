@@ -15,19 +15,21 @@
     alt="Imagem de um caminhão"
   />
 
-  @if (user$ | async; as user) {
-    <div>
-      @if (user.username) {
-        <div>
-          <i class="fa fa-user-circle mr-1"> </i>
-          <a class="navbar-text">{{ user.username }}</a> <br />
-          <a (click)="logout()" class="mr-1"> Logout</a>
-        </div>
-      } @else {
-        <span class="navbar-text">
-          <a [routerLink]="['']">Login</a>
-        </span>
-      }
-    </div>
-  }
+  <div class="user-actions">
+    @if (user$ | async; as user) {
+      <div>
+        @if (user.username) {
+          <div>
+            <i class="fa fa-user-circle mr-1"> </i>
+            <a class="navbar-text">{{ user.username }}</a> <br />
+            <a class="mr-1" (click)="logout()"> Logout</a>
+          </div>
+        } @else {
+          <span class="navbar-text">
+            <a [routerLink]="['']">Login</a>
+          </span>
+        }
+      </div>
+    }
+  </div>
 </header>

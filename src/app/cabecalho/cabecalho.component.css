@@ -33,3 +33,29 @@ header {
 .navbar-text {
   padding: 0rem 0.5rem 0rem;
 }
+
+@media (max-width: 480px) {
+  .logo-gota {
+    max-width: 60px;
+  }
+
+  .logo-caminhao {
+    display: none;
+  }
+
+  .navbar-text,
+  .mr-1,
+  .fa-user-circle {
+    font-size: 10px;
+  }
+
+  .user-actions {
+    margin-left: auto;
+    padding-right: 10px;
+  }
+
+  .user-actions div {
+    align-items: flex-end;
+  }
+
+}
