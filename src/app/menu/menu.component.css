@@ -1,7 +1,9 @@
-  .d-flex{
+  .d-flex {
     display: flex;
     gap: 3rem;
     padding: 5rem 0rem 0rem;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   .botao-restricted {
