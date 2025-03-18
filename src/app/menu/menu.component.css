@@ -17,3 +17,17 @@
     border-radius: 10px;
     transition: 0.5s ease;
   }
+
+  @media screen and (max-width: 480px) {
+    .d-flex {
+      gap: 1rem;
+      padding: 2rem 0 0;
+    }
+
+    .botao,
+    .botao-restricted {
+      padding: 0.7rem;
+      font-size: 0.9rem;
+    }
+
+  }
