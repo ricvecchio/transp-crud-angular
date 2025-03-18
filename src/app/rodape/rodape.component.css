@@ -8,6 +8,16 @@ footer {
   display: flex;
 }
 
+.fa-home {
+  cursor: pointer;
+}
+
+.fa-home:hover {
+  color: #f1c40f;
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
 .TextoCopyright {
   position: absolute;
   bottom: 0;
