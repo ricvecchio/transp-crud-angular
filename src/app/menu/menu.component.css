@@ -30,4 +30,9 @@
       font-size: 0.9rem;
     }
 
+    .container {
+      padding-top: 50px;
+      overflow: hidden;
+    }
+
   }
