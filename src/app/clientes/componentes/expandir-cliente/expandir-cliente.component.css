@@ -37,3 +37,31 @@ display: grid;
   margin-top: 20px;
   width: 200px;
 }
+
+@media screen and (max-width: 480px) {
+  .cliente-form  {
+    gap: 1rem;
+    padding: 1rem 1rem 1rem;
+  }
+
+  .cliente-form form {
+    border-radius: 10px;
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .espaco-dentro {
+    padding: 0rem 0.8rem 0rem;
+  }
+
+  .form-grid {
+    font-size: 0.8rem;
+  }
+
+  .botao {
+    width: 150px;
+    padding: 0.7rem;
+    font-size: 0.8rem;
+  }
+
+}

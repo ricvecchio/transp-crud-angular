@@ -76,3 +76,61 @@ mat-paginator {
   align-items: center;
   justify-content: center;
 }
+
+@media (max-width: 600px) {
+  .d-flex {
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 12px;
+  }
+
+  mat-card {
+    padding: 1rem;
+  }
+
+  .form-grid {
+    width: 100% !important;
+    font-size: 12px;
+  }
+
+  .small-button {
+    font-size: 10px;
+    height: 30px;
+    max-width: 50px;
+    padding: 4px;
+  }
+
+  .action-button {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    line-height: 24px;
+  }
+
+  .action-button mat-icon {
+    font-size: 16px;
+  }
+
+  .mat-column-idCliente,
+  .mat-column-nome,
+  .mat-column-razaoSocial,
+  .mat-column-cpfCnpj,
+  .mat-column-enderecoEntrega {
+    flex: 1;
+    font-size: 12px;
+  }
+
+  .mat-column-acao {
+    flex: 0 0 60px;
+  }
+
+  mat-paginator {
+    font-size: 12px;
+  }
+
+  .mat-column-razaoSocial,
+  .mat-column-cpfCnpj {
+    display: none;
+  }
+
+}
