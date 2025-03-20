@@ -95,7 +95,7 @@ mat-paginator {
 
   .small-button {
     font-size: 10px;
-    height: 30px;
+    height: 40px;
     max-width: 50px;
     padding: 4px;
   }
@@ -132,5 +132,45 @@ mat-paginator {
   .mat-column-cpfCnpj {
     display: none;
   }
+
+  .mat-column-idCliente {
+    flex: 0.4;
+    font-size: 12px;
+  }
+
+  .action-button {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    line-height: 24px;
+  }
+
+  .action-button mat-icon {
+    font-size: 16px;
+  }
+
+  .mat-column-acaoConsulta {
+    flex: 0 0 40px;
+  }
+
+  .mat-column-acaoConsulta .action-button {
+    margin-left: -8px;
+  }
+
+  .mat-column-acao {
+    flex: 0 0 60px;
+  }
+
+  .mat-column-acao .action-button {
+    margin-right: -20px;
+  }
+
+  .action-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
 
 }

@@ -96,15 +96,8 @@ mat-paginator {
     padding: 4px;
   }
 
-  .action-button {
-    width: 24px;
-    height: 24px;
-    min-width: 24px;
-    line-height: 24px;
-  }
-
-  .action-button mat-icon {
-    font-size: 16px;
+  .mat-column-email {
+    display: none;
   }
 
   .mat-column-username,
@@ -125,16 +118,27 @@ mat-paginator {
     height: 20px !important;
   }
 
+  .action-button {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    line-height: 24px;
+  }
+
+  .action-button mat-icon {
+    font-size: 16px;
+  }
+
   .mat-column-acao {
     flex: 0 0 60px;
   }
 
-  mat-paginator {
-    font-size: 12px;
+  .mat-column-acao .action-button {
+    margin-right: -20px;
   }
 
-  .mat-column-email {
-    display: none;
+  mat-paginator {
+    font-size: 12px;
   }
 
 }
