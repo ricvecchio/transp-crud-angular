@@ -82,6 +82,14 @@ mat-paginator {
   flex: 0 0 100px;
 }
 
+.action-button {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-button:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .loading-spinner {
   background: #dde0e2;
   padding: 25px;
@@ -92,9 +100,8 @@ mat-paginator {
 
 @media (max-width: 600px) {
   .d-flex {
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
   }
 
   mat-card {
@@ -122,11 +129,25 @@ mat-paginator {
   .mat-column-dataAtualizacaoPedido,
   .mat-column-status {
     flex: 1;
-    font-size: 12px;
+    font-size: 11px;
+  }
+
+  .mat-column-idPedido,
+  .mat-column-nome {
+    flex: 1.2;
+  }
+
+  .mat-column-idPedido {
+    margin-right: -15px;
+  }
+
+  .mat-column-enderecoEntrega {
+    flex: 1.7;
   }
 
   .mat-column-dataAtualizacaoPedido {
     flex: 1.5;
+    margin-bottom: 0;
   }
 
   mat-paginator {
@@ -138,11 +159,6 @@ mat-paginator {
   .mat-column-cpfCnpj,
   .mat-column-status {
     display: none;
-  }
-
-  .mat-column-idPedido {
-    flex: 0.5;
-    font-size: 12px;
   }
 
   .action-button {
@@ -166,6 +182,7 @@ mat-paginator {
 
   .mat-column-acao {
     flex: 0 0 60px;
+    margin-top: 0;
   }
 
   .mat-column-acao .action-button {
@@ -177,6 +194,22 @@ mat-paginator {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+  }
+
+  .form-grid .mat-icon {
+    display: none;
+  }
+
+  .form-grid:first-child,
+  .form-grid:nth-child(2),
+  .form-grid:nth-child(3) {
+    flex: 1 1 30%;
+  }
+
+  .form-grid:nth-child(4),
+  .small-button {
+    flex: 1 1 30%;
+    margin-top: -25px;
   }
 
 }
