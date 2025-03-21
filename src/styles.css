@@ -16,3 +16,13 @@ main {
   height: calc(100vh - 100px); /* Subtraindo cabeçalho e rodapé */
   overflow-y: auto;
 }
+
+/* Subtraindo o cabeçalho e rodapé para visualizações pelo mobile */
+@media (max-width: 600px) {
+
+  body {
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+
+}
