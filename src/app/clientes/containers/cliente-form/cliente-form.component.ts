@@ -72,6 +72,30 @@ export interface User {
 })
 export class ClienteFormComponent implements OnInit {
   formulario!: FormGroup;
+  isPaymentChecked = false;
+  listaOpcoesPgto: string[] = [
+    '10 dias',
+    '11 dias',
+    '12 dias',
+    '13 dias',
+    '14 dias',
+    '15 dias',
+    '16 dias',
+    '17 dias',
+    '18 dias',
+    '19 dias',
+    '20 dias',
+    '21 dias',
+    '22 dias',
+    '23 dias',
+    '24 dias',
+    '25 dias',
+    '26 dias',
+    '27 dias',
+    '28 dias',
+    '29 dias',
+    '30 dias'
+  ];
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -133,6 +157,11 @@ export class ClienteFormComponent implements OnInit {
       observacao: [cliente.observacao],
       dataAtualizacaoCliente: [cliente.dataAtualizacaoCliente],
     });
+
+    this.isPaymentChecked = cliente.tipoPgto === 'Á VISTA';
+    if (cliente.tipoPgto && cliente.tipoPgto !== 'Á VISTA') {
+      this.formulario.patchValue({ tipoPgto: cliente.tipoPgto });
+    }
 
     this.formatarCampoCep();
 
@@ -229,16 +258,17 @@ export class ClienteFormComponent implements OnInit {
     const cep = this.formulario.get('cep')?.value;
     const cepEntrega = this.formulario.get('cepEntrega')?.value;
     if (!this.isAdressChecked && cepEntrega != '') {
-      this.consultaCepService.getConsultaCep(cepEntrega).subscribe((dados: any) => {
-        this.formulario.patchValue({
-          logradouroEntrega: dados.logradouro,
-          bairroEntrega: dados.bairro,
-          cidadeEntrega: dados.localidade,
-          estadoEntrega: dados.uf,
+      this.consultaCepService
+        .getConsultaCep(cepEntrega)
+        .subscribe((dados: any) => {
+          this.formulario.patchValue({
+            logradouroEntrega: dados.logradouro,
+            bairroEntrega: dados.bairro,
+            cidadeEntrega: dados.localidade,
+            estadoEntrega: dados.uf,
+          });
         });
-      });
-    }
-    else if (cep != '') {
+    } else if (cep != '') {
       this.consultaCepService.getConsultaCep(cep).subscribe((dados: any) => {
         this.formulario.patchValue({
           logradouro: dados.logradouro,
@@ -273,22 +303,24 @@ export class ClienteFormComponent implements OnInit {
 
   checked = false;
 
-  isPaymentChecked = false;
   onPaymentCheckBoxChange(event: any): void {
     this.isPaymentChecked = event.checked;
+
     if (this.isPaymentChecked) {
-      this.formulario.patchValue({
-        tipoPgto: 'Á VISTA',
-      });
+      this.formulario.patchValue({ tipoPgto: 'Á VISTA' });
     } else {
-      this.formulario.patchValue({
-        tipoPgto: null,
-      });
+      if (
+        !this.formulario.value.tipoPgto ||
+        this.formulario.value.tipoPgto === 'Á VISTA'
+      ) {
+        this.formulario.patchValue({ tipoPgto: this.listaOpcoesPgto[0] });
+      }
     }
   }
 
-  onSelectChange(): void {
+  onSelectChange(event: any): void {
     this.isPaymentChecked = false;
+    this.formulario.patchValue({ tipoPgto: event.value });
   }
 
   isAdressChecked = false;
@@ -339,7 +371,9 @@ export class ClienteFormComponent implements OnInit {
   dataAtual: Date = new Date();
 
   onSubmit() {
-    const dataAjustada = new Date(this.dataAtual.getTime() - 3 * 60 * 60 * 1000);
+    const dataAjustada = new Date(
+      this.dataAtual.getTime() - 3 * 60 * 60 * 1000,
+    );
     const dataFormatada = dataAjustada.toISOString();
 
     this.formulario.patchValue({
