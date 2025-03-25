@@ -17,7 +17,9 @@ export class RecuperarSenhaComponent {
   username: string = '';
   token: string = '';
   novaSenha: string = '';
-  etapa: number = 1; // 1 - Inserir e-mail e username, 2 - Inserir token e nova senha
+  etapa: number = 1;
+  // 1 - Inserir e-mail e username
+  // 2 - Inserir token e nova senha
   carregando: boolean = false;
 
   private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
