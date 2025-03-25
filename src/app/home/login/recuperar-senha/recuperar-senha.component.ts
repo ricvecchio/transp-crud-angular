@@ -26,11 +26,11 @@ export class RecuperarSenhaComponent {
     private http: HttpClient,
     private router: Router,
     public mensagemService: MensagemService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
   ) {}
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(params => {
+    this.activatedRoute.queryParams.subscribe((params) => {
       if (params['token']) {
         this.token = params['token'];
         this.etapa = 2;
