@@ -65,6 +65,7 @@ interface Volumes {
 })
 export class PedidoFormComponent implements OnInit {
   formulario!: FormGroup;
+  dataAtual: Date = new Date();
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -123,6 +124,7 @@ export class PedidoFormComponent implements OnInit {
       observacao: [pedido.observacao],
       dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
       status: [pedido.status],
+      imagemPedido: [pedido.imagemPedido],
     });
 
     this.route.queryParams.subscribe((params) => {
@@ -168,6 +170,7 @@ export class PedidoFormComponent implements OnInit {
           ajudante: pedido.ajudante,
           observacao: pedido.observacao,
           status: pedido.status,
+          imagemPedido: pedido.imagemPedido,
         });
       }
     });
@@ -252,8 +255,7 @@ export class PedidoFormComponent implements OnInit {
             break;
         }
         this.formulario.get('precoEscolhido')?.setValue(precoSelecionado);
-      }
-    );
+      });
   }
 
   private formatarPedido(pedidoParams: any): Pedido {
@@ -298,6 +300,7 @@ export class PedidoFormComponent implements OnInit {
       observacao: pedidoParams.observacao || '',
       status: pedidoParams.status || '',
       dataAtualizacaoPedido: pedidoParams.dataAtualizacaoPedido || '',
+      imagemPedido: pedidoParams.imagemPedido || '',
     };
   }
 
@@ -494,211 +497,69 @@ export class PedidoFormComponent implements OnInit {
   }
 
   async onSubmit(status: string) {
-    this.formulario.patchValue({ status: status });
+    this.atualizarFormulario(status);
 
-    if (status == 'Salvo') {
-      const dataAjustada = new Date(this.dataAtual.getTime() - 3 * 60 * 60 * 1000);
-      const dataFormatada = dataAjustada.toISOString();
-
-      this.formulario.patchValue({
-        dataAtualizacaoPedido: dataFormatada,
-      });
-      this.pedidoService.salvar(this.formulario.value).subscribe({
-        next: (result) => {
-          this.onSucess();
-          this.router.navigate(['/menu']);
-        },
-        error: (error) => this.onError(),
-      });
+    if (status === 'Salvo') {
+      this.salvarPedido();
     } else {
       try {
-        const idPedido = await this.emitirPedido(status);
+        await this.emitirPedido();
+        const imagemPedido = await this.pedidoService.gerarImagemBase64();
 
-        await new Promise((resolve) => setTimeout(resolve, 100));
-
-        const container = document.querySelector(
-          '.container-previa',
-        ) as HTMLElement;
-
-        if (container) {
-          html2canvas(container)
-            .then((canvas) => {
-              const imageData = canvas.toDataURL('image/png');
-
-              const iframe = document.createElement('iframe');
-              iframe.style.position = 'absolute';
-              iframe.style.width = '0px';
-              iframe.style.height = '0px';
-              iframe.style.border = 'none';
-              document.body.appendChild(iframe);
-
-              const iframeDocument = iframe.contentWindow?.document;
-              // if (iframeDocument) {
-              //   iframeDocument.open();
-              //   iframeDocument.write(`
-              //   <html>
-              //     <body>
-              //       <div style="display: flex; flex-direction: column;">
-              //         <img src="${imageData}" style="width: 100%; max-width: 100%; margin-bottom: 20px;" />
-              //         <img src="${imageData}" style="width: 100%; max-width: 100%;" />
-              //       </div>
-              //     </body>
-              //   </html>
-              // `);
-              //   iframeDocument.close();
-              if (iframeDocument) {
-                iframeDocument.open();
-                iframeDocument.write(`
-                  <html>
-                    <head>
-                      <style>
-                        @page { size: A4 portrait; margin: 0; }
-                        body {
-                          margin: 0;
-                          display: flex;
-                          flex-direction: column;
-                          height: 100vh;
-                        }
-                        .page {
-                          position: relative;
-                          width: 100%;
-                          height: 100vh;
-                        }
-                        .image-container {
-                          width: 100%;
-                          height: 50%;
-                          position: absolute;
-                          padding: 20px; /* Adiciona espaçamento para afastar das bordas */
-                          box-sizing: border-box;
-                          display: flex;
-                          justify-content: center;
-                          align-items: center;
-                        }
-                        .image {
-                          width: 100%;
-                          height: 100%;
-                          object-fit: contain;
-                          position: relative;
-                        }
-                        .corner-borders {
-                          position: absolute;
-                          width: 100%;
-                          height: 100%;
-                          top: 0;
-                          left: 0;
-                          pointer-events: none;
-                        }
-                        .corner-borders::before,
-                        .corner-borders::after {
-                          content: "";
-                          position: absolute;
-                          width: 20px;
-                          height: 20px;
-                          border-color: black;
-                          border-style: solid;
-                        }
-                        /* Cantos superiores */
-                        .corner-borders::before {
-                          top: 0;
-                          left: 0;
-                          border-width: 4px 0 0 4px;
-                        }
-                        .corner-borders::after {
-                          top: 0;
-                          right: 0;
-                          border-width: 4px 4px 0 0;
-                        }
-                        /* Criando os cantos inferiores */
-                        .corner-borders.bottom::before {
-                          bottom: 0;
-                          left: 0;
-                          top: auto;
-                          border-width: 0 0 4px 4px;
-                        }
-                        .corner-borders.bottom::after {
-                          bottom: 0;
-                          right: 0;
-                          top: auto;
-                          border-width: 0 4px 4px 0;
-                        }
-                      </style>
-                    </head>
-                    <body>
-                      <div class="page">
-                        <div class="image-container" style="top: 0;">
-                          <img src="${imageData}" class="image" />
-                          <div class="corner-borders"></div>
-                        </div>
-                        <div class="image-container" style="top: 50%;">
-                          <img src="${imageData}" class="image" />
-                          <div class="corner-borders bottom"></div>
-                        </div>
-                      </div>
-                    </body>
-                  </html>
-                `);
-                iframeDocument.close();
-
-                iframe.onload = () => {
-                  iframe.contentWindow?.print();
-
-                  const iframeContentWindow = iframe.contentWindow;
-                  if (
-                    iframeContentWindow &&
-                    iframeContentWindow.onafterprint !== undefined
-                  ) {
-                    iframeContentWindow.onafterprint = () => {
-                      document.body.removeChild(iframe);
-                    };
-                  }
-                };
-              }
-              this.router.navigate(['/menu']);
-              this.mensagemService.showSuccessMessage(
-                'Pedido Emitido com sucesso!',
-              );
-            })
-            .catch((error) => {
-              console.error('Erro ao capturar a tela: ', error);
-              this.mensagemService.showErrorMessage('Erro ao capturar a tela');
-            });
-        } else {
-          this.mensagemService.showErrorMessage(
-            'Elemento .container-previa não encontrado',
-          );
+        if (!imagemPedido) {
+          this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido');
+          return;
         }
+
+        this.formulario.patchValue({ imagemPedido });
+        this.salvarPedidoComImpressao();
       } catch (error) {
-        console.error('Erro ao emitir pedido ou capturar tela: ', error);
         this.mensagemService.showErrorMessage(
-          'Erro ao emitir pedido ou capturar tela',
+          'Erro ao emitir pedido ou gerar impressão'
         );
       }
     }
   }
 
-  dataAtual: Date = new Date();
+  private atualizarFormulario(status: string) {
+    const dataFormatada = new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString();
+    this.formulario.patchValue({ status, dataAtualizacaoPedido: dataFormatada });
+  }
 
-  emitirPedido(status: string): Promise<string> {
+  private salvarPedido() {
+    this.pedidoService.salvar(this.formulario.value).subscribe({
+      next: () => {
+        this.onSucess();
+        this.router.navigate(['/menu']);
+      },
+      error: () => this.onError(),
+    });
+  }
+
+  private async emitirPedido(): Promise<void> {
     return new Promise((resolve, reject) => {
-      const dataAjustada = new Date(this.dataAtual.getTime() - 3 * 60 * 60 * 1000);
-      const dataFormatada = dataAjustada.toISOString();
-
-      this.formulario.patchValue({
-        dataAtualizacaoPedido: dataFormatada,
-      });
-
-      this.formulario.patchValue({ status: status });
-
       this.pedidoService.salvar(this.formulario.value).subscribe({
         next: (result) => {
           this.formulario.patchValue({ idPedido: result.idPedido });
-          resolve(result.idPedido);
+          resolve();
         },
         error: (error) => {
           this.onError();
           reject(error);
         },
       });
+    });
+  }
+
+  private salvarPedidoComImpressao() {
+    this.pedidoService.salvar(this.formulario.value).subscribe({
+      next: () => {
+        this.pedidoService.gerarImpressao();
+        this.router.navigate(['/menu']);
+        this.mensagemService.showSuccessMessage('Pedido Emitido com sucesso!');
+      },
+      error: () =>
+        this.mensagemService.showErrorMessage('Erro ao salvar pedido com impressão'),
     });
   }
 

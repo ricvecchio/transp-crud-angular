@@ -59,6 +59,7 @@ export class PedidoResolver {
       observacao: '',
       status: '',
       dataAtualizacaoPedido: '',
+      imagemPedido: '',
     });
   }
 }

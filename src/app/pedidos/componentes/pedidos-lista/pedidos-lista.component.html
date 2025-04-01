@@ -72,6 +72,21 @@
         </mat-cell>
       </ng-container>
 
+      <ng-container matColumnDef="acaoPrint">
+        <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+        <mat-cell *matCellDef="let pedido">
+          <button
+            mat-mini-fab
+            color="accent"
+            aria-label="Imprimir Pedido"
+            class="action-button"
+            (click)="onPrint(pedido)"
+          >
+            <mat-icon>print</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
       <ng-container matColumnDef="idPedido">
         <mat-header-cell *matHeaderCellDef
           ><strong>Pedido</strong></mat-header-cell

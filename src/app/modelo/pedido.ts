@@ -39,4 +39,5 @@ export interface Pedido {
   observacao: string;
   status: string;
   dataAtualizacaoPedido: string;
+  imagemPedido: string;
 }

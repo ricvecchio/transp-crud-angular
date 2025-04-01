@@ -1,3 +1,4 @@
+import { PedidoFormComponent } from './../../containers/pedido-form/pedido-form.component';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -89,6 +90,7 @@ export class PedidosListaComponent implements OnInit {
 
   readonly displayedColumns: string[] = [
     'acaoConsulta',
+    'acaoPrint',
     'idPedido',
     'idCliente',
     'nome',
@@ -294,6 +296,66 @@ export class PedidosListaComponent implements OnInit {
     this.router.navigate(['/expandir-pedido', pedido.idPedido], {
       relativeTo: this.route,
     });
+  }
+
+  async onPrint(pedido: Pedido) {
+    console.log('Dados Recebidos onPrint pedido: ', pedido);
+    console.log('Dados Recebidos onPrint imagemPedido: ', pedido.imagemPedido);
+
+    if (!pedido.imagemPedido) {
+      this.mensagemService.showErrorMessage('Imagem do pedido não disponível.');
+      return;
+    }
+
+    try {
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'absolute';
+      iframe.style.width = '0px';
+      iframe.style.height = '0px';
+      iframe.style.border = 'none';
+      document.body.appendChild(iframe);
+
+      const iframeDocument = iframe.contentWindow?.document;
+      if (!iframeDocument) {
+        this.mensagemService.showErrorMessage('Erro ao acessar o documento do iframe');
+        return;
+      }
+
+      iframeDocument.open();
+      iframeDocument.write(`
+      <html>
+        <head>
+          <style>
+            @page { size: A4 portrait; margin: 0; }
+            body { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif; }
+            .pedido-id { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
+            .image-container { display: flex; justify-content: center; align-items: center; width: 100%; height: 80vh; }
+            .image { max-width: 100%; max-height: 100%; object-fit: contain; }
+          </style>
+        </head>
+        <body>
+          <div class="image-container">
+            <img src="${pedido.imagemPedido}" class="image" />
+          </div>
+        </body>
+      </html>
+      `);
+
+      iframeDocument.close();
+
+      await new Promise<void>((resolve) => {
+        iframe.onload = () => {
+          iframe.contentWindow?.focus();
+          iframe.contentWindow?.print();
+          iframe.contentWindow?.addEventListener('afterprint', () => {
+            document.body.removeChild(iframe);
+            resolve();
+          });
+        };
+      });
+    } catch (error) {
+      this.mensagemService.showErrorMessage('Erro ao imprimir o pedido.');
+    }
   }
 
   onDelete(pedido: Pedido) {
