@@ -298,9 +298,6 @@ export class PedidosListaComponent implements OnInit {
   }
 
   async onPrint(pedido: Pedido) {
-    console.log('Dados Recebidos onPrint pedido: ', pedido);
-    console.log('Dados Recebidos onPrint imagemPedido: ', pedido.imagemPedido);
-
     if (!pedido.imagemPedido) {
       this.mensagemService.showErrorMessage('Imagem do pedido não disponível.');
       return;
@@ -324,22 +321,22 @@ export class PedidosListaComponent implements OnInit {
 
       iframeDocument.open();
       iframeDocument.write(`
-      <html>
-        <head>
-          <style>
-            @page { size: A4 portrait; margin: 0; }
-            body { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif; }
-            .pedido-id { font-size: 20px; font-weight: bold; margin-bottom: 10px; }
-            .image-container { display: flex; justify-content: center; align-items: center; width: 100%; height: 80vh; }
-            .image { max-width: 100%; max-height: 100%; object-fit: contain; }
-          </style>
-        </head>
-        <body>
-          <div class="image-container">
-            <img src="${pedido.imagemPedido}" class="image" />
-          </div>
-        </body>
-      </html>
+        <html>
+          <head>
+            <style>
+              @page { size: A4 portrait; margin: 0; }
+              body { margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: Arial, sans-serif; }
+              .image-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+              .image { max-width: 100%; max-height: 45vh; object-fit: contain; margin: auto; }
+            </style>
+          </head>
+          <body>
+            <div class="image-container">
+              <img src="${pedido.imagemPedido}" class="image" />
+              <img src="${pedido.imagemPedido}" class="image" />
+            </div>
+          </body>
+        </html>
       `);
 
       iframeDocument.close();
