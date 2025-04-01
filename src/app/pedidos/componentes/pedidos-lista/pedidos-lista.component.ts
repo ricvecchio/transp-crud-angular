@@ -88,8 +88,7 @@ export class PedidosListaComponent implements OnInit {
   ]);
 
   readonly displayedColumns: string[] = [
-    'acaoConsulta',
-    'acaoPrint',
+    'acoes',
     'idPedido',
     'idCliente',
     'nome',
