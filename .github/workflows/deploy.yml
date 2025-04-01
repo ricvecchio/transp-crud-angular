@@ -1,4 +1,4 @@
-name: "Deploy para VPS"
+name: "Deploy Angular para VPS"
 on:
   push:
     branches:
