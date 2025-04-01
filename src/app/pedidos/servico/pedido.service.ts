@@ -1,11 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import html2canvas from 'html2canvas';
 import { first, Observable } from 'rxjs';
 
+import { MensagemService } from '../../compartilhado/mensagem.service';
 import { Pedido } from '../../modelo/pedido';
 import { PedidoPagina } from '../../modelo/pedido-pagina';
-import { MensagemService } from '../../compartilhado/mensagem.service';
-import html2canvas from 'html2canvas';
 
 @Injectable({
   providedIn: 'root',

@@ -1,4 +1,3 @@
-import { PedidoFormComponent } from './../../containers/pedido-form/pedido-form.component';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -317,7 +316,9 @@ export class PedidosListaComponent implements OnInit {
 
       const iframeDocument = iframe.contentWindow?.document;
       if (!iframeDocument) {
-        this.mensagemService.showErrorMessage('Erro ao acessar o documento do iframe');
+        this.mensagemService.showErrorMessage(
+          'Erro ao acessar o documento do iframe',
+        );
         return;
       }
 

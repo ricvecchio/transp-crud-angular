@@ -504,26 +504,23 @@ export class PedidoFormComponent implements OnInit {
     } else {
       try {
         await this.emitirPedido();
-        const imagemPedido = await this.pedidoService.gerarImagemBase64();
-
-        if (!imagemPedido) {
-          this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido');
-          return;
-        }
-
-        this.formulario.patchValue({ imagemPedido });
         this.salvarPedidoComImpressao();
       } catch (error) {
         this.mensagemService.showErrorMessage(
-          'Erro ao emitir pedido ou gerar impressão'
+          'Erro ao emitir pedido ou gerar impressão',
         );
       }
     }
   }
 
   private atualizarFormulario(status: string) {
-    const dataFormatada = new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString();
-    this.formulario.patchValue({ status, dataAtualizacaoPedido: dataFormatada });
+    const dataFormatada = new Date(
+      Date.now() - 3 * 60 * 60 * 1000,
+    ).toISOString();
+    this.formulario.patchValue({
+      status,
+      dataAtualizacaoPedido: dataFormatada,
+    });
   }
 
   private salvarPedido() {
@@ -541,7 +538,25 @@ export class PedidoFormComponent implements OnInit {
       this.pedidoService.salvar(this.formulario.value).subscribe({
         next: (result) => {
           this.formulario.patchValue({ idPedido: result.idPedido });
-          resolve();
+          this.pedidoService
+            .gerarImagemBase64()
+            .then((imagemPedido) => {
+              if (imagemPedido) {
+                this.formulario.patchValue({ imagemPedido });
+                resolve();
+              } else {
+                this.mensagemService.showErrorMessage(
+                  'Erro ao gerar imagem do pedido',
+                );
+                reject(new Error('Erro ao gerar imagem do pedido'));
+              }
+            })
+            .catch((error) => {
+              this.mensagemService.showErrorMessage(
+                'Erro ao gerar imagem do pedido',
+              );
+              reject(error);
+            });
         },
         error: (error) => {
           this.onError();
@@ -551,15 +566,54 @@ export class PedidoFormComponent implements OnInit {
     });
   }
 
-  private salvarPedidoComImpressao() {
-    this.pedidoService.salvar(this.formulario.value).subscribe({
-      next: () => {
-        this.pedidoService.gerarImpressao();
-        this.router.navigate(['/menu']);
-        this.mensagemService.showSuccessMessage('Pedido Emitido com sucesso!');
-      },
-      error: () =>
-        this.mensagemService.showErrorMessage('Erro ao salvar pedido com impressão'),
+  private async salvarPedidoComImpressao() {
+    try {
+      const pedidoSalvo = await this.salvarPedidoEObterResultado();
+
+      if (!pedidoSalvo.idPedido) {
+        throw new Error('ID do pedido não encontrado após salvar');
+      }
+
+      const imagemPedido = await this.pedidoService.gerarImagemBase64();
+      if (!imagemPedido) {
+        this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido');
+        return;
+      }
+
+      pedidoSalvo.imagemPedido = imagemPedido;
+      this.pedidoService.salvar(pedidoSalvo).subscribe({
+        next: () => {
+          this.pedidoService.gerarImpressao();
+          this.router.navigate(['/menu']);
+          this.mensagemService.showSuccessMessage(
+            'Pedido Emitido com sucesso!',
+          );
+        },
+        error: () => {
+          this.mensagemService.showErrorMessage(
+            'Erro ao salvar pedido com impressão',
+          );
+        },
+      });
+    } catch (error) {
+      this.mensagemService.showErrorMessage(
+        'Erro ao salvar pedido com impressão',
+      );
+    }
+  }
+
+  private salvarPedidoEObterResultado(): Promise<Pedido> {
+    return new Promise((resolve, reject) => {
+      this.pedidoService.salvar(this.formulario.value).subscribe({
+        next: (result) => {
+          this.formulario.patchValue({ idPedido: result.idPedido });
+          resolve(result);
+        },
+        error: (error) => {
+          this.onError();
+          reject(error);
+        },
+      });
     });
   }
 
