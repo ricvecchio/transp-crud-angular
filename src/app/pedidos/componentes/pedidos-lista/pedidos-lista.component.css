@@ -32,6 +32,10 @@ mat-paginator {
   font-size: 12px;
   height: 40px;
   max-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .action-button {
@@ -170,6 +174,10 @@ mat-paginator {
   .mat-column-cpfCnpj,
   .mat-column-status {
     display: none;
+  }
+
+  .export-button {
+    display: none !important;
   }
 
   .action-button {

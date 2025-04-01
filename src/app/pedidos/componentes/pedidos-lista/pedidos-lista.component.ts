@@ -382,4 +382,8 @@ export class PedidosListaComponent implements OnInit {
       relativeTo: this.route,
     });
   }
+
+  exportToExcel(): void {
+  }
+
 }
