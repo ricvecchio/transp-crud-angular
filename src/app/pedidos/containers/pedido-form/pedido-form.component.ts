@@ -429,6 +429,11 @@ export class PedidoFormComponent implements OnInit {
     { value: 'LAV-15m³', viewValue: 'LAV-15m³' },
   ];
 
+  verificarVolumeSelecionado(): boolean {
+    const volumeSelecionado = this.formulario.get('volume')?.value;
+    return volumeSelecionado && volumeSelecionado !== '';
+  }
+
   private formatarCampos(campos: string[]): void {
     campos.forEach((campo) => {
       this.formulario.get(campo)?.valueChanges.subscribe((valor) => {

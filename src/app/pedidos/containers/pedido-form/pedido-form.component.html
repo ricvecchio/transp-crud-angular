@@ -680,10 +680,21 @@
     </div>
 
     <div class="acoes">
-      <button (click)="onSubmit('Emitido')" type="button" class="botao">
-        Emite Pedido
+      <button
+        (click)="onSubmit('Emitido')"
+        type="button"
+        class="botao"
+        [disabled]="!verificarVolumeSelecionado()"
+      >
+        Emitir Pedido
       </button>
-      <button (click)="onSubmit('Salvo')" type="button" class="botao">
+
+      <button
+        (click)="onSubmit('Salvo')"
+        type="button"
+        class="botao"
+        [disabled]="!verificarVolumeSelecionado()"
+      >
         Salvar
       </button>
       <button (click)="onCancel()" type="button" class="botao">Cancelar</button>
@@ -712,8 +723,12 @@
       <div
         class="d-flex align-items-center justify-content-between container-previa-texto"
       >
-        <b class="texto-vermelho">PEDIDO: {{ this.formulario.get("idPedido")?.value }}</b>
-        <b class="texto-azul-escuro">DATA: {{ dataAtual | date: "dd/MM/yyyy" }}</b>
+        <b class="texto-vermelho"
+          >PEDIDO: {{ this.formulario.get("idPedido")?.value }}</b
+        >
+        <b class="texto-azul-escuro"
+          >DATA: {{ dataAtual | date: "dd/MM/yyyy" }}</b
+        >
       </div>
 
       <mat-list>
@@ -808,8 +823,9 @@
 
       <div class="container-previa-obs">
         <div class="col-md-12" class="texto-vermelho">
-          <b class="texto-vermelho">OBS.:
-          {{ this.formulario.get("observacao")?.value }} </b>
+          <b class="texto-vermelho"
+            >OBS.: {{ this.formulario.get("observacao")?.value }}
+          </b>
         </div>
       </div>
 

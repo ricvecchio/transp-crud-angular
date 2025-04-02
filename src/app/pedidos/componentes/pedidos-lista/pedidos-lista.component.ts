@@ -33,6 +33,7 @@ import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoPagina } from '../../../modelo/pedido-pagina';
 import { PedidoService } from '../../servico/pedido.service';
+import * as XLSX from 'xlsx';
 
 interface Status {
   value: string;
@@ -384,6 +385,85 @@ export class PedidosListaComponent implements OnInit {
   }
 
   exportToExcel(): void {
-  }
+    const dataInicial = this.parseDate(this.dataInicialControl.value);
+    const dataFinal = this.parseDate(this.dataFinalControl.value);
+    const clienteFiltro = this.filterControl.value?.trim() || undefined;
+    const statusFiltro = this.statusControl.value?.trim() || undefined;
 
+    this.pedidoService
+      .listar(0, 1000, clienteFiltro, dataInicial, dataFinal, statusFiltro)
+      .subscribe(
+        (pagina) => {
+          if (!pagina.pedidos.length) {
+            this.mensagemService.showErrorMessage(
+              'Nenhum dado disponível para exportação.',
+            );
+            return;
+          }
+
+          const pedidosData = pagina.pedidos.map((pedido) => {
+            let precoSelecionado = '';
+            switch (pedido.volume) {
+              case 'CX-5m³':
+                precoSelecionado = pedido.precoCx5;
+                break;
+              case 'CX-10m³':
+                precoSelecionado = pedido.precoCx10;
+                break;
+              case 'CX-15m³':
+                precoSelecionado = pedido.precoCx15;
+                break;
+              case 'LAV-5m³':
+                precoSelecionado = pedido.precoLv5;
+                break;
+              case 'LAV-10m³':
+                precoSelecionado = pedido.precoLv10;
+                break;
+              case 'LAV-15m³':
+                precoSelecionado = pedido.precoLv15;
+                break;
+            }
+
+            return {
+              Pedido: pedido.idPedido,
+              Nome: pedido.nome,
+              Volume: pedido.volume,
+              Preço: precoSelecionado,
+              Data: new Date(pedido.dataAtualizacaoPedido).toLocaleDateString(
+                'pt-BR',
+              ),
+            };
+          });
+
+          const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(pedidosData);
+          const colWidths: Array<{ wch: number }> = [];
+          const headers = Object.keys(pedidosData[0]);
+
+          headers.forEach((header: string) => {
+            const maxLength = Math.max(
+              ...pedidosData.map(
+                (row: any) => row[header]?.toString().length || 0,
+              ),
+              header.length,
+            );
+            colWidths.push({ wch: maxLength });
+          });
+
+          ws['!cols'] = colWidths;
+          const wb: XLSX.WorkBook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, 'Pedidos Filtrados');
+
+          const nomeCliente = pagina.pedidos[0].nome || 'Nome_Desconhecido';
+          const nomeArquivo = `Pedidos_Filtrados_${nomeCliente}.xlsx`;
+
+          XLSX.writeFile(wb, nomeArquivo);
+        },
+        (error) => {
+          this.mensagemService.showErrorMessage(
+            'Erro ao buscar pedidos para exportação.',
+          );
+          console.error('Erro ao exportar pedidos:', error);
+        },
+      );
+  }
 }
