@@ -391,7 +391,7 @@ export class PedidosListaComponent implements OnInit {
     const statusFiltro = this.statusControl.value?.trim() || undefined;
 
     this.pedidoService
-      .listar(0, 10000, clienteFiltro, dataInicial, dataFinal, statusFiltro)
+      .listar(0, 100000, clienteFiltro, dataInicial, dataFinal, statusFiltro)
       .subscribe(
         (pagina) => {
           if (!pagina.pedidos.length) {
