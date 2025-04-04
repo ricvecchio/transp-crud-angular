@@ -483,7 +483,9 @@ export class PedidoFormComponent implements OnInit {
   atualizarPrecoComExtras() {
     let precoBase = 0;
 
-    const volumeSelecionado = this.formulario.get('volume')?.value;
+    const volumeControl = this.formulario.get('volume');
+    const volumeSelecionado = volumeControl?.value;
+
     switch (volumeSelecionado) {
       case 'CX-5m³':
         precoBase =
@@ -513,6 +515,14 @@ export class PedidoFormComponent implements OnInit {
           this.converterParaNumero(this.formulario.get('precoLv15')?.value) ||
           0;
         break;
+    }
+
+    if (!volumeSelecionado || precoBase === 0) {
+      this.mensagemService.showErrorMessage(
+        'O volume selecionado não possui preço de referência. Favor incluir no Cliente!',
+      );
+      volumeControl?.setValue('', { emitEvent: false });
+      return;
     }
 
     const temAjudante = this.formulario.get('ajudante')?.value === 'SIM';
