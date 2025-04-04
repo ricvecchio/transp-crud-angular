@@ -538,6 +538,18 @@
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Adicional:</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="adicional"
+              formControlName="adicional"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Valor Adicional:</mat-label>
             <input
               tabindex="-1"
@@ -548,7 +560,22 @@
             />
           </mat-form-field>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Preço Final:</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoFinal"
+              formControlName="precoFinal"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
           <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Observações:</mat-label>
             <input

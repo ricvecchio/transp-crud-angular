@@ -120,9 +120,10 @@ export class PedidoFormComponent implements OnInit {
       precoLv10: [this.formatarParaReais(pedido.precoLv10)],
       precoLv15: [this.formatarParaReais(pedido.precoLv15)],
       precoEscolhido: [''],
+      exibirPreco: ['NÃO'],
       ajudante: ['NÃO'],
       adicional: ['NÃO'],
-      exibirPreco: ['NÃO'],
+      precoFinal: [this.formatarParaReais(pedido.precoFinal)],
       observacao: [pedido.observacao],
       dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
       status: [pedido.status],
@@ -171,8 +172,9 @@ export class PedidoFormComponent implements OnInit {
           precoLv5: pedido.precoLv5,
           precoLv10: pedido.precoLv10,
           precoLv15: pedido.precoLv15,
-          ajudante: pedido.ajudante,
+          ajudante: ['NÃO'],
           adicional: ['NÃO'],
+          precoFinal: pedido.precoFinal,
           observacao: pedido.observacao,
           status: pedido.status,
           imagemPedido: pedido.imagemPedido,
@@ -227,44 +229,20 @@ export class PedidoFormComponent implements OnInit {
     });
 
     this.formatarCampos([
-      'valorAjudante',
-      'valorAdicional',
       'precoCx5',
       'precoCx10',
       'precoCx15',
       'precoLv5',
       'precoLv10',
       'precoLv15',
+      'precoFinal',
     ]);
 
     this.formatarCampoCep();
 
-    this.formulario
-      .get('volume')
-      ?.valueChanges.subscribe((volumeSelecionado) => {
-        let precoSelecionado = '';
-        switch (volumeSelecionado) {
-          case 'CX-5m³':
-            precoSelecionado = this.formulario.get('precoCx5')?.value;
-            break;
-          case 'CX-10m³':
-            precoSelecionado = this.formulario.get('precoCx10')?.value;
-            break;
-          case 'CX-15m³':
-            precoSelecionado = this.formulario.get('precoCx15')?.value;
-            break;
-          case 'LAV-5m³':
-            precoSelecionado = this.formulario.get('precoLv5')?.value;
-            break;
-          case 'LAV-10m³':
-            precoSelecionado = this.formulario.get('precoLv10')?.value;
-            break;
-          case 'LAV-15m³':
-            precoSelecionado = this.formulario.get('precoLv15')?.value;
-            break;
-        }
-        this.formulario.get('precoEscolhido')?.setValue(precoSelecionado);
-      });
+    this.formulario.get('volume')?.valueChanges.subscribe(() => {
+      this.atualizarPrecoComExtras();
+    });
   }
 
   private formatarPedido(pedidoParams: any): Pedido {
@@ -308,6 +286,8 @@ export class PedidoFormComponent implements OnInit {
       precoLv10: pedidoParams.precoLv10 || '',
       precoLv15: pedidoParams.precoLv15 || '',
       ajudante: pedidoParams.ajudante || '',
+      adicional: pedidoParams.adicional || '',
+      precoFinal: pedidoParams.precoFinal || '',
       observacao: pedidoParams.observacao || '',
       status: pedidoParams.status || '',
       dataAtualizacaoPedido: pedidoParams.dataAtualizacaoPedido || '',
@@ -555,7 +535,10 @@ export class PedidoFormComponent implements OnInit {
       currency: 'BRL',
     });
 
-    this.formulario.patchValue({ precoEscolhido: precoFormatado });
+    this.formulario.patchValue({
+      precoEscolhido: precoFormatado,
+      precoFinal: precoFormatado,
+    });
   }
 
   private converterParaNumero(valorFormatado: string): number {
@@ -590,9 +573,19 @@ export class PedidoFormComponent implements OnInit {
     const dataFormatada = new Date(
       Date.now() - 3 * 60 * 60 * 1000,
     ).toISOString();
+
+    const valorAjudante = this.converterParaNumero(
+      this.formulario.get('valorAjudante')?.value,
+    );
+    const valorAdicional = this.converterParaNumero(
+      this.formulario.get('valorAdicional')?.value,
+    );
+
     this.formulario.patchValue({
       status,
       dataAtualizacaoPedido: dataFormatada,
+      valorAjudante,
+      valorAdicional,
     });
   }
 
@@ -607,6 +600,8 @@ export class PedidoFormComponent implements OnInit {
   }
 
   private async emitirPedido(): Promise<void> {
+    this.prepararFormularioAntesDoEnvio();
+
     return new Promise((resolve, reject) => {
       this.pedidoService.salvar(this.formulario.value).subscribe({
         next: (result) => {
@@ -636,6 +631,33 @@ export class PedidoFormComponent implements OnInit {
           reject(error);
         },
       });
+    });
+  }
+
+  private prepararFormularioAntesDoEnvio(): void {
+    const form = this.formulario;
+
+    const exibirPreco =
+      form.get('exibirPreco')?.value === 'SIM' ? 'SIM' : 'NÃO';
+    const ajudante = form.get('ajudante')?.value === 'SIM' ? 'SIM' : 'NÃO';
+    const adicional = form.get('adicional')?.value === 'SIM' ? 'SIM' : 'NÃO';
+
+    const valorAjudante =
+      ajudante === 'SIM'
+        ? this.converterParaNumero(form.get('valorAjudante')?.value)
+        : 0;
+
+    const valorAdicional =
+      adicional === 'SIM'
+        ? this.converterParaNumero(form.get('valorAdicional')?.value)
+        : 0;
+
+    form.patchValue({
+      exibirPreco,
+      ajudante,
+      adicional,
+      valorAjudante,
+      valorAdicional,
     });
   }
 

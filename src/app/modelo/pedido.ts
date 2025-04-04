@@ -38,6 +38,8 @@ export interface Pedido {
   precoLv10: string;
   precoLv15: string;
   ajudante: string;
+  adicional: string;
+  precoFinal: string;
   observacao: string;
   status: string;
   dataAtualizacaoPedido: string;

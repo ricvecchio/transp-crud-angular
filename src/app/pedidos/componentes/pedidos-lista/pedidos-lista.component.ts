@@ -404,30 +404,11 @@ export class PedidosListaComponent implements OnInit {
           let totalPreco = 0;
 
           const pedidosData = pagina.pedidos.map((pedido) => {
-            let precoSelecionado = '';
-            switch (pedido.volume) {
-              case 'CX-5m³':
-                precoSelecionado = pedido.precoCx5;
-                break;
-              case 'CX-10m³':
-                precoSelecionado = pedido.precoCx10;
-                break;
-              case 'CX-15m³':
-                precoSelecionado = pedido.precoCx15;
-                break;
-              case 'LAV-5m³':
-                precoSelecionado = pedido.precoLv5;
-                break;
-              case 'LAV-10m³':
-                precoSelecionado = pedido.precoLv10;
-                break;
-              case 'LAV-15m³':
-                precoSelecionado = pedido.precoLv15;
-                break;
-            }
-
             const precoNumerico = Number(
-              precoSelecionado.replace(/[^\d,]/g, '').replace(',', '.'),
+              pedido.precoFinal
+                ?.toString()
+                .replace(/[^\d,]/g, '')
+                .replace(',', '.') || 0,
             );
 
             totalPreco += precoNumerico;

@@ -58,6 +58,8 @@ export class PedidoResolver {
       precoLv10: '',
       precoLv15: '',
       ajudante: '',
+      adicional: '',
+      precoFinal: '',
       observacao: '',
       status: '',
       dataAtualizacaoPedido: '',
