@@ -48,6 +48,8 @@ export class PedidoResolver {
       cno: '',
       ie: '',
       mangueira: '',
+      valorAjudante: '',
+      valorAdicional: '',
       volume: '',
       precoCx5: '',
       precoCx10: '',

@@ -532,6 +532,30 @@
             />
           </mat-form-field>
         </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Valor Ajudante:</mat-label>
+            <input
+              matInput
+              name="valorAjudante"
+              formControlName="valorAjudante"
+              tabindex="-1"
+              readonly="true"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Valor Adicional:</mat-label>
+            <input
+              matInput
+              name="valorAdicional"
+              formControlName="valorAdicional"
+              tabindex="-1"
+              readonly="true"
+            />
+          </mat-form-field>
+        </div>
       </div>
 
       <div class="row">
@@ -645,21 +669,27 @@
             </mat-checkbox>
           </p>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
           <br />
-          <h6>Ajudante:</h6>
+          <h6>Valor Ajudante?</h6>
           <p>
             <mat-checkbox
               [checked]="formulario.value.ajudante === 'SIM'"
-              (change)="onCheckboxChangeAjudante('SIM')"
+              (change)="onCheckboxChangeValorAjudante($event.checked)"
             >
               Sim
             </mat-checkbox>
+          </p>
+        </div>
+        <div class="col-md-1">
+          <br />
+          <h6>Valor Adicional?</h6>
+          <p>
             <mat-checkbox
-              [checked]="formulario.value.ajudante === 'NÃO'"
-              (change)="onCheckboxChangeAjudante('NÃO')"
+              [checked]="formulario.value.adicional === 'SIM'"
+              (change)="onCheckboxChangeValorAdicional($event.checked)"
             >
-              Não
+              Sim
             </mat-checkbox>
           </p>
         </div>

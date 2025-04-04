@@ -24,7 +24,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
-import html2canvas from 'html2canvas';
 
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
@@ -111,6 +110,8 @@ export class PedidoFormComponent implements OnInit {
       cno: [pedido.cno],
       ie: [pedido.ie],
       mangueira: [pedido.mangueira],
+      valorAjudante: [pedido.valorAjudante],
+      valorAdicional: [pedido.valorAdicional],
       volume: [pedido.volume],
       precoCx5: [this.formatarParaReais(pedido.precoCx5)],
       precoCx10: [this.formatarParaReais(pedido.precoCx10)],
@@ -119,8 +120,9 @@ export class PedidoFormComponent implements OnInit {
       precoLv10: [this.formatarParaReais(pedido.precoLv10)],
       precoLv15: [this.formatarParaReais(pedido.precoLv15)],
       precoEscolhido: [''],
-      exibirPreco: [''],
-      ajudante: [pedido.ajudante],
+      ajudante: ['NÃO'],
+      adicional: ['NÃO'],
+      exibirPreco: ['NÃO'],
       observacao: [pedido.observacao],
       dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
       status: [pedido.status],
@@ -160,6 +162,8 @@ export class PedidoFormComponent implements OnInit {
           cno: pedido.cno,
           ie: pedido.ie,
           mangueira: pedido.mangueira,
+          valorAjudante: pedido.valorAjudante,
+          valorAdicional: pedido.valorAdicional,
           volume: pedido.volume,
           precoCx5: pedido.precoCx5,
           precoCx10: pedido.precoCx10,
@@ -168,6 +172,7 @@ export class PedidoFormComponent implements OnInit {
           precoLv10: pedido.precoLv10,
           precoLv15: pedido.precoLv15,
           ajudante: pedido.ajudante,
+          adicional: ['NÃO'],
           observacao: pedido.observacao,
           status: pedido.status,
           imagemPedido: pedido.imagemPedido,
@@ -207,6 +212,8 @@ export class PedidoFormComponent implements OnInit {
           cno: cliente.cno,
           ie: cliente.ie,
           mangueira: cliente.mangueira,
+          valorAjudante: cliente.valorAjudante,
+          valorAdicional: cliente.valorAdicional,
           precoCx5: cliente.precoCx5,
           precoCx10: cliente.precoCx10,
           precoCx15: cliente.precoCx15,
@@ -220,6 +227,8 @@ export class PedidoFormComponent implements OnInit {
     });
 
     this.formatarCampos([
+      'valorAjudante',
+      'valorAdicional',
       'precoCx5',
       'precoCx10',
       'precoCx15',
@@ -289,6 +298,8 @@ export class PedidoFormComponent implements OnInit {
       cno: pedidoParams.cno || '',
       ie: pedidoParams.ie || '',
       mangueira: pedidoParams.mangueira || '',
+      valorAjudante: pedidoParams.valorAjudante || '',
+      valorAdicional: pedidoParams.valorAdicional || '',
       volume: pedidoParams.volume || '',
       precoCx5: pedidoParams.precoCx5 || '',
       precoCx10: pedidoParams.precoCx10 || '',
@@ -335,6 +346,8 @@ export class PedidoFormComponent implements OnInit {
       cno: clienteParams.cno || '',
       ie: clienteParams.ie || '',
       mangueira: clienteParams.mangueira || '',
+      valorAjudante: clienteParams.valorAjudante || '',
+      valorAdicional: clienteParams.valorAdicional || '',
       precoCx5: clienteParams.precoCx5 || '',
       precoCx10: clienteParams.precoCx10 || '',
       precoCx15: clienteParams.precoCx15 || '',
@@ -466,39 +479,94 @@ export class PedidoFormComponent implements OnInit {
   onCheckboxChangeExibirPreco(valor: boolean) {
     const exibirPreco = valor ? 'SIM' : 'NÃO';
 
-    let precoEscolhido = '';
-    if (exibirPreco === 'SIM') {
-      const volumeSelecionado = this.formulario.get('volume')?.value;
-      switch (volumeSelecionado) {
-        case 'CX-5m³':
-          precoEscolhido = this.formulario.get('precoCx5')?.value;
-          break;
-        case 'CX-10m³':
-          precoEscolhido = this.formulario.get('precoCx10')?.value;
-          break;
-        case 'CX-15m³':
-          precoEscolhido = this.formulario.get('precoCx15')?.value;
-          break;
-        case 'LAV-5m³':
-          precoEscolhido = this.formulario.get('precoLv5')?.value;
-          break;
-        case 'LAV-10m³':
-          precoEscolhido = this.formulario.get('precoLv10')?.value;
-          break;
-        case 'LAV-15m³':
-          precoEscolhido = this.formulario.get('precoLv15')?.value;
-          break;
-      }
-    }
+    this.formulario.patchValue({ exibirPreco: exibirPreco });
 
-    this.formulario.patchValue({
-      exibirPreco: exibirPreco,
-      precoEscolhido: precoEscolhido,
-    });
+    if (exibirPreco === 'SIM') {
+      this.atualizarPrecoComExtras();
+    } else {
+      this.formulario.patchValue({ precoEscolhido: '' });
+    }
   }
 
-  onCheckboxChangeAjudante(value: string) {
-    this.formulario.patchValue({ ajudante: value });
+  onCheckboxChangeValorAjudante(checked: boolean) {
+    const valor = checked ? 'SIM' : 'NÃO';
+    this.formulario.patchValue({ ajudante: valor });
+    this.atualizarPrecoComExtras();
+  }
+
+  onCheckboxChangeValorAdicional(checked: boolean) {
+    const valor = checked ? 'SIM' : 'NÃO';
+    this.formulario.patchValue({ adicional: valor });
+    this.atualizarPrecoComExtras();
+  }
+
+  atualizarPrecoComExtras() {
+    let precoBase = 0;
+
+    const volumeSelecionado = this.formulario.get('volume')?.value;
+    switch (volumeSelecionado) {
+      case 'CX-5m³':
+        precoBase =
+          this.converterParaNumero(this.formulario.get('precoCx5')?.value) || 0;
+        break;
+      case 'CX-10m³':
+        precoBase =
+          this.converterParaNumero(this.formulario.get('precoCx10')?.value) ||
+          0;
+        break;
+      case 'CX-15m³':
+        precoBase =
+          this.converterParaNumero(this.formulario.get('precoCx15')?.value) ||
+          0;
+        break;
+      case 'LAV-5m³':
+        precoBase =
+          this.converterParaNumero(this.formulario.get('precoLv5')?.value) || 0;
+        break;
+      case 'LAV-10m³':
+        precoBase =
+          this.converterParaNumero(this.formulario.get('precoLv10')?.value) ||
+          0;
+        break;
+      case 'LAV-15m³':
+        precoBase =
+          this.converterParaNumero(this.formulario.get('precoLv15')?.value) ||
+          0;
+        break;
+    }
+
+    const temAjudante = this.formulario.get('ajudante')?.value === 'SIM';
+    const temAdicional = this.formulario.get('adicional')?.value === 'SIM';
+
+    const valorAjudante =
+      this.converterParaNumero(this.formulario.get('valorAjudante')?.value) ||
+      0;
+    const valorAdicional =
+      this.converterParaNumero(this.formulario.get('valorAdicional')?.value) ||
+      0;
+
+    const adicionalAjudante = temAjudante ? valorAjudante : 0;
+    const adicionalAdicional = temAdicional ? valorAdicional : 0;
+
+    const precoFinal = precoBase + adicionalAjudante + adicionalAdicional;
+
+    const precoFormatado = precoFinal.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+
+    this.formulario.patchValue({ precoEscolhido: precoFormatado });
+  }
+
+  private converterParaNumero(valorFormatado: string): number {
+    if (!valorFormatado) return 0;
+
+    const valorLimpo = valorFormatado
+      .toString()
+      .replace(/[^\d,]/g, '')
+      .replace(',', '.');
+
+    return parseFloat(valorLimpo) || 0;
   }
 
   async onSubmit(status: string) {

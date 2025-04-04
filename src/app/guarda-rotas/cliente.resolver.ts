@@ -48,6 +48,8 @@ export class ClienteResolver {
       cno: '',
       ie: '',
       mangueira: '',
+      valorAjudante: '',
+      valorAdicional: '',
       precoCx5: '',
       precoCx10: '',
       precoCx15: '',

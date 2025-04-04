@@ -28,6 +28,8 @@ export interface Pedido {
   cno: string;
   ie: string;
   mangueira: string;
+  valorAjudante: string;
+  valorAdicional: string;
   volume: string;
   precoCx5: string;
   precoCx10: string;
