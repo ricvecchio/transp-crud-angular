@@ -148,8 +148,8 @@ export class ClienteFormComponent implements OnInit {
       cno: [cliente.cno],
       ie: [cliente.ie],
       mangueira: [cliente.mangueira],
-      valorAjudante: [this.formatarParaReais(cliente.valorAjudante)],
-      valorAdicional: [this.formatarParaReais(cliente.valorAdicional)],
+      valorAjudante: cliente.valorAjudante ? this.formatarParaReais(cliente.valorAjudante) : '80,00',
+      valorAdicional: cliente.valorAdicional ? this.formatarParaReais(cliente.valorAdicional) : '30,00',
       precoCx5: [this.formatarParaReais(cliente.precoCx5)],
       precoCx10: [this.formatarParaReais(cliente.precoCx10)],
       precoCx15: [this.formatarParaReais(cliente.precoCx15)],
@@ -177,11 +177,7 @@ export class ClienteFormComponent implements OnInit {
       'precoLv10',
       'precoLv15',
     ]);
-
-    this.formulario.patchValue({
-      valorAjudante: '80,00',
-      valorAdicional: '30,00'
-    });
+    
   }
 
   onCpfCnpjInput(event: Event): void {
