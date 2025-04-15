@@ -20,6 +20,10 @@ import { NovoUsuarioComponent } from './home/login/novo-usuario/novo-usuario.com
 import { MenuComponent } from './menu/menu.component';
 import { RodapeComponent } from './rodape/rodape.component';
 
+import { NgChartsModule } from 'ng2-charts';  
+import { MetricasComponent } from './metricas/metricas.component';
+
+
 @NgModule({
   declarations: [AppComponent],
   bootstrap: [AppComponent],
@@ -36,6 +40,8 @@ import { RodapeComponent } from './rodape/rodape.component';
     NovoUsuarioComponent,
     MenuComponent,
     MensagemComponent,
+    MetricasComponent,
+    NgChartsModule,
   ],
   providers: [
     provideAnimations(),

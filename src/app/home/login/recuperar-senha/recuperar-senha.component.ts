@@ -22,7 +22,8 @@ export class RecuperarSenhaComponent {
   // 2 - Inserir token e nova senha
   carregando: boolean = false;
 
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
+  // private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
+  private readonly API = 'http://localhost:8080/api/users'; //EXCLUIR
 
   constructor(
     private http: HttpClient,

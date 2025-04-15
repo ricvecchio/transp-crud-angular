@@ -1,296 +1,38 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatCard } from '@angular/material/card';
-import { MatOptionModule } from '@angular/material/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import {
-  MatCell,
-  MatCellDef,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderCellDef,
-  MatHeaderRow,
-  MatHeaderRowDef,
-  MatRow,
-  MatRowDef,
-  MatTable,
-  MatTableDataSource,
-} from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, filter, Observable, of, tap } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-
-import * as XLSX from 'xlsx';
-import { PedidoPagina } from '../modelo/pedido-pagina';
-import { Pedido } from '../modelo/pedido';
-import { PedidoService } from '../pedidos/servico/pedido.service';
-import { MensagemService } from '../compartilhado/mensagem.service';
-
-interface Status {
-  value: string;
-  viewValue: string;
-}
+import { Component } from '@angular/core';
+import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-metricas',
   templateUrl: './metricas.component.html',
-  styleUrl: './metricas.component.css',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatFormField,
-    MatLabel,
-    MatInputModule,
-    MatCard,
-    MatTable,
-    MatColumnDef,
-    MatHeaderCellDef,
-    MatHeaderCell,
-    MatCellDef,
-    MatCell,
-    MatIcon,
-    MatHeaderRowDef,
-    MatHeaderRow,
-    MatRowDef,
-    MatRow,
-    MatPaginator,
-    MatProgressSpinner,
-    ReactiveFormsModule,
-    AsyncPipe,
-  ],
+  styleUrls: ['./metricas.component.css'],
 })
-export class MetricasComponent implements OnInit {
-  pedidos$: Observable<PedidoPagina> | null = null;
-
-  permissaoUsuario: string | null = null;
-
-  dataSource = new MatTableDataSource<Pedido>();
-
-  filterControl = new FormControl('');
-  statusControl = new FormControl('Emitido');
-
-  dataInicialControl = new FormControl('', [
-    Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
-  ]);
-  dataFinalControl = new FormControl('', [
-    Validators.pattern(/^\d{2}\/\d{2}\/\d{4}$/),
-  ]);
-
-  readonly displayedColumns: string[] = [
-    'idCliente',
-    'nome',
-    'razaoSocial',
-    'precoFinal',
+export class MetricasComponent {
+  // Dados para o gráfico de barras
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+  };
+  public barChartLabels: string[] = ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5', 'Label 6', 'Label 7'];
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
+  public barChartData: ChartDataset[] = [
+    { 
+      data: [65, 59, 80, 81, 56, 55, 40], 
+      label: 'Bar Chart Data',
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 1
+    }
   ];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  pageIndex = 0;
-  pageSize = 10;
-
-  constructor(
-    private pedidoService: PedidoService,
-    public dialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute,
-    private mensagemService: MensagemService,
-  ) {}
-
-  ngOnInit(): void {
-    this.permissaoUsuario = sessionStorage.getItem('permission');
-
-    this.setupFilterListeners();
-    this.atualiza();
-  }
-
-  setupFilterListeners() {
-    this.dataInicialControl.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        filter((dataInicial) => this.isValidDate(dataInicial)),
-        tap((dataInicial) => {
-          const parsedDataInicial = this.parseDate(dataInicial);
-          this.applyFilter(parsedDataInicial);
-        }),
-      )
-      .subscribe();
-
-    this.dataFinalControl.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        filter((dataFinal) => this.isValidDate(dataFinal)),
-        tap(() => {
-          const dataInicial = this.parseDate(this.dataInicialControl.value);
-          const dataFinal = this.parseDate(this.dataFinalControl.value);
-          this.applyFilter(dataInicial, dataFinal);
-        }),
-      )
-      .subscribe();
-
-    this.filterControl.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        tap(() => {
-          const clienteFiltro = this.filterControl.value?.trim() || undefined;
-          this.applyFilter(clienteFiltro);
-        }),
-      )
-      .subscribe();
-
-    this.statusControl.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        tap(() => {
-          const statusFiltro = this.statusControl.value?.trim() || undefined;
-          this.applyFilter(statusFiltro);
-        }),
-      )
-      .subscribe();
-  }
-
-  applyFilter(
-    clienteFiltro?: string,
-    dataInicial?: string,
-    dataFinal?: string,
-    status?: string,
-  ) {
-    this.atualiza({
-      length: 0,
-      pageIndex: 0,
-      pageSize: this.pageSize,
-    });
-  }
-
-  atualiza(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
-    const dataInicial = this.parseDate(this.dataInicialControl.value);
-    const dataFinal = this.parseDate(this.dataFinalControl.value);
-    const clienteFiltro = this.filterControl.value?.trim() || undefined;
-    const statusFiltro = this.statusControl.value?.trim() || undefined;
-
-    this.pedidos$ = this.pedidoService
-      .listar(
-        pageEvent.pageIndex,
-        pageEvent.pageSize,
-        clienteFiltro,
-        dataInicial,
-        dataFinal,
-        statusFiltro,
-      )
-      .pipe(
-        tap((pagina) => {
-          this.pageIndex = pageEvent.pageIndex;
-          this.pageSize = pageEvent.pageSize;
-          this.dataSource.data = pagina.pedidos;
-        }),
-        catchError((error) => {
-          const errorMessage =
-            error.status === 403
-              ? 'Usuário sem Permissão!'
-              : error.status === 500
-                ? 'Erro interno no servidor. Contate o suporte.'
-                : 'Erro ao carregar Pedidos.';
-          this.mensagemService.showErrorMessage(errorMessage);
-          console.error('Erro ao carregar pedidos: ', error);
-          return of({ pedidos: [], totalElementos: 0, totalPaginas: 0 });
-        }),
-      );
-  }
-
-  clearFilters() {
-    this.filterControl.reset('', { emitEvent: false });
-    this.dataInicialControl.reset('', { emitEvent: false });
-    this.dataFinalControl.reset('', { emitEvent: false });
-    this.statusControl.reset('Emitido', { emitEvent: false });
-
-    this.atualiza({
-      length: 0,
-      pageIndex: 0,
-      pageSize: this.pageSize,
-    });
-  }
-
-  private isValidDate(dateString: string | null): boolean {
-    if (!dateString || !/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) return false;
-    const [day, month, year] = dateString.split('/').map(Number);
-    const date = new Date(year, month - 1, day);
-    return (
-      !isNaN(date.getTime()) &&
-      date.getDate() === day &&
-      date.getMonth() + 1 === month &&
-      date.getFullYear() === year
-    );
-  }
-
-  private parseDate(dateString: string | null): string | undefined {
-    if (!dateString || !this.isValidDate(dateString)) return undefined;
-    const [day, month, year] = dateString.split('/').map(Number);
-    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-  }
-
-  onDateInput(
-    event: Event,
-    controlName: 'dataInicialControl' | 'dataFinalControl',
-  ): void {
-    const input = event.target as HTMLInputElement;
-    let value = input.value.replace(/\D/g, '');
-
-    if (value.length > 2) {
-      value = value.substring(0, 2) + '/' + value.substring(2);
-    }
-    if (value.length > 5) {
-      value = value.substring(0, 5) + '/' + value.substring(5);
-    }
-
-    const parts = value.split('/').map(Number);
-    const [day, month, year] = parts;
-
-    if (day && (day < 1 || day > 31)) {
-      value = `31/${value.split('/').slice(1).join('/')}`;
-    }
-    if (month && (month < 1 || month > 12)) {
-      value = `${value.split('/')[0]}/12/${value.split('/').slice(2).join('/')}`;
-    }
-    if (year && year > 9999) {
-      value = `${value.split('/').slice(0, 2).join('/')}/9999`;
-    }
-
-    this[controlName].setValue(value, { emitEvent: false });
-  }
-
-  listaStatus: Status[] = [
-    { value: 'Emitido', viewValue: 'Emitido' },
-    { value: 'Cancelado', viewValue: 'Cancelado' },
-    { value: 'Salvo', viewValue: 'Salvo' },
-  ];
-
-  onSearch(pedido: Pedido) {
-    this.router.navigate(['/expandir-pedido', pedido.idPedido], {
-      relativeTo: this.route,
-    });
-  }
-  onMenu() {
-    this.router.navigate(['/menu'], {
-      relativeTo: this.route,
-    });
-  }
+  // Dados para o gráfico de pizza
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+  };
+  public pieChartLabels: string[] = ['Red', 'Blue', 'Yellow'];
+  public pieChartData: ChartDataset = {
+    data: [300, 500, 100],
+    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+  };
+  public pieChartType: ChartType = 'pie';
+  public pieChartLegend = true;
 }
-
-
-
-
-
-
-  

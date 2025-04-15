@@ -1,85 +1,26 @@
-<mat-card>
-  <div class="d-flex">
-    <mat-form-field class="form-grid">
-      <mat-label>Buscar Pedido</mat-label>
-      <input matInput [formControl]="filterControl" />
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-    <mat-form-field class="form-grid small-input">
-      <mat-label>Data Inicial</mat-label>
-      <input
-        matInput
-        [formControl]="dataInicialControl"
-        type="text"
-        (input)="onDateInput($event, 'dataInicialControl')"
-      />
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-    <mat-form-field class="form-grid small-input">
-      <mat-label>Data Final</mat-label>
-      <input
-        matInput
-        [formControl]="dataFinalControl"
-        type="text"
-        (input)="onDateInput($event, 'dataFinalControl')"
-      />
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-    <button
-      mat-raised-button
-      color="primary"
-      class="form-grid small-button"
-      (click)="clearFilters()"
-    >
-      Limpar Filtros
-    </button>
-    <button
-      mat-raised-button
-      color="primary"
-      class="form-grid small-button"
-      (click)="onMenu()"
-    >
-      Menu
-    </button>
+<div class="chart-container">
+  <!-- Gráfico de Barras -->
+  <div class="chart-wrapper">
+    <canvas 
+      baseChart
+      [data]="barChartData"
+      [labels]="barChartLabels"
+      [options]="barChartOptions"
+      [type]="barChartType"
+      [legend]="barChartLegend">
+    </canvas>
   </div>
 
-  @if (pedidos$ | async; as pedidos) {
-    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-      <ng-container matColumnDef="idCliente">
-        <mat-header-cell *matHeaderCellDef
-          ><strong>Cliente</strong></mat-header-cell
-        >
-        <mat-cell *matCellDef="let pedido">{{ pedido.idCliente }}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="nome">
-        <mat-header-cell *matHeaderCellDef
-          ><strong>Nome</strong></mat-header-cell
-        >
-        <mat-cell *matCellDef="let pedido">{{ pedido.nome }}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="cpfCnpj">
-        <mat-header-cell *matHeaderCellDef
-          ><strong>Valor Total</strong></mat-header-cell
-        >
-        <mat-cell *matCellDef="let pedido">{{ pedido.cpfCnpj }}</mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
-    <mat-paginator
-      [pageSizeOptions]="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
-      showFirstLastButtons
-      [pageIndex]="pageIndex"
-      [pageSize]="pageSize"
-      [length]="pedidos.totalElementos"
-      (page)="atualiza($event)"
-      aria-label="Selecione a página dos Pedidos"
-    >
-    </mat-paginator>
-  } @else {
-    <div class="loading-spinner">
-      <mat-spinner></mat-spinner>
-    </div>
-  }
-</mat-card>
+  <!-- Gráfico de Pizza -->
+  <div class="chart-wrapper">
+    <canvas 
+      baseChart
+      [data]="pieChartData.data"
+      [labels]="pieChartLabels"
+      [options]="pieChartOptions"
+      [type]="pieChartType"
+      [legend]="pieChartLegend"
+      [colors]="pieChartData.backgroundColor">
+    </canvas>
+  </div>
+</div>
