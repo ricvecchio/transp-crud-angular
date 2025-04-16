@@ -17,7 +17,7 @@ import { ExpandirPedidoComponent } from './pedidos/componentes/expandir-pedido/e
 import { PedidosListaComponent } from './pedidos/componentes/pedidos-lista/pedidos-lista.component';
 import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
-import { MetricasComponent } from './metricas/metricas.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -103,8 +103,8 @@ const routes: Routes = [
     resolve: { usuario: UsuarioResolver },
   },
   {
-    path: 'metricas',
-    component: MetricasComponent,
+    path: 'dashboard',
+    component: DashboardComponent,
     canActivate: [AuthGuard],
     resolve: { pedido: PedidoResolver },
   },

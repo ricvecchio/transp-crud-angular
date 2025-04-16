@@ -13,6 +13,8 @@ import { MensagemService } from '../../../compartilhado/mensagem.service';
   imports: [CommonModule, FormsModule],
 })
 export class RecuperarSenhaComponent {
+  private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
+
   email: string = '';
   username: string = '';
   token: string = '';
@@ -21,9 +23,6 @@ export class RecuperarSenhaComponent {
   // 1 - Inserir e-mail e username
   // 2 - Inserir token e nova senha
   carregando: boolean = false;
-
-  // private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
-  private readonly API = 'http://localhost:8080/api/users'; //EXCLUIR
 
   constructor(
     private http: HttpClient,

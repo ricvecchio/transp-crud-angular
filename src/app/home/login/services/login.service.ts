@@ -9,10 +9,9 @@ import { LoginResponse } from '../types/login-response.types';
   providedIn: 'root',
 })
 export class LoginService {
-  private usuarioSubject = new BehaviorSubject<LoginResponse | null>(null);
+  private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
 
-  // private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
-  private readonly API = 'http://localhost:8080/api/users'; //EXCLUIR
+  private usuarioSubject = new BehaviorSubject<LoginResponse | null>(null);
 
   constructor(private httpClient: HttpClient) {}
 

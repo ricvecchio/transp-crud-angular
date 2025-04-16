@@ -1,0 +1,23 @@
+<h2 class="dashboard-title">Dashboard: Top 5 Clientes por Volume de Gastos</h2>
+
+<div class="chart-container">
+  <div class="chart-wrapper">
+    <canvas
+      baseChart
+      [data]="barChartData"
+      [options]="barChartOptions"
+      type="bar"
+    >
+    </canvas>
+  </div>
+
+  <div class="chart-wrapper">
+    <canvas
+      baseChart
+      [data]="pieChartData"
+      [options]="pieChartOptions"
+      type="pie"
+    >
+    </canvas>
+  </div>
+</div>
