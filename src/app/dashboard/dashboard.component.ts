@@ -143,32 +143,37 @@ export class DashboardComponent implements OnInit {
   }
 
   private populateBarChart(data: any[]): void {
-    // Converte precoTotal em número, se necessário
-    data = data.map((item) => ({
-      ...item,
-      precoTotal: +item.precoTotal,
-    }));
-
-    // Agrupa os dados por cliente e por mês
+    // Mapeia os totais por cliente por mês (12 posições)
     const clientMonthTotals: { [idCliente: string]: number[] } = {};
-
-    for (let i = 0; i < data.length; i++) {
-      const { idCliente, precoTotal, mesTotal } = data[i];
-      if (!clientMonthTotals[idCliente]) {
-        clientMonthTotals[idCliente] = Array(12).fill(0);
+  
+    // Itera por mês
+    data.forEach((mesData) => {
+      const mesIndex = mesData.mesTotal - 1;
+  
+      if (mesData.clientes && Array.isArray(mesData.clientes)) {
+        mesData.clientes.forEach((cliente: any) => {
+          const { idCliente, precoTotal } = cliente;
+  
+          if (!clientMonthTotals[idCliente]) {
+            clientMonthTotals[idCliente] = Array(12).fill(0);
+          }
+  
+          clientMonthTotals[idCliente][mesIndex] = precoTotal;
+        });
       }
-      clientMonthTotals[idCliente][mesTotal - 1] += precoTotal;
-    }
-
-    // Soma total por cliente e ordena
+    });
+  
+    // Calcula total por cliente para pegar os top 5
     const totalPorCliente = Object.keys(clientMonthTotals).map((id) => ({
       idCliente: id,
       total: clientMonthTotals[id].reduce((sum, val) => sum + val, 0),
     }));
-
-    const top5 = totalPorCliente.sort((a, b) => b.total - a.total).slice(0, 5);
-
-    // Atualiza o gráfico de barras
+  
+    const top5 = totalPorCliente
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 5);
+  
+    // Monta os datasets com os top 5 clientes
     this.barChartData.datasets = top5.map((client, index) => {
       const color = Object.values(this.topColors)[index % 5];
       return {
@@ -181,38 +186,63 @@ export class DashboardComponent implements OnInit {
       };
     });
   }
-
+  
   private populatePieChart(data: any[]): void {
-    // Converte precoTotal em número, se necessário
-    data = data.map((item) => ({
-      ...item,
-      precoTotal: +item.precoTotal,
-    }));
-
+    // Organiza os dados mensais com base no 'valorTotalMes' retornado pelo backend
     const monthlyTotals: { [mesTotal: number]: number } = {};
-
+    const monthlyLabels: string[] = [];
+    const monthlyTotalValues: number[] = [];
+    const monthlyColors: string[] = [];
+  
+    // Preenche os totais mensais e rótulos
     data.forEach((item) => {
-      if (!monthlyTotals[item.mesTotal]) {
-        monthlyTotals[item.mesTotal] = 0;
-      }
-      monthlyTotals[item.mesTotal] += item.precoTotal;
+      const monthLabel = this.barChartLabels[item.mesTotal - 1]; // Ajusta o mês para exibição
+      monthlyTotals[item.mesTotal] = item.valorTotalMes; // Total de todos os clientes por mês
+      monthlyLabels.push(monthLabel);
+      monthlyTotalValues.push(item.valorTotalMes);
+      // Utilizando as cores do gráfico de barras para manter a consistência visual
+      monthlyColors.push(Object.values(this.topColors)[item.mesTotal % 5]); 
     });
-
-    // Garante que todos os 12 meses existam no gráfico
-    const labels: string[] = [];
-    const values: number[] = [];
-    const colors: string[] = [];
-
-    for (let month = 1; month <= 12; month++) {
-      labels.push(this.barChartLabels[month - 1]);
-      values.push(monthlyTotals[month] || 0);
-      colors.push(Object.values(this.topColors)[month % 5]); // alterna cores
-    }
-
-    this.pieChartData.labels = labels;
-    this.pieChartData.datasets[0].data = values;
-    this.pieChartData.datasets[0].backgroundColor = colors;
+  
+    // Atualiza os dados do gráfico de pizza
+    this.pieChartData.labels = monthlyLabels;
+    this.pieChartData.datasets[0].data = monthlyTotalValues;
+    this.pieChartData.datasets[0].backgroundColor = monthlyColors;
+  
+    // Atualiza o tooltip para mostrar o valor total de cada mês no gráfico de pizza
+    this.pieChartOptions = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        tooltip: {
+          callbacks: {
+            label: (tooltipItem) => {
+              const dataset = tooltipItem?.dataset;
+              const data = dataset?.data as number[] | undefined;
+              const raw = tooltipItem?.raw;
+              const label = tooltipItem?.label;
+    
+              if (data && typeof raw === 'number' && label) {
+                const total = data.reduce((acc, value) => acc + value, 0);
+                const percentage = ((raw / total) * 100).toFixed(2);
+                const totalValue = raw.toLocaleString('pt-BR', {
+                  style: 'currency',
+                  currency: 'BRL',
+                });
+    
+                return `${label}: ${percentage}% | Valor: ${totalValue}`;
+              }
+    
+              return '';
+            }
+          }
+        }
+      }
+    };
   }
+  
 
   private darkenColor(color: string): string {
     if (color.startsWith('rgba')) {
