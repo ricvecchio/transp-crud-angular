@@ -1,16 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
+import { DashboardService } from './dashboard.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   standalone: true,
-  imports: [CommonModule, NgChartsModule],
+  imports: [CommonModule, NgChartsModule, MatProgressSpinner],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  public isLoading = true;
+
   public barChartLabels: string[] = [
     'Jan/2025',
     'Fev/2025',
@@ -27,47 +32,30 @@ export class DashboardComponent {
   ];
 
   private topColors = {
-    'Top 1': 'rgba(100, 149, 237, 0.7)', // Azul claro (Cornflower Blue) com transparência
-    'Top 2': 'rgba(0, 128, 0, 0.7)', // Verde mais claro
-    'Top 3': 'rgba(128, 128, 128, 0.7)', // Cinza mais claro
-    'Top 4': 'rgba(255, 0, 0, 0.7)', // Vermelho mais claro
-    'Top 5': 'rgba(255, 255, 0, 0.7)', // Amarelo mais claro
+    'Top 1': 'rgba(100, 149, 237, 0.7)',
+    'Top 2': 'rgba(0, 128, 0, 0.7)',
+    'Top 3': 'rgba(128, 128, 128, 0.7)',
+    'Top 4': 'rgba(255, 0, 0, 0.7)',
+    'Top 5': 'rgba(255, 255, 0, 0.7)',
   };
-
-  // Dados de exemplo para cada Top (12 meses para cada Top)
-  private generateTopData(): { [key: string]: number[] } {
-    return {
-      'Top 1': [65, 59, 80, 81, 56, 55, 40, 72, 88, 90, 65, 80],
-      'Top 2': [45, 49, 60, 61, 46, 45, 30, 52, 68, 70, 45, 60],
-      'Top 3': [35, 39, 50, 51, 36, 35, 20, 42, 58, 60, 35, 50],
-      'Top 4': [25, 29, 40, 41, 26, 25, 10, 32, 48, 50, 25, 40],
-      'Top 5': [15, 19, 30, 31, 16, 15, 5, 22, 38, 40, 15, 30],
-    };
-  }
 
   public barChartData: ChartConfiguration<'bar'>['data'] = {
     labels: this.barChartLabels,
-    datasets: Object.keys(this.topColors).map((top) => {
-      return {
-        data: this.generateTopData()[top],
-        label: top,
-        backgroundColor: this.topColors[top as keyof typeof this.topColors],
-        borderColor: this.darkenColor(
-          this.topColors[top as keyof typeof this.topColors],
-        ),
-        borderWidth: 1,
-        stack: 'stacked',
-      };
-    }),
+    datasets: [],
   };
 
-  // Função para escurecer ligeiramente a cor para as bordas
-  private darkenColor(color: string): string {
-    if (color.startsWith('rgba')) {
-      return color.replace(/[\d\.]+\)$/, '1)').replace(/0\.\d+\)/, '1)');
-    }
-    return color; // Para cores hex, retorna como está ou implemente lógica para hex
-  }
+  public pieChartData: ChartConfiguration<'pie'>['data'] = {
+    labels: [],
+    datasets: [
+      {
+        data: [],
+        backgroundColor: [],
+        borderColor: '#ffffff',
+        borderWidth: 3,
+        label: 'Dataset 1',
+      },
+    ],
+  };
 
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
@@ -78,24 +66,11 @@ export class DashboardComponent {
     plugins: {
       legend: {
         labels: {
-          usePointStyle: true, // Usa pontos ao invés de retângulos na legenda
-          pointStyle: 'circle', // Estilo dos pontos na legenda
+          usePointStyle: true,
+          pointStyle: 'circle',
         },
       },
     },
-  };
-
-  public pieChartData: ChartConfiguration<'pie'>['data'] = {
-    labels: Object.keys(this.topColors),
-    datasets: [
-      {
-        data: [500, 400, 300, 200, 100],
-        backgroundColor: Object.values(this.topColors),
-        borderColor: '#ffffff', // Linhas brancas entre as fatias
-        borderWidth: 3, // Largura da linha branca
-        label: 'Dataset 1',
-      },
-    ],
   };
 
   public pieChartOptions: ChartConfiguration<'pie'>['options'] = {
@@ -124,4 +99,109 @@ export class DashboardComponent {
       },
     },
   };
+
+  constructor(
+    private http: HttpClient,
+    private dashboardService: DashboardService,
+    private cdr: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
+    this.fetchDashboardData();
+  }
+
+  private fetchDashboardData(): void {
+    this.isLoading = true;
+    this.dashboardService.listarDadosDashboard(0, 60).subscribe({
+      next: (data) => {
+        this.populateBarChart(data);
+        this.populatePieChart(data);
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar dados:', err);
+        this.isLoading = false;
+      },
+    });
+  }
+
+  private populateBarChart(data: any[]): void {
+    // Converte precoTotal em número, se necessário
+    data = data.map((item) => ({
+      ...item,
+      precoTotal: +item.precoTotal,
+    }));
+
+    // Agrupa os dados por cliente e por mês
+    const clientMonthTotals: { [idCliente: string]: number[] } = {};
+
+    for (let i = 0; i < data.length; i++) {
+      const { idCliente, precoTotal, mesTotal } = data[i];
+      if (!clientMonthTotals[idCliente]) {
+        clientMonthTotals[idCliente] = Array(12).fill(0);
+      }
+      clientMonthTotals[idCliente][mesTotal - 1] += precoTotal;
+    }
+
+    // Soma total por cliente e ordena
+    const totalPorCliente = Object.keys(clientMonthTotals).map((id) => ({
+      idCliente: id,
+      total: clientMonthTotals[id].reduce((sum, val) => sum + val, 0),
+    }));
+
+    const top5 = totalPorCliente.sort((a, b) => b.total - a.total).slice(0, 5);
+
+    // Atualiza o gráfico de barras
+    this.barChartData.datasets = top5.map((client, index) => {
+      const color = Object.values(this.topColors)[index % 5];
+      return {
+        label: `Cliente ${client.idCliente}`,
+        data: clientMonthTotals[client.idCliente],
+        backgroundColor: color,
+        borderColor: this.darkenColor(color),
+        borderWidth: 1,
+        stack: 'stacked',
+      };
+    });
+  }
+
+  private populatePieChart(data: any[]): void {
+    // Converte precoTotal em número, se necessário
+    data = data.map((item) => ({
+      ...item,
+      precoTotal: +item.precoTotal,
+    }));
+
+    const monthlyTotals: { [mesTotal: number]: number } = {};
+
+    data.forEach((item) => {
+      if (!monthlyTotals[item.mesTotal]) {
+        monthlyTotals[item.mesTotal] = 0;
+      }
+      monthlyTotals[item.mesTotal] += item.precoTotal;
+    });
+
+    // Garante que todos os 12 meses existam no gráfico
+    const labels: string[] = [];
+    const values: number[] = [];
+    const colors: string[] = [];
+
+    for (let month = 1; month <= 12; month++) {
+      labels.push(this.barChartLabels[month - 1]);
+      values.push(monthlyTotals[month] || 0);
+      colors.push(Object.values(this.topColors)[month % 5]); // alterna cores
+    }
+
+    this.pieChartData.labels = labels;
+    this.pieChartData.datasets[0].data = values;
+    this.pieChartData.datasets[0].backgroundColor = colors;
+  }
+
+  private darkenColor(color: string): string {
+    if (color.startsWith('rgba')) {
+      return color.replace(/[\d\.]+\)$/, '1)').replace(/0\.\d+\)/, '1)');
+    }
+    return color;
+  }
 }
