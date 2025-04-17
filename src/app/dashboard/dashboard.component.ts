@@ -70,8 +70,24 @@ export class DashboardComponent implements OnInit {
           pointStyle: 'circle',
         },
       },
+      tooltip: {
+        callbacks: {
+          title: function (tooltipItems) {
+            const label = tooltipItems[0].label;
+            return label; 
+          },
+          label: function (tooltipItem) {
+            const cliente = tooltipItem.dataset.label?.replace('Cliente ', '') || '';
+            const valor = tooltipItem.raw as number;
+            return `Cliente: ${cliente}\nValor: R$ ${valor.toLocaleString('pt-BR', {
+              minimumFractionDigits: 2,
+            })}`;
+          },
+        },
+      },
     },
   };
+  
 
   public pieChartOptions: ChartConfiguration<'pie'>['options'] = {
     responsive: true,
