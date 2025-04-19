@@ -1,7 +1,8 @@
-<h2 class="dashboard-title">Dashboard: Top 5 Clientes por Volume de Gastos</h2>
-
 <div *ngIf="!isLoading" class="chart-container">
   <div class="chart-wrapper">
+    <div class="chart-title-container">
+      <h3 class="chart-subtitle">Top 5 Clientes por Volume de Gastos</h3>
+    </div>
     <canvas
       baseChart
       [data]="barChartData"
@@ -11,16 +12,6 @@
     </canvas>
   </div>
 
-  <!-- <div class="chart-wrapper">
-    <h3 class="chart-subtitle">Total geral por mês:</h3>
-    <canvas
-      baseChart
-      [data]="pieChartData"
-      [options]="pieChartOptions"
-      type="pie"
-    >
-    </canvas>
-  </div> -->
   <div class="chart-wrapper">
     <div class="chart-title-container">
       <h3 class="chart-subtitle">Total geral por mês</h3>
@@ -32,7 +23,7 @@
       type="pie"
     ></canvas>
   </div>
-  
+
 </div>
 
 <div *ngIf="isLoading" class="loading-spinner">
