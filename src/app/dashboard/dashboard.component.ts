@@ -79,7 +79,7 @@ export class DashboardComponent implements OnInit {
           label: function (tooltipItem) {
             const cliente = tooltipItem.dataset.label?.replace('Cliente ', '') || '';
             const valor = tooltipItem.raw as number;
-            return `Cliente: ${cliente}\nValor: R$ ${valor.toLocaleString('pt-BR', {
+            return `${cliente}\nValor: R$ ${valor.toLocaleString('pt-BR', {
               minimumFractionDigits: 2,
             })}`;
           },
@@ -88,7 +88,6 @@ export class DashboardComponent implements OnInit {
     },
   };
   
-
   public pieChartOptions: ChartConfiguration<'pie'>['options'] = {
     responsive: true,
     aspectRatio: 1,
@@ -177,7 +176,7 @@ export class DashboardComponent implements OnInit {
     this.barChartData.datasets = top5.map((client, index) => {
       const color = Object.values(this.topColors)[index % 5];
       return {
-        label: `Cliente ${client.idCliente}`,
+        label: `Cliente: ${client.idCliente}`,
         data: clientMonthTotals[client.idCliente],
         backgroundColor: color,
         borderColor: this.darkenColor(color),
@@ -243,7 +242,6 @@ export class DashboardComponent implements OnInit {
     };
   }
   
-
   private darkenColor(color: string): string {
     if (color.startsWith('rgba')) {
       return color.replace(/[\d\.]+\)$/, '1)').replace(/0\.\d+\)/, '1)');
