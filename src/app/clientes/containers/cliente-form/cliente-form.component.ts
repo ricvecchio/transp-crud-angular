@@ -94,7 +94,7 @@ export class ClienteFormComponent implements OnInit {
     '27 dias',
     '28 dias',
     '29 dias',
-    '30 dias'
+    '30 dias',
   ];
 
   constructor(
@@ -148,8 +148,12 @@ export class ClienteFormComponent implements OnInit {
       cno: [cliente.cno],
       ie: [cliente.ie],
       mangueira: [cliente.mangueira],
-      valorAjudante: cliente.valorAjudante ? this.formatarParaReais(cliente.valorAjudante) : '80,00',
-      valorAdicional: cliente.valorAdicional ? this.formatarParaReais(cliente.valorAdicional) : '30,00',
+      valorAjudante: cliente.valorAjudante
+        ? this.formatarParaReais(cliente.valorAjudante)
+        : '80,00',
+      valorAdicional: cliente.valorAdicional
+        ? this.formatarParaReais(cliente.valorAdicional)
+        : '30,00',
       precoCx5: [this.formatarParaReais(cliente.precoCx5)],
       precoCx10: [this.formatarParaReais(cliente.precoCx10)],
       precoCx15: [this.formatarParaReais(cliente.precoCx15)],
@@ -177,7 +181,6 @@ export class ClienteFormComponent implements OnInit {
       'precoLv10',
       'precoLv15',
     ]);
-    
   }
 
   onCpfCnpjInput(event: Event): void {
@@ -394,7 +397,7 @@ export class ClienteFormComponent implements OnInit {
 
     this.clienteService.salvar(this.formulario.value).subscribe(
       (result) => this.onSucess(),
-      (error) => this.onError(),
+      (error) => this.onError(error),
     );
   }
 
@@ -407,7 +410,11 @@ export class ClienteFormComponent implements OnInit {
     this.location.back();
   }
 
-  private onError() {
-    this.mensagemService.showErrorMessage('Erro ao salvar o cliente!');
+  private onError(error: any) {
+    if (error.status === 409) {
+      this.mensagemService.showErrorMessage('CPF/CNPJ já está cadastrado.');
+    } else {
+      this.mensagemService.showErrorMessage('Erro ao salvar o cliente!');
+    }
   }
 }
