@@ -481,6 +481,8 @@ export class PedidoFormComponent implements OnInit {
   }
 
   atualizarPrecoComExtras() {
+    console.time('PedidoFormComponent.atualizarPrecoComExtras'); // EXCLUIR
+    console.log('→ INÍCIO: atualizarPrecoComExtras'); // EXCLUIR
     let precoBase = 0;
 
     const volumeControl = this.formulario.get('volume');
@@ -549,6 +551,9 @@ export class PedidoFormComponent implements OnInit {
       precoEscolhido: precoFormatado,
       precoFinal: precoFormatado,
     });
+
+    console.log('← FIM: atualizarPrecoComExtras'); //EXCLUIR
+    console.timeEnd('PedidoFormComponent.atualizarPrecoComExtras'); //EXCLUIR
   }
 
   private converterParaNumero(valorFormatado: string): number {
@@ -563,6 +568,8 @@ export class PedidoFormComponent implements OnInit {
   }
 
   async onSubmit(status: string) {
+    console.time('PedidoFormComponent.onSubmit'); // EXCLUIR
+    console.log('→ INÍCIO: onSubmit'); // EXCLUIR
     this.atualizarFormulario(status);
 
     if (status === 'Salvo') {
@@ -577,9 +584,13 @@ export class PedidoFormComponent implements OnInit {
         );
       }
     }
+    console.log('← FIM: onSubmit'); //EXCLUIR
+    console.timeEnd('PedidoFormComponent.onSubmit'); //EXCLUIR
   }
 
   private atualizarFormulario(status: string) {
+    console.time('PedidoFormComponent.atualizarFormulario'); // EXCLUIR
+    console.log('→ INÍCIO: atualizarFormulario'); // EXCLUIR
     const dataFormatada = new Date(
       Date.now() - 3 * 60 * 60 * 1000,
     ).toISOString();
@@ -597,9 +608,13 @@ export class PedidoFormComponent implements OnInit {
       valorAjudante,
       valorAdicional,
     });
+    console.log('← FIM: atualizarFormulario'); //EXCLUIR
+    console.timeEnd('PedidoFormComponent.atualizarFormulario'); //EXCLUIR
   }
 
   private salvarPedido() {
+    console.time('PedidoFormComponent.salvarPedido'); // EXCLUIR
+    console.log('→ INÍCIO: salvarPedido'); // EXCLUIR
     this.pedidoService.salvar(this.formulario.value).subscribe({
       next: () => {
         this.onSucess();
@@ -607,9 +622,13 @@ export class PedidoFormComponent implements OnInit {
       },
       error: () => this.onError(),
     });
+    console.log('← FIM: salvarPedido'); //EXCLUIR
+    console.timeEnd('PedidoFormComponent.salvarPedido'); //EXCLUIR
   }
 
   private async emitirPedido(): Promise<void> {
+    console.time('PedidoFormComponent.emitirPedido'); // EXCLUIR
+    console.log('→ INÍCIO: emitirPedido'); // EXCLUIR
     this.prepararFormularioAntesDoEnvio();
 
     return new Promise((resolve, reject) => {
@@ -641,10 +660,14 @@ export class PedidoFormComponent implements OnInit {
           reject(error);
         },
       });
+    console.log('← FIM: emitirPedido'); //EXCLUIR
+    console.timeEnd('PedidoFormComponent.emitirPedido'); //EXCLUIR
     });
   }
 
   private prepararFormularioAntesDoEnvio(): void {
+    console.time('PedidoFormComponent.prepararFormularioAntesDoEnvio'); // EXCLUIR
+    console.log('→ INÍCIO: prepararFormularioAntesDoEnvio'); // EXCLUIR
     const form = this.formulario;
 
     const exibirPreco =
@@ -669,9 +692,13 @@ export class PedidoFormComponent implements OnInit {
       valorAjudante,
       valorAdicional,
     });
+    console.log('← FIM: prepararFormularioAntesDoEnvio'); //EXCLUIR
+    console.timeEnd('PedidoFormComponent.prepararFormularioAntesDoEnvio'); //EXCLUIR
   }
 
   private async salvarPedidoComImpressao() {
+    console.time('PedidoFormComponent.salvarPedidoComImpressao'); // EXCLUIR
+    console.log('→ INÍCIO: salvarPedidoComImpressao'); // EXCLUIR
     try {
       const pedidoSalvo = await this.salvarPedidoEObterResultado();
 
@@ -705,9 +732,13 @@ export class PedidoFormComponent implements OnInit {
         'Erro ao salvar pedido com impressão',
       );
     }
+    console.log('← FIM: salvarPedidoComImpressao'); //EXCLUIR
+    console.timeEnd('PedidoFormComponent.salvarPedidoComImpressao'); //EXCLUIR
   }
 
   private salvarPedidoEObterResultado(): Promise<Pedido> {
+    console.time('PedidoFormComponent.salvarPedidoEObterResultado'); // EXCLUIR
+    console.log('→ INÍCIO: salvarPedidoEObterResultado'); // EXCLUIR
     return new Promise((resolve, reject) => {
       this.pedidoService.salvar(this.formulario.value).subscribe({
         next: (result) => {
@@ -719,10 +750,14 @@ export class PedidoFormComponent implements OnInit {
           reject(error);
         },
       });
+    console.log('← FIM: salvarPedidoEObterResultado'); //EXCLUIR
+    console.timeEnd('PedidoFormComponent.salvarPedidoEObterResultado'); //EXCLUIR
     });
   }
 
   private onSucess() {
+    console.time('PedidoFormComponent.onSucess'); // EXCLUIR
+    console.log('→ INÍCIO: onSucess'); // EXCLUIR
     this.mensagemService.showSuccessMessage('Pedido Salvo com sucesso!');
     this.formulario.reset();
   }
@@ -732,6 +767,8 @@ export class PedidoFormComponent implements OnInit {
   }
 
   private onError() {
+    console.time('PedidoFormComponent.onError'); // EXCLUIR
+    console.log('→ INÍCIO: onError'); // EXCLUIR
     this.mensagemService.showErrorMessage('Erro ao salvar o pedido!');
   }
 }

@@ -9,9 +9,10 @@ import { PedidoPagina } from '../../modelo/pedido-pagina';
 
 @Injectable({
   providedIn: 'root',
-})
+}) 
 export class PedidoService {
   private readonly API = 'https://saotomecatimesaotomecatime.com/api/pedidos';
+  // private readonly API = 'http://localhost:8080/api/pedidos'; //EXCLUIR
 
   constructor(
     private http: HttpClient,
@@ -37,6 +38,8 @@ export class PedidoService {
     dataFinal?: string,
     statusFiltro?: string,
   ): Observable<PedidoPagina> {
+    console.time('PedidoService.listar'); // EXCLUIR
+    console.log('→ INÍCIO: listar'); // EXCLUIR
     const headers = this.getAuthHeaders();
     const params: any = { page, pageSize };
 
@@ -44,6 +47,8 @@ export class PedidoService {
     if (dataInicial) params.dataInicial = dataInicial;
     if (dataFinal) params.dataFinal = dataFinal;
     if (statusFiltro) params.statusFiltro = statusFiltro;
+    console.log('← FIM: listar'); //EXCLUIR
+    console.timeEnd('PedidoService.listar'); //EXCLUIR
 
     return this.http
       .get<PedidoPagina>(this.API, { headers, params })
@@ -69,18 +74,28 @@ export class PedidoService {
   }
 
   salvar(pedido: Partial<Pedido>) {
+    console.time('PedidoService.salvar'); // EXCLUIR
+    console.log('→ INÍCIO: salvar'); // EXCLUIR
     if (pedido.idPedido) {
+      console.log('← FIM: salvar.editar'); //EXCLUIR
+      console.timeEnd('PedidoService.salvar.editar'); //EXCLUIR
       return this.editar(pedido);
     }
+    console.log('← FIM: salvar.criar'); //EXCLUIR
+    console.timeEnd('PedidoService.salvar.criar'); //EXCLUIR
     return this.criar(pedido);
   }
 
   private criar(pedido: Partial<Pedido>) {
+    console.time('PedidoService.criar'); // EXCLUIR
+    console.log('→ INÍCIO: criar'); // EXCLUIR
     const headers = this.getAuthHeaders();
     return this.http.post<Pedido>(this.API, pedido, { headers }).pipe(first());
   }
 
   private editar(pedido: Partial<Pedido>) {
+    console.time('PedidoService.editar'); // EXCLUIR
+    console.log('→ INÍCIO: editar'); // EXCLUIR
     const headers = this.getAuthHeaders();
     return this.http
       .put<Pedido>(`${this.API}/${pedido.idPedido}`, pedido, { headers })
@@ -88,6 +103,8 @@ export class PedidoService {
   }
 
   excluir(idPedido: string) {
+    console.time('PedidoService.excluir'); // EXCLUIR
+    console.log('→ INÍCIO: excluir'); // EXCLUIR
     const headers = this.getAuthHeaders();
     return this.http
       .delete(`${this.API}/${idPedido}`, { headers })
@@ -95,6 +112,8 @@ export class PedidoService {
   }
 
   async gerarImagemBase64(): Promise<string | null> {
+    console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
+    console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
     const container = document.querySelector(
       '.container-previa',
     ) as HTMLElement;
@@ -109,6 +128,8 @@ export class PedidoService {
     try {
       const canvas = await html2canvas(container);
       const imageData = canvas.toDataURL('image/png');
+    console.log('← FIM: gerarImagemBase64'); //EXCLUIR
+    console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
       return imageData;
     } catch (error) {
       this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
@@ -117,6 +138,8 @@ export class PedidoService {
   }
 
   async gerarImpressao(): Promise<string | null> {
+    console.time('PedidoService.gerarImpressao'); // EXCLUIR
+    console.log('→ INÍCIO: gerarImpressao'); // EXCLUIR
     const imageData = await this.gerarImagemBase64();
 
     try {
@@ -171,6 +194,8 @@ export class PedidoService {
           });
         };
       });
+    console.log('← FIM: gerarImpressao'); //EXCLUIR
+    console.timeEnd('PedidoService.gerarImpressao'); //EXCLUIR
       return imageData;
     } catch (error) {
       this.mensagemService.showErrorMessage('Erro ao imprimir o pedido.');
