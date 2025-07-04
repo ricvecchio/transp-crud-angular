@@ -118,6 +118,8 @@ export class PedidoService {
       '.container-previa',
     ) as HTMLElement;
 
+    console.log('→ ImagemBase64 - valor container: ' + container); // EXCLUIR
+
     if (!container) {
       this.mensagemService.showErrorMessage(
         'Elemento .container-previa não encontrado',
