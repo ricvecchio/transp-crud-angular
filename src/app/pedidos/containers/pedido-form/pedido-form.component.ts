@@ -24,6 +24,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
@@ -76,6 +77,7 @@ export class PedidoFormComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     public formUtils: FormUtilsService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -613,31 +615,59 @@ export class PedidoFormComponent implements OnInit {
     console.timeEnd('PedidoFormComponent.onSubmit'); //EXCLUIR
   }
 
+  // private async emitirPedidoComImagemEImpressao(): Promise<void> {
+  //   console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
+  //   console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
+  //   this.prepararFormularioAntesDoEnvio();
+
+  //   const pedidoSalvo = await this.pedidoService
+  //     .salvar(this.formulario.value)
+  //     .toPromise();
+
+  //   if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
+
+  //   this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
+  //   await new Promise((resolve) => setTimeout(resolve, 300)); 
+
+  //   const imagemPedido = await this.pedidoService.gerarImagemBase64();
+  //   if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
+
+  //   const pedidoComImagem = { ...pedidoSalvo, imagemPedido };
+  //   await this.pedidoService.salvar(pedidoComImagem).toPromise();
+
+  //   await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
+
+  //   console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
+  //   console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao'); //EXCLUIR
+  // }
   private async emitirPedidoComImagemEImpressao(): Promise<void> {
-    console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
-    console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
-    this.prepararFormularioAntesDoEnvio();
+  console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao');
+  console.log('→ INÍCIO: emitirPedidoComImagemEImpressao');
 
-    const pedidoSalvo = await this.pedidoService
-      .salvar(this.formulario.value)
-      .toPromise();
+  this.prepararFormularioAntesDoEnvio();
 
-    if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
+  const pedidoSalvo = await this.pedidoService.salvar(this.formulario.value).toPromise();
+  if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
 
-    this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
-    await new Promise((resolve) => setTimeout(resolve, 300)); 
+  // Atualiza o ID no formulário
+  this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
+  this.cdr.detectChanges(); // Força renderização DOM (evita o setTimeout)
 
-    const imagemPedido = await this.pedidoService.gerarImagemBase64();
-    if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
+  // Aguarda o DOM refletir o novo ID no template
+  const imagemPedido = await this.pedidoService.gerarImagemBase64();
+  if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
 
-    const pedidoComImagem = { ...pedidoSalvo, imagemPedido };
-    await this.pedidoService.salvar(pedidoComImagem).toPromise();
+  // Atualiza o pedido com a imagem
+  const pedidoComImagem = { ...pedidoSalvo, imagemPedido };
+  await this.pedidoService.salvar(pedidoComImagem).toPromise();
 
-    await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
+  // Impressão
+  await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
 
-    console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
-    console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao'); //EXCLUIR
-  }
+  console.log('← FIM: emitirPedidoComImagemEImpressao');
+  console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao');
+}
+
 
   private atualizarFormulario(status: string) {
     console.time('PedidoFormComponent.atualizarFormulario'); // EXCLUIR
