@@ -590,55 +590,54 @@ export class PedidoFormComponent implements OnInit {
   //   console.timeEnd('PedidoFormComponent.onSubmit'); //EXCLUIR
   // }
 
-async onSubmit(status: string) {
-            console.time('PedidoFormComponent.onSubmit'); // EXCLUIR
+  async onSubmit(status: string) {
+    console.time('PedidoFormComponent.onSubmit'); // EXCLUIR
     console.log('→ INÍCIO: onSubmit'); // EXCLUIR
-  this.atualizarFormulario(status);
+    this.atualizarFormulario(status);
 
-  if (status === 'Salvo') {
-    this.salvarPedido();
-  } else {
-    try {
-      await this.emitirPedidoComImagemEImpressao();
-      this.mensagemService.showSuccessMessage('Pedido emitido com sucesso!');
-      this.router.navigate(['/menu']);
-    } catch (error) {
-      console.error('Erro ao emitir pedido:', error);
-      this.mensagemService.showErrorMessage(
-        'Erro ao emitir pedido ou gerar impressão'
-      );
+    if (status === 'Salvo') {
+      this.salvarPedido();
+    } else {
+      try {
+        await this.emitirPedidoComImagemEImpressao();
+        this.mensagemService.showSuccessMessage('Pedido emitido com sucesso!');
+        this.router.navigate(['/menu']);
+      } catch (error) {
+        console.error('Erro ao emitir pedido:', error);
+        this.mensagemService.showErrorMessage(
+          'Erro ao emitir pedido ou gerar impressão',
+        );
+      }
     }
-  }
-          console.log('← FIM: onSubmit'); //EXCLUIR
+    console.log('← FIM: onSubmit'); //EXCLUIR
     console.timeEnd('PedidoFormComponent.onSubmit'); //EXCLUIR
-}
+  }
 
-
-private async emitirPedidoComImagemEImpressao(): Promise<void> {
-            console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
+  private async emitirPedidoComImagemEImpressao(): Promise<void> {
+    console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
     console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
-  this.prepararFormularioAntesDoEnvio();
+    this.prepararFormularioAntesDoEnvio();
 
-  const pedidoSalvo = await this.pedidoService.salvar(this.formulario.value).toPromise();
+    const pedidoSalvo = await this.pedidoService
+      .salvar(this.formulario.value)
+      .toPromise();
 
-  if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
+    if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
 
-  this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
-  await new Promise(resolve => setTimeout(resolve, 300)); // Garante que o idPedido apareça no DOM
+    this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
+    await new Promise((resolve) => setTimeout(resolve, 300)); 
 
-  const imagemPedido = await this.pedidoService.gerarImagemBase64();
-  if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
+    const imagemPedido = await this.pedidoService.gerarImagemBase64();
+    if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
 
-  const pedidoComImagem = { ...pedidoSalvo, imagemPedido };
-  await this.pedidoService.salvar(pedidoComImagem).toPromise();
+    const pedidoComImagem = { ...pedidoSalvo, imagemPedido };
+    await this.pedidoService.salvar(pedidoComImagem).toPromise();
 
-  // Aguarda a impressão e o fechamento da janela
-  await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
+    await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
 
-            console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
+    console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
     console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao'); //EXCLUIR
-}
-
+  }
 
   private atualizarFormulario(status: string) {
     console.time('PedidoFormComponent.atualizarFormulario'); // EXCLUIR
@@ -678,7 +677,7 @@ private async emitirPedidoComImagemEImpressao(): Promise<void> {
     console.timeEnd('PedidoFormComponent.salvarPedido'); //EXCLUIR
   }
 
-  // private async emitirPedido(): Promise<void> { 
+  // private async emitirPedido(): Promise<void> {
   //   console.time('PedidoFormComponent.emitirPedido'); // EXCLUIR
   //   console.log('→ INÍCIO: emitirPedido'); // EXCLUIR
   //   this.prepararFormularioAntesDoEnvio();
@@ -692,7 +691,7 @@ private async emitirPedidoComImagemEImpressao(): Promise<void> {
   //           .then((imagemPedido) => {
   //             if (imagemPedido) {
   //               this.formulario.patchValue({ imagemPedido });
-  //               resolve(); 
+  //               resolve();
   //             } else {
   //               this.mensagemService.showErrorMessage(
   //                 'Erro ao gerar imagem do pedido',
@@ -716,45 +715,45 @@ private async emitirPedidoComImagemEImpressao(): Promise<void> {
   //   console.timeEnd('PedidoFormComponent.emitirPedido'); //EXCLUIR
   //   });
   // }
-  private async emitirPedido(): Promise<string> {
-  console.time('PedidoFormComponent.emitirPedido'); // EXCLUIR
-  console.log('→ INÍCIO: emitirPedido'); // EXCLUIR
-  this.prepararFormularioAntesDoEnvio();
+  // private async emitirPedido(): Promise<string> {
+  //   console.time('PedidoFormComponent.emitirPedido'); // EXCLUIR
+  //   console.log('→ INÍCIO: emitirPedido'); // EXCLUIR
+  //   this.prepararFormularioAntesDoEnvio();
 
-  return new Promise((resolve, reject) => {
-    this.pedidoService.salvar(this.formulario.value).subscribe({
-      next: (result) => {
-        this.formulario.patchValue({ idPedido: result.idPedido });
+  //   return new Promise((resolve, reject) => {
+  //     this.pedidoService.salvar(this.formulario.value).subscribe({
+  //       next: (result) => {
+  //         this.formulario.patchValue({ idPedido: result.idPedido });
 
-        this.pedidoService
-          .gerarImagemBase64()
-          .then((imagemPedido) => {
-            if (imagemPedido) {
-              this.formulario.patchValue({ imagemPedido });
-              resolve(imagemPedido);  // <- retorna imagem aqui
-            } else {
-              this.mensagemService.showErrorMessage(
-                'Erro ao gerar imagem do pedido',
-              );
-              reject(new Error('Erro ao gerar imagem do pedido'));
-            }
-          })
-          .catch((error) => {
-            this.mensagemService.showErrorMessage(
-              'Erro ao gerar imagem do pedido',
-            );
-            reject(error);
-          });
-      },
-      error: (error) => {
-        this.onError();
-        reject(error);
-      },
-    });
-  console.log('← FIM: emitirPedido'); //EXCLUIR
-  console.timeEnd('PedidoFormComponent.emitirPedido'); //EXCLUIR
-  });
-}
+  //         this.pedidoService
+  //           .gerarImagemBase64()
+  //           .then((imagemPedido) => {
+  //             if (imagemPedido) {
+  //               this.formulario.patchValue({ imagemPedido });
+  //               resolve(imagemPedido); // <- retorna imagem aqui
+  //             } else {
+  //               this.mensagemService.showErrorMessage(
+  //                 'Erro ao gerar imagem do pedido',
+  //               );
+  //               reject(new Error('Erro ao gerar imagem do pedido'));
+  //             }
+  //           })
+  //           .catch((error) => {
+  //             this.mensagemService.showErrorMessage(
+  //               'Erro ao gerar imagem do pedido',
+  //             );
+  //             reject(error);
+  //           });
+  //       },
+  //       error: (error) => {
+  //         this.onError();
+  //         reject(error);
+  //       },
+  //     });
+  //     console.log('← FIM: emitirPedido'); //EXCLUIR
+  //     console.timeEnd('PedidoFormComponent.emitirPedido'); //EXCLUIR
+  //   });
+  // }
 
   private prepararFormularioAntesDoEnvio(): void {
     console.time('PedidoFormComponent.prepararFormularioAntesDoEnvio'); // EXCLUIR
