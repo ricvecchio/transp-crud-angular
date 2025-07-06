@@ -270,22 +270,28 @@ gerarImpressaoUsandoImagem(imagemBase64: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const janelaImpressao = window.open('', '_blank');
     if (janelaImpressao) {
-      janelaImpressao.document.write(`
-        <html>
-          <head><title>Impressão do Pedido</title></head>
-          <body style="margin: 0; padding: 0;">
-            <img src="data:image/png;base64,${imagemBase64}" style="width:100%;"/>
-            <script>
-              window.onload = function() {
-                window.print();
-              };
-              window.onafterprint = function() {
-                window.close();
-              };
-            </script>
-          </body>
-        </html>
-      `);
+janelaImpressao.document.write(`
+  <html>
+    <head>
+      <title>Impressão do Pedido</title>
+    </head>
+    <body style="margin: 0; padding: 0;">
+      <img id="imagemPedido" src="data:image/png;base64,${imagemBase64}" style="width:100%;"/>
+      <script>
+        const img = document.getElementById('imagemPedido');
+        img.onload = function () {
+          setTimeout(() => {
+            window.print();
+          }, 300); // aguarda o render da imagem antes de imprimir
+        };
+        window.onafterprint = function () {
+          window.close();
+        };
+      </script>
+    </body>
+  </html>
+`);
+
       janelaImpressao.document.close();
 
       const timer = setInterval(() => {
