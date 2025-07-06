@@ -591,7 +591,7 @@ export class PedidoFormComponent implements OnInit {
   // }
 
 async onSubmit(status: string) {
-          console.time('PedidoFormComponent.onSubmit'); // EXCLUIR
+            console.time('PedidoFormComponent.onSubmit'); // EXCLUIR
     console.log('→ INÍCIO: onSubmit'); // EXCLUIR
   this.atualizarFormulario(status);
 
@@ -600,54 +600,56 @@ async onSubmit(status: string) {
   } else {
     try {
       await this.emitirPedidoComImagemEImpressao();
+      this.mensagemService.showSuccessMessage('Pedido emitido com sucesso!');
       this.router.navigate(['/menu']);
-      this.mensagemService.showSuccessMessage('Pedido Emitido com sucesso!');
     } catch (error) {
+      console.error('Erro ao emitir pedido:', error);
       this.mensagemService.showErrorMessage(
-        'Erro ao emitir pedido ou gerar impressão',
+        'Erro ao emitir pedido ou gerar impressão'
       );
     }
   }
-        console.log('← FIM: onSubmit'); //EXCLUIR
+          console.log('← FIM: onSubmit'); //EXCLUIR
     console.timeEnd('PedidoFormComponent.onSubmit'); //EXCLUIR
 }
 
 
 private async emitirPedidoComImagemEImpressao(): Promise<void> {
-
+            console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
+    console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
   this.prepararFormularioAntesDoEnvio();
 
-  const pedidoParaSalvar = this.formulario.value;
-
-  // Primeiro salvamento: obtém o idPedido
-  const pedidoSalvo = await this.pedidoService.salvar(pedidoParaSalvar).toPromise();
+  // 1. Primeiro salvamento: salva o pedido sem imagem
+  const pedidoSalvo = await this.pedidoService.salvar(this.formulario.value).toPromise();
 
   if (!pedidoSalvo?.idPedido) {
     throw new Error('Erro ao salvar pedido');
   }
 
-  // Atualiza o formulário com o idPedido
+  // 2. Atualiza o formulário com o idPedido recebido
   this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
 
-  // Gera a imagem com o id já salvo
+  // 3. Aguarda o ciclo de detecção de mudanças para o idPedido aparecer no DOM
+  await new Promise(resolve => setTimeout(resolve, 300)); // ou usar ChangeDetectorRef.detectChanges()
+
+  // 4. Gera a imagem com o idPedido já visível
   const imagemPedido = await this.pedidoService.gerarImagemBase64();
 
   if (!imagemPedido) {
     throw new Error('Erro ao gerar imagem do pedido');
   }
 
-  // Atualiza o pedido com imagem + idPedido e salva novamente
+  // 5. Atualiza o pedido com imagem e salva novamente
   const pedidoComImagem = {
     ...pedidoSalvo,
     imagemPedido,
   };
-
   await this.pedidoService.salvar(pedidoComImagem).toPromise();
 
-  // Gera a impressão com a imagem correta (que já inclui o id)
+  // 6. Gera a impressão com imagem correta
   await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
 
-          console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
+            console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
     console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao'); //EXCLUIR
 }
 
