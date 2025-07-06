@@ -118,8 +118,6 @@ export class PedidoService {
       '.container-previa',
     ) as HTMLElement;
 
-    console.log('→ ImagemBase64 - valor container: ' + container); // EXCLUIR
-
     if (!container) {
       this.mensagemService.showErrorMessage(
         'Elemento .container-previa não encontrado',
@@ -139,69 +137,133 @@ export class PedidoService {
     }
   }
 
-  async gerarImpressao(): Promise<string | null> {
-    console.time('PedidoService.gerarImpressao'); // EXCLUIR
-    console.log('→ INÍCIO: gerarImpressao'); // EXCLUIR
-    const imageData = await this.gerarImagemBase64();
+  // async gerarImpressao(): Promise<string | null> {
+  //   console.time('PedidoService.gerarImpressao'); // EXCLUIR
+  //   console.log('→ INÍCIO: gerarImpressao'); // EXCLUIR
+  //   const imageData = await this.gerarImagemBase64();
 
-    try {
-      const iframe = document.createElement('iframe');
-      iframe.style.position = 'absolute';
-      iframe.style.width = '0px';
-      iframe.style.height = '0px';
-      iframe.style.border = 'none';
-      document.body.appendChild(iframe);
+  //   try {
+  //     const iframe = document.createElement('iframe');
+  //     iframe.style.position = 'absolute';
+  //     iframe.style.width = '0px';
+  //     iframe.style.height = '0px';
+  //     iframe.style.border = 'none';
+  //     document.body.appendChild(iframe);
 
-      const iframeDocument = iframe.contentWindow?.document;
-      if (!iframeDocument) {
-        this.mensagemService.showErrorMessage(
-          'Erro ao acessar o documento do iframe',
-        );
-        return null;
-      }
+  //     const iframeDocument = iframe.contentWindow?.document;
+  //     if (!iframeDocument) {
+  //       this.mensagemService.showErrorMessage(
+  //         'Erro ao acessar o documento do iframe',
+  //       );
+  //       return null;
+  //     }
 
-      iframeDocument.open();
-      iframeDocument.write(`
-        <html>
-          <head>
-            <style>
-              @page { size: A4 portrait; margin: 0; }
-              body { margin: 0; display: flex; flex-direction: column; height: 100vh; }
-              .page { position: relative; width: 100%; height: 100vh; }
-              .image-container { width: 100%; height: 50%; position: absolute; padding: 20px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
-              .image { width: 100%; height: 100%; object-fit: contain; position: relative; }
-            </style>
-          </head>
-          <body>
-            <div class="page">
-              <div class="image-container" style="top: 0;">
-                <img src="${imageData}" class="image" />
-              </div>
-              <div class="image-container" style="top: 50%;">
-                <img src="${imageData}" class="image" />
-              </div>
-            </div>
-          </body>
-        </html>
-      `);
-      iframeDocument.close();
+  //     iframeDocument.open();
+  //     iframeDocument.write(`
+  //       <html>
+  //         <head>
+  //           <style>
+  //             @page { size: A4 portrait; margin: 0; }
+  //             body { margin: 0; display: flex; flex-direction: column; height: 100vh; }
+  //             .page { position: relative; width: 100%; height: 100vh; }
+  //             .image-container { width: 100%; height: 50%; position: absolute; padding: 20px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
+  //             .image { width: 100%; height: 100%; object-fit: contain; position: relative; }
+  //           </style>
+  //         </head>
+  //         <body>
+  //           <div class="page">
+  //             <div class="image-container" style="top: 0;">
+  //               <img src="${imageData}" class="image" />
+  //             </div>
+  //             <div class="image-container" style="top: 50%;">
+  //               <img src="${imageData}" class="image" />
+  //             </div>
+  //           </div>
+  //         </body>
+  //       </html>
+  //     `);
+  //     iframeDocument.close();
 
-      await new Promise<void>((resolve) => {
-        iframe.onload = () => {
-          iframe.contentWindow?.focus();
-          iframe.contentWindow?.print();
-          iframe.contentWindow?.addEventListener('afterprint', () => {
-            document.body.removeChild(iframe);
-            resolve();
-          });
-        };
-      });
-    console.log('← FIM: gerarImpressao'); //EXCLUIR
-    console.timeEnd('PedidoService.gerarImpressao'); //EXCLUIR
-      return imageData;
-    } catch (error) {
-      this.mensagemService.showErrorMessage('Erro ao imprimir o pedido.');
-      return null;
+  //     await new Promise<void>((resolve) => {
+  //       iframe.onload = () => {
+  //         iframe.contentWindow?.focus();
+  //         iframe.contentWindow?.print();
+  //         iframe.contentWindow?.addEventListener('afterprint', () => {
+  //           document.body.removeChild(iframe);
+  //           resolve();
+  //         });
+  //       };
+  //     });
+  //   console.log('← FIM: gerarImpressao'); //EXCLUIR
+  //   console.timeEnd('PedidoService.gerarImpressao'); //EXCLUIR
+  //     return imageData;
+  //   } catch (error) {
+  //     this.mensagemService.showErrorMessage('Erro ao imprimir o pedido.');
+  //     return null;
+  //   }
+  // }
+
+  // ==> NOVO MÉTODO
+  async gerarImpressaoUsandoImagem(imagemData: string): Promise<void> {
+        console.time('PedidoService.gerarImpressaoUsandoImagem'); // EXCLUIR
+    console.log('→ INÍCIO: gerarImpressaoUsandoImagem'); // EXCLUIR
+  try {
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'absolute';
+    iframe.style.width = '0px';
+    iframe.style.height = '0px';
+    iframe.style.border = 'none';
+    document.body.appendChild(iframe);
+
+    const iframeDocument = iframe.contentWindow?.document;
+    if (!iframeDocument) {
+      this.mensagemService.showErrorMessage(
+        'Erro ao acessar o documento do iframe',
+      );
+      return;
     }
+
+    iframeDocument.open();
+    iframeDocument.write(`
+      <html>
+        <head>
+          <style>
+            @page { size: A4 portrait; margin: 0; }
+            body { margin: 0; display: flex; flex-direction: column; height: 100vh; }
+            .page { position: relative; width: 100%; height: 100vh; }
+            .image-container { width: 100%; height: 50%; position: absolute; padding: 20px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
+            .image { width: 100%; height: 100%; object-fit: contain; position: relative; }
+          </style>
+        </head>
+        <body>
+          <div class="page">
+            <div class="image-container" style="top: 0;">
+              <img src="${imagemData}" class="image" />
+            </div>
+            <div class="image-container" style="top: 50%;">
+              <img src="${imagemData}" class="image" />
+            </div>
+          </div>
+        </body>
+      </html>
+    `);
+    iframeDocument.close();
+
+    await new Promise<void>((resolve) => {
+      iframe.onload = () => {
+        iframe.contentWindow?.focus();
+        iframe.contentWindow?.print();
+        iframe.contentWindow?.addEventListener('afterprint', () => {
+          document.body.removeChild(iframe);
+          resolve();
+        });
+      };
+    });
+        console.log('← FIM: gerarImpressaoUsandoImagem'); //EXCLUIR
+    console.timeEnd('PedidoService.gerarImpressaoUsandoImagem'); //EXCLUIR
+  } catch (error) {
+    this.mensagemService.showErrorMessage('Erro ao imprimir o pedido.');
   }
+}
+
 }
