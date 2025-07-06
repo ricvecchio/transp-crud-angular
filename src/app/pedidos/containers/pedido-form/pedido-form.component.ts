@@ -568,28 +568,62 @@ export class PedidoFormComponent implements OnInit {
     return parseFloat(valorLimpo) || 0;
   }
 
-  async onSubmit(status: string) {
-    console.time('PedidoFormComponent.onSubmit'); // EXCLUIR
-    console.log('→ INÍCIO: onSubmit'); // EXCLUIR
-    this.atualizarFormulario(status);
+  // async onSubmit(status: string) {
+  //   console.time('PedidoFormComponent.onSubmit'); // EXCLUIR
+  //   console.log('→ INÍCIO: onSubmit'); // EXCLUIR
+  //   this.atualizarFormulario(status);
 
-    if (status === 'Salvo') {
-      this.salvarPedido();
-    } else {
-      try {
-        // await this.emitirPedido(); // ANTIGO
-        // this.salvarPedidoComImpressao(); // ANTIGO
-        const imagemBase64 = await this.emitirPedido(); // NOVO
-        await this.salvarPedidoComImpressao(imagemBase64); // NOVO
-      } catch (error) {
-        this.mensagemService.showErrorMessage(
-          'Erro ao emitir pedido ou gerar impressão',
-        );
-      }
+  //   if (status === 'Salvo') {
+  //     this.salvarPedido();
+  //   } else {
+  //     try {
+  //       // await this.emitirPedido(); // ANTIGO
+  //       // this.salvarPedidoComImpressao(); // ANTIGO
+  //       const imagemBase64 = await this.emitirPedido(); // NOVO
+  //       await this.salvarPedidoComImpressao(imagemBase64); // NOVO
+  //     } catch (error) {
+  //       this.mensagemService.showErrorMessage(
+  //         'Erro ao emitir pedido ou gerar impressão',
+  //       );
+  //     }
+  //   }
+  //   console.log('← FIM: onSubmit'); //EXCLUIR
+  //   console.timeEnd('PedidoFormComponent.onSubmit'); //EXCLUIR
+  // }
+  async onSubmit(status: string) {
+        console.time('PedidoFormComponent.onSubmit'); // EXCLUIR
+    console.log('→ INÍCIO: onSubmit'); // EXCLUIR
+  this.atualizarFormulario(status);
+
+  if (status === 'Salvo') {
+    this.salvarPedido();
+  } else {
+    try {
+      const pedidoSalvo = await this.salvarPedidoEObterResultado(); // salva só uma vez
+      const imagemBase64 = await this.pedidoService.gerarImagemBase64(); // gerar imagem após salvar
+
+      if (!imagemBase64) throw new Error('Imagem não gerada');
+
+      pedidoSalvo.imagemPedido = imagemBase64;
+
+      this.pedidoService.salvar(pedidoSalvo).subscribe({
+        next: () => {
+          this.pedidoService.gerarImpressaoUsandoImagem(imagemBase64);
+          this.router.navigate(['/menu']);
+          this.mensagemService.showSuccessMessage('Pedido Emitido com sucesso!');
+        },
+        error: () => {
+          this.mensagemService.showErrorMessage('Erro ao salvar pedido com impressão');
+        },
+      });
+    } catch (error) {
+      this.mensagemService.showErrorMessage('Erro ao emitir pedido ou gerar impressão');
     }
-    console.log('← FIM: onSubmit'); //EXCLUIR
-    console.timeEnd('PedidoFormComponent.onSubmit'); //EXCLUIR
   }
+      console.log('← FIM: onSubmit'); //EXCLUIR
+    console.timeEnd('PedidoFormComponent.onSubmit'); //EXCLUIR
+}
+
 
   private atualizarFormulario(status: string) {
     console.time('PedidoFormComponent.atualizarFormulario'); // EXCLUIR
