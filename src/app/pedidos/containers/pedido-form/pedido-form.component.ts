@@ -619,34 +619,20 @@ private async emitirPedidoComImagemEImpressao(): Promise<void> {
     console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
   this.prepararFormularioAntesDoEnvio();
 
-  // 1. Primeiro salvamento: salva o pedido sem imagem
   const pedidoSalvo = await this.pedidoService.salvar(this.formulario.value).toPromise();
 
-  if (!pedidoSalvo?.idPedido) {
-    throw new Error('Erro ao salvar pedido');
-  }
+  if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
 
-  // 2. Atualiza o formulário com o idPedido recebido
   this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
+  await new Promise(resolve => setTimeout(resolve, 300)); // Garante que o idPedido apareça no DOM
 
-  // 3. Aguarda o ciclo de detecção de mudanças para o idPedido aparecer no DOM
-  await new Promise(resolve => setTimeout(resolve, 300)); // ou usar ChangeDetectorRef.detectChanges()
-
-  // 4. Gera a imagem com o idPedido já visível
   const imagemPedido = await this.pedidoService.gerarImagemBase64();
+  if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
 
-  if (!imagemPedido) {
-    throw new Error('Erro ao gerar imagem do pedido');
-  }
-
-  // 5. Atualiza o pedido com imagem e salva novamente
-  const pedidoComImagem = {
-    ...pedidoSalvo,
-    imagemPedido,
-  };
+  const pedidoComImagem = { ...pedidoSalvo, imagemPedido };
   await this.pedidoService.salvar(pedidoComImagem).toPromise();
 
-  // 6. Gera a impressão com imagem correta
+  // Aguarda a impressão e o fechamento da janela
   await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
 
             console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
@@ -801,67 +787,67 @@ private async emitirPedidoComImagemEImpressao(): Promise<void> {
     console.timeEnd('PedidoFormComponent.prepararFormularioAntesDoEnvio'); //EXCLUIR
   }
 
-  // private async salvarPedidoComImpressao() {
-  private async salvarPedidoComImpressao(imagemPedido: string) {
-    console.time('PedidoFormComponent.salvarPedidoComImpressao'); // EXCLUIR
-    console.log('→ INÍCIO: salvarPedidoComImpressao'); // EXCLUIR
-    try {
-      const pedidoSalvo = await this.salvarPedidoEObterResultado();
+  // // private async salvarPedidoComImpressao() {
+  // private async salvarPedidoComImpressao(imagemPedido: string) {
+  //   console.time('PedidoFormComponent.salvarPedidoComImpressao'); // EXCLUIR
+  //   console.log('→ INÍCIO: salvarPedidoComImpressao'); // EXCLUIR
+  //   try {
+  //     const pedidoSalvo = await this.salvarPedidoEObterResultado();
 
-      if (!pedidoSalvo.idPedido) {
-        throw new Error('ID do pedido não encontrado após salvar');
-      }
+  //     if (!pedidoSalvo.idPedido) {
+  //       throw new Error('ID do pedido não encontrado após salvar');
+  //     }
 
-      // ===> ANTIGO
-      // const imagemPedido = await this.pedidoService.gerarImagemBase64();
-      // if (!imagemPedido) {
-      //   this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido');
-      //   return;
-      // }
+  //     // ===> ANTIGO
+  //     // const imagemPedido = await this.pedidoService.gerarImagemBase64();
+  //     // if (!imagemPedido) {
+  //     //   this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido');
+  //     //   return;
+  //     // }
 
-      pedidoSalvo.imagemPedido = imagemPedido;
-      this.pedidoService.salvar(pedidoSalvo).subscribe({
-        next: () => {
-          // this.pedidoService.gerarImpressao(); // ANTIGO
-          this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido); // NOVO
-          this.router.navigate(['/menu']); // NOVO
-          this.mensagemService.showSuccessMessage(
-            'Pedido Emitido com sucesso!',
-          );
-        },
-        error: () => {
-          this.mensagemService.showErrorMessage(
-            'Erro ao salvar pedido com impressão',
-          );
-        },
-      });
-    } catch (error) {
-      this.mensagemService.showErrorMessage(
-        'Erro ao salvar pedido com impressão',
-      );
-    }
-    console.log('← FIM: salvarPedidoComImpressao'); //EXCLUIR
-    console.timeEnd('PedidoFormComponent.salvarPedidoComImpressao'); //EXCLUIR
-  }
+  //     pedidoSalvo.imagemPedido = imagemPedido;
+  //     this.pedidoService.salvar(pedidoSalvo).subscribe({
+  //       next: () => {
+  //         // this.pedidoService.gerarImpressao(); // ANTIGO
+  //         this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido); // NOVO
+  //         this.router.navigate(['/menu']); // NOVO
+  //         this.mensagemService.showSuccessMessage(
+  //           'Pedido Emitido com sucesso!',
+  //         );
+  //       },
+  //       error: () => {
+  //         this.mensagemService.showErrorMessage(
+  //           'Erro ao salvar pedido com impressão',
+  //         );
+  //       },
+  //     });
+  //   } catch (error) {
+  //     this.mensagemService.showErrorMessage(
+  //       'Erro ao salvar pedido com impressão',
+  //     );
+  //   }
+  //   console.log('← FIM: salvarPedidoComImpressao'); //EXCLUIR
+  //   console.timeEnd('PedidoFormComponent.salvarPedidoComImpressao'); //EXCLUIR
+  // }
 
-  private salvarPedidoEObterResultado(): Promise<Pedido> {
-    console.time('PedidoFormComponent.salvarPedidoEObterResultado'); // EXCLUIR
-    console.log('→ INÍCIO: salvarPedidoEObterResultado'); // EXCLUIR
-    return new Promise((resolve, reject) => {
-      this.pedidoService.salvar(this.formulario.value).subscribe({
-        next: (result) => {
-          this.formulario.patchValue({ idPedido: result.idPedido });
-          resolve(result);
-        },
-        error: (error) => {
-          this.onError();
-          reject(error);
-        },
-      });
-    console.log('← FIM: salvarPedidoEObterResultado'); //EXCLUIR
-    console.timeEnd('PedidoFormComponent.salvarPedidoEObterResultado'); //EXCLUIR
-    });
-  }
+  // private salvarPedidoEObterResultado(): Promise<Pedido> {
+  //   console.time('PedidoFormComponent.salvarPedidoEObterResultado'); // EXCLUIR
+  //   console.log('→ INÍCIO: salvarPedidoEObterResultado'); // EXCLUIR
+  //   return new Promise((resolve, reject) => {
+  //     this.pedidoService.salvar(this.formulario.value).subscribe({
+  //       next: (result) => {
+  //         this.formulario.patchValue({ idPedido: result.idPedido });
+  //         resolve(result);
+  //       },
+  //       error: (error) => {
+  //         this.onError();
+  //         reject(error);
+  //       },
+  //     });
+  //   console.log('← FIM: salvarPedidoEObterResultado'); //EXCLUIR
+  //   console.timeEnd('PedidoFormComponent.salvarPedidoEObterResultado'); //EXCLUIR
+  //   });
+  // }
 
   private onSucess() {
     console.time('PedidoFormComponent.onSucess'); // EXCLUIR
