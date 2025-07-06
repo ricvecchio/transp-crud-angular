@@ -111,6 +111,36 @@ export class PedidoService {
       .pipe(first());
   }
 
+  // async gerarImagemBase64(): Promise<string | null> {
+  //   console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
+  //   console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
+  //   const container = document.querySelector(
+  //     '.container-previa',
+  //   ) as HTMLElement;
+
+  //   if (!container) {
+  //     this.mensagemService.showErrorMessage(
+  //       'Elemento .container-previa não encontrado',
+  //     );
+  //     return null;
+  //   }
+
+  //   try {
+  //     const canvas = await html2canvas(container, {
+  //       scale: 1,
+  //       useCORS: true,
+  //       backgroundColor: null,
+  //     });
+
+  //     const imageData = canvas.toDataURL('image/png');
+  //     console.log('← FIM: gerarImagemBase64'); //EXCLUIR
+  //     console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
+  //     return imageData;
+  //   } catch (error) {
+  //     this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
+  //     return null;
+  //   }
+  // }
   async gerarImagemBase64(): Promise<string | null> {
     console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
     console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
@@ -126,16 +156,17 @@ export class PedidoService {
     }
 
     try {
+      // Reduzir o scale para acelerar o processo sem perder muita qualidade visual
       const canvas = await html2canvas(container, {
-        scale: 1,
+        scale: 0.8, // era 1 → reduz o custo do render
         useCORS: true,
         backgroundColor: null,
+        logging: false,
       });
 
-      const imageData = canvas.toDataURL('image/png');
+      return canvas.toDataURL('image/png');
       console.log('← FIM: gerarImagemBase64'); //EXCLUIR
       console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
-      return imageData;
     } catch (error) {
       this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
       return null;
