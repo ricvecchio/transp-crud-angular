@@ -126,7 +126,13 @@ export class PedidoService {
     }
 
     try {
-      const canvas = await html2canvas(container);
+      // const canvas = await html2canvas(container);
+      const canvas = await html2canvas(container, {
+        scale: 1, // ou 0.75 se ainda estiver pesado
+        useCORS: true, // caso tenha imagens externas
+        backgroundColor: null, // evita fundo branco extra
+      });
+
       const imageData = canvas.toDataURL('image/png');
       console.log('← FIM: gerarImagemBase64'); //EXCLUIR
       console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
@@ -267,42 +273,48 @@ export class PedidoService {
   // }
 
   async gerarImpressaoUsandoImagem(imagemData: string): Promise<void> {
-        console.time('PedidoService.gerarImpressaoUsandoImagem'); // EXCLUIR
+    console.time('PedidoService.gerarImpressaoUsandoImagem'); // EXCLUIR
     console.log('→ INÍCIO: gerarImpressaoUsandoImagem'); // EXCLUIR
-  return new Promise<void>((resolve, reject) => {
-    try {
-      const iframe = document.createElement('iframe');
-      iframe.style.position = 'absolute';
-      iframe.style.width = '0px';
-      iframe.style.height = '0px';
-      iframe.style.border = 'none';
-      document.body.appendChild(iframe);
+    return new Promise<void>((resolve, reject) => {
+      try {
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'absolute';
+        iframe.style.width = '0px';
+        iframe.style.height = '0px';
+        iframe.style.border = 'none';
+        document.body.appendChild(iframe);
 
-      const iframeDocument = iframe.contentWindow?.document;
-      if (!iframeDocument) {
-        this.mensagemService.showErrorMessage(
-          'Erro ao acessar o documento do iframe',
-        );
-        document.body.removeChild(iframe);
-        return reject();
-      }
-
-      iframe.onload = () => {
-        const afterPrintHandler = () => {
-          iframe.contentWindow?.removeEventListener('afterprint', afterPrintHandler);
+        const iframeDocument = iframe.contentWindow?.document;
+        if (!iframeDocument) {
+          this.mensagemService.showErrorMessage(
+            'Erro ao acessar o documento do iframe',
+          );
           document.body.removeChild(iframe);
-          resolve();
+          return reject();
+        }
+
+        iframe.onload = () => {
+          const afterPrintHandler = () => {
+            iframe.contentWindow?.removeEventListener(
+              'afterprint',
+              afterPrintHandler,
+            );
+            document.body.removeChild(iframe);
+            resolve();
+          };
+
+          iframe.contentWindow?.addEventListener(
+            'afterprint',
+            afterPrintHandler,
+          );
+
+          // Chama impressão após carregar
+          iframe.contentWindow?.focus();
+          iframe.contentWindow?.print();
         };
 
-        iframe.contentWindow?.addEventListener('afterprint', afterPrintHandler);
-
-        // Chama impressão após carregar
-        iframe.contentWindow?.focus();
-        iframe.contentWindow?.print();
-      };
-
-      iframeDocument.open();
-      iframeDocument.write(`
+        iframeDocument.open();
+        iframeDocument.write(`
         <html>
           <head>
             <style>
@@ -325,14 +337,13 @@ export class PedidoService {
           </body>
         </html>
       `);
-      iframeDocument.close();
-            console.log('← FIM: gerarImpressaoUsandoImagem'); //EXCLUIR
-      console.timeEnd('PedidoService.gerarImpressaoUsandoImagem'); //EXCLUIR
-    } catch (error) {
-      this.mensagemService.showErrorMessage('Erro ao imprimir o pedido.');
-      reject(error);
-    }
-  });
-}
-
+        iframeDocument.close();
+        console.log('← FIM: gerarImpressaoUsandoImagem'); //EXCLUIR
+        console.timeEnd('PedidoService.gerarImpressaoUsandoImagem'); //EXCLUIR
+      } catch (error) {
+        this.mensagemService.showErrorMessage('Erro ao imprimir o pedido.');
+        reject(error);
+      }
+    });
+  }
 }
