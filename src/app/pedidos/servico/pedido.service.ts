@@ -163,10 +163,9 @@ export class PedidoService {
         backgroundColor: null,
         logging: false,
       });
-
-      return canvas.toDataURL('image/png');
       console.log('← FIM: gerarImagemBase64'); //EXCLUIR
       console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
+      return canvas.toDataURL('image/png');
     } catch (error) {
       this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
       return null;
