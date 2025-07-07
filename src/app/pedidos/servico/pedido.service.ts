@@ -124,6 +124,8 @@ export class PedidoService {
       return null;
     }
 
+    await new Promise(requestAnimationFrame);
+
     try {
       const clone = container.cloneNode(true) as HTMLElement;
       clone.style.position = 'fixed';
