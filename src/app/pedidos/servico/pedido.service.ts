@@ -182,16 +182,14 @@ export class PedidoService {
         .querySelectorAll('button, input, select, textarea, .nao-imprimir')
         .forEach((el) => el.remove());
 
-      const style = getComputedStyle(container);
-
-      // clone.style.cssText = style.cssText;
+      // const style = getComputedStyle(container);
       clone.style.position = 'fixed';
       clone.style.top = '0';
       clone.style.left = '0';
 
       document.body.appendChild(clone);
 
-      clone.offsetHeight;
+      // clone.offsetHeight;
 
       const beforeCanvas = performance.now(); // EXCLUIR
       console.time('→ INÍCIO: domtoimage-render'); // EXCLUIR
