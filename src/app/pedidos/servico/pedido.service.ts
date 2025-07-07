@@ -196,7 +196,7 @@ export class PedidoService {
       document.body.removeChild(clone);
       console.log('← FIM: gerarImagemBase64'); //EXCLUIR
       console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
-      return dataUrl.toDataURL('image/png');
+      return dataUrl;
     } catch (error) {
       this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
       return null;
