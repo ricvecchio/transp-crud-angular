@@ -184,11 +184,10 @@ export class PedidoService {
 
       const style = getComputedStyle(container);
 
-      clone.style.cssText = style.cssText;
+      // clone.style.cssText = style.cssText;
       clone.style.position = 'fixed';
       clone.style.top = '0';
       clone.style.left = '0';
-      // clone.style.backgroundColor = '#fff';
 
       document.body.appendChild(clone);
 
