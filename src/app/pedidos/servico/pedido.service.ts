@@ -117,7 +117,6 @@ export class PedidoService {
   //   const container = document.querySelector(
   //     '.container-previa',
   //   ) as HTMLElement;
-
   //   if (!container) {
   //     this.mensagemService.showErrorMessage(
   //       'Elemento .container-previa não encontrado',
@@ -127,12 +126,11 @@ export class PedidoService {
 
   //   try {
   //     const canvas = await html2canvas(container, {
-  //       scale: 0.6,
+  //       scale: 0.5,
   //       useCORS: true,
-  //       backgroundColor: '#ffffff',
+  //       backgroundColor: '#fff',
   //       logging: false,
-  //       width: container.offsetWidth,
-  //       height: container.offsetHeight,
+  //       removeContainer: true,
   //     });
   //     console.log('← FIM: gerarImagemBase64'); //EXCLUIR
   //     console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
@@ -156,13 +154,21 @@ export class PedidoService {
     }
 
     try {
-      const canvas = await html2canvas(container, {
+      const clone = container.cloneNode(true) as HTMLElement;
+      clone.style.position = 'fixed';
+      clone.style.top = '-9999px';
+      clone.style.left = '-9999px';
+      document.body.appendChild(clone);
+
+      const canvas = await html2canvas(clone, {
         scale: 0.5,
         useCORS: true,
         backgroundColor: '#fff',
         logging: false,
         removeContainer: true,
       });
+
+      document.body.removeChild(clone);
       console.log('← FIM: gerarImagemBase64'); //EXCLUIR
       console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
       return canvas.toDataURL('image/png');
@@ -193,24 +199,6 @@ export class PedidoService {
           return reject();
         }
 
-        // iframe.onload = () => {
-        //   const afterPrintHandler = () => {
-        //     iframe.contentWindow?.removeEventListener(
-        //       'afterprint',
-        //       afterPrintHandler,
-        //     );
-        //     document.body.removeChild(iframe);
-        //     resolve();
-        //   };
-
-        //   iframe.contentWindow?.addEventListener(
-        //     'afterprint',
-        //     afterPrintHandler,
-        //   );
-
-        //   iframe.contentWindow?.focus();
-        //   iframe.contentWindow?.print();
-        // };
         iframe.onload = () => {
           const printWindow = iframe.contentWindow;
           const afterPrintHandler = () => {

@@ -593,35 +593,6 @@ export class PedidoFormComponent implements OnInit {
     console.timeEnd('PedidoFormComponent.onSubmit'); //EXCLUIR
   }
 
-  // private async emitirPedidoComImagemEImpressao(): Promise<void> {
-  //   console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
-  //   console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
-  //   this.prepararFormularioAntesDoEnvio();
-  //   this.cdr.detach();
-
-  //   const pedidoSalvo = await this.pedidoService
-  //     .salvar(this.formulario.value)
-  //     .toPromise();
-
-  //   if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
-
-  //   this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
-
-  //   this.cdr.reattach();
-  //   this.cdr.detectChanges();
-
-  //   await new Promise((resolve) => setTimeout(resolve, 100));
-
-  //   const imagemPedido = await this.pedidoService.gerarImagemBase64();
-  //   if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
-
-  //   const pedidoComImagem = { ...pedidoSalvo, imagemPedido };
-  //   await this.pedidoService.salvar(pedidoComImagem).toPromise();
-
-  //   await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
-  //   console.log('← FIM: emitirPedidoComImagemEImpressao');
-  //   console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao');
-  // }
   private async emitirPedidoComImagemEImpressao(): Promise<void> {
     console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
     console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
@@ -640,8 +611,6 @@ export class PedidoFormComponent implements OnInit {
     this.cdr.reattach();
     await Promise.resolve();
     this.cdr.detectChanges();
-
-    // await new Promise<void>((resolve) => setTimeout(resolve, 100));
 
     const imagemPedido = await this.pedidoService.gerarImagemBase64();
     if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
