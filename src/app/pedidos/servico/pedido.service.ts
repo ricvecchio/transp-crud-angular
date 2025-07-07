@@ -134,7 +134,6 @@ export class PedidoService {
       document.body.appendChild(clone);
 
       const canvas = await html2canvas(clone, {
-        scale: 1,
         useCORS: true,
         backgroundColor: '#fff',
         logging: false,
