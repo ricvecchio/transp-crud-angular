@@ -178,21 +178,19 @@ export class PedidoService {
 
     clone.querySelectorAll('button, input, select, textarea, .nao-imprimir').forEach(el => el.remove());
 
-    // ⬇️ Corrigido: garante que estilos do container sejam herdados corretamente
     const style = getComputedStyle(container);
     clone.style.cssText = style.cssText;
 
     clone.style.position = 'absolute';
     clone.style.top = '0';
     clone.style.left = '0';
-    // clone.style.zIndex = '9999'; // traz para frente (para evitar renderização em branco)
     clone.style.backgroundColor = '#fff';
 
     document.body.appendChild(clone);
 
     // ⬇️ Força layout
     clone.offsetHeight;
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     const beforeCanvas = performance.now(); // EXCLUIR
     console.time('→ INÍCIO: domtoimage-render'); // EXCLUIR
@@ -218,7 +216,6 @@ export class PedidoService {
     return null;
   }
 }
-
 
   async gerarImpressaoUsandoImagem(imagemData: string): Promise<void> {
     console.time('PedidoService.gerarImpressaoUsandoImagem'); // EXCLUIR
