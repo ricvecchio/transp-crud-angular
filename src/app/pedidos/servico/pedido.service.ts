@@ -185,7 +185,7 @@ export class PedidoService {
     clone.style.position = 'absolute';
     clone.style.top = '0';
     clone.style.left = '0';
-    clone.style.zIndex = '9999'; // traz para frente (para evitar renderização em branco)
+    // clone.style.zIndex = '9999'; // traz para frente (para evitar renderização em branco)
     clone.style.backgroundColor = '#fff';
 
     document.body.appendChild(clone);
