@@ -186,8 +186,8 @@ export class PedidoService {
       clone.style.cssText = style.cssText;
 
       clone.style.position = 'fixed';
-      clone.style.top = '-9999px';
-      clone.style.left = '-9999px';
+      clone.style.top = '0';
+      clone.style.left = '0';
       clone.style.backgroundColor = '#fff';
 
       document.body.appendChild(clone);
