@@ -111,13 +111,43 @@ export class PedidoService {
       .pipe(first());
   }
 
+  // async gerarImagemBase64(): Promise<string | null> {
+  //   console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
+  //   console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
+  //   const container = document.querySelector(
+  //     '.container-previa',
+  //   ) as HTMLElement;
+
+  //   if (!container) {
+  //     this.mensagemService.showErrorMessage(
+  //       'Elemento .container-previa não encontrado',
+  //     );
+  //     return null;
+  //   }
+
+  //   try {
+  //     const canvas = await html2canvas(container, {
+  //       scale: 0.6,
+  //       useCORS: true,
+  //       backgroundColor: '#ffffff',
+  //       logging: false,
+  //       width: container.offsetWidth,
+  //       height: container.offsetHeight,
+  //     });
+  //     console.log('← FIM: gerarImagemBase64'); //EXCLUIR
+  //     console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
+  //     return canvas.toDataURL('image/png');
+  //   } catch (error) {
+  //     this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
+  //     return null;
+  //   }
+  // }
   async gerarImagemBase64(): Promise<string | null> {
     console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
     console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
     const container = document.querySelector(
       '.container-previa',
     ) as HTMLElement;
-
     if (!container) {
       this.mensagemService.showErrorMessage(
         'Elemento .container-previa não encontrado',
@@ -127,12 +157,11 @@ export class PedidoService {
 
     try {
       const canvas = await html2canvas(container, {
-        scale: 0.6, 
+        scale: 0.5,
         useCORS: true,
-        backgroundColor: '#ffffff',
+        backgroundColor: '#fff',
         logging: false,
-        width: container.offsetWidth,
-        height: container.offsetHeight,
+        removeContainer: true,
       });
       console.log('← FIM: gerarImagemBase64'); //EXCLUIR
       console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
