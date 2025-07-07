@@ -130,9 +130,6 @@ export class PedidoService {
       const clone = container.cloneNode(true) as HTMLElement;
 
       clone.querySelectorAll('button, input, select, textarea, .nao-imprimir').forEach(el => el.remove()); // NOVO
-      clone.style.filter = 'none'; // NOVO
-      clone.style.boxShadow = 'none';  // NOVO
-
       clone.style.position = 'fixed';
       clone.style.top = '-9999px';
       clone.style.left = '-9999px';
