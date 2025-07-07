@@ -159,53 +159,66 @@ export class PedidoService {
   //     return null;
   //   }
   // }
-    async gerarImagemBase64(): Promise<string | null> {
-    console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
-    console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
+  async gerarImagemBase64(): Promise<string | null> {
+  console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
+  console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
 
-    const container = document.querySelector(
-      '.container-previa',
-    ) as HTMLElement;
-    if (!container) {
-      this.mensagemService.showErrorMessage(
-        'Elemento .container-previa não encontrado',
-      );
-      return null;
-    }
-    await new Promise(requestAnimationFrame);
-
-    try {
-      const clone = container.cloneNode(true) as HTMLElement;
-
-      clone.querySelectorAll('button, input, select, textarea, .nao-imprimir').forEach(el => el.remove()); // NOVO
-      clone.style.position = 'fixed';
-      clone.style.top = '-9999px';
-      clone.style.left = '-9999px';
-      document.body.appendChild(clone);
-
-      clone.offsetHeight;
-      await new Promise(resolve => setTimeout(resolve, 300)); // NOVO
-
-      const beforeCanvas = performance.now(); // EXCLUIR
-      console.time('→ INÍCIO: domtoimage-render'); // EXCLUIR
-      const dataUrl = await domtoimage.toPng(clone, {
-        cacheBust: true,
-        bgcolor: '#fff',
-        width: container.offsetWidth,
-        height: container.offsetHeight
-      });
-      console.log('Canvas render time:', performance.now() - beforeCanvas); // EXCLUIR
-      console.timeEnd('→ FIM: domtoimage-render'); // EXCLUIR
-
-      document.body.removeChild(clone);
-      console.log('← FIM: gerarImagemBase64'); //EXCLUIR
-      console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
-      return dataUrl;
-    } catch (error) {
-      this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
-      return null;
-    }
+  const container = document.querySelector('.container-previa') as HTMLElement;
+  if (!container) {
+    this.mensagemService.showErrorMessage(
+      'Elemento .container-previa não encontrado',
+    );
+    return null;
   }
+
+  await new Promise(requestAnimationFrame);
+
+  try {
+    const clone = container.cloneNode(true) as HTMLElement;
+
+    clone.querySelectorAll('button, input, select, textarea, .nao-imprimir').forEach(el => el.remove());
+
+    // ⬇️ Corrigido: garante que estilos do container sejam herdados corretamente
+    const style = getComputedStyle(container);
+    clone.style.cssText = style.cssText;
+
+    clone.style.position = 'absolute';
+    clone.style.top = '0';
+    clone.style.left = '0';
+    clone.style.zIndex = '9999'; // traz para frente (para evitar renderização em branco)
+    clone.style.backgroundColor = '#fff';
+
+    document.body.appendChild(clone);
+
+    // ⬇️ Força layout
+    clone.offsetHeight;
+    await new Promise(resolve => setTimeout(resolve, 300));
+
+    const beforeCanvas = performance.now(); // EXCLUIR
+    console.time('→ INÍCIO: domtoimage-render'); // EXCLUIR
+
+    const dataUrl = await domtoimage.toPng(clone, {
+      cacheBust: true,
+      bgcolor: '#fff',
+      width: container.offsetWidth,
+      height: container.offsetHeight,
+    });
+
+    console.log('Canvas render time:', performance.now() - beforeCanvas); // EXCLUIR
+    console.timeEnd('→ FIM: domtoimage-render'); // EXCLUIR
+
+    document.body.removeChild(clone);
+
+    console.log('← FIM: gerarImagemBase64'); // EXCLUIR
+    console.timeEnd('PedidoService.gerarImagemBase64'); // EXCLUIR
+
+    return dataUrl;
+  } catch (error) {
+    this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
+    return null;
+  }
+}
+
 
   async gerarImpressaoUsandoImagem(imagemData: string): Promise<void> {
     console.time('PedidoService.gerarImpressaoUsandoImagem'); // EXCLUIR
