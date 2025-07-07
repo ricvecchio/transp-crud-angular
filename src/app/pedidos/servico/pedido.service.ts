@@ -182,14 +182,11 @@ export class PedidoService {
         .querySelectorAll('button, input, select, textarea, .nao-imprimir')
         .forEach((el) => el.remove());
 
-      // const style = getComputedStyle(container);
       clone.style.position = 'fixed';
       clone.style.top = '0';
       clone.style.left = '0';
 
       document.body.appendChild(clone);
-
-      // clone.offsetHeight;
 
       const beforeCanvas = performance.now(); // EXCLUIR
       console.time('→ INÍCIO: domtoimage-render'); // EXCLUIR
@@ -197,8 +194,8 @@ export class PedidoService {
       const dataUrl = await domtoimage.toPng(clone, {
         cacheBust: true,
         bgcolor: '#fff',
-        width: container.offsetWidth,
-        height: container.offsetHeight,
+        // width: container.offsetWidth,
+        // height: container.offsetHeight,
       });
 
       console.log('Canvas render time:', performance.now() - beforeCanvas); // EXCLUIR
