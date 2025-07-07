@@ -624,27 +624,30 @@ export class PedidoFormComponent implements OnInit {
   // }
   private async emitirPedidoComImagemEImpressao(): Promise<void> {
     this.prepararFormularioAntesDoEnvio();
+
     this.cdr.detach();
 
-    try {
-      const pedidoSalvo = await this.pedidoService
-        .salvar(this.formulario.value)
-        .toPromise();
-      if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
+    const pedidoSalvo = await this.pedidoService
+      .salvar(this.formulario.value)
+      .toPromise();
 
-      this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
+    if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
 
-      const imagemPedido = await this.pedidoService.gerarImagemBase64();
-      if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
+    this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
 
-      const pedidoComImagem = { ...pedidoSalvo, imagemPedido };
-      await this.pedidoService.salvar(pedidoComImagem).toPromise();
+    this.cdr.reattach();
+    await Promise.resolve(); 
+    this.cdr.detectChanges();
 
-      await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
-    } finally {
-      this.cdr.reattach();
-      this.cdr.detectChanges();
-    }
+    await new Promise<void>((resolve) => setTimeout(resolve, 100));
+
+    const imagemPedido = await this.pedidoService.gerarImagemBase64();
+    if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
+
+    const pedidoComImagem = { ...pedidoSalvo, imagemPedido };
+    await this.pedidoService.salvar(pedidoComImagem).toPromise();
+
+    await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
   }
 
   private atualizarFormulario(status: string) {
