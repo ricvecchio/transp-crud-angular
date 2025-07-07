@@ -111,35 +111,6 @@ export class PedidoService {
       .pipe(first());
   }
 
-  // async gerarImagemBase64(): Promise<string | null> {
-  //   console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
-  //   console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
-  //   const container = document.querySelector(
-  //     '.container-previa',
-  //   ) as HTMLElement;
-  //   if (!container) {
-  //     this.mensagemService.showErrorMessage(
-  //       'Elemento .container-previa não encontrado',
-  //     );
-  //     return null;
-  //   }
-
-  //   try {
-  //     const canvas = await html2canvas(container, {
-  //       scale: 0.5,
-  //       useCORS: true,
-  //       backgroundColor: '#fff',
-  //       logging: false,
-  //       removeContainer: true,
-  //     });
-  //     console.log('← FIM: gerarImagemBase64'); //EXCLUIR
-  //     console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
-  //     return canvas.toDataURL('image/png');
-  //   } catch (error) {
-  //     this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
-  //     return null;
-  //   }
-  // }
   async gerarImagemBase64(): Promise<string | null> {
     console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
     console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
@@ -161,7 +132,7 @@ export class PedidoService {
       document.body.appendChild(clone);
 
       const canvas = await html2canvas(clone, {
-        scale: 0.5,
+        scale: 0.4,
         useCORS: true,
         backgroundColor: '#fff',
         logging: false,
