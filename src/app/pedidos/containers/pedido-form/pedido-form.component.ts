@@ -603,14 +603,14 @@ export class PedidoFormComponent implements OnInit {
   //   const pedidoSalvo = await this.pedidoService
   //     .salvar(this.formulario.value)
   //     .toPromise();
-
   //   if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
 
   //   this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
 
   //   this.cdr.reattach();
-  //   await Promise.resolve();
   //   this.cdr.detectChanges();
+
+  //   await new Promise(requestAnimationFrame);
 
   //   const imagemPedido = await this.pedidoService.gerarImagemBase64();
   //   if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
@@ -622,32 +622,28 @@ export class PedidoFormComponent implements OnInit {
   //   console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
   //   console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao'); //EXCLUIR
   // }
+
   private async emitirPedidoComImagemEImpressao(): Promise<void> {
     console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
     console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
     this.prepararFormularioAntesDoEnvio();
-
     this.cdr.detach();
 
-    const pedidoSalvo = await this.pedidoService
-      .salvar(this.formulario.value)
-      .toPromise();
+    const pedidoSalvo = await firstValueFrom(
+      this.pedidoService.salvar(this.formulario.value),
+    );
+
     if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
-
     this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido });
-
-    this.cdr.reattach();
-    this.cdr.detectChanges();
-
-    await new Promise(requestAnimationFrame);
 
     const imagemPedido = await this.pedidoService.gerarImagemBase64();
     if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
 
     const pedidoComImagem = { ...pedidoSalvo, imagemPedido };
-    await this.pedidoService.salvar(pedidoComImagem).toPromise();
+    await firstValueFrom(this.pedidoService.salvar(pedidoComImagem));
 
     await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
+    this.cdr.reattach();
     console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
     console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao'); //EXCLUIR
   }
