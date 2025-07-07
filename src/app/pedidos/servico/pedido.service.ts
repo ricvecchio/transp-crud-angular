@@ -194,8 +194,6 @@ export class PedidoService {
       const dataUrl = await domtoimage.toPng(clone, {
         cacheBust: true,
         bgcolor: '#fff',
-        // width: container.offsetWidth,
-        // height: container.offsetHeight,
       });
 
       console.log('Canvas render time:', performance.now() - beforeCanvas); // EXCLUIR
