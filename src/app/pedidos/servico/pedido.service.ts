@@ -139,6 +139,8 @@ export class PedidoService {
         backgroundColor: '#fff',
         logging: false,
         removeContainer: true,
+        scrollY: 0,
+        windowHeight: container.scrollHeight,
       });
 
       document.body.removeChild(clone);
