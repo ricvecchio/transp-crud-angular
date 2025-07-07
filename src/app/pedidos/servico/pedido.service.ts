@@ -115,7 +115,6 @@ export class PedidoService {
     console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
     console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
 
-    console.time('→ INÍCIO: document-querySelector'); // EXCLUIR
     const container = document.querySelector(
       '.container-previa',
     ) as HTMLElement;
@@ -125,15 +124,14 @@ export class PedidoService {
       );
       return null;
     }
-
     await new Promise(requestAnimationFrame);
-    console.timeEnd('→ FIM: document-querySelector'); // EXCLUIR
 
     try {
-      const beforeClone = performance.now(); // NOVO EXCLUIR
-
       const clone = container.cloneNode(true) as HTMLElement;
-      console.log('CloneNode time:', performance.now() - beforeClone); // NOVO EXCLUIR
+
+      clone.querySelectorAll('button, input, select, textarea, .nao-imprimir').forEach(el => el.remove()); // NOVO
+      clone.style.filter = 'none'; // NOVO
+      clone.style.boxShadow = 'none';  // NOVO
 
       clone.style.position = 'fixed';
       clone.style.top = '-9999px';
@@ -148,6 +146,7 @@ export class PedidoService {
         logging: false,
         removeContainer: true,
         scrollY: 0,
+        scale: 1,
       });
       console.log('Canvas render time:', performance.now() - beforeCanvas); // EXCLUIR
       console.timeEnd('→ FIM: html2canvas-render'); // EXCLUIR
