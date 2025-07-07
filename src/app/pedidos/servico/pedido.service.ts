@@ -183,6 +183,8 @@ export class PedidoService {
       clone.style.left = '-9999px';
       document.body.appendChild(clone);
 
+      await new Promise(resolve => setTimeout(resolve, 100)); // NOVO
+
       const beforeCanvas = performance.now(); // EXCLUIR
       console.time('→ INÍCIO: domtoimage-render'); // EXCLUIR
       const dataUrl = await domtoimage.toPng(clone, {
