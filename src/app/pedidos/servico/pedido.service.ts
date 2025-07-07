@@ -183,7 +183,8 @@ export class PedidoService {
       clone.style.left = '-9999px';
       document.body.appendChild(clone);
 
-      await new Promise(resolve => setTimeout(resolve, 100)); // NOVO
+      clone.offsetHeight;
+      await new Promise(resolve => setTimeout(resolve, 300)); // NOVO
 
       const beforeCanvas = performance.now(); // EXCLUIR
       console.time('→ INÍCIO: domtoimage-render'); // EXCLUIR
@@ -205,73 +206,7 @@ export class PedidoService {
     }
   }
 
-  // async gerarImpressaoUsandoImagem(imagemData: string): Promise<void> {
-  //   console.time('PedidoService.gerarImpressaoUsandoImagem'); // EXCLUIR
-  //   console.log('→ INÍCIO: gerarImpressaoUsandoImagem'); // EXCLUIR
-  //   return new Promise<void>((resolve, reject) => {
-  //     try {
-  //       const iframe = document.createElement('iframe');
-  //       iframe.style.position = 'absolute';
-  //       iframe.style.width = '0px';
-  //       iframe.style.height = '0px';
-  //       iframe.style.border = 'none';
-  //       document.body.appendChild(iframe);
-
-  //       const iframeDocument = iframe.contentWindow?.document;
-  //       if (!iframeDocument) {
-  //         this.mensagemService.showErrorMessage(
-  //           'Erro ao acessar o documento do iframe',
-  //         );
-  //         document.body.removeChild(iframe);
-  //         return reject();
-  //       }
-
-  //       iframe.onload = () => {
-  //         const printWindow = iframe.contentWindow;
-  //         const afterPrintHandler = () => {
-  //           printWindow?.removeEventListener('afterprint', afterPrintHandler);
-  //           document.body.removeChild(iframe);
-  //           resolve();
-  //         };
-  //         printWindow?.addEventListener('afterprint', afterPrintHandler);
-  //         printWindow?.focus();
-  //         printWindow?.print();
-  //       };
-
-  //       iframeDocument.open();
-  //       iframeDocument.write(`
-  //       <html>
-  //         <head>
-  //           <style>
-  //             @page { size: A4 portrait; margin: 0; }
-  //             body { margin: 0; display: flex; flex-direction: column; height: 100vh; }
-  //             .page { position: relative; width: 100%; height: 100vh; }
-  //             .image-container { width: 100%; height: 50%; position: absolute; padding: 20px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
-  //             .image { width: 100%; height: 100%; object-fit: contain; position: relative; }
-  //           </style>
-  //         </head>
-  //         <body>
-  //           <div class="page">
-  //             <div class="image-container" style="top: 0;">
-  //               <img src="${imagemData}" class="image" />
-  //             </div>
-  //             <div class="image-container" style="top: 50%;">
-  //               <img src="${imagemData}" class="image" />
-  //             </div>
-  //           </div>
-  //         </body>
-  //       </html>
-  //     `);
-  //       iframeDocument.close();
-  //       console.log('← FIM: gerarImpressaoUsandoImagem'); //EXCLUIR
-  //       console.timeEnd('PedidoService.gerarImpressaoUsandoImagem'); //EXCLUIR
-  //     } catch (error) {
-  //       this.mensagemService.showErrorMessage('Erro ao imprimir o pedido.');
-  //       reject(error);
-  //     }
-  //   });
-  // }
-    async gerarImpressaoUsandoImagem(imagemData: string): Promise<void> {
+  async gerarImpressaoUsandoImagem(imagemData: string): Promise<void> {
     console.time('PedidoService.gerarImpressaoUsandoImagem'); // EXCLUIR
     console.log('→ INÍCIO: gerarImpressaoUsandoImagem'); // EXCLUIR
     return new Promise<void>((resolve, reject) => {
@@ -292,44 +227,17 @@ export class PedidoService {
           return reject();
         }
 
-      iframe.onload = () => {
-        const printWindow = iframe.contentWindow;
-
-        const images = iframeDocument.querySelectorAll('img');
-        let loadedImages = 0;
-
-        const onImageLoad = () => {
-          loadedImages++;
-          if (loadedImages === images.length) {
-            // Espera um tick para garantir o layout
-            setTimeout(() => {
-              const afterPrintHandler = () => {
-                printWindow?.removeEventListener('afterprint', afterPrintHandler);
-                document.body.removeChild(iframe);
-                resolve();
-              };
-
-              printWindow?.addEventListener('afterprint', afterPrintHandler);
-              printWindow?.focus();
-              printWindow?.print();
-            }, 100);
-          }
+        iframe.onload = () => {
+          const printWindow = iframe.contentWindow;
+          const afterPrintHandler = () => {
+            printWindow?.removeEventListener('afterprint', afterPrintHandler);
+            document.body.removeChild(iframe);
+            resolve();
+          };
+          printWindow?.addEventListener('afterprint', afterPrintHandler);
+          printWindow?.focus();
+          printWindow?.print();
         };
-
-        // Garantir que todas as imagens foram carregadas
-        images.forEach((img) => {
-          if (img.complete) {
-            onImageLoad();
-          } else {
-            img.onload = onImageLoad;
-            img.onerror = () => {
-              this.mensagemService.showErrorMessage('Erro ao carregar imagem para impressão');
-              document.body.removeChild(iframe);
-              reject();
-            };
-          }
-        });
-      };
 
         iframeDocument.open();
         iframeDocument.write(`
