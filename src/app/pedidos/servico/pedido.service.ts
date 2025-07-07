@@ -111,46 +111,89 @@ export class PedidoService {
       .pipe(first());
   }
 
+  // async gerarImagemBase64(): Promise<string | null> {
+  //   console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
+  //   console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
+  //   const container = document.querySelector(
+  //     '.container-previa',
+  //   ) as HTMLElement;
+  //   if (!container) {
+  //     this.mensagemService.showErrorMessage(
+  //       'Elemento .container-previa não encontrado',
+  //     );
+  //     return null;
+  //   }
+
+  //   await new Promise(requestAnimationFrame);
+
+  //   try {
+  //     const clone = container.cloneNode(true) as HTMLElement;
+  //     clone.style.position = 'fixed';
+  //     clone.style.top = '-9999px';
+  //     clone.style.left = '-9999px';
+  //     document.body.appendChild(clone);
+
+  //     const canvas = await html2canvas(clone, {
+  //       useCORS: true,
+  //       backgroundColor: '#fff',
+  //       logging: false,
+  //       removeContainer: true,
+  //       scrollY: 0,
+  //       windowHeight: container.scrollHeight,
+  //     });
+
+  //     document.body.removeChild(clone);
+  //     console.log('← FIM: gerarImagemBase64'); //EXCLUIR
+  //     console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
+  //     return canvas.toDataURL('image/png');
+  //   } catch (error) {
+  //     this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
+  //     return null;
+  //   }
+  // }
   async gerarImagemBase64(): Promise<string | null> {
-    console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
-    console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
-    const container = document.querySelector(
-      '.container-previa',
-    ) as HTMLElement;
-    if (!container) {
-      this.mensagemService.showErrorMessage(
-        'Elemento .container-previa não encontrado',
-      );
-      return null;
-    }
+  console.time('PedidoService.gerarImagemBase64');
+  console.log('→ INÍCIO: gerarImagemBase64');
 
-    await new Promise(requestAnimationFrame);
-
-    try {
-      const clone = container.cloneNode(true) as HTMLElement;
-      clone.style.position = 'fixed';
-      clone.style.top = '-9999px';
-      clone.style.left = '-9999px';
-      document.body.appendChild(clone);
-
-      const canvas = await html2canvas(clone, {
-        useCORS: true,
-        backgroundColor: '#fff',
-        logging: false,
-        removeContainer: true,
-        scrollY: 0,
-        windowHeight: container.scrollHeight,
-      });
-
-      document.body.removeChild(clone);
-      console.log('← FIM: gerarImagemBase64'); //EXCLUIR
-      console.timeEnd('PedidoService.gerarImagemBase64'); //EXCLUIR
-      return canvas.toDataURL('image/png');
-    } catch (error) {
-      this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
-      return null;
-    }
+  const container = document.querySelector('.container-previa') as HTMLElement;
+  if (!container) {
+    this.mensagemService.showErrorMessage('Elemento .container-previa não encontrado');
+    return null;
   }
+
+  await new Promise(requestAnimationFrame);
+
+  try {
+    const clone = container.cloneNode(true) as HTMLElement;
+    clone.style.position = 'fixed';
+    clone.style.top = '-9999px';
+    clone.style.left = '-9999px';
+    clone.style.visibility = 'hidden'; // ADICIONADO
+    clone.style.transform = 'scale(1)'; // ADICIONADO
+    clone.style.pointerEvents = 'none'; // ADICIONADO
+    document.body.appendChild(clone);
+
+    // Aguarda carregamento de imagem e renderização
+    await new Promise(resolve => setTimeout(resolve, 50)); // AJUSTADO
+
+    const canvas = await html2canvas(clone, {
+      useCORS: true,
+      backgroundColor: '#fff',
+      logging: false, // Pode mudar para true para investigar
+      scrollY: 0,
+      windowHeight: container.scrollHeight,
+    });
+
+    document.body.removeChild(clone);
+
+    console.log('← FIM: gerarImagemBase64');
+    console.timeEnd('PedidoService.gerarImagemBase64');
+    return canvas.toDataURL('image/png');
+  } catch (error) {
+    this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
+    return null;
+  }
+}
 
   async gerarImpressaoUsandoImagem(imagemData: string): Promise<void> {
     console.time('PedidoService.gerarImpressaoUsandoImagem'); // EXCLUIR
