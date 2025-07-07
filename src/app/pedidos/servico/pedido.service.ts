@@ -183,17 +183,16 @@ export class PedidoService {
         .forEach((el) => el.remove());
 
       const style = getComputedStyle(container);
-      clone.style.cssText = style.cssText;
 
+      clone.style.cssText = style.cssText;
       clone.style.position = 'fixed';
       clone.style.top = '0';
       clone.style.left = '0';
-      clone.style.backgroundColor = '#fff';
+      // clone.style.backgroundColor = '#fff';
 
       document.body.appendChild(clone);
 
       clone.offsetHeight;
-      // await new Promise((resolve) => setTimeout(resolve, 100));
 
       const beforeCanvas = performance.now(); // EXCLUIR
       console.time('→ INÍCIO: domtoimage-render'); // EXCLUIR
