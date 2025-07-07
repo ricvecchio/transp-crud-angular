@@ -623,7 +623,7 @@ export class PedidoFormComponent implements OnInit {
   //   console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao');
   // }
   private async emitirPedidoComImagemEImpressao(): Promise<void> {
-        console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
+    console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
     console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
     this.prepararFormularioAntesDoEnvio();
 
@@ -641,7 +641,7 @@ export class PedidoFormComponent implements OnInit {
     await Promise.resolve();
     this.cdr.detectChanges();
 
-    await new Promise<void>((resolve) => setTimeout(resolve, 100));
+    // await new Promise<void>((resolve) => setTimeout(resolve, 100));
 
     const imagemPedido = await this.pedidoService.gerarImagemBase64();
     if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
@@ -650,10 +650,10 @@ export class PedidoFormComponent implements OnInit {
     await this.pedidoService.salvar(pedidoComImagem).toPromise();
 
     await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
-        console.log('← FIM: atualizarFormulario'); //EXCLUIR
-    console.timeEnd('PedidoFormComponent.atualizarFormulario'); //EXCLUIR
+    console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
+    console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao'); //EXCLUIR
   }
-  
+
   private atualizarFormulario(status: string) {
     console.time('PedidoFormComponent.atualizarFormulario'); // EXCLUIR
     console.log('→ INÍCIO: atualizarFormulario'); // EXCLUIR

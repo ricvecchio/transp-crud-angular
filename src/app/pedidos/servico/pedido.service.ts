@@ -193,23 +193,34 @@ export class PedidoService {
           return reject();
         }
 
+        // iframe.onload = () => {
+        //   const afterPrintHandler = () => {
+        //     iframe.contentWindow?.removeEventListener(
+        //       'afterprint',
+        //       afterPrintHandler,
+        //     );
+        //     document.body.removeChild(iframe);
+        //     resolve();
+        //   };
+
+        //   iframe.contentWindow?.addEventListener(
+        //     'afterprint',
+        //     afterPrintHandler,
+        //   );
+
+        //   iframe.contentWindow?.focus();
+        //   iframe.contentWindow?.print();
+        // };
         iframe.onload = () => {
+          const printWindow = iframe.contentWindow;
           const afterPrintHandler = () => {
-            iframe.contentWindow?.removeEventListener(
-              'afterprint',
-              afterPrintHandler,
-            );
+            printWindow?.removeEventListener('afterprint', afterPrintHandler);
             document.body.removeChild(iframe);
             resolve();
           };
-
-          iframe.contentWindow?.addEventListener(
-            'afterprint',
-            afterPrintHandler,
-          );
-
-          iframe.contentWindow?.focus();
-          iframe.contentWindow?.print();
+          printWindow?.addEventListener('afterprint', afterPrintHandler);
+          printWindow?.focus();
+          printWindow?.print();
         };
 
         iframeDocument.open();
