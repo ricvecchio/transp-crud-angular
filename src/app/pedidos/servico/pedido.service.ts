@@ -139,7 +139,6 @@ export class PedidoService {
         logging: false,
         removeContainer: true,
         scrollY: 0,
-        windowHeight: container.scrollHeight,
       });
 
       document.body.removeChild(clone);
