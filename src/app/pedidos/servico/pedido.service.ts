@@ -193,7 +193,7 @@ export class PedidoService {
       document.body.appendChild(clone);
 
       clone.offsetHeight;
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // await new Promise((resolve) => setTimeout(resolve, 100));
 
       const beforeCanvas = performance.now(); // EXCLUIR
       console.time('→ INÍCIO: domtoimage-render'); // EXCLUIR
