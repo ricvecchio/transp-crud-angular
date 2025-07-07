@@ -114,6 +114,8 @@ export class PedidoService {
   async gerarImagemBase64(): Promise<string | null> {
     console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
     console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
+
+    console.time('→ INÍCIO: document-querySelector'); // EXCLUIR
     const container = document.querySelector(
       '.container-previa',
     ) as HTMLElement;
@@ -125,14 +127,21 @@ export class PedidoService {
     }
 
     await new Promise(requestAnimationFrame);
+    console.timeEnd('→ FIM: document-querySelector'); // EXCLUIR
 
     try {
+      const beforeClone = performance.now(); // NOVO EXCLUIR
+
       const clone = container.cloneNode(true) as HTMLElement;
+      console.log('CloneNode time:', performance.now() - beforeClone); // NOVO EXCLUIR
+
       clone.style.position = 'fixed';
       clone.style.top = '-9999px';
       clone.style.left = '-9999px';
       document.body.appendChild(clone);
 
+      const beforeCanvas = performance.now(); // EXCLUIR
+      console.time('→ INÍCIO: html2canvas-render'); // EXCLUIR
       const canvas = await html2canvas(clone, {
         useCORS: true,
         backgroundColor: '#fff',
@@ -140,6 +149,8 @@ export class PedidoService {
         removeContainer: true,
         scrollY: 0,
       });
+      console.log('Canvas render time:', performance.now() - beforeCanvas); // EXCLUIR
+      console.timeEnd('→ FIM: html2canvas-render'); // EXCLUIR
 
       document.body.removeChild(clone);
       console.log('← FIM: gerarImagemBase64'); //EXCLUIR
