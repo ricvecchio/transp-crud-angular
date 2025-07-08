@@ -196,8 +196,8 @@ export class PedidoService {
       clone.style.pointerEvents = 'none';
       clone.style.zIndex = '-9999';
       clone.style.background = 'white';
-      clone.style.width = `${container.offsetWidth}px`;
-      clone.style.height = `${container.offsetHeight}px`;
+      // clone.style.width = `${container.offsetWidth}px`;
+      // clone.style.height = `${container.offsetHeight}px`;
 
       document.body.appendChild(clone);
 
