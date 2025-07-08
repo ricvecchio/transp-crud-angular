@@ -605,7 +605,7 @@ export class PedidoFormComponent implements OnInit {
 
     this.formulario.get('idPedido')?.setValue(pedidoSalvo.idPedido);
 
-    await new Promise(requestAnimationFrame);
+    // await new Promise(requestAnimationFrame);
 
     const imagemPedido = await this.pedidoService.gerarImagemBase64();
     if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
