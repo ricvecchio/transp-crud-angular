@@ -190,9 +190,8 @@ export class PedidoService {
       // clone.style.background = 'white';
 
       clone.style.position = 'fixed';
-      clone.style.position = 'absolute';
-      clone.style.top = '-10000px';
-      clone.style.left = '-10000px';
+      clone.style.top = '0';
+      clone.style.left = '0';
       clone.style.opacity = '1';
       clone.style.background = 'white';
 
