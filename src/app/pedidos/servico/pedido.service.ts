@@ -127,8 +127,6 @@ export class PedidoService {
   //     return null;
   //   }
 
-  //   await new Promise(requestAnimationFrame);
-
   //   try {
   //     const clone = container.cloneNode(true) as HTMLElement;
 
@@ -164,55 +162,40 @@ export class PedidoService {
   //     return null;
   //   }
   // }
-    async gerarImagemBase64(): Promise<string | null> {
-    console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
-    console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
-
-    const container = document.querySelector(
-      '.container-previa',
-    ) as HTMLElement;
-    if (!container) {
-      this.mensagemService.showErrorMessage(
-        'Elemento .container-previa não encontrado',
-      );
-      return null;
-    }
-
-    try {
-      const clone = container.cloneNode(true) as HTMLElement;
-
-      clone
-        .querySelectorAll('button, input, select, textarea, .nao-imprimir')
-        .forEach((el) => el.remove());
-
-      clone.style.position = 'fixed';
-      clone.style.top = '0';
-      clone.style.left = '0';
-
-      document.body.appendChild(clone);
-
-      const beforeCanvas = performance.now(); // EXCLUIR
-      console.time('→ INÍCIO: domtoimage-render'); // EXCLUIR
-
-      const dataUrl = await domtoimage.toPng(clone, {
-        cacheBust: true,
-        bgcolor: '#fff',
-      });
-
-      console.log('Canvas render time:', performance.now() - beforeCanvas); // EXCLUIR
-      console.timeEnd('→ FIM: domtoimage-render'); // EXCLUIR
-
-      document.body.removeChild(clone);
-
-      console.log('← FIM: gerarImagemBase64'); // EXCLUIR
-      console.timeEnd('PedidoService.gerarImagemBase64'); // EXCLUIR
-
-      return dataUrl;
-    } catch (error) {
-      this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
-      return null;
-    }
+  async gerarImagemBase64(): Promise<string | null> {
+  const container = document.querySelector('.container-previa') as HTMLElement;
+  if (!container) {
+    this.mensagemService.showErrorMessage('Elemento .container-previa não encontrado');
+    return null;
   }
+
+  try {
+    const clone = container.cloneNode(true) as HTMLElement;
+
+    clone.querySelectorAll('button, input, select, textarea, .nao-imprimir').forEach(el => el.remove());
+
+    // Posicionar o clone fora da tela, para não aparecer:
+    clone.style.position = 'fixed';
+    clone.style.top = '-9999px'; // tirar da área visível
+    clone.style.left = '-9999px';
+    clone.style.visibility = 'hidden'; // garantir invisibilidade
+
+    document.body.appendChild(clone);
+
+    const dataUrl = await domtoimage.toPng(clone, {
+      cacheBust: true,
+      bgcolor: '#fff',
+    });
+
+    document.body.removeChild(clone);
+
+    return dataUrl;
+  } catch (error) {
+    this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
+    return null;
+  }
+}
+
 
   async gerarImpressaoUsandoImagem(imagemData: string): Promise<void> {
     console.time('PedidoService.gerarImpressaoUsandoImagem'); // EXCLUIR
