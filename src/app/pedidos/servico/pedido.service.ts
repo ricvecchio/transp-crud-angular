@@ -188,6 +188,7 @@ export class PedidoService {
 
       clone.style.pointerEvents = 'none';
       clone.style.zIndex = '-1';
+      clone.style.background = 'white';
 
       document.body.appendChild(clone);
 
