@@ -182,27 +182,27 @@ export class PedidoService {
         .querySelectorAll('button, input, select, textarea, .nao-imprimir')
         .forEach((el) => el.remove());
 
-      // clone.style.position = 'fixed';
-      // clone.style.top = '0';
-      // clone.style.left = '0';
-      // clone.style.opacity = '1';
-      // clone.style.background = 'white';
-
       clone.style.position = 'fixed';
-      clone.style.top = '-9999px';
-      clone.style.left = '-9999px';
-      clone.style.width = `${container.offsetWidth}px`;
-      clone.style.height = `${container.offsetHeight}px`;
-      clone.style.opacity = '0';
-      clone.style.pointerEvents = 'none';
-      clone.style.zIndex = '-1';
-      clone.style.visibility = 'hidden';
+      clone.style.top = '0';
+      clone.style.left = '0';
+      clone.style.opacity = '1';
+      clone.style.background = 'white';
+
+      // clone.style.position = 'fixed';
+      // clone.style.top = '-9999px';
+      // clone.style.left = '-9999px';
+      // clone.style.width = `${container.offsetWidth}px`;
+      // clone.style.height = `${container.offsetHeight}px`;
+      // clone.style.opacity = '0';
+      // clone.style.pointerEvents = 'none';
+      // clone.style.zIndex = '-1';
+      // clone.style.visibility = 'hidden';
 
       document.body.appendChild(clone);
 
-      await new Promise((resolve) =>
-        requestAnimationFrame(() => setTimeout(resolve, 100)),
-      );
+      // await new Promise((resolve) =>
+      //   requestAnimationFrame(() => setTimeout(resolve, 100)),
+      // );
 
       const dataUrl = await domtoimage.toPng(clone, {
         cacheBust: true,
