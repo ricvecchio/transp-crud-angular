@@ -185,7 +185,9 @@ export class PedidoService {
       clone.style.position = 'fixed';
       clone.style.top = '0';
       clone.style.left = '0';
-      clone.style.visibility = 'hidden'; // garantir invisibilidade
+      clone.style.opacity = '0';
+      clone.style.pointerEvents = 'none';
+      clone.style.zIndex = '-1';
 
       document.body.appendChild(clone);
 
