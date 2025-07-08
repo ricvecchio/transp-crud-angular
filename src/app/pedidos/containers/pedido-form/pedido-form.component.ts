@@ -593,23 +593,57 @@ export class PedidoFormComponent implements OnInit {
     console.timeEnd('PedidoFormComponent.onSubmit'); //EXCLUIR
   }
 
+  // private async emitirPedidoComImagemEImpressao(): Promise<void> {
+  //   console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
+  //   console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
+  //   this.prepararFormularioAntesDoEnvio();
+
+  //   const pedidoSalvo = await lastValueFrom(
+  //     this.pedidoService.salvar(this.formulario.value),
+  //   );
+  //   if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
+
+  //   this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido }, { emitEvent: false });
+
+  //   await new Promise((resolve) => setTimeout(resolve, 0));
+
+  //   const imagemPedido = await this.pedidoService.gerarImagemBase64();
+  //   if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
+
+  //   const pedidoComImagem = {
+  //     ...pedidoSalvo,
+  //     imagemPedido,
+  //   };
+
+  //   await Promise.all([
+  //     lastValueFrom(this.pedidoService.salvar(pedidoComImagem)),
+  //     this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido),
+  //   ]);
+  //   console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
+  //   console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao'); //EXCLUIR
+  // }
   private async emitirPedidoComImagemEImpressao(): Promise<void> {
     console.time('PedidoFormComponent.emitirPedidoComImagemEImpressao'); // EXCLUIR
     console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
     this.prepararFormularioAntesDoEnvio();
 
+    // Primeiro salvar apenas para obter o idPedido
     const pedidoSalvo = await lastValueFrom(
       this.pedidoService.salvar(this.formulario.value),
     );
     if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
 
-    this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido }, { emitEvent: false });
+    // Atualiza o formulário com idPedido para exibir na imagem
+    this.formulario.patchValue(
+      { idPedido: pedidoSalvo.idPedido },
+      { emitEvent: false },
+    );
 
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
+    // Gera a imagem atualizada com o idPedido incluso
     const imagemPedido = await this.pedidoService.gerarImagemBase64();
     if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
 
+    // Atualiza o pedido com a imagem + imprime em paralelo
     const pedidoComImagem = {
       ...pedidoSalvo,
       imagemPedido,
