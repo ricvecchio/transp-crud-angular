@@ -605,29 +605,29 @@ export class PedidoFormComponent implements OnInit {
 
     this.formulario.get('idPedido')?.setValue(pedidoSalvo.idPedido);
 
-    // await new Promise(requestAnimationFrame);
+    await new Promise(requestAnimationFrame);
 
     const imagemPedido = await this.pedidoService.gerarImagemBase64();
     if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
 
-    const pedidoComImagem = {
-      ...pedidoSalvo,
-      imagemPedido,
-    };
+    // const pedidoComImagem = {
+    //   ...pedidoSalvo,
+    //   imagemPedido,
+    // };
 
-    await Promise.all([
-      lastValueFrom(this.pedidoService.salvar(pedidoComImagem)),
-      this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido),
-    ]);
     // await Promise.all([
-    //   lastValueFrom(
-    //     this.pedidoService.salvar({
-    //       idPedido: pedidoSalvo.idPedido,
-    //       imagemPedido,
-    //     }),
-    //   ),
+    //   lastValueFrom(this.pedidoService.salvar(pedidoComImagem)),
     //   this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido),
     // ]);
+    await Promise.all([
+      lastValueFrom(
+        this.pedidoService.salvar({
+          idPedido: pedidoSalvo.idPedido,
+          imagemPedido,
+        }),
+      ),
+      this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido),
+    ]);
     console.log('← FIM: emitirPedidoComImagemEImpressao'); //EXCLUIR
     console.timeEnd('PedidoFormComponent.emitirPedidoComImagemEImpressao'); //EXCLUIR
   }
