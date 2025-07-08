@@ -14,7 +14,6 @@ import { PedidoPagina } from '../../modelo/pedido-pagina';
 })
 export class PedidoService {
   private readonly API = 'https://saotomecatimesaotomecatime.com/api/pedidos';
-  // private readonly API = 'http://localhost:8080/api/pedidos'; //EXCLUIR
 
   constructor(
     private http: HttpClient,
@@ -40,8 +39,6 @@ export class PedidoService {
     dataFinal?: string,
     statusFiltro?: string,
   ): Observable<PedidoPagina> {
-    console.time('PedidoService.listar'); // EXCLUIR
-    console.log('→ INÍCIO: listar'); // EXCLUIR
     const headers = this.getAuthHeaders();
     const params: any = { page, pageSize };
 
@@ -49,8 +46,6 @@ export class PedidoService {
     if (dataInicial) params.dataInicial = dataInicial;
     if (dataFinal) params.dataFinal = dataFinal;
     if (statusFiltro) params.statusFiltro = statusFiltro;
-    console.log('← FIM: listar'); //EXCLUIR
-    console.timeEnd('PedidoService.listar'); //EXCLUIR
 
     return this.http
       .get<PedidoPagina>(this.API, { headers, params })
@@ -76,28 +71,18 @@ export class PedidoService {
   }
 
   salvar(pedido: Partial<Pedido>) {
-    console.time('PedidoService.salvar'); // EXCLUIR
-    console.log('→ INÍCIO: salvar'); // EXCLUIR
     if (pedido.idPedido) {
-      console.log('← FIM: salvar.editar'); //EXCLUIR
-      console.timeEnd('PedidoService.salvar.editar'); //EXCLUIR
       return this.editar(pedido);
     }
-    console.log('← FIM: salvar.criar'); //EXCLUIR
-    console.timeEnd('PedidoService.salvar.criar'); //EXCLUIR
     return this.criar(pedido);
   }
 
   private criar(pedido: Partial<Pedido>) {
-    console.time('PedidoService.criar'); // EXCLUIR
-    console.log('→ INÍCIO: criar'); // EXCLUIR
     const headers = this.getAuthHeaders();
     return this.http.post<Pedido>(this.API, pedido, { headers }).pipe(first());
   }
 
   private editar(pedido: Partial<Pedido>) {
-    console.time('PedidoService.editar'); // EXCLUIR
-    console.log('→ INÍCIO: editar'); // EXCLUIR
     const headers = this.getAuthHeaders();
     return this.http
       .put<Pedido>(`${this.API}/${pedido.idPedido}`, pedido, { headers })
@@ -105,66 +90,13 @@ export class PedidoService {
   }
 
   excluir(idPedido: string) {
-    console.time('PedidoService.excluir'); // EXCLUIR
-    console.log('→ INÍCIO: excluir'); // EXCLUIR
     const headers = this.getAuthHeaders();
     return this.http
       .delete(`${this.API}/${idPedido}`, { headers })
       .pipe(first());
   }
 
-  // async gerarImagemBase64(): Promise<string | null> {
-  //   console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
-  //   console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
-
-  //   const container = document.querySelector(
-  //     '.container-previa',
-  //   ) as HTMLElement;
-  //   if (!container) {
-  //     this.mensagemService.showErrorMessage(
-  //       'Elemento .container-previa não encontrado',
-  //     );
-  //     return null;
-  //   }
-
-  //   try {
-  //     const clone = container.cloneNode(true) as HTMLElement;
-
-  //     clone
-  //       .querySelectorAll('button, input, select, textarea, .nao-imprimir')
-  //       .forEach((el) => el.remove());
-
-  //     clone.style.position = 'fixed';
-  //     clone.style.top = '0';
-  //     clone.style.left = '0';
-
-  //     document.body.appendChild(clone);
-
-  //     const beforeCanvas = performance.now(); // EXCLUIR
-  //     console.time('→ INÍCIO: domtoimage-render'); // EXCLUIR
-
-  //     const dataUrl = await domtoimage.toPng(clone, {
-  //       cacheBust: true,
-  //       bgcolor: '#fff',
-  //     });
-
-  //     console.log('Canvas render time:', performance.now() - beforeCanvas); // EXCLUIR
-  //     console.timeEnd('→ FIM: domtoimage-render'); // EXCLUIR
-
-  //     document.body.removeChild(clone);
-
-  //     console.log('← FIM: gerarImagemBase64'); // EXCLUIR
-  //     console.timeEnd('PedidoService.gerarImagemBase64'); // EXCLUIR
-
-  //     return dataUrl;
-  //   } catch (error) {
-  //     this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
-  //     return null;
-  //   }
-  // }
   async gerarImagemBase64(): Promise<string | null> {
-    console.time('PedidoService.gerarImagemBase64'); // EXCLUIR
-    console.log('→ INÍCIO: gerarImagemBase64'); // EXCLUIR
     const container = document.querySelector(
       '.container-previa',
     ) as HTMLElement;
@@ -182,19 +114,13 @@ export class PedidoService {
         .querySelectorAll('button, input, select, textarea, .nao-imprimir')
         .forEach((el) => el.remove());
 
-      // clone.style.position = 'fixed';
-      // clone.style.top = '0';
-      // clone.style.left = '0';
-      // clone.style.opacity = '1';
-      // clone.style.background = 'white';
-
       const wrapper = document.createElement('div');
       wrapper.style.position = 'fixed';
-      wrapper.style.top = '100vh'; // visível, mas fora da tela
+      wrapper.style.top = '100vh';
       wrapper.style.left = '0';
       wrapper.style.zIndex = '9999';
-      wrapper.style.opacity = '1'; // visível
-      wrapper.style.pointerEvents = 'none'; // não atrapalha o usuário
+      wrapper.style.opacity = '1';
+      wrapper.style.pointerEvents = 'none';
       wrapper.style.background = 'white';
       wrapper.appendChild(clone);
 
@@ -206,8 +132,6 @@ export class PedidoService {
       });
 
       document.body.removeChild(clone);
-      console.log('← FIM: gerarImagemBase64'); // EXCLUIR
-      console.timeEnd('PedidoService.gerarImagemBase64'); // EXCLUIR
 
       return dataUrl;
     } catch (error) {
@@ -217,8 +141,6 @@ export class PedidoService {
   }
 
   async gerarImpressaoUsandoImagem(imagemData: string): Promise<void> {
-    console.time('PedidoService.gerarImpressaoUsandoImagem'); // EXCLUIR
-    console.log('→ INÍCIO: gerarImpressaoUsandoImagem'); // EXCLUIR
     return new Promise<void>((resolve, reject) => {
       try {
         const iframe = document.createElement('iframe');
@@ -274,8 +196,6 @@ export class PedidoService {
         </html>
       `);
         iframeDocument.close();
-        console.log('← FIM: gerarImpressaoUsandoImagem'); //EXCLUIR
-        console.timeEnd('PedidoService.gerarImpressaoUsandoImagem'); //EXCLUIR
       } catch (error) {
         this.mensagemService.showErrorMessage('Erro ao imprimir o pedido.');
         reject(error);
