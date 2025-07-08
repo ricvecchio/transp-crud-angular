@@ -627,23 +627,26 @@ export class PedidoFormComponent implements OnInit {
     console.log('→ INÍCIO: emitirPedidoComImagemEImpressao'); // EXCLUIR
     this.prepararFormularioAntesDoEnvio();
 
-    // Primeiro salvar apenas para obter o idPedido
     const pedidoSalvo = await lastValueFrom(
       this.pedidoService.salvar(this.formulario.value),
     );
-    if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
 
-    // Atualiza o formulário com idPedido para exibir na imagem
+    if (!pedidoSalvo?.idPedido) {
+      throw new Error('Erro ao salvar pedido');
+    }
+
     this.formulario.patchValue(
       { idPedido: pedidoSalvo.idPedido },
       { emitEvent: false },
     );
 
-    // Gera a imagem atualizada com o idPedido incluso
-    const imagemPedido = await this.pedidoService.gerarImagemBase64();
-    if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
-    // Atualiza o pedido com a imagem + imprime em paralelo
+    const imagemPedido = await this.pedidoService.gerarImagemBase64();
+    if (!imagemPedido) {
+      throw new Error('Erro ao gerar imagem do pedido');
+    }
+
     const pedidoComImagem = {
       ...pedidoSalvo,
       imagemPedido,
