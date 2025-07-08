@@ -603,9 +603,11 @@ export class PedidoFormComponent implements OnInit {
     );
     if (!pedidoSalvo?.idPedido) throw new Error('Erro ao salvar pedido');
 
-    this.formulario.get('idPedido')?.setValue(pedidoSalvo.idPedido);
+    // this.formulario.get('idPedido')?.setValue(pedidoSalvo.idPedido);
+    this.formulario.patchValue({ idPedido: pedidoSalvo.idPedido }, { emitEvent: false });
 
     // await new Promise(requestAnimationFrame);
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     const imagemPedido = await this.pedidoService.gerarImagemBase64();
     if (!imagemPedido) throw new Error('Erro ao gerar imagem do pedido');
