@@ -194,7 +194,7 @@ export class PedidoService {
       clone.style.left = '0';
       clone.style.width = '100vw';
       clone.style.height = '100vh';
-      clone.style.opacity = '0';
+      // clone.style.opacity = '0';
       clone.style.visibility = 'hidden';
       clone.style.background = 'white';
 
