@@ -188,15 +188,15 @@ export class PedidoService {
       // clone.style.opacity = '1';
       // clone.style.background = 'white';
 
-      clone.style.position = 'fixed';
-      clone.style.top = '0';
-      clone.style.left = '0';
-      clone.style.width = '100vw';
-      clone.style.height = '100vh';
-      clone.style.zIndex = '-1';
-      clone.style.opacity = '0';
-      clone.style.pointerEvents = 'none';
-      clone.style.background = 'white';
+      const wrapper = document.createElement('div');
+      wrapper.style.position = 'fixed';
+      wrapper.style.top = '100vh'; // visível, mas fora da tela
+      wrapper.style.left = '0';
+      wrapper.style.zIndex = '9999';
+      wrapper.style.opacity = '1'; // visível
+      wrapper.style.pointerEvents = 'none'; // não atrapalha o usuário
+      wrapper.style.background = 'white';
+      wrapper.appendChild(clone);
 
       document.body.appendChild(clone);
 
