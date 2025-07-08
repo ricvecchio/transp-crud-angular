@@ -182,13 +182,22 @@ export class PedidoService {
         .querySelectorAll('button, input, select, textarea, .nao-imprimir')
         .forEach((el) => el.remove());
 
+      // clone.style.position = 'fixed';
+      // clone.style.top = '0';
+      // clone.style.left = '0';
+      // clone.style.pointerEvents = 'none';
+      // clone.style.zIndex = '-1';
+      // clone.style.background = 'white';
+
       clone.style.position = 'fixed';
       clone.style.top = '0';
       clone.style.left = '0';
-
+      clone.style.opacity = '0';
       clone.style.pointerEvents = 'none';
-      clone.style.zIndex = '-1';
+      clone.style.zIndex = '-9999';
       clone.style.background = 'white';
+      clone.style.width = `${container.offsetWidth}px`;
+      clone.style.height = `${container.offsetHeight}px`;
 
       document.body.appendChild(clone);
 
