@@ -193,6 +193,7 @@ export class PedidoService {
       clone.style.left = '-9999px';
       clone.style.opacity = '0';
       clone.style.pointerEvents = 'none';
+      clone.style.zIndex = '-1';
       clone.style.background = 'white';
 
       document.body.appendChild(clone);
