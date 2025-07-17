@@ -415,27 +415,27 @@ export class PedidosListaComponent implements OnInit {
 
             return {
               Pedido: pedido.idPedido,
+              Data: new Date(pedido.dataAtualizacaoPedido).toLocaleDateString(
+              'pt-BR',
+              ),
               Nome: pedido.nome,
               Volume: pedido.volume,
               Preço: precoNumerico.toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
               }),
-              Data: new Date(pedido.dataAtualizacaoPedido).toLocaleDateString(
-                'pt-BR',
-              ),
             };
           });
 
           pedidosData.push({
             Pedido: '',
+            Data: '',
             Nome: 'Total',
             Volume: '',
             Preço: totalPreco.toLocaleString('pt-BR', {
               style: 'currency',
               currency: 'BRL',
             }),
-            Data: '',
           });
 
           const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(pedidosData);
