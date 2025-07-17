@@ -1,5 +1,5 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormsModule,
@@ -24,15 +24,14 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChangeDetectorRef } from '@angular/core';
 
+import { lastValueFrom } from 'rxjs';
 import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service';
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { Cliente } from '../../../modelo/cliente';
 import { Pedido } from '../../../modelo/pedido';
 import { PedidoService } from '../../servico/pedido.service';
-import { firstValueFrom, lastValueFrom } from 'rxjs';
 
 interface Volumes {
   value: string;
@@ -124,8 +123,8 @@ export class PedidoFormComponent implements OnInit {
       precoLv15: [this.formatarParaReais(pedido.precoLv15)],
       precoEscolhido: [''],
       exibirPreco: ['NÃO'],
-      ajudante: ['NÃO'],
-      adicional: ['NÃO'],
+      ajudante: 'NÃO',
+      adicional: 'NÃO',
       precoFinal: [this.formatarParaReais(pedido.precoFinal)],
       observacao: [pedido.observacao],
       dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
@@ -175,8 +174,8 @@ export class PedidoFormComponent implements OnInit {
           precoLv5: pedido.precoLv5,
           precoLv10: pedido.precoLv10,
           precoLv15: pedido.precoLv15,
-          ajudante: ['NÃO'],
-          adicional: ['NÃO'],
+          ajudante: 'NÃO',
+          adicional: 'NÃO',
           precoFinal: pedido.precoFinal,
           observacao: pedido.observacao,
           status: pedido.status,
@@ -569,7 +568,13 @@ export class PedidoFormComponent implements OnInit {
     this.atualizarFormulario(status);
 
     if (status === 'Salvo') {
-      this.salvarPedido();
+      this.pedidoService.salvar(this.formulario.value).subscribe({
+        next: () => {
+          this.mensagemService.showSuccessMessage('Pedido salvo com sucesso!');
+          this.router.navigate(['/menu']);
+        },
+        error: () => this.onError(),
+      });
     } else {
       try {
         await this.emitirPedidoComImagemEImpressao();
@@ -638,16 +643,6 @@ export class PedidoFormComponent implements OnInit {
     });
   }
 
-  private salvarPedido() {
-    this.pedidoService.salvar(this.formulario.value).subscribe({
-      next: () => {
-        this.onSucess();
-        this.router.navigate(['/menu']);
-      },
-      error: () => this.onError(),
-    });
-  }
-
   private prepararFormularioAntesDoEnvio(): void {
     const form = this.formulario;
 
@@ -673,11 +668,13 @@ export class PedidoFormComponent implements OnInit {
       valorAjudante,
       valorAdicional,
     });
-  }
 
-  private onSucess() {
-    this.mensagemService.showSuccessMessage('Pedido Salvo com sucesso!');
-    this.formulario.reset();
+    const precoFinal = form.get('precoFinal')?.value;
+    if (Array.isArray(precoFinal)) {
+      form.patchValue({
+        precoFinal: precoFinal[0],
+      });
+    }
   }
 
   onCancel() {
