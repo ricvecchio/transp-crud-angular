@@ -416,14 +416,11 @@ export class PedidosListaComponent implements OnInit {
             return {
               Pedido: pedido.idPedido,
               Data: new Date(pedido.dataAtualizacaoPedido).toLocaleDateString(
-              'pt-BR',
+                'pt-BR',
               ),
               Nome: pedido.nome,
               Volume: pedido.volume,
-              Preço: precoNumerico.toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-              }),
+              Preço: precoNumerico.toLocaleString('pt-BR'),
             };
           });
 
