@@ -401,8 +401,6 @@ export class PedidosListaComponent implements OnInit {
             return;
           }
 
-          let totalPreco = 0;
-
           const pedidosData = pagina.pedidos.map((pedido) => {
             const precoNumerico = Number(
               pedido.precoFinal
@@ -411,8 +409,6 @@ export class PedidosListaComponent implements OnInit {
                 .replace(',', '.') || 0,
             );
 
-            totalPreco += precoNumerico;
-
             return {
               Pedido: pedido.idPedido,
               Data: new Date(pedido.dataAtualizacaoPedido).toLocaleDateString(
@@ -420,19 +416,8 @@ export class PedidosListaComponent implements OnInit {
               ),
               Nome: pedido.nome,
               Volume: pedido.volume,
-              Preço: precoNumerico.toLocaleString('pt-BR'),
+              Preço: parseFloat(precoNumerico.toFixed(2)),
             };
-          });
-
-          pedidosData.push({
-            Pedido: '',
-            Data: '',
-            Nome: 'Total',
-            Volume: '',
-            Preço: totalPreco.toLocaleString('pt-BR', {
-              style: 'currency',
-              currency: 'BRL',
-            }),
           });
 
           const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(pedidosData);
