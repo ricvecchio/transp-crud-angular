@@ -34,11 +34,6 @@ import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { Cliente } from '../../../modelo/cliente';
 import { ClienteService } from './../../../clientes/servicos/cliente.service';
 
-interface Metros {
-  value: string;
-  viewValue: string;
-}
-
 export interface User {
   name: string;
 }
@@ -191,21 +186,44 @@ export class ClienteFormComponent implements OnInit {
       value = value.substring(0, 14);
     }
 
+    let formattedValue = '';
     if (value.length > 11) {
-      value = value.replace(
+      formattedValue = value.replace(
         /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2}).*/,
         '$1.$2.$3/$4-$5',
       );
-    } else if (value.length > 9) {
-      value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{2}).*/, '$1.$2.$3-$4');
+    } else if (value.length === 11) {
+      formattedValue = value.replace(
+        /^(\d{3})(\d{3})(\d{3})(\d{2}).*/,
+        '$1.$2.$3-$4',
+      );
     } else if (value.length > 6) {
-      value = value.replace(/^(\d{3})(\d{3})(\d+).*/, '$1.$2.$3');
+      formattedValue = value.replace(/^(\d{3})(\d{3})(\d+).*/, '$1.$2.$3');
     } else if (value.length > 3) {
-      value = value.replace(/^(\d{3})(\d+).*/, '$1.$2');
+      formattedValue = value.replace(/^(\d{3})(\d+).*/, '$1.$2');
+    } else {
+      formattedValue = value;
     }
 
-    input.value = value;
-    this.formulario.get('cpfCnpj')?.setValue(value);
+    input.value = formattedValue;
+    this.formulario.get('cpfCnpj')?.setValue(formattedValue);
+
+    const cpfCnpjControl = this.formulario.get('cpfCnpj');
+
+    const isCpf = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(formattedValue);
+    const isCnpj = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(formattedValue);
+    const isEmpty = formattedValue.trim() === '';
+
+    if (cpfCnpjControl) {
+      if (isCpf || isCnpj || isEmpty) {
+        cpfCnpjControl.setErrors(null);
+      } else {
+        cpfCnpjControl.setErrors({ invalidCpfCnpj: true });
+        setTimeout(() => {
+          input.focus();
+        });
+      }
+    }
   }
 
   onTelefoneOuCelularInput(event: Event, controlName: string): void {
@@ -379,6 +397,14 @@ export class ClienteFormComponent implements OnInit {
   dataAtual: Date = new Date();
 
   onSubmit() {
+    if (this.formulario.invalid) {
+      this.formulario.markAllAsTouched();
+      this.mensagemService.showErrorMessage(
+        'Verifique os campos obrigatórios ou inválidos!',
+      );
+      return;
+    }
+
     const dataAjustada = new Date(
       this.dataAtual.getTime() - 3 * 60 * 60 * 1000,
     );
