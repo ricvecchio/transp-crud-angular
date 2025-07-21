@@ -117,7 +117,7 @@ export class ClienteFormComponent implements OnInit {
           Validators.maxLength(100),
         ],
       ],
-      cpfCnpj: [cliente.cpfCnpj, [Validators.required]],
+      cpfCnpj: [cliente.cpfCnpj],
       razaoSocial: [cliente.razaoSocial],
       telefone: [cliente.telefone, [Validators.required]],
       celular: [cliente.celular],
