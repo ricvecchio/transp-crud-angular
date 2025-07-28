@@ -125,21 +125,37 @@ export class DashboardComponent implements OnInit {
     this.fetchDashboardData();
   }
 
+  // private fetchDashboardData(): void {
+  //   this.isLoading = true;
+  //   this.dashboardService.listarDadosDashboard(0, 60).subscribe({
+  //     next: (data) => {
+  //       this.populateBarChart(data);
+  //       this.populatePieChart(data);
+  //       this.isLoading = false;
+  //       this.cdr.detectChanges();
+  //     },
+  //     error: (err) => {
+  //       console.error('Erro ao carregar dados:', err);
+  //       this.isLoading = false;
+  //     },
+  //   });
+  // }
   private fetchDashboardData(): void {
-    this.isLoading = true;
-    this.dashboardService.listarDadosDashboard(0, 60).subscribe({
-      next: (data) => {
-        this.populateBarChart(data);
-        this.populatePieChart(data);
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Erro ao carregar dados:', err);
-        this.isLoading = false;
-      },
-    });
-  }
+  this.isLoading = true;
+  this.dashboardService.listarDadosDashboard(0, 60).subscribe({
+    next: (response) => {
+      this.populateBarChart(response.dados);  // acessar 'dados' aqui
+      this.populatePieChart(response.dados);  // idem
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    },
+    error: (err) => {
+      console.error('Erro ao carregar dados:', err);
+      this.isLoading = false;
+    },
+  });
+}
+
 
   private populateBarChart(data: any[]): void {
     // Mapeia os totais por cliente por mês (12 posições)

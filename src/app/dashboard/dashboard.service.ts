@@ -7,6 +7,7 @@ import { first } from 'rxjs';
 })
 export class DashboardService {
   private readonly API = 'https://saotomecatimesaotomecatime.com/api/dashboard';
+  // private readonly API = 'http://localhost:8080/api/dashboard'; //EXCLUIR
 
   constructor(private http: HttpClient) {}
 
@@ -21,14 +22,25 @@ export class DashboardService {
     });
   }
 
-  listarDadosDashboard(page = 0, pageSize = 60) {
-    const headers = this.getAuthHeaders();
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('pageSize', pageSize.toString());
+  // listarDadosDashboard(page = 0, pageSize = 60) {
+  //   const headers = this.getAuthHeaders();
+  //   const params = new HttpParams()
+  //     .set('page', page.toString())
+  //     .set('pageSize', pageSize.toString());
 
-    return this.http
-      .get<any[]>(`${this.API}`, { headers, params })
-      .pipe(first());
-  }
+  //   return this.http
+  //     .get<any[]>(`${this.API}`, { headers, params })
+  //     .pipe(first());
+  // }
+  listarDadosDashboard(page = 0, pageSize = 60) {
+  const headers = this.getAuthHeaders();
+  const params = new HttpParams()
+    .set('page', page.toString())
+    .set('pageSize', pageSize.toString());
+
+  return this.http
+    .get<{ dados: any[] }>(`${this.API}`, { headers, params })  // Retorna um objeto com 'dados'
+    .pipe(first());
+}
+
 }
