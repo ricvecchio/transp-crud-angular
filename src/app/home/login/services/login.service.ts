@@ -4,13 +4,13 @@ import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { LoginResponse } from '../types/login-response.types';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
-  // private readonly API = 'http://localhost:8080/api/users'; // => RODAR LOCALMENTE
+  private readonly API = `${environment.apiBaseUrl}/users`;
 
   private usuarioSubject = new BehaviorSubject<LoginResponse | null>(null);
 

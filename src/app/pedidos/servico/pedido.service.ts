@@ -8,13 +8,13 @@ import { first, Observable } from 'rxjs';
 import { MensagemService } from '../../compartilhado/mensagem.service';
 import { Pedido } from '../../modelo/pedido';
 import { PedidoPagina } from '../../modelo/pedido-pagina';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PedidoService {
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/pedidos';
-  // private readonly API = 'http://localhost:8080/api/pedidos'; // => RODAR LOCALMENTE
+  private readonly API = `${environment.apiBaseUrl}/pedidos`;
 
   constructor(
     private http: HttpClient,

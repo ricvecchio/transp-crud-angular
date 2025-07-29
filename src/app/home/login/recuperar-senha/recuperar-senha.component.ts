@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, finalize, throwError, timeout } from 'rxjs';
 import { MensagemService } from '../../../compartilhado/mensagem.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-recuperar-senha',
@@ -13,8 +14,7 @@ import { MensagemService } from '../../../compartilhado/mensagem.service';
   imports: [CommonModule, FormsModule],
 })
 export class RecuperarSenhaComponent {
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
-  // private readonly API = 'http://localhost:8080/api/users'; // => RODAR LOCALMENTE
+  private readonly API = `${environment.apiBaseUrl}/users`;
 
   email: string = '';
   username: string = '';

@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { first, Observable } from 'rxjs';
 import { Usuario } from '../modelo/usuario';
 import { UsuarioPagina } from '../modelo/usuario-pagina';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuarioService {
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
-  // private readonly API = 'http://localhost:8080/api/users'; // => RODAR LOCALMENTE
+  private readonly API = `${environment.apiBaseUrl}/users`;
 
   constructor(private http: HttpClient) {}
 

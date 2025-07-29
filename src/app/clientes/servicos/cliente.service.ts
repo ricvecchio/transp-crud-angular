@@ -4,13 +4,13 @@ import { first, Observable } from 'rxjs';
 
 import { Cliente } from '../../modelo/cliente';
 import { ClientePagina } from '../../modelo/cliente-pagina';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClienteService {
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/clientes';
-  // private readonly API = 'http://localhost:8080/api/clientes'; // => RODAR LOCALMENTE
+  private readonly API = `${environment.apiBaseUrl}/users`;
 
   constructor(private http: HttpClient) {}
 
