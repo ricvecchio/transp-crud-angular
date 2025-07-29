@@ -125,27 +125,12 @@ export class DashboardComponent implements OnInit {
     this.fetchDashboardData();
   }
 
-  // private fetchDashboardData(): void {
-  //   this.isLoading = true;
-  //   this.dashboardService.listarDadosDashboard(0, 60).subscribe({
-  //     next: (data) => {
-  //       this.populateBarChart(data);
-  //       this.populatePieChart(data);
-  //       this.isLoading = false;
-  //       this.cdr.detectChanges();
-  //     },
-  //     error: (err) => {
-  //       console.error('Erro ao carregar dados:', err);
-  //       this.isLoading = false;
-  //     },
-  //   });
-  // }
   private fetchDashboardData(): void {
   this.isLoading = true;
   this.dashboardService.listarDadosDashboard(0, 60).subscribe({
     next: (response) => {
-      this.populateBarChart(response.dados);  // acessar 'dados' aqui
-      this.populatePieChart(response.dados);  // idem
+      this.populateBarChart(response.dados);  
+      this.populatePieChart(response.dados);  
       this.isLoading = false;
       this.cdr.detectChanges();
     },
@@ -156,51 +141,89 @@ export class DashboardComponent implements OnInit {
   });
 }
 
+private populateBarChart(data: any[]): void {
+  // Estrutura para armazenar valores por cliente e mês
+  const clientMonthTotals: { [idCliente: string]: number[] } = {};
 
-  private populateBarChart(data: any[]): void {
-    // Mapeia os totais por cliente por mês (12 posições)
-    const clientMonthTotals: { [idCliente: string]: number[] } = {};
+  // Preencher os dados de cada mês (já vem com até 5 clientes do backend)
+  data.forEach((mesData) => {
+    const mesIndex = mesData.mesTotal - 1;
+
+    if (Array.isArray(mesData.clientes)) {
+      mesData.clientes.forEach((cliente: any) => {
+        const { idCliente, precoTotal } = cliente;
+
+        if (!clientMonthTotals[idCliente]) {
+          clientMonthTotals[idCliente] = Array(12).fill(0);
+        }
+
+        clientMonthTotals[idCliente][mesIndex] = precoTotal;
+      });
+    }
+  });
+
+  // Agora NÃO filtramos top 5 globais.
+  // Incluímos todos os clientes que vieram do backend (até 5 por mês).
+  const clientesUnicos = Object.keys(clientMonthTotals);
+
+  this.barChartData.datasets = clientesUnicos.map((idCliente, index) => {
+    const color = Object.values(this.topColors)[index % 5];
+    return {
+      label: `Cliente ${idCliente}`,
+      data: clientMonthTotals[idCliente],
+      backgroundColor: color,
+      borderColor: this.darkenColor(color),
+      borderWidth: 1,
+      stack: 'stacked',
+    };
+  });
+}
+
+
+  // private populateBarChart(data: any[]): void {
+  //   // Mapeia os totais por cliente por mês (12 posições)
+  //   const clientMonthTotals: { [idCliente: string]: number[] } = {};
   
-    // Itera por mês
-    data.forEach((mesData) => {
-      const mesIndex = mesData.mesTotal - 1;
+  //   // Itera por mês
+  //   data.forEach((mesData) => {
+  //     const mesIndex = mesData.mesTotal - 1;
   
-      if (mesData.clientes && Array.isArray(mesData.clientes)) {
-        mesData.clientes.forEach((cliente: any) => {
-          const { idCliente, precoTotal } = cliente;
+  //     if (mesData.clientes && Array.isArray(mesData.clientes)) {
+  //       mesData.clientes.forEach((cliente: any) => {
+  //         const { idCliente, precoTotal } = cliente;
   
-          if (!clientMonthTotals[idCliente]) {
-            clientMonthTotals[idCliente] = Array(12).fill(0);
-          }
+  //         if (!clientMonthTotals[idCliente]) {
+  //           clientMonthTotals[idCliente] = Array(12).fill(0);
+  //         }
   
-          clientMonthTotals[idCliente][mesIndex] = precoTotal;
-        });
-      }
-    });
+  //         clientMonthTotals[idCliente][mesIndex] = precoTotal;
+  //       });
+  //     }
+  //   });
   
-    // Calcula total por cliente para pegar os top 5
-    const totalPorCliente = Object.keys(clientMonthTotals).map((id) => ({
-      idCliente: id,
-      total: clientMonthTotals[id].reduce((sum, val) => sum + val, 0),
-    }));
+  //   // Calcula total por cliente para pegar os top 5
+  //   const totalPorCliente = Object.keys(clientMonthTotals).map((id) => ({
+  //     idCliente: id,
+  //     total: clientMonthTotals[id].reduce((sum, val) => sum + val, 0),
+  //   }));
   
-    const top5 = totalPorCliente
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 5);
+  //   const top5 = totalPorCliente
+  //     .sort((a, b) => b.total - a.total)
+  //     .slice(0, 5);
   
-    // Monta os datasets com os top 5 clientes
-    this.barChartData.datasets = top5.map((client, index) => {
-      const color = Object.values(this.topColors)[index % 5];
-      return {
-        label: `Cliente: ${client.idCliente}`,
-        data: clientMonthTotals[client.idCliente],
-        backgroundColor: color,
-        borderColor: this.darkenColor(color),
-        borderWidth: 1,
-        stack: 'stacked',
-      };
-    });
-  }
+  //   // Monta os datasets com os top 5 clientes
+  //   this.barChartData.datasets = top5.map((client, index) => {
+  //     const color = Object.values(this.topColors)[index % 5];
+  //     return {
+  //       label: `Cliente: ${client.idCliente}`,
+  //       data: clientMonthTotals[client.idCliente],
+  //       backgroundColor: color,
+  //       borderColor: this.darkenColor(color),
+  //       borderWidth: 1,
+  //       stack: 'stacked',
+  //     };
+  //   });
+  // }
   
   private populatePieChart(data: any[]): void {
     // Organiza os dados mensais com base no 'valorTotalMes' retornado pelo backend
