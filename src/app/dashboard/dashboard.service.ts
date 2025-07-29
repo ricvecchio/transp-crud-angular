@@ -7,8 +7,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class DashboardService {
-  // private readonly API = `${environment.apiBaseUrl}/dashboard`;
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/dashboard';
+  private readonly API = `${environment.apiBaseUrl}/dashboard`;
 
   constructor(private http: HttpClient) {}
 
