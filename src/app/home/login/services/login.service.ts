@@ -10,8 +10,8 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root',
 })
 export class LoginService {
-  // private readonly API = `${environment.apiBaseUrl}/users`;
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
+  private readonly API = `${environment.apiBaseUrl}/users`;
+  // private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
 
   private usuarioSubject = new BehaviorSubject<LoginResponse | null>(null);
 
