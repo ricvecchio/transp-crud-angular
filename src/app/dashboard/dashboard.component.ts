@@ -5,16 +5,24 @@ import { ChartConfiguration } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
 import { DashboardService } from './dashboard.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   standalone: true,
-  imports: [CommonModule, NgChartsModule, MatProgressSpinner],
+  imports: [CommonModule, FormsModule, NgChartsModule, MatProgressSpinner],
 })
 export class DashboardComponent implements OnInit {
+  selectedYear: number = new Date().getFullYear();
   public isLoading = true;
+
+    onYearChange() {
+    console.log('Ano selecionado:', this.selectedYear);
+    // Aqui você pode chamar seu serviço para atualizar os gráficos, por exemplo
+    // this.loadDashboardData(this.selectedYear);
+  }
 
   public barChartLabels: string[] = [
     'Jan/2025',

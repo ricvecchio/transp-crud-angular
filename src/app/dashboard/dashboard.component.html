@@ -1,31 +1,80 @@
-<div *ngIf="!isLoading" class="chart-container">
-  <div class="chart-wrapper">
-    <div class="chart-title-container">
-      <h3 class="chart-subtitle">Top 5 Clientes por Volume de Gastos</h3>
-    </div>
-    <canvas
-      baseChart
-      [data]="barChartData"
-      [options]="barChartOptions"
-      type="bar"
-    >
-    </canvas>
+<div *ngIf="!isLoading" class="dashboard-container">
+
+  <div class="year-selector">
+    <label for="yearInput">Selecione o ano base:</label>
+    <input id="yearInput" type="number" [(ngModel)]="selectedYear" (change)="onYearChange()" />
   </div>
 
-  <div class="chart-wrapper">
-    <div class="chart-title-container">
-      <h3 class="chart-subtitle">Total geral por mês</h3>
+  <div class="chart-container">
+    <div class="chart-wrapper">
+      <div class="chart-title-container">
+        <h3 class="chart-subtitle">Top 5 Clientes por Volume de Gastos</h3>
+      </div>
+      <canvas
+        baseChart
+        [data]="barChartData"
+        [options]="barChartOptions"
+        type="bar"
+      ></canvas>
     </div>
-    <canvas
-      baseChart
-      [data]="pieChartData"
-      [options]="pieChartOptions"
-      type="pie"
-    ></canvas>
-  </div>
 
+    <div class="chart-wrapper">
+      <div class="chart-title-container">
+        <h3 class="chart-subtitle">Total geral por mês</h3>
+      </div>
+      <canvas
+        baseChart
+        [data]="pieChartData"
+        [options]="pieChartOptions"
+        type="pie"
+      ></canvas>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="isLoading" class="loading-spinner">
   <mat-spinner></mat-spinner>
 </div>
+
+
+
+<!-- <div *ngIf="!isLoading" class="chart-container">
+
+  <div class="year-selector">
+    <label for="yearInput">Selecione o ano base:</label>
+    <input id="yearInput" type="number" [(ngModel)]="selectedYear" (change)="onYearChange()" />
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-wrapper">
+      <div class="chart-title-container">
+        <h3 class="chart-subtitle">Top 5 Clientes por Volume de Gastos</h3>
+      </div>
+      <canvas
+        baseChart
+        [data]="barChartData"
+        [options]="barChartOptions"
+        type="bar"
+      ></canvas>
+    </div>
+
+    <div class="chart-wrapper">
+      <div class="chart-title-container">
+        <h3 class="chart-subtitle">Total geral por mês</h3>
+      </div>
+      <canvas
+        baseChart
+        [data]="pieChartData"
+        [options]="pieChartOptions"
+        type="pie"
+      ></canvas>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isLoading" class="loading-spinner">
+  <mat-spinner></mat-spinner>
+</div> -->
+
+
+

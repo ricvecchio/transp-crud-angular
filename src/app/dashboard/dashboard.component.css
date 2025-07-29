@@ -46,6 +46,24 @@
   font-weight: 600;
 }
 
+.year-selector {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;  
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+.year-selector input {
+  width: 100px;
+  padding: 5px 8px;
+  font-size: 1rem;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-left: 8px; 
+}
+
 @media (max-width: 1100px) {
   .chart-wrapper {
     flex: 1 1 100%;
@@ -61,4 +79,15 @@
   }
 }
 
+@media (max-width: 500px) {
+  .year-selector {
+    flex-direction: column;
+    align-items: center;
+    font-size: 1rem;
+  }
 
+  .year-selector input {
+    width: 80%;
+    max-width: 200px;
+  }
+}
