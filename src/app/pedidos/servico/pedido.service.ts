@@ -14,8 +14,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class PedidoService {
-  // private readonly API = `${environment.apiBaseUrl}/pedidos`;
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/pedidos';
+  private readonly API = `${environment.apiBaseUrl}/pedidos`;
 
   constructor(
     private http: HttpClient,

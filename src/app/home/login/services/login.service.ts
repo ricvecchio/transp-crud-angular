@@ -11,7 +11,6 @@ import { environment } from '../../../../environments/environment';
 })
 export class LoginService {
   private readonly API = `${environment.apiBaseUrl}/users`;
-  // private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
 
   private usuarioSubject = new BehaviorSubject<LoginResponse | null>(null);
 

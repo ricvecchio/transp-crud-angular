@@ -10,8 +10,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class ClienteService {
-  // private readonly API = `${environment.apiBaseUrl}/clientes`;
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/clientes';
+  private readonly API = `${environment.apiBaseUrl}/clientes`;
 
   constructor(private http: HttpClient) {}
 

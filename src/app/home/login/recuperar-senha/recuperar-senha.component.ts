@@ -15,7 +15,6 @@ import { environment } from '../../../../environments/environment';
 })
 export class RecuperarSenhaComponent {
   private readonly API = `${environment.apiBaseUrl}/users`;
-  // private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
 
   email: string = '';
   username: string = '';
