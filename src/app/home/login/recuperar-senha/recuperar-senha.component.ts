@@ -14,6 +14,7 @@ import { MensagemService } from '../../../compartilhado/mensagem.service';
 })
 export class RecuperarSenhaComponent {
   private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
+  // private readonly API = 'http://localhost:8080/api/users'; // => RODAR LOCALMENTE
 
   email: string = '';
   username: string = '';

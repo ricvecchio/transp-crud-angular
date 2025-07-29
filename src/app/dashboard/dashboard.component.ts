@@ -16,11 +16,33 @@ import { FormsModule } from '@angular/forms';
 })
 export class DashboardComponent implements OnInit {
   selectedYear: number = new Date().getFullYear();
+  yearOptions: number[] = [];
+
   public isLoading = true;
 
-    onYearChange() {
+  constructor(
+    private http: HttpClient,
+    private dashboardService: DashboardService,
+    private cdr: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
+    this.fetchDashboardData();
+    this.generateYearOptions();
+    this.fetchDashboardData();
+  }
+
+  private generateYearOptions(): void {
+    const currentYear = new Date().getFullYear();
+    const lastYear = 2040;
+    for (let year = currentYear; year <= lastYear; year++) {
+      this.yearOptions.push(year);
+    }
+  }
+
+  onYearChange() {
     console.log('Ano selecionado:', this.selectedYear);
-    // Aqui você pode chamar seu serviço para atualizar os gráficos, por exemplo
+    // Atualize o dashboard com o ano selecionado, se quiser:
     // this.loadDashboardData(this.selectedYear);
   }
 
@@ -123,16 +145,6 @@ export class DashboardComponent implements OnInit {
       },
     },
   };
-
-  constructor(
-    private http: HttpClient,
-    private dashboardService: DashboardService,
-    private cdr: ChangeDetectorRef,
-  ) {}
-
-  ngOnInit(): void {
-    this.fetchDashboardData();
-  }
 
   private fetchDashboardData(): void {
     this.isLoading = true;

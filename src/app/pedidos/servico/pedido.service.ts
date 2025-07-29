@@ -14,6 +14,7 @@ import { PedidoPagina } from '../../modelo/pedido-pagina';
 })
 export class PedidoService {
   private readonly API = 'https://saotomecatimesaotomecatime.com/api/pedidos';
+  // private readonly API = 'http://localhost:8080/api/pedidos'; // => RODAR LOCALMENTE
 
   constructor(
     private http: HttpClient,

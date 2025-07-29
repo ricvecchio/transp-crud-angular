@@ -7,6 +7,7 @@ import { first } from 'rxjs';
 })
 export class DashboardService {
   private readonly API = 'https://saotomecatimesaotomecatime.com/api/dashboard';
+  // private readonly API = 'http://localhost:8080/api/dashboard'; // => RODAR LOCALMENTE
 
   constructor(private http: HttpClient) {}
 

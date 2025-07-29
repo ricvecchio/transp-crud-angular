@@ -9,6 +9,7 @@ import { UsuarioPagina } from '../modelo/usuario-pagina';
 })
 export class UsuarioService {
   private readonly API = 'https://saotomecatimesaotomecatime.com/api/users';
+  // private readonly API = 'http://localhost:8080/api/users'; // => RODAR LOCALMENTE
 
   constructor(private http: HttpClient) {}
 
