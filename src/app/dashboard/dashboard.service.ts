@@ -6,7 +6,8 @@ import { first } from 'rxjs';
   providedIn: 'root',
 })
 export class DashboardService {
-  private readonly API = 'https://saotomecatimesaotomecatime.com/api/dashboard';
+  // private readonly API = 'https://saotomecatimesaotomecatime.com/api/dashboard';
+  private readonly API = 'http://localhost:8080/api/dashboard'; //EXCLUIR
 
   constructor(private http: HttpClient) {}
 

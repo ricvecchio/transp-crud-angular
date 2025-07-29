@@ -74,10 +74,11 @@ export class DashboardComponent implements OnInit {
         callbacks: {
           title: function (tooltipItems) {
             const label = tooltipItems[0].label;
-            return label; 
+            return label;
           },
           label: function (tooltipItem) {
-            const cliente = tooltipItem.dataset.label?.replace('Cliente ', '') || '';
+            const cliente =
+              tooltipItem.dataset.label?.replace('Cliente ', '') || '';
             const valor = tooltipItem.raw as number;
             return `${cliente}\nValor: R$ ${valor.toLocaleString('pt-BR', {
               minimumFractionDigits: 2,
@@ -87,7 +88,7 @@ export class DashboardComponent implements OnInit {
       },
     },
   };
-  
+
   public pieChartOptions: ChartConfiguration<'pie'>['options'] = {
     responsive: true,
     aspectRatio: 1,
@@ -126,112 +127,62 @@ export class DashboardComponent implements OnInit {
   }
 
   private fetchDashboardData(): void {
-  this.isLoading = true;
-  this.dashboardService.listarDadosDashboard(0, 60).subscribe({
-    next: (response) => {
-      this.populateBarChart(response.dados);  
-      this.populatePieChart(response.dados);  
-      this.isLoading = false;
-      this.cdr.detectChanges();
-    },
-    error: (err) => {
-      console.error('Erro ao carregar dados:', err);
-      this.isLoading = false;
-    },
-  });
-}
+    this.isLoading = true;
+    this.dashboardService.listarDadosDashboard(0, 60).subscribe({
+      next: (response) => {
+        this.populateBarChart(response.dados);
+        this.populatePieChart(response.dados);
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar dados:', err);
+        this.isLoading = false;
+      },
+    });
+  }
 
-private populateBarChart(data: any[]): void {
-  // Estrutura para armazenar valores por cliente e mês
-  const clientMonthTotals: { [idCliente: string]: number[] } = {};
+  private populateBarChart(data: any[]): void {
+    const clientMonthTotals: { [idCliente: string]: number[] } = {};
 
-  // Preencher os dados de cada mês (já vem com até 5 clientes do backend)
-  data.forEach((mesData) => {
-    const mesIndex = mesData.mesTotal - 1;
+    data.forEach((mesData) => {
+      const mesIndex = mesData.mesTotal - 1;
 
-    if (Array.isArray(mesData.clientes)) {
-      mesData.clientes.forEach((cliente: any) => {
-        const { idCliente, precoTotal } = cliente;
+      if (Array.isArray(mesData.clientes)) {
+        mesData.clientes.forEach((cliente: any) => {
+          const { idCliente, precoTotal } = cliente;
 
-        if (!clientMonthTotals[idCliente]) {
-          clientMonthTotals[idCliente] = Array(12).fill(0);
-        }
+          if (!clientMonthTotals[idCliente]) {
+            clientMonthTotals[idCliente] = Array(12).fill(0);
+          }
 
-        clientMonthTotals[idCliente][mesIndex] = precoTotal;
-      });
-    }
-  });
+          clientMonthTotals[idCliente][mesIndex] = precoTotal;
+        });
+      }
+    });
 
-  // Agora NÃO filtramos top 5 globais.
-  // Incluímos todos os clientes que vieram do backend (até 5 por mês).
-  const clientesUnicos = Object.keys(clientMonthTotals);
+    const clientesUnicos = Object.keys(clientMonthTotals);
 
-  this.barChartData.datasets = clientesUnicos.map((idCliente, index) => {
-    const color = Object.values(this.topColors)[index % 5];
-    return {
-      label: `Cliente ${idCliente}`,
-      data: clientMonthTotals[idCliente],
-      backgroundColor: color,
-      borderColor: this.darkenColor(color),
-      borderWidth: 1,
-      stack: 'stacked',
-    };
-  });
-}
+    this.barChartData.datasets = clientesUnicos.map((idCliente, index) => {
+      const color = Object.values(this.topColors)[index % 5];
+      return {
+        label: `Cliente ${idCliente}`,
+        data: clientMonthTotals[idCliente],
+        backgroundColor: color,
+        borderColor: this.darkenColor(color),
+        borderWidth: 1,
+        stack: 'stacked',
+      };
+    });
+  }
 
-
-  // private populateBarChart(data: any[]): void {
-  //   // Mapeia os totais por cliente por mês (12 posições)
-  //   const clientMonthTotals: { [idCliente: string]: number[] } = {};
-  
-  //   // Itera por mês
-  //   data.forEach((mesData) => {
-  //     const mesIndex = mesData.mesTotal - 1;
-  
-  //     if (mesData.clientes && Array.isArray(mesData.clientes)) {
-  //       mesData.clientes.forEach((cliente: any) => {
-  //         const { idCliente, precoTotal } = cliente;
-  
-  //         if (!clientMonthTotals[idCliente]) {
-  //           clientMonthTotals[idCliente] = Array(12).fill(0);
-  //         }
-  
-  //         clientMonthTotals[idCliente][mesIndex] = precoTotal;
-  //       });
-  //     }
-  //   });
-  
-  //   // Calcula total por cliente para pegar os top 5
-  //   const totalPorCliente = Object.keys(clientMonthTotals).map((id) => ({
-  //     idCliente: id,
-  //     total: clientMonthTotals[id].reduce((sum, val) => sum + val, 0),
-  //   }));
-  
-  //   const top5 = totalPorCliente
-  //     .sort((a, b) => b.total - a.total)
-  //     .slice(0, 5);
-  
-  //   // Monta os datasets com os top 5 clientes
-  //   this.barChartData.datasets = top5.map((client, index) => {
-  //     const color = Object.values(this.topColors)[index % 5];
-  //     return {
-  //       label: `Cliente: ${client.idCliente}`,
-  //       data: clientMonthTotals[client.idCliente],
-  //       backgroundColor: color,
-  //       borderColor: this.darkenColor(color),
-  //       borderWidth: 1,
-  //       stack: 'stacked',
-  //     };
-  //   });
-  // }
-  
   private populatePieChart(data: any[]): void {
     // Organiza os dados mensais com base no 'valorTotalMes' retornado pelo backend
     const monthlyTotals: { [mesTotal: number]: number } = {};
     const monthlyLabels: string[] = [];
     const monthlyTotalValues: number[] = [];
     const monthlyColors: string[] = [];
-  
+
     // Preenche os totais mensais e rótulos
     data.forEach((item) => {
       const monthLabel = this.barChartLabels[item.mesTotal - 1]; // Ajusta o mês para exibição
@@ -239,14 +190,14 @@ private populateBarChart(data: any[]): void {
       monthlyLabels.push(monthLabel);
       monthlyTotalValues.push(item.valorTotalMes);
       // Utilizando as cores do gráfico de barras para manter a consistência visual
-      monthlyColors.push(Object.values(this.topColors)[item.mesTotal % 5]); 
+      monthlyColors.push(Object.values(this.topColors)[item.mesTotal % 5]);
     });
-  
+
     // Atualiza os dados do gráfico de pizza
     this.pieChartData.labels = monthlyLabels;
     this.pieChartData.datasets[0].data = monthlyTotalValues;
     this.pieChartData.datasets[0].backgroundColor = monthlyColors;
-  
+
     // Atualiza o tooltip para mostrar o valor total de cada mês no gráfico de pizza
     this.pieChartOptions = {
       responsive: true,
@@ -261,7 +212,7 @@ private populateBarChart(data: any[]): void {
               const data = dataset?.data as number[] | undefined;
               const raw = tooltipItem?.raw;
               const label = tooltipItem?.label;
-    
+
               if (data && typeof raw === 'number' && label) {
                 const total = data.reduce((acc, value) => acc + value, 0);
                 const percentage = ((raw / total) * 100).toFixed(2);
@@ -269,18 +220,18 @@ private populateBarChart(data: any[]): void {
                   style: 'currency',
                   currency: 'BRL',
                 });
-    
+
                 return `${label}: ${percentage}% | Valor: ${totalValue}`;
               }
-    
+
               return '';
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     };
   }
-  
+
   private darkenColor(color: string): string {
     if (color.startsWith('rgba')) {
       return color.replace(/[\d\.]+\)$/, '1)').replace(/0\.\d+\)/, '1)');
