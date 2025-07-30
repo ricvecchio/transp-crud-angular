@@ -17,49 +17,9 @@ import { FormsModule } from '@angular/forms';
 export class DashboardComponent implements OnInit {
   selectedYear: number = new Date().getFullYear();
   yearOptions: number[] = [];
-
   public isLoading = true;
 
-  constructor(
-    private http: HttpClient,
-    private dashboardService: DashboardService,
-    private cdr: ChangeDetectorRef,
-  ) {}
-
-  ngOnInit(): void {
-    this.fetchDashboardData();
-    this.generateYearOptions();
-    this.fetchDashboardData();
-  }
-
-  private generateYearOptions(): void {
-    const currentYear = new Date().getFullYear();
-    const lastYear = 2040;
-    for (let year = currentYear; year <= lastYear; year++) {
-      this.yearOptions.push(year);
-    }
-  }
-
-  onYearChange() {
-    console.log('Ano selecionado:', this.selectedYear);
-    // Atualize o dashboard com o ano selecionado, se quiser:
-    // this.loadDashboardData(this.selectedYear);
-  }
-
-  public barChartLabels: string[] = [
-    'Jan/2025',
-    'Fev/2025',
-    'Mar/2025',
-    'Abr/2025',
-    'Mai/2025',
-    'Jun/2025',
-    'Jul/2025',
-    'Ago/2025',
-    'Set/2025',
-    'Out/2025',
-    'Nov/2025',
-    'Dez/2025',
-  ];
+  public barChartLabels: string[] = [];
 
   private topColors = {
     'Top 1': 'rgba(100, 149, 237, 0.7)',
@@ -70,7 +30,7 @@ export class DashboardComponent implements OnInit {
   };
 
   public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: this.barChartLabels,
+    labels: [],
     datasets: [],
   };
 
@@ -103,8 +63,7 @@ export class DashboardComponent implements OnInit {
       tooltip: {
         callbacks: {
           title: function (tooltipItems) {
-            const label = tooltipItems[0].label;
-            return label;
+            return tooltipItems[0].label;
           },
           label: function (tooltipItem) {
             const cliente =
@@ -146,20 +105,67 @@ export class DashboardComponent implements OnInit {
     },
   };
 
+  constructor(
+    private http: HttpClient,
+    private dashboardService: DashboardService,
+    private cdr: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
+    this.generateYearOptions();
+    this.updateLabels();
+    this.fetchDashboardData();
+  }
+
+  private generateYearOptions(): void {
+    const currentYear = new Date().getFullYear();
+    const lastYear = 2040;
+    for (let year = currentYear; year <= lastYear; year++) {
+      this.yearOptions.push(year);
+    }
+  }
+
+  private updateLabels(): void {
+    const months = [
+      'Jan',
+      'Fev',
+      'Mar',
+      'Abr',
+      'Mai',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Set',
+      'Out',
+      'Nov',
+      'Dez',
+    ];
+    this.barChartLabels = months.map((m) => `${m}/${this.selectedYear}`);
+    this.barChartData.labels = this.barChartLabels;
+  }
+
+  onYearChange(): void {
+    console.log('Ano selecionado:', this.selectedYear);
+    this.updateLabels();
+    this.fetchDashboardData();
+  }
+
   private fetchDashboardData(): void {
     this.isLoading = true;
-    this.dashboardService.listarDadosDashboard(0, 60).subscribe({
-      next: (response) => {
-        this.populateBarChart(response.dados);
-        this.populatePieChart(response.dados);
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Erro ao carregar dados:', err);
-        this.isLoading = false;
-      },
-    });
+    this.dashboardService
+      .listarDadosDashboard(0, 60, this.selectedYear)
+      .subscribe({
+        next: (response) => {
+          this.populateBarChart(response.dados);
+          this.populatePieChart(response.dados);
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Erro ao carregar dados:', err);
+          this.isLoading = false;
+        },
+      });
   }
 
   private populateBarChart(data: any[]): void {
@@ -197,28 +203,23 @@ export class DashboardComponent implements OnInit {
   }
 
   private populatePieChart(data: any[]): void {
-    // Organiza os dados mensais com base no 'valorTotalMes' retornado pelo backend
     const monthlyTotals: { [mesTotal: number]: number } = {};
     const monthlyLabels: string[] = [];
     const monthlyTotalValues: number[] = [];
     const monthlyColors: string[] = [];
 
-    // Preenche os totais mensais e rótulos
     data.forEach((item) => {
-      const monthLabel = this.barChartLabels[item.mesTotal - 1]; // Ajusta o mês para exibição
-      monthlyTotals[item.mesTotal] = item.valorTotalMes; // Total de todos os clientes por mês
+      const monthLabel = this.barChartLabels[item.mesTotal - 1];
+      monthlyTotals[item.mesTotal] = item.valorTotalMes;
       monthlyLabels.push(monthLabel);
       monthlyTotalValues.push(item.valorTotalMes);
-      // Utilizando as cores do gráfico de barras para manter a consistência visual
       monthlyColors.push(Object.values(this.topColors)[item.mesTotal % 5]);
     });
 
-    // Atualiza os dados do gráfico de pizza
     this.pieChartData.labels = monthlyLabels;
     this.pieChartData.datasets[0].data = monthlyTotalValues;
     this.pieChartData.datasets[0].backgroundColor = monthlyColors;
 
-    // Atualiza o tooltip para mostrar o valor total de cada mês no gráfico de pizza
     this.pieChartOptions = {
       responsive: true,
       plugins: {

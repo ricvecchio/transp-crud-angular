@@ -22,11 +22,14 @@ export class DashboardService {
     });
   }
 
-  listarDadosDashboard(page = 0, pageSize = 60) {
+  listarDadosDashboard(page = 0, pageSize = 60, year?: number) {
     const headers = this.getAuthHeaders();
+    const selectedYear = year ?? new Date().getFullYear();
+
     const params = new HttpParams()
       .set('page', page.toString())
-      .set('pageSize', pageSize.toString());
+      .set('pageSize', pageSize.toString())
+      .set('year', selectedYear.toString());
 
     return this.http
       .get<{ dados: any[] }>(`${this.API}`, { headers, params })
