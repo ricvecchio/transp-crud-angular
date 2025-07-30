@@ -145,7 +145,6 @@ export class DashboardComponent implements OnInit {
   }
 
   onYearChange(): void {
-    console.log('Ano selecionado:', this.selectedYear);
     this.updateLabels();
     this.fetchDashboardData();
   }

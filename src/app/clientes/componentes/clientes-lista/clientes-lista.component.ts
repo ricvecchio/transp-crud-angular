@@ -94,8 +94,6 @@ export class ClientesListaComponent implements OnInit {
 
   ngOnInit(): void {
     this.permissaoUsuario = sessionStorage.getItem('permission');
-    console.log('Permissão do usuário:', this.permissaoUsuario); // Debug
-
 
     this.filterControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
