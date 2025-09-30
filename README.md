@@ -1,28 +1,57 @@
-# Transportadora
+# Frontend Angular - CRUD - Sistema para Gestão de Clientes, Pedidos e Usuários  
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
+Este projeto consiste em uma aplicação web desenvolvida em **Angular 14** para o gerenciamento completo de clientes, pedidos e usuários.  
+O sistema permite realizar operações CRUD em clientes e pedidos, emitir notas fiscais, controlar usuários cadastrados com perfil e permissões de acesso, além de visualizar um **dashboard analítico** com os principais gastos por cliente.  
 
-## Development server
+O objetivo do projeto é centralizar e otimizar o controle comercial, facilitando a análise de dados e a gestão das informações empresariais.  
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 🚀 Funcionalidades Principais  
+- **Gestão de Clientes:** cadastro, atualização, exclusão e consulta de clientes.  
+- **Gestão de Pedidos:** criação, edição, exclusão e emissão de nota fiscal.  
+- **Controle de Usuários:** cadastro de usuários, definição de perfis e permissões de acesso.  
+- **Dashboard Analítico:** visualização de gastos por cliente, permitindo análise de desempenho e tendências de consumo.  
+- **CI/CD e Deploy Automatizado:** workflow via GitHub Actions para publicação automática, integrado com backend containerizado via Docker.  
 
-## Code scaffolding
+## 🛠 Tecnologias Utilizadas  
+- Angular 14  
+- TypeScript  
+- HTML & CSS  
+- Angular Material UI  
+- Node.js & NPM  
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## ⚙️ DevOps / CI/CD  
+- GitHub Actions para publicação automatizada  
+- Docker para containerização  
 
-## Build
+## 📂 Controle de Versão  
+- Git & GitHub  
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 📌 Pré-requisitos  
+Antes de executar o projeto, certifique-se de ter instalado em sua máquina:  
+- **Node.js >= 18.x**  
+- **Angular CLI >= 14.x**  
+- **Backend da aplicação em execução:** [transp-api-crud-spring](https://github.com/ricvecchio/transp-api-crud-spring)  
 
-## Running unit tests
+## 📁 Estrutura do Projeto  
+- `src/app/components` – Componentes Angular da aplicação  
+- `src/app/services` – Serviços de integração com o backend  
+- `src/app/models` – Modelos de dados  
+- `src/app/pages` – Páginas do sistema (clientes, pedidos, usuários, dashboard)  
+- `docs/images` – Prints de telas para documentação  
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## ▶️ Como Executar  
+```bash
+# Clone este repositório
+git clone https://github.com/ricvecchio/transp-crud-angular.git
 
-## Running end-to-end tests
+# Acesse a pasta do projeto
+cd transp-crud-angular
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+# Instale as dependências
+npm install
 
-## Further help
+# Execute a aplicação
+ng serve
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-# transp-crud-angular
+# Acesse no navegador
+http://localhost:4200
