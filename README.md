@@ -37,7 +37,23 @@ Antes de executar o projeto, certifique-se de ter instalado em sua máquina:
 - `src/app/services` – Serviços de integração com o backend  
 - `src/app/models` – Modelos de dados  
 - `src/app/pages` – Páginas do sistema (clientes, pedidos, usuários, dashboard)  
-- `docs/images` – Prints de telas para documentação  
+- `docs/images` – Prints de telas para documentação 
+
+## 🖼 Telas do Sistema  
+### 🔐 Login  
+![Tela Login](docs/images/tela-login.png)  
+
+### 🏠 Menu Principal  
+![Tela Menu](docs/images/tela-menu.png)  
+
+### 📊 Dashboard Analítico  
+![Tela Dashboard](docs/images/tela-dashboard.png)  
+
+---
+
+👉 Repositório do backend: [transp-api-crud-spring](https://github.com/ricvecchio/transp-api-crud-spring)  
+
+---
 
 ## ▶️ Como Executar  
 ```bash
@@ -55,3 +71,4 @@ ng serve
 
 # Acesse no navegador
 http://localhost:4200
+
