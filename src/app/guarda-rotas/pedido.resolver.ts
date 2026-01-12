@@ -61,6 +61,7 @@ export class PedidoResolver {
       adicional: '',
       precoFinal: '',
       observacao: '',
+      observacao2: '',
       status: '',
       dataAtualizacaoPedido: '',
       imagemPedido: '',

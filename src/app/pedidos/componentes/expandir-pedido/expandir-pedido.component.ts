@@ -90,6 +90,7 @@ export class ExpandirPedidoComponent implements OnInit {
       valorAdicional: [pedido.valorAdicional],
       precoFinal: [pedido.precoFinal],
       observacao: [pedido.observacao],
+      observacao2: [pedido.observacao2],
       status: [pedido.status],
       dataAtualizacaoPedido: [formattedDate],
     });

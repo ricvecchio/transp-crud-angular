@@ -127,6 +127,7 @@ export class PedidoFormComponent implements OnInit {
       adicional: 'NÃO',
       precoFinal: [this.formatarParaReais(pedido.precoFinal)],
       observacao: [pedido.observacao],
+      observacao2: [pedido.observacao2],
       dataAtualizacaoPedido: [pedido.dataAtualizacaoPedido],
       status: [pedido.status],
       imagemPedido: [pedido.imagemPedido],
@@ -178,6 +179,7 @@ export class PedidoFormComponent implements OnInit {
           adicional: 'NÃO',
           precoFinal: pedido.precoFinal,
           observacao: pedido.observacao,
+          observacao2: pedido.observacao2,
           status: pedido.status,
           imagemPedido: pedido.imagemPedido,
         });
@@ -291,6 +293,7 @@ export class PedidoFormComponent implements OnInit {
       adicional: pedidoParams.adicional || '',
       precoFinal: pedidoParams.precoFinal || '',
       observacao: pedidoParams.observacao || '',
+      observacao2: pedidoParams.observacao2 || '',
       status: pedidoParams.status || '',
       dataAtualizacaoPedido: pedidoParams.dataAtualizacaoPedido || '',
       imagemPedido: pedidoParams.imagemPedido || '',

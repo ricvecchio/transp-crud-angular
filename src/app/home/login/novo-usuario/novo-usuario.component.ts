@@ -52,7 +52,8 @@ export class NovoUsuarioComponent implements OnInit {
         },
         (error) => {
           if (error.status === 409) {
-            this.mensagemService.showErrorMessage('Username já cadastrado!');
+            const errorMessage = error.error?.message || 'Erro ao cadastrar. Usuário ou email já existente.';
+            this.mensagemService.showErrorMessage(errorMessage);
           } else {
             this.mensagemService.showErrorMessage(
               'Erro ao cadastrar. Tente novamente mais tarde.',

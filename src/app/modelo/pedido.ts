@@ -41,6 +41,7 @@ export interface Pedido {
   adicional: string;
   precoFinal: string;
   observacao: string;
+  observacao2: string;
   status: string;
   dataAtualizacaoPedido: string;
   imagemPedido: string;

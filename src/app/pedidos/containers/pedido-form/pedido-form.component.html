@@ -457,6 +457,21 @@
 
     <div class="espaco-dentro">
       <div class="row">
+        <div class="col-md-12">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Observações 2:</mat-label>
+            <input
+              matInput
+              name="observacao2"
+              placeholder="Informações adicionais 2"
+              formControlName="observacao2"
+              (input)="convertToUppercase('observacao2')"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="col-md-2">
           <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Faturado:</mat-label>
@@ -735,6 +750,14 @@
   <br />
 
   <div class="container-previa">
+    <div class="container-previa-obs">
+      <div class="col-md-12" class="texto-vermelho">
+        <b class="texto-vermelho"
+          >OBS.: {{ this.formulario.get("observacao2")?.value }}
+        </b>
+      </div>
+    </div>
+
     <div class="preview-image-container" style="margin-top: 10px"></div>
 
     <div class="modelo ff-roboto-mono">
