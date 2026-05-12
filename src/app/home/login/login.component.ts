@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
 import { MensagemService } from '../../compartilhado/mensagem.service';
+import { SyncOfflineService } from '../../offline/sync-offline.service';
 import { UsuarioService } from '../../usuarios/usuario.service';
 import { MensagemComponent } from './mensagem/mensagem.component';
 import { LoginService } from './services/login.service';
@@ -17,10 +18,14 @@ export class LoginComponent implements OnInit {
   usuario = '';
   senha = '';
 
+  private readonly USUARIO_OFFLINE = 'UsuarioOffline';
+  private readonly SENHA_OFFLINE = 'UsuarioOffline';
+
   constructor(
     private loginService: LoginService,
     private usuarioService: UsuarioService,
     private mensagemService: MensagemService,
+    private syncOfflineService: SyncOfflineService,
     private router: Router,
   ) {}
 
@@ -29,6 +34,15 @@ export class LoginComponent implements OnInit {
   login() {
     this.usuario = this.usuario.trim();
 
+    if (this.loginOfflineValido()) {
+      this.criarSessaoOffline();
+      this.mensagemService.showSuccessMessage(
+        'Login offline realizado com sucesso!',
+      );
+      this.router.navigate(['menu']);
+      return;
+    }
+
     this.loginService.login(this.usuario, this.senha).subscribe(
       () => {
         this.usuarioService.buscarPorUsername(this.usuario).subscribe(
@@ -36,7 +50,13 @@ export class LoginComponent implements OnInit {
             if (!usuario.permission || usuario.permission.trim() === '') {
               this.mensagemService.showErrorMessage('Usuário sem Permissão!');
             } else {
+              sessionStorage.removeItem('offline-mode');
+
               this.router.navigate(['menu']);
+
+              setTimeout(() => {
+                this.syncOfflineService.sincronizarPedidosPendentes();
+              }, 1000);
             }
           },
           (error) => {
@@ -71,5 +91,20 @@ export class LoginComponent implements OnInit {
         }
       },
     );
+  }
+
+  private loginOfflineValido(): boolean {
+    return (
+      !navigator.onLine &&
+      this.usuario === this.USUARIO_OFFLINE &&
+      this.senha === this.SENHA_OFFLINE
+    );
+  }
+
+  private criarSessaoOffline(): void {
+    sessionStorage.setItem('auth-token', 'OFFLINE_TOKEN');
+    sessionStorage.setItem('username', this.USUARIO_OFFLINE);
+    sessionStorage.setItem('permission', 'OFFLINE');
+    sessionStorage.setItem('offline-mode', 'true');
   }
 }

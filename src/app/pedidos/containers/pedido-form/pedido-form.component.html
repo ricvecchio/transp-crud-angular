@@ -734,14 +734,17 @@
         Emitir Pedido
       </button>
 
-      <button
-        (click)="onSubmit('Salvo')"
-        type="button"
-        class="botao"
-        [disabled]="!verificarVolumeSelecionado()"
-      >
-        Salvar
-      </button>
+      @if (!isModoOffline) {
+        <button
+          (click)="onSubmit('Salvo')"
+          type="button"
+          class="botao"
+          [disabled]="!verificarVolumeSelecionado()"
+        >
+          Salvar
+        </button>
+      }
+
       <button (click)="onCancel()" type="button" class="botao">Cancelar</button>
     </div>
   </form>

@@ -12,6 +12,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
+  private readonly ROTAS_PERMITIDAS_OFFLINE = ['/menu', '/cadastrar-pedido'];
+
   constructor(private router: Router) {}
 
   canActivate(
@@ -23,12 +25,27 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     const authToken = sessionStorage.getItem('auth-token');
+    const permissaoUsuario = sessionStorage.getItem('permission');
+    const modoOffline = sessionStorage.getItem('offline-mode') === 'true';
 
-    if (authToken) {
-      return true;
-    } else {
+    if (!authToken) {
       this.router.navigate(['/home']);
       return false;
     }
+
+    if (modoOffline || permissaoUsuario === 'OFFLINE') {
+      const rotaPermitida = this.ROTAS_PERMITIDAS_OFFLINE.some((rota) =>
+        state.url.startsWith(rota),
+      );
+
+      if (rotaPermitida) {
+        return true;
+      }
+
+      this.router.navigate(['/menu']);
+      return false;
+    }
+
+    return true;
   }
 }
