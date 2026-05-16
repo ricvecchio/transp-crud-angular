@@ -95,7 +95,6 @@ export class LoginComponent implements OnInit {
 
   private loginOfflineValido(): boolean {
     return (
-      !navigator.onLine &&
       this.usuario === this.USUARIO_OFFLINE &&
       this.senha === this.SENHA_OFFLINE
     );

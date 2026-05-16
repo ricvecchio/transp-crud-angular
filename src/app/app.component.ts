@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { SyncOfflineService } from './offline/sync-offline.service';
@@ -17,14 +18,23 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private subscriptions = new Subscription();
 
-  constructor(private syncOfflineService: SyncOfflineService) {}
+  constructor(
+    private syncOfflineService: SyncOfflineService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.syncOfflineService.iniciarMonitoramento();
 
     this.subscriptions.add(
       this.syncOfflineService.online$.subscribe((online) => {
+        const estavaOnline = this.online;
+
         this.online = online;
+
+        if (!online && estavaOnline) {
+          this.ativarModoOfflineAutomaticamente();
+        }
       }),
     );
 
@@ -32,6 +42,38 @@ export class AppComponent implements OnInit, OnDestroy {
       this.syncOfflineService.sincronizando$.subscribe((sincronizando) => {
         this.sincronizandoOffline = sincronizando;
       }),
+    );
+
+    this.subscriptions.add(
+      this.router.events.subscribe((event) => {
+        if (
+          event instanceof NavigationStart &&
+          !navigator.onLine &&
+          !this.isRotaOfflinePermitida(event.url)
+        ) {
+          this.ativarModoOfflineAutomaticamente();
+        }
+      }),
+    );
+  }
+
+  private ativarModoOfflineAutomaticamente(): void {
+    const permissaoAtual = sessionStorage.getItem('permission');
+
+    if (permissaoAtual === 'OFFLINE') {
+      return;
+    }
+
+    sessionStorage.clear();
+
+    this.router.navigate(['/home']);
+  }
+
+  private isRotaOfflinePermitida(url: string): boolean {
+    return (
+      url.includes('/home') ||
+      url.includes('/menu') ||
+      url.includes('/cadastrar-pedido')
     );
   }
 
