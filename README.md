@@ -1,61 +1,86 @@
-# Frontend Angular - CRUD - Sistema para Gestão de Clientes, Pedidos e Usuários  
+# Frontend Angular - CRUD - Sistema para Gestão de Clientes, Pedidos e Usuários
 
-Este projeto consiste em uma aplicação web desenvolvida em **Angular 14** para o gerenciamento completo de clientes, pedidos e usuários.  
-O sistema permite realizar operações CRUD em clientes e pedidos, emitir notas fiscais, controlar usuários cadastrados com perfil e permissões de acesso, além de visualizar um **dashboard analítico** com os principais gastos por cliente.  
+Este projeto consiste em uma aplicação web desenvolvida em **Angular 19** para o gerenciamento de clientes, pedidos e usuários.
+O sistema permite realizar operações CRUD, emitir pedidos com impressão em 2 vias, controlar permissões de acesso, visualizar dashboard analítico e operar em modo offline com sincronização de pedidos quando a conexão voltar.
 
-O objetivo do projeto é centralizar e otimizar o controle comercial, facilitando a análise de dados e a gestão das informações empresariais.  
+O objetivo do projeto é centralizar e otimizar o controle comercial, facilitando a análise de dados e a gestão das informações empresariais.
 
-## 🚀 Funcionalidades Principais  
-- **Gestão de Clientes:** cadastro, atualização, exclusão e consulta de clientes.  
-- **Gestão de Pedidos:** criação, edição, exclusão e emissão de nota fiscal.  
-- **Controle de Usuários:** cadastro de usuários, definição de perfis e permissões de acesso.  
-- **Dashboard Analítico:** visualização de gastos por cliente, permitindo análise de desempenho e tendências de consumo.  
-- **CI/CD e Deploy Automatizado:** workflow via GitHub Actions para publicação automática, integrado com backend containerizado via Docker.  
+## 🚀 Funcionalidades Principais
+- **Autenticação e Sessão:** login, cadastro de novo usuário, recuperação de senha por token e controle de sessão com JWT.
+- **Gestão de Clientes:** cadastro, edição, exclusão, consulta paginada e filtro por nome/razão social/CPF-CNPJ.
+- **Gestão de Pedidos:** cadastro, edição, exclusão, consulta com filtros (cliente, status e período), impressão e reimpressão de pedidos.
+- **Emissão com Imagem:** pedidos emitidos online geram imagem da prévia e permitem impressão em duas vias (A4).
+- **Modo Offline (PWA):** login offline, consulta de clientes em cache, emissão de pedidos offline e sincronização automática ao reconectar.
+- **Controle de Usuários e Permissões:** listagem, alteração de permissão e exclusão de usuários (tela restrita).
+- **Dashboard Analítico:** gráficos (barras e pizza) com top clientes por gasto e total mensal por ano.
+- **Exportação de Pedidos:** exportação para Excel (`.xlsx`) com base nos filtros aplicados.
+- **CI/CD e Deploy Automatizado:** workflow no GitHub Actions para build e deploy em VPS via SSH/SCP.
 
-## 🛠 Tecnologias Utilizadas  
-- Angular 14  
-- TypeScript  
-- HTML & CSS  
-- Angular Material UI  
-- Node.js & NPM  
+## 🛠 Tecnologias Utilizadas
+- Angular 19
+- TypeScript
+- HTML & CSS
+- Angular Material
+- Chart.js + ng2-charts
+- Dexie (IndexedDB) para persistência offline
+- Angular Service Worker (PWA)
+- Node.js e NPM
 
-## ⚙️ DevOps / CI/CD  
-- GitHub Actions para publicação automatizada  
-- Docker para containerização  
+## ⚙️ DevOps / CI/CD
+- **GitHub Actions:** pipeline em `.github/workflows/deploy.yml` acionada em push na `main`.
+- **Deploy em VPS:** build de produção e publicação dos arquivos em `/home/root/transportadora`.
+- **Servidor web:** reinício e limpeza de cache do Nginx após deploy.
+- **Firebase Hosting:** configuração presente (`firebase.json` e `.firebaserc`) para hospedagem SPA.
 
-## 📂 Controle de Versão  
-- Git & GitHub  
+## 📂 Controle de Versão
+- Git & GitHub
 
-## 📌 Pré-requisitos  
-Antes de executar o projeto, certifique-se de ter instalado em sua máquina:  
-- **Node.js >= 18.x**  
-- **Angular CLI >= 14.x**  
-- **Backend da aplicação em execução:** [transp-api-crud-spring](https://github.com/ricvecchio/transp-api-crud-spring)  
+## 📌 Pré-requisitos
+Antes de executar o projeto, certifique-se de ter instalado em sua máquina:
+- **Node.js >= 20.x** (versão usada no pipeline de deploy)
+- **Angular CLI 19.x**
+- **Backend da aplicação em execução:** [transp-api-crud-spring](https://github.com/ricvecchio/transp-api-crud-spring)
 
-## 📁 Estrutura do Projeto  
-- `src/app/components` – Componentes Angular da aplicação  
-- `src/app/services` – Serviços de integração com o backend  
-- `src/app/models` – Modelos de dados  
-- `src/app/pages` – Páginas do sistema (clientes, pedidos, usuários, dashboard)  
-- `docs/images` – Prints de telas para documentação 
+## 📁 Estrutura do Projeto
+- `src/app/clientes` - módulos/telas e serviços de clientes.
+- `src/app/pedidos` - módulos/telas e serviços de pedidos.
+- `src/app/usuarios` - tela e serviço de usuários/permissões.
+- `src/app/dashboard` - tela e serviço de dashboard analítico.
+- `src/app/home/login` - login, cadastro e recuperação de senha.
+- `src/app/offline` - banco local (IndexedDB) e sincronização offline.
+- `src/app/guarda-rotas` - resolvers de rotas para clientes, pedidos e usuários.
+- `src/app/modelo` - modelos de dados da aplicação.
+- `docs/images` - prints de telas para documentação.
 
-## 🖼 Telas do Sistema  
-### 🔐 Login  
-![Tela Login](docs/images/tela-login.png)  
+## 🔐 Perfis e Acesso
+- Rotas de negócio protegidas por `AuthGuard`.
+- Perfil **OFFLINE** possui acesso apenas a rotas permitidas de operação offline.
+- Funcionalidades de **Dashboard** e **Usuários/Permissões** ficam visíveis para perfis `ADMIN` e `DESENV` no menu.
 
-### 🏠 Menu Principal  
-![Tela Menu](docs/images/tela-menu.png)  
+## 📶 Funcionalidades Offline
+- Banner visual quando o sistema está sem internet.
+- Persistência local de clientes em cache e pedidos offline no IndexedDB.
+- Emissão de pedido offline com impressão direta e identificador local (`OFF-...`).
+- Sincronização automática de pedidos pendentes quando a conexão retorna.
+- Existe salvamento de cliente offline pendente no banco local.
 
-### 📊 Dashboard Analítico  
-![Tela Dashboard](docs/images/tela-dashboard.png)  
+## 🖼 Telas do Sistema
+### 🔐 Login
+![Tela Login](docs/images/tela-login.png)
+
+### 🏠 Menu Principal
+![Tela Menu](docs/images/tela-menu.png)
+
+### 📊 Dashboard Analítico
+![Tela Dashboard](docs/images/tela-dashboard.png)
 
 ---
 
-👉 Repositório do backend: [transp-api-crud-spring](https://github.com/ricvecchio/transp-api-crud-spring)  
+👉 Repositório do backend: [transp-api-crud-spring](https://github.com/ricvecchio/transp-api-crud-spring)
 
 ---
 
-## ▶️ Como Executar  
+## ▶️ Como Executar
 ```bash
 # Clone este repositório
 git clone https://github.com/ricvecchio/transp-crud-angular.git
@@ -66,9 +91,26 @@ cd transp-crud-angular
 # Instale as dependências
 npm install
 
-# Execute a aplicação
-ng serve
+# Execute com proxy para o backend local (script padrão do projeto)
+npm start
 
 # Acesse no navegador
 http://localhost:4200
+```
 
+## 🧪 Scripts Úteis
+```bash
+# Desenvolvimento
+npm start
+
+# Build de produção
+npm run build -- --configuration=production
+
+# Testes unitários
+npm test
+```
+
+## 🌐 Configuração de Ambiente
+- `src/environments/environment.ts` - API local (`http://localhost:8080/api`).
+- `src/environments/environment.prod.ts` - API de produção.
+- `proxy.conf.js` - proxy `/api` para o backend local na porta `8080`.
