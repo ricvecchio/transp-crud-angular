@@ -25,6 +25,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+
+    this.online = navigator.onLine;
+
     this.syncOfflineService.iniciarMonitoramento();
 
     this.subscriptions.add(
@@ -56,6 +59,14 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }),
     );
+
+    /**
+     * Caso a aplicação abra já offline,
+     * ativa automaticamente o modo offline.
+     */
+    if (!navigator.onLine) {
+      this.ativarModoOfflineAutomaticamente();
+    }
   }
 
   private ativarModoOfflineAutomaticamente(): void {
@@ -75,7 +86,9 @@ export class AppComponent implements OnInit, OnDestroy {
       url.includes('/home') ||
       url.includes('/menu') ||
       url.includes('/cadastrar-pedido') ||
-      url.includes('/consultar-clientes')
+      url.includes('/consultar-clientes') ||
+      url.includes('/expandir-cliente') ||
+      url.includes('/cadastrar-cliente')
     );
   }
 

@@ -1,37 +1,74 @@
-  .d-flex {
-    display: flex;
-    gap: 3rem;
-    padding: 5rem 0rem 0rem;
-    justify-content: center;
-    flex-wrap: wrap;
+.d-flex {
+  display: flex;
+  gap: 3rem;
+  padding: 5rem 0rem 0rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.offline-menu {
+  padding: 5rem 0rem 0rem;
+}
+
+.offline-menu-principal {
+  display: flex;
+  gap: 3rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.offline-menu-saida {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+}
+
+.botao-offline-sair {
+  background: #8a1f11;
+  border-color: #8a1f11;
+}
+
+.botao-offline-sair:hover {
+  background: #6f180d;
+  border-color: #6f180d;
+}
+
+.botao-restricted {
+  background: #158040;
+  color: #ffffff;
+  max-width: 270px;
+  width: 250px;
+  padding: 1rem;
+  margin: 0 auto;
+  border: 2px solid #158040;
+  border-radius: 10px;
+  transition: 0.5s ease;
+}
+
+@media screen and (max-width: 480px) {
+  .d-flex,
+  .offline-menu-principal {
+    gap: 1rem;
   }
 
+  .d-flex,
+  .offline-menu {
+    padding: 2rem 0 0;
+  }
+
+  .offline-menu-saida {
+    padding-top: 1rem;
+  }
+
+  .botao,
   .botao-restricted {
-    background: #158040;
-    color: #ffffff;
-    max-width: 270px;
-    width: 250px;
-    padding: 1rem;
-    margin: 0 auto;
-    border: 2px solid #158040;
-    border-radius: 10px;
-    transition: 0.5s ease;
+    padding: 0.7rem;
+    font-size: 0.9rem;
   }
 
-  @media screen and (max-width: 480px) {
-    .d-flex {
-      gap: 1rem;
-      padding: 2rem 0 0;
-    }
-
-    .botao,
-    .botao-restricted {
-      padding: 0.7rem;
-      font-size: 0.9rem;
-    }
-
-    .container {
-      padding-top: 50px;
-      overflow: hidden;
-    }
+  .container {
+    padding-top: 50px;
+    overflow: hidden;
   }
+}

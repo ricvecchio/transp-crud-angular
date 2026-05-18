@@ -1,20 +1,32 @@
 <section class="container">
   @if (permissaoUsuario === "OFFLINE") {
-    <div class="d-flex">
-      <button type="button" class="botao" (click)="consultarClientesOffline()">
-        <i class="fa fa-search" aria-hidden="true"></i>
-        Consultar Clientes Offline
-      </button>
+    <div class="offline-menu">
+      <div class="offline-menu-principal">
+        <button
+          type="button"
+          class="botao"
+          (click)="consultarClientesOffline()"
+        >
+          <i class="fa fa-search" aria-hidden="true"></i>
+          Consultar Clientes Offline
+        </button>
 
-      <button type="button" class="botao" (click)="emitirPedidoOffline()">
-        <i class="fa fa-plus" aria-hidden="true"></i>
-        Emitir Pedido Offline
-      </button>
+        <button type="button" class="botao" (click)="emitirPedidoOffline()">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          Emitir Pedido Offline
+        </button>
+      </div>
 
-      <button type="button" class="botao" (click)="sairModoOffline()">
-        <i class="fa fa-sign-out" aria-hidden="true"></i>
-        Sair do Modo Offline
-      </button>
+      <div class="offline-menu-saida">
+        <button
+          type="button"
+          class="botao botao-offline-sair"
+          (click)="sairModoOffline()"
+        >
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          Sair do Modo Offline
+        </button>
+      </div>
     </div>
   } @else {
     <div class="d-flex">
