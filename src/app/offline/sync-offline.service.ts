@@ -1,6 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import {
+  BehaviorSubject,
+  firstValueFrom,
+  map,
+  of,
+  timeout,
+  catchError,
+} from 'rxjs';
 
 import { environment } from '../../environments/environment';
 import { Pedido } from '../modelo/pedido';
@@ -12,27 +19,22 @@ import { OfflineDbService, PedidoOffline } from './offline-db.service';
 export class SyncOfflineService implements OnDestroy {
   private readonly API = `${environment.apiBaseUrl}/pedidos`;
 
-  /**
-   * ID técnico usado somente para sincronizar pedidos emitidos offline.
-   *
-   * Motivo:
-   * - No fluxo offline o pedido é digitado manualmente.
-   * - Ele não vem da tela de consulta de clientes.
-   * - O banco exige idCliente como NOT NULL.
-   *
-   * IMPORTANTE:
-   * Garanta que exista um cliente técnico com ID 1 no banco local/produção,
-   * por exemplo: "CLIENTE OFFLINE" ou "PEDIDOS OFFLINE".
-   */
+  private readonly HEALTHCHECK_URL = `${environment.apiBaseUrl}/health`;
+
   private readonly ID_CLIENTE_OFFLINE_PADRAO = 1;
 
   private sincronizando = false;
+
   private intervaloSincronizacao: any = null;
 
+  private healthcheckInterval: any = null;
+
   private onlineSubject = new BehaviorSubject<boolean>(navigator.onLine);
+
   online$ = this.onlineSubject.asObservable();
 
   private sincronizandoSubject = new BehaviorSubject<boolean>(false);
+
   sincronizando$ = this.sincronizandoSubject.asObservable();
 
   constructor(
@@ -42,8 +44,26 @@ export class SyncOfflineService implements OnDestroy {
 
   iniciarMonitoramento(): void {
     window.addEventListener('online', this.onOnline);
+
     window.addEventListener('offline', this.onOffline);
 
+    /**
+     * Validação REAL do backend.
+     */
+    this.validarConexaoBackend();
+
+    /**
+     * Healthcheck periódico.
+     */
+    if (!this.healthcheckInterval) {
+      this.healthcheckInterval = setInterval(() => {
+        this.validarConexaoBackend();
+      }, 10000);
+    }
+
+    /**
+     * Sincronização periódica.
+     */
     if (!this.intervaloSincronizacao) {
       this.intervaloSincronizacao = setInterval(() => {
         this.sincronizarPedidosPendentes();
@@ -54,27 +74,54 @@ export class SyncOfflineService implements OnDestroy {
   }
 
   private onOnline = (): void => {
-    this.onlineSubject.next(true);
-    this.sincronizarPedidosPendentes();
+    this.validarConexaoBackend();
   };
 
   private onOffline = (): void => {
     this.onlineSubject.next(false);
   };
 
+  async validarConexaoBackend(): Promise<void> {
+    /**
+     * Se o navegador já sabe que está offline,
+     * não tenta chamar backend.
+     */
+    if (!navigator.onLine) {
+      this.onlineSubject.next(false);
+      return;
+    }
+
+    try {
+      const backendOnline = await firstValueFrom(
+        this.http.get(this.HEALTHCHECK_URL).pipe(
+          timeout(4000),
+          map(() => true),
+          catchError(() => of(false)),
+        ),
+      );
+
+      this.onlineSubject.next(backendOnline);
+    } catch {
+      this.onlineSubject.next(false);
+    }
+  }
+
   async sincronizarPedidosPendentes(): Promise<void> {
-    if (this.sincronizando || !navigator.onLine) {
+    if (this.sincronizando || !this.onlineSubject.value) {
       return;
     }
 
     const authToken = sessionStorage.getItem('auth-token');
-    const modoOffline = sessionStorage.getItem('offline-mode') === 'true';
+
+    const modoOffline =
+      sessionStorage.getItem('offline-mode') === 'true';
 
     if (!authToken || modoOffline || authToken === 'OFFLINE_TOKEN') {
       return;
     }
 
     this.sincronizando = true;
+
     this.sincronizandoSubject.next(true);
 
     try {
@@ -86,15 +133,19 @@ export class SyncOfflineService implements OnDestroy {
       }
     } finally {
       this.sincronizando = false;
+
       this.sincronizandoSubject.next(false);
     }
   }
 
-  private async sincronizarPedido(pedidoOffline: PedidoOffline): Promise<void> {
+  private async sincronizarPedido(
+    pedidoOffline: PedidoOffline,
+  ): Promise<void> {
     try {
-      const pedidoParaEnviar = this.prepararPedidoParaSincronizacao(
-        pedidoOffline.pedido,
-      );
+      const pedidoParaEnviar =
+        this.prepararPedidoParaSincronizacao(
+          pedidoOffline.pedido,
+        );
 
       const pedidoSalvo = await firstValueFrom(
         this.http.post<Pedido>(this.API, pedidoParaEnviar, {
@@ -103,7 +154,9 @@ export class SyncOfflineService implements OnDestroy {
       );
 
       if (!pedidoSalvo?.idPedido) {
-        throw new Error('Backend não retornou o ID do pedido sincronizado.');
+        throw new Error(
+          'Backend não retornou o ID do pedido sincronizado.',
+        );
       }
 
       await this.offlineDbService.marcarComoSincronizado(
@@ -111,7 +164,10 @@ export class SyncOfflineService implements OnDestroy {
         pedidoSalvo.idPedido,
       );
     } catch (error: any) {
-      console.error('Erro ao sincronizar pedido offline:', error);
+      console.error(
+        'Erro ao sincronizar pedido offline:',
+        error,
+      );
 
       const mensagemErro =
         error?.error?.message ||
@@ -134,13 +190,16 @@ export class SyncOfflineService implements OnDestroy {
 
     if (
       pedidoParaEnviar.idPedido &&
-      pedidoParaEnviar.idPedido.toString().startsWith('OFF-')
+      pedidoParaEnviar.idPedido
+        .toString()
+        .startsWith('OFF-')
     ) {
       delete pedidoParaEnviar.idPedido;
     }
 
     if (!pedidoParaEnviar.idCliente) {
-      pedidoParaEnviar.idCliente = this.ID_CLIENTE_OFFLINE_PADRAO;
+      pedidoParaEnviar.idCliente =
+        this.ID_CLIENTE_OFFLINE_PADRAO;
     }
 
     if (!pedidoParaEnviar.imagemPedido) {
@@ -152,6 +211,7 @@ export class SyncOfflineService implements OnDestroy {
 
   private getAuthHeaders(): HttpHeaders {
     const authToken = sessionStorage.getItem('auth-token');
+
     const username = sessionStorage.getItem('username');
 
     return new HttpHeaders({
@@ -163,10 +223,15 @@ export class SyncOfflineService implements OnDestroy {
 
   ngOnDestroy(): void {
     window.removeEventListener('online', this.onOnline);
+
     window.removeEventListener('offline', this.onOffline);
 
     if (this.intervaloSincronizacao) {
       clearInterval(this.intervaloSincronizacao);
+    }
+
+    if (this.healthcheckInterval) {
+      clearInterval(this.healthcheckInterval);
     }
   }
 }

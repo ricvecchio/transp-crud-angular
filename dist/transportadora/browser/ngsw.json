@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1779131630201,
+  "timestamp": 1779133701083,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -11,11 +11,11 @@
         "ignoreVary": true
       },
       "urls": [
-        "/chunk-7TJIEURX.js",
-        "/chunk-AC5UKUCX.js",
+        "/chunk-G7DYPPKH.js",
+        "/chunk-STRQJ22Q.js",
         "/favicon.ico",
         "/index.html",
-        "/main-ACM3RWZ2.js",
+        "/main-F4GYAQBE.js",
         "/polyfills-FFHMD2TL.js",
         "/styles-VYJHAEYC.css"
       ],
@@ -86,11 +86,11 @@
     "/assets/img/logoEx.png": "184cbe35ae121db2d498c78444ed52141e16d6a2",
     "/assets/img/lupa.png": "6328c235bd1094279efd46d007a15cff35c5d7aa",
     "/assets/img/rodapeprevia.png": "e644b5d0c4192bd121e1123d8c7b865e887851fe",
-    "/chunk-7TJIEURX.js": "f1b377569d5f4a6332ba5a91786f07dbf7bbb3d3",
-    "/chunk-AC5UKUCX.js": "db5e7cd481558ac89f0e5807f5759ccb09bcb858",
+    "/chunk-G7DYPPKH.js": "c0d5f0284436e9de4fcfc23248df6ea16be0f575",
+    "/chunk-STRQJ22Q.js": "e0ca30cfba1c8d09a6e60998f300e0673c0dda36",
     "/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
-    "/index.html": "1e2543c3ef9c61c272c014131035994fddde6f38",
-    "/main-ACM3RWZ2.js": "8714b04f4c2bc4be46ef87b3e5840c3484bfa975",
+    "/index.html": "c436617e36715ee6d76346f3fa2529b395433a7e",
+    "/main-F4GYAQBE.js": "5135ab379646be6d96e2756ff5c5fda4d64ba10b",
     "/media/fontawesome-webfont-3KIJVIEY.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
     "/media/fontawesome-webfont-5GKVPAEF.woff2": "d6f48cba7d076fb6f2fd6ba993a75b9dc1ecbf0c",
     "/media/fontawesome-webfont-FMJ3VJ65.eot": "d980c2ce873dc43af460d4d572d441304499f400",

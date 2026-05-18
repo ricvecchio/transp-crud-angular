@@ -16,9 +16,11 @@ import { LoginService } from './services/login.service';
 })
 export class LoginComponent implements OnInit {
   usuario = '';
+
   senha = '';
 
   private readonly USUARIO_OFFLINE = 'UsuarioOffline';
+
   private readonly SENHA_OFFLINE = 'UsuarioOffline';
 
   constructor(
@@ -34,12 +36,30 @@ export class LoginComponent implements OnInit {
   login() {
     this.usuario = this.usuario.trim();
 
+    /**
+     * Modo offline explícito.
+     */
     if (this.loginOfflineValido()) {
       this.criarSessaoOffline();
+
       this.mensagemService.showSuccessMessage(
         'Login offline realizado com sucesso!',
       );
+
       this.router.navigate(['menu']);
+
+      return;
+    }
+
+    /**
+     * Se backend estiver indisponível,
+     * não deixa logar online.
+     */
+    if (!navigator.onLine) {
+      this.mensagemService.showErrorMessage(
+        'Sistema offline. Utilize o usuário offline para continuar.',
+      );
+
       return;
     }
 
@@ -47,8 +67,13 @@ export class LoginComponent implements OnInit {
       () => {
         this.usuarioService.buscarPorUsername(this.usuario).subscribe(
           (usuario) => {
-            if (!usuario.permission || usuario.permission.trim() === '') {
-              this.mensagemService.showErrorMessage('Usuário sem Permissão!');
+            if (
+              !usuario.permission ||
+              usuario.permission.trim() === ''
+            ) {
+              this.mensagemService.showErrorMessage(
+                'Usuário sem Permissão!',
+              );
             } else {
               sessionStorage.removeItem('offline-mode');
 
@@ -62,7 +87,7 @@ export class LoginComponent implements OnInit {
           (error) => {
             if (error.status === 0) {
               this.mensagemService.showErrorMessage(
-                'Servidor indisponível ou sem internet. Faça login com o usuário offline.',
+                'Servidor indisponível ou sem internet. Utilize o modo offline.',
               );
             } else {
               this.mensagemService.showErrorMessage(
@@ -73,21 +98,34 @@ export class LoginComponent implements OnInit {
         );
       },
       (error) => {
-        if (error.status === 0) {
+        if (
+          error.status === 0 ||
+          error.status === 504
+        ) {
           this.mensagemService.showErrorMessage(
-            'Servidor indisponível ou sem internet. Faça login com o usuário offline.',
+            'Sistema offline. Utilize o usuário offline para continuar.',
           );
         } else if (error.status === 502) {
           this.mensagemService.showErrorMessage(
             'Erro no servidor. Tente novamente mais tarde.',
           );
         } else if (error.status === 401) {
-          this.mensagemService.showErrorMessage('Senha incorreta.');
+          this.mensagemService.showErrorMessage(
+            'Senha incorreta.',
+          );
         } else if (error.status === 404) {
-          this.mensagemService.showErrorMessage('Username não cadastrado.');
+          this.mensagemService.showErrorMessage(
+            'Username não cadastrado.',
+          );
         } else {
-          console.error('Servidor indisponível ou sem internet. Faça login com o usuário offline: ', error);
-          this.mensagemService.showErrorMessage('Servidor indisponível ou sem internet. Faça login com o usuário offline.');
+          console.error(
+            'Erro ao realizar login:',
+            error,
+          );
+
+          this.mensagemService.showErrorMessage(
+            'Erro ao realizar login.',
+          );
         }
       },
     );
@@ -101,9 +139,18 @@ export class LoginComponent implements OnInit {
   }
 
   private criarSessaoOffline(): void {
-    sessionStorage.setItem('auth-token', 'OFFLINE_TOKEN');
-    sessionStorage.setItem('username', this.USUARIO_OFFLINE);
+    sessionStorage.setItem(
+      'auth-token',
+      'OFFLINE_TOKEN',
+    );
+
+    sessionStorage.setItem(
+      'username',
+      this.USUARIO_OFFLINE,
+    );
+
     sessionStorage.setItem('permission', 'OFFLINE');
+
     sessionStorage.setItem('offline-mode', 'true');
   }
 }
