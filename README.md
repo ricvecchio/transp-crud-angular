@@ -7,13 +7,14 @@ O objetivo do projeto é centralizar e otimizar o controle comercial, facilitand
 
 ## 🚀 Funcionalidades Principais
 - **Autenticação e Sessão:** login, cadastro de novo usuário, recuperação de senha por token e controle de sessão com JWT.
-- **Gestão de Clientes:** cadastro, edição, exclusão, consulta paginada e filtro por nome/razão social/CPF-CNPJ.
+- **Gestão de Clientes:** cadastro, edição, exclusão, consulta paginada, filtro por nome/razão social/CPF-CNPJ e exportação de backup completo para Excel (`.xlsx`).
 - **Gestão de Pedidos:** cadastro, edição, exclusão, consulta com filtros (cliente, status e período), impressão e reimpressão de pedidos.
 - **Emissão com Imagem:** pedidos emitidos online geram imagem da prévia e permitem impressão em duas vias (A4).
 - **Modo Offline (PWA):** login offline, consulta de clientes em cache, emissão de pedidos offline e sincronização automática ao reconectar.
 - **Controle de Usuários e Permissões:** listagem, alteração de permissão e exclusão de usuários (tela restrita).
 - **Dashboard Analítico:** gráficos (barras e pizza) com top clientes por gasto e total mensal por ano.
 - **Exportação de Pedidos:** exportação para Excel (`.xlsx`) com base nos filtros aplicados.
+- **Backup de Clientes:** botão "Exportar" na tela de clientes gera arquivo `Backup_Clientes_<timestamp>.xlsx` com todos os campos de todos os clientes, ordenados por ID decrescente (disponível apenas fora do modo offline, para perfis com acesso online).
 - **CI/CD e Deploy Automatizado:** workflow no GitHub Actions para build e deploy em VPS via SSH/SCP.
 
 ## 🛠 Tecnologias Utilizadas
@@ -30,7 +31,7 @@ O objetivo do projeto é centralizar e otimizar o controle comercial, facilitand
 - **GitHub Actions:** pipeline em `.github/workflows/deploy.yml` acionada em push na `main`.
 - **Deploy em VPS:** build de produção e publicação dos arquivos em `/home/root/transportadora`.
 - **Servidor web:** reinício e limpeza de cache do Nginx após deploy.
-- **Firebase Hosting:** configuração presente (`firebase.json` e `.firebaserc`) para hospedagem SPA.
+- **Firebase Hosting:** configuração presente (`firebase.json`) para hospedagem SPA.
 
 ## 📂 Controle de Versão
 - Git & GitHub
@@ -40,6 +41,14 @@ Antes de executar o projeto, certifique-se de ter instalado em sua máquina:
 - **Node.js >= 20.x** (versão usada no pipeline de deploy)
 - **Angular CLI 19.x**
 - **Backend da aplicação em execução:** [transp-api-crud-spring](https://github.com/ricvecchio/transp-api-crud-spring)
+
+## 🚀 Preparar para Produção
+Antes de gerar o build final, ajuste e valide estes pontos:
+- **API de produção:** confirme o endereço em `src/environments/environment.prod.ts`.
+- **Build final:** execute `npm run build` ou `npm run build -- --configuration=production`.
+- **Saída gerada:** os arquivos ficam em `dist/transportadora/browser`.
+- **Hospedagem SPA:** mantenha rewrite para `index.html` no servidor web.
+- **Proxy local:** `proxy.conf.js` deve ser usado apenas no ambiente local com `npm start`.
 
 ## 📁 Estrutura do Projeto
 - `src/app/clientes` - módulos/telas e serviços de clientes.
@@ -80,7 +89,7 @@ Antes de executar o projeto, certifique-se de ter instalado em sua máquina:
 
 ---
 
-## ▶️ Como Executar
+## ▶️ Como Executar Localmente
 ```bash
 # Clone este repositório
 git clone https://github.com/ricvecchio/transp-crud-angular.git
@@ -91,7 +100,7 @@ cd transp-crud-angular
 # Instale as dependências
 npm install
 
-# Execute com proxy para o backend local (script padrão do projeto)
+# Execute com proxy para o backend local (uso apenas em desenvolvimento)
 npm start
 
 # Acesse no navegador
@@ -104,6 +113,9 @@ http://localhost:4200
 npm start
 
 # Build de produção
+npm run build
+
+# Build de produção explícita
 npm run build -- --configuration=production
 
 # Testes unitários
@@ -112,5 +124,6 @@ npm test
 
 ## 🌐 Configuração de Ambiente
 - `src/environments/environment.ts` - API local (`http://localhost:8080/api`).
-- `src/environments/environment.prod.ts` - API de produção.
-- `proxy.conf.js` - proxy `/api` para o backend local na porta `8080`.
+- `src/environments/environment.prod.ts` - API de produção usada no build final.
+- `src/environments/environment.local-pwa.ts` - base local para build PWA com comportamento offline.
+- `proxy.conf.js` - proxy `/api` exclusivo para o backend local na porta `8080`.
