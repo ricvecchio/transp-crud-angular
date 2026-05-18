@@ -47,6 +47,14 @@ export class ClienteService {
       );
   }
 
+  listarTodosParaBackup(): Observable<Cliente[]> {
+    const headers = this.getAuthHeaders();
+
+    const url = `${this.API}/backup`;
+
+    return this.http.get<Cliente[]>(url, { headers }).pipe(first());
+  }
+
   async listarOffline(filter = ''): Promise<Cliente[]> {
     if (!filter) {
       return this.offlineDbService.listarClientesOffline();

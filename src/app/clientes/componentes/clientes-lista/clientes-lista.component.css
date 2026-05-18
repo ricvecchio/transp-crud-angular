@@ -30,6 +30,10 @@ mat-paginator {
   max-width: 100px;
 }
 
+.export-button {
+  min-width: 120px;
+}
+
 .action-button {
   width: 32px;
   height: 32px;
@@ -108,6 +112,10 @@ mat-paginator {
     padding: 4px;
   }
 
+  .export-button {
+    min-width: 70px;
+  }
+
   .action-button {
     width: 24px;
     height: 24px;
@@ -179,6 +187,4 @@ mat-paginator {
     align-items: center;
     gap: 10px;
   }
-
-
 }

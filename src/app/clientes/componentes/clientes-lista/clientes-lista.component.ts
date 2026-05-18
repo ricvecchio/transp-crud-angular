@@ -42,6 +42,7 @@ import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { Cliente } from '../../../modelo/cliente';
 import { ClientePagina } from '../../../modelo/cliente-pagina';
 import { ClienteService } from '../../servicos/cliente.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-clientes-lista',
@@ -258,5 +259,125 @@ export class ClientesListaComponent implements OnInit {
     this.router.navigate(['/menu'], {
       relativeTo: this.route,
     });
+  }
+
+  exportToExcel(): void {
+    this.clienteService.listar(0, 100000, '').subscribe(
+      (pagina) => {
+        if (!pagina.clientes.length) {
+          this.mensagemService.showErrorMessage(
+            'Nenhum cliente disponível para exportação.',
+          );
+          return;
+        }
+
+        const clientesOrdenados = [...pagina.clientes].sort(
+          (a, b) => Number(b.idCliente) - Number(a.idCliente),
+        );
+
+        const clientesData = clientesOrdenados.map((cliente) => ({
+          idCliente: cliente.idCliente,
+          nome: cliente.nome,
+          cpfCnpj: cliente.cpfCnpj,
+          razaoSocial: cliente.razaoSocial,
+          telefone: cliente.telefone,
+          celular: cliente.celular,
+          email: cliente.email,
+          contatosAdicionais: cliente.contatosAdicionais,
+          cep: cliente.cep,
+          logradouro: cliente.logradouro,
+          numero: cliente.numero,
+          complemento: cliente.complemento,
+          bairro: cliente.bairro,
+          cidade: cliente.cidade,
+          estado: cliente.estado,
+          tipoPgto: cliente.tipoPgto,
+          infoPagamento: cliente.infoPagamento,
+          cepEntrega: cliente.cepEntrega,
+          logradouroEntrega: cliente.logradouroEntrega,
+          numeroEntrega: cliente.numeroEntrega,
+          complementoEntrega: cliente.complementoEntrega,
+          bairroEntrega: cliente.bairroEntrega,
+          cidadeEntrega: cliente.cidadeEntrega,
+          estadoEntrega: cliente.estadoEntrega,
+          sfobras: cliente.sfobras,
+          cno: cliente.cno,
+          ie: cliente.ie,
+          mangueira: cliente.mangueira,
+          valorAjudante: cliente.valorAjudante,
+          valorAdicional: cliente.valorAdicional,
+          precoCx5: cliente.precoCx5,
+          precoCx10: cliente.precoCx10,
+          precoCx15: cliente.precoCx15,
+          precoLv5: cliente.precoLv5,
+          precoLv10: cliente.precoLv10,
+          precoLv15: cliente.precoLv15,
+          observacao: cliente.observacao,
+          dataAtualizacaoCliente: this.formatarDataHora(
+            cliente.dataAtualizacaoCliente,
+          ),
+        }));
+
+        const worksheet: XLSX.WorkSheet =
+          XLSX.utils.json_to_sheet(clientesData);
+
+        const headers = Object.keys(clientesData[0]);
+
+        worksheet['!cols'] = headers.map((header) => {
+          const maxLength = Math.max(
+            header.length,
+            ...clientesData.map(
+              (row) => row[header as keyof typeof row]?.toString().length || 0,
+            ),
+          );
+
+          return { wch: maxLength + 5 };
+        });
+
+        const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          'Backup Clientes',
+        );
+
+        const dataAtual = new Date();
+
+        const nomeArquivo = `Backup_Clientes_${dataAtual
+          .toISOString()
+          .replace(/[:.]/g, '-')}.xlsx`;
+
+        XLSX.writeFile(workbook, nomeArquivo);
+
+        this.mensagemService.showSuccessMessage(
+          'Backup de clientes exportado com sucesso!',
+        );
+      },
+      (error) => {
+        console.error('Erro ao exportar clientes:', error);
+
+        this.mensagemService.showErrorMessage(
+          'Erro ao exportar backup de clientes.',
+        );
+      },
+    );
+  }
+
+  private formatarDataHora(data: string): string {
+    if (!data) {
+      return '';
+    }
+
+    const dataFormatada = new Date(data);
+
+    const ano = dataFormatada.getFullYear();
+    const mes = String(dataFormatada.getMonth() + 1).padStart(2, '0');
+    const dia = String(dataFormatada.getDate()).padStart(2, '0');
+    const hora = String(dataFormatada.getHours()).padStart(2, '0');
+    const minuto = String(dataFormatada.getMinutes()).padStart(2, '0');
+    const segundo = String(dataFormatada.getSeconds()).padStart(2, '0');
+
+    return `${ano}-${mes}-${dia} ${hora}:${minuto}:${segundo}`;
   }
 }

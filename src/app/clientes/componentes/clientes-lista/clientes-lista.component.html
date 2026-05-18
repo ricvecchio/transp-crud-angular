@@ -15,6 +15,17 @@
     <button
       mat-raised-button
       color="primary"
+      class="form-grid small-button export-button"
+      (click)="exportToExcel()"
+      *ngIf="!isModoOffline"
+    >
+      <mat-icon>file_download</mat-icon>
+      Exportar
+    </button>
+
+    <button
+      mat-raised-button
+      color="primary"
       class="form-grid small-button"
       (click)="clearFilters()"
     >

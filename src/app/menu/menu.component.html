@@ -61,6 +61,16 @@
       </button>
 
       <button
+        type="button"
+        *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
+        class="botao-restricted botao-backup"
+        (click)="exportarBackupClientes()"
+      >
+        <i class="fa fa-download" aria-hidden="true"></i>
+        Backup Clientes
+      </button>
+
+      <button
         *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
         routerLink="/usuarios"
         class="botao-restricted"

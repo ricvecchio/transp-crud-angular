@@ -34,6 +34,16 @@
   border-color: #6f180d;
 }
 
+.botao-backup {
+  background: #158040;
+  border-color: #158040;
+}
+
+.botao-backup:hover {
+  background: #106532;
+  border-color: #106532;
+}
+
 .botao-restricted {
   background: #158040;
   color: #ffffff;
