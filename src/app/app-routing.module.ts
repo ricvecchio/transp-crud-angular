@@ -13,11 +13,11 @@ import { NovoUsuarioComponent } from './home/login/novo-usuario/novo-usuario.com
 import { RecuperarSenhaComponent } from './home/login/recuperar-senha/recuperar-senha.component';
 import { AuthGuard } from './home/login/services/auth-guard.service';
 import { MenuComponent } from './menu/menu.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { ExpandirPedidoComponent } from './pedidos/componentes/expandir-pedido/expandir-pedido.component';
 import { PedidosListaComponent } from './pedidos/componentes/pedidos-lista/pedidos-lista.component';
 import { PedidoFormComponent } from './pedidos/containers/pedido-form/pedido-form.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -58,7 +58,6 @@ const routes: Routes = [
     path: 'consultar-clientes',
     component: ClientesListaComponent,
     canActivate: [AuthGuard],
-    resolve: { cliente: ClienteResolver },
   },
   {
     path: 'editar-cliente/:idCliente',

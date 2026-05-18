@@ -1,7 +1,12 @@
 <section class="container">
   @if (permissaoUsuario === "OFFLINE") {
     <div class="d-flex">
-      <button routerLink="/cadastrar-pedido" class="botao">
+      <button type="button" class="botao" (click)="consultarClientesOffline()">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        Consultar Clientes Offline
+      </button>
+
+      <button type="button" class="botao" (click)="emitirPedidoOffline()">
         <i class="fa fa-plus" aria-hidden="true"></i>
         Emitir Pedido Offline
       </button>

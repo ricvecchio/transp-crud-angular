@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1778951742947,
+  "timestamp": 1779117733380,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -15,7 +15,7 @@
         "/chunk-AC5UKUCX.js",
         "/favicon.ico",
         "/index.html",
-        "/main-KZP6XJTV.js",
+        "/main-7BBAFBNK.js",
         "/polyfills-FFHMD2TL.js",
         "/styles-VYJHAEYC.css"
       ],
@@ -46,6 +46,7 @@
         "/assets/img/rodapeprevia.png",
         "/media/fontawesome-webfont-3KIJVIEY.svg",
         "/media/fontawesome-webfont-5GKVPAEF.woff2",
+        "/media/fontawesome-webfont-FMJ3VJ65.eot",
         "/media/fontawesome-webfont-RJ6LE7IU.ttf",
         "/media/fontawesome-webfont-Z4ARLA73.woff"
       ],
@@ -59,7 +60,7 @@
         "https:\\/\\/fonts\\.googleapis\\.com\\/.*",
         "https:\\/\\/fonts\\.gstatic\\.com\\/.*"
       ],
-      "strategy": "freshness",
+      "strategy": "performance",
       "maxSize": 20,
       "maxAge": 2592000000,
       "timeoutMs": 10000,
@@ -88,10 +89,11 @@
     "/chunk-7TJIEURX.js": "f1b377569d5f4a6332ba5a91786f07dbf7bbb3d3",
     "/chunk-AC5UKUCX.js": "db5e7cd481558ac89f0e5807f5759ccb09bcb858",
     "/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
-    "/index.html": "4d9c264406e884e66db25e00d8e0463ba0f29d19",
-    "/main-KZP6XJTV.js": "04b41e1b056805372f37670b1a9dde697557a523",
+    "/index.html": "2d6a5389e0aed74a9c72c622f473add0a256b7c1",
+    "/main-7BBAFBNK.js": "3a5280e43ad2dc0df324f568655a276496803c76",
     "/media/fontawesome-webfont-3KIJVIEY.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
     "/media/fontawesome-webfont-5GKVPAEF.woff2": "d6f48cba7d076fb6f2fd6ba993a75b9dc1ecbf0c",
+    "/media/fontawesome-webfont-FMJ3VJ65.eot": "d980c2ce873dc43af460d4d572d441304499f400",
     "/media/fontawesome-webfont-RJ6LE7IU.ttf": "13b1eab65a983c7a73bc7997c479d66943f7c6cb",
     "/media/fontawesome-webfont-Z4ARLA73.woff": "28b782240b3e76db824e12c02754a9731a167527",
     "/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",

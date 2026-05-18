@@ -32,6 +32,10 @@ import { ConsultaCepService } from '../../../compartilhado/consulta-cep.service'
 import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { Cliente } from '../../../modelo/cliente';
+import {
+  ClienteOffline,
+  OfflineDbService,
+} from '../../../offline/offline-db.service';
 import { ClienteService } from './../../../clientes/servicos/cliente.service';
 
 export interface User {
@@ -67,7 +71,11 @@ export interface User {
 })
 export class ClienteFormComponent implements OnInit {
   formulario!: FormGroup;
+
+  isModoOffline = false;
+
   isPaymentChecked = false;
+
   listaOpcoesPgto: string[] = [
     '10 dias',
     '11 dias',
@@ -96,6 +104,7 @@ export class ClienteFormComponent implements OnInit {
     private formBuilder: NonNullableFormBuilder,
     private consultaCepService: ConsultaCepService,
     private clienteService: ClienteService,
+    private offlineDbService: OfflineDbService,
     private mensagemService: MensagemService,
     private location: Location,
     private route: ActivatedRoute,
@@ -104,6 +113,10 @@ export class ClienteFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isModoOffline =
+      sessionStorage.getItem('permission') === 'OFFLINE' ||
+      sessionStorage.getItem('offline-mode') === 'true';
+
     const cliente: Cliente = this.route.snapshot.data['cliente'];
 
     this.formulario = this.formBuilder.group({
@@ -160,6 +173,7 @@ export class ClienteFormComponent implements OnInit {
     });
 
     this.isPaymentChecked = cliente.tipoPgto === 'Á VISTA';
+
     if (cliente.tipoPgto && cliente.tipoPgto !== 'Á VISTA') {
       this.formulario.patchValue({ tipoPgto: cliente.tipoPgto });
     }
@@ -180,6 +194,7 @@ export class ClienteFormComponent implements OnInit {
 
   onCpfCnpjInput(event: Event): void {
     const input = event.target as HTMLInputElement;
+
     let value = input.value.replace(/\D/g, '');
 
     if (value.length > 14) {
@@ -187,6 +202,7 @@ export class ClienteFormComponent implements OnInit {
     }
 
     let formattedValue = '';
+
     if (value.length > 11) {
       formattedValue = value.replace(
         /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2}).*/,
@@ -198,7 +214,10 @@ export class ClienteFormComponent implements OnInit {
         '$1.$2.$3-$4',
       );
     } else if (value.length > 6) {
-      formattedValue = value.replace(/^(\d{3})(\d{3})(\d+).*/, '$1.$2.$3');
+      formattedValue = value.replace(
+        /^(\d{3})(\d{3})(\d+).*/,
+        '$1.$2.$3',
+      );
     } else if (value.length > 3) {
       formattedValue = value.replace(/^(\d{3})(\d+).*/, '$1.$2');
     } else {
@@ -206,12 +225,16 @@ export class ClienteFormComponent implements OnInit {
     }
 
     input.value = formattedValue;
+
     this.formulario.get('cpfCnpj')?.setValue(formattedValue);
 
     const cpfCnpjControl = this.formulario.get('cpfCnpj');
 
     const isCpf = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(formattedValue);
-    const isCnpj = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(formattedValue);
+
+    const isCnpj =
+      /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(formattedValue);
+
     const isEmpty = formattedValue.trim() === '';
 
     if (cpfCnpjControl) {
@@ -219,6 +242,7 @@ export class ClienteFormComponent implements OnInit {
         cpfCnpjControl.setErrors(null);
       } else {
         cpfCnpjControl.setErrors({ invalidCpfCnpj: true });
+
         setTimeout(() => {
           input.focus();
         });
@@ -226,8 +250,12 @@ export class ClienteFormComponent implements OnInit {
     }
   }
 
-  onTelefoneOuCelularInput(event: Event, controlName: string): void {
+  onTelefoneOuCelularInput(
+    event: Event,
+    controlName: string,
+  ): void {
     const input = event.target as HTMLInputElement;
+
     let value = input.value.replace(/\D/g, '');
 
     if (controlName === 'telefone' && value.length > 10) {
@@ -237,35 +265,52 @@ export class ClienteFormComponent implements OnInit {
     }
 
     if (value.length === 11) {
-      value = value.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+      value = value.replace(
+        /^(\d{2})(\d{5})(\d{4})$/,
+        '($1) $2-$3',
+      );
     } else if (value.length === 10) {
-      value = value.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
+      value = value.replace(
+        /^(\d{2})(\d{4})(\d{4})$/,
+        '($1) $2-$3',
+      );
     } else if (value.length > 6) {
-      value = value.replace(/^(\d{2})(\d{4})(\d+)$/, '($1) $2-$3');
+      value = value.replace(
+        /^(\d{2})(\d{4})(\d+)$/,
+        '($1) $2-$3',
+      );
     } else if (value.length > 2) {
       value = value.replace(/^(\d{2})(\d+)$/, '($1) $2');
     }
 
     input.value = value;
+
     this.formulario.get(controlName)?.setValue(value);
   }
 
   private formatarCampoCep(): void {
     const cepControl = this.formulario.get('cep');
+
     if (cepControl) {
       cepControl.valueChanges.subscribe((valor) => {
         const formatado = this.formatarCep(valor);
+
         if (formatado !== valor) {
           cepControl.setValue(formatado, { emitEvent: false });
         }
       });
     }
+
     const cepEntregaControl = this.formulario.get('cepEntrega');
+
     if (cepEntregaControl) {
       cepEntregaControl.valueChanges.subscribe((valor) => {
         const formatado = this.formatarCep(valor);
+
         if (formatado !== valor) {
-          cepEntregaControl.setValue(formatado, { emitEvent: false });
+          cepEntregaControl.setValue(formatado, {
+            emitEvent: false,
+          });
         }
       });
     }
@@ -273,16 +318,22 @@ export class ClienteFormComponent implements OnInit {
 
   private formatarCep(valor: any): string {
     if (!valor) return '';
+
     valor = valor.toString().replace(/\D/g, '');
+
     if (valor.length > 5) {
       valor = valor.slice(0, 5) + '-' + valor.slice(5, 8);
     }
+
     return valor;
   }
 
   consultaCEP() {
     const cep = this.formulario.get('cep')?.value;
-    const cepEntrega = this.formulario.get('cepEntrega')?.value;
+
+    const cepEntrega =
+      this.formulario.get('cepEntrega')?.value;
+
     if (!this.isAdressChecked && cepEntrega != '') {
       this.consultaCepService
         .getConsultaCep(cepEntrega)
@@ -295,14 +346,16 @@ export class ClienteFormComponent implements OnInit {
           });
         });
     } else if (cep != '') {
-      this.consultaCepService.getConsultaCep(cep).subscribe((dados: any) => {
-        this.formulario.patchValue({
-          logradouro: dados.logradouro,
-          bairro: dados.bairro,
-          cidade: dados.localidade,
-          estado: dados.uf,
+      this.consultaCepService
+        .getConsultaCep(cep)
+        .subscribe((dados: any) => {
+          this.formulario.patchValue({
+            logradouro: dados.logradouro,
+            bairro: dados.bairro,
+            cidade: dados.localidade,
+            estado: dados.uf,
+          });
         });
-      });
     }
   }
 
@@ -310,8 +363,11 @@ export class ClienteFormComponent implements OnInit {
     campos.forEach((campo) => {
       this.formulario.get(campo)?.valueChanges.subscribe((valor) => {
         const formatado = this.formatarParaReais(valor);
+
         if (valor !== formatado) {
-          this.formulario.get(campo)?.setValue(formatado, { emitEvent: false });
+          this.formulario.get(campo)?.setValue(formatado, {
+            emitEvent: false,
+          });
         }
       });
     });
@@ -319,8 +375,11 @@ export class ClienteFormComponent implements OnInit {
 
   private formatarParaReais(valor: any): string {
     if (!valor) return '';
+
     valor = valor.toString().replace(/[^\d]/g, '');
+
     const numero = parseFloat(valor) / 100;
+
     return numero.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL',
@@ -339,35 +398,47 @@ export class ClienteFormComponent implements OnInit {
         !this.formulario.value.tipoPgto ||
         this.formulario.value.tipoPgto === 'Á VISTA'
       ) {
-        this.formulario.patchValue({ tipoPgto: this.listaOpcoesPgto[0] });
+        this.formulario.patchValue({
+          tipoPgto: this.listaOpcoesPgto[0],
+        });
       }
     }
   }
 
   onSelectChange(event: any): void {
     this.isPaymentChecked = false;
-    this.formulario.patchValue({ tipoPgto: event.value });
+
+    this.formulario.patchValue({
+      tipoPgto: event.value,
+    });
   }
 
   isAdressChecked = false;
+
   onToggleChange(event: any): void {
     this.isAdressChecked = event.checked;
+
     if (this.isAdressChecked) {
       this.limpaEndereco();
+
       this.buscaEndereco();
     } else {
       this.limpaEndereco();
+
       this.consultaCEP();
     }
   }
 
   buscaEndereco() {
     this.limpaEndereco();
+
     this.formulario.patchValue({
       cepEntrega: this.formulario.get('cep')?.value,
-      logradouroEntrega: this.formulario.get('logradouro')?.value,
+      logradouroEntrega:
+        this.formulario.get('logradouro')?.value,
       numeroEntrega: this.formulario.get('numero')?.value,
-      complementoEntrega: this.formulario.get('complemento')?.value,
+      complementoEntrega:
+        this.formulario.get('complemento')?.value,
       bairroEntrega: this.formulario.get('bairro')?.value,
       cidadeEntrega: this.formulario.get('cidade')?.value,
       estadoEntrega: this.formulario.get('estado')?.value,
@@ -388,26 +459,33 @@ export class ClienteFormComponent implements OnInit {
 
   convertToUppercase(controlName: string): void {
     const control = this.formulario.get(controlName);
+
     if (control) {
       const value = control.value || '';
-      control.setValue(value.toUpperCase(), { emitEvent: false });
+
+      control.setValue(value.toUpperCase(), {
+        emitEvent: false,
+      });
     }
   }
 
   dataAtual: Date = new Date();
 
-  onSubmit() {
+  async onSubmit() {
     if (this.formulario.invalid) {
       this.formulario.markAllAsTouched();
+
       this.mensagemService.showErrorMessage(
         'Verifique os campos obrigatórios ou inválidos!',
       );
+
       return;
     }
 
     const dataAjustada = new Date(
       this.dataAtual.getTime() - 3 * 60 * 60 * 1000,
     );
+
     const dataFormatada = dataAjustada.toISOString();
 
     this.formulario.patchValue({
@@ -415,20 +493,55 @@ export class ClienteFormComponent implements OnInit {
     });
 
     const formValue = this.formulario.value;
+
     Object.keys(formValue).forEach((key) => {
       if (typeof formValue[key] === 'string') {
         formValue[key] = formValue[key].toUpperCase();
       }
     });
 
+    if (this.isModoOffline || !navigator.onLine) {
+      await this.salvarClienteOffline();
+
+      return;
+    }
+
     this.clienteService.salvar(this.formulario.value).subscribe(
-      (result) => this.onSucess(),
+      () => this.onSucess(),
       (error) => this.onError(error),
     );
   }
 
+  private async salvarClienteOffline(): Promise<void> {
+    const offlineId =
+      this.offlineDbService.gerarIdOffline();
+
+    const clienteOffline: ClienteOffline = {
+      offlineId,
+      sincronizado: false,
+      dataCriacaoOffline: new Date().toISOString(),
+      cliente: {
+        ...this.formulario.value,
+        idCliente: offlineId,
+      },
+    };
+
+    await this.offlineDbService.salvarClienteOffline(
+      clienteOffline,
+    );
+
+    this.mensagemService.showSuccessMessage(
+      'Cliente salvo offline com sucesso!',
+    );
+
+    this.onCancel();
+  }
+
   private onSucess() {
-    this.mensagemService.showSuccessMessage('Cliente Salvo com sucesso!');
+    this.mensagemService.showSuccessMessage(
+      'Cliente Salvo com sucesso!',
+    );
+
     this.onCancel();
   }
 
@@ -438,9 +551,13 @@ export class ClienteFormComponent implements OnInit {
 
   private onError(error: any) {
     if (error.status === 409) {
-      this.mensagemService.showErrorMessage('CPF/CNPJ já está cadastrado.');
+      this.mensagemService.showErrorMessage(
+        'CPF/CNPJ já está cadastrado.',
+      );
     } else {
-      this.mensagemService.showErrorMessage('Erro ao salvar o cliente!');
+      this.mensagemService.showErrorMessage(
+        'Erro ao salvar o cliente!',
+      );
     }
   }
 }

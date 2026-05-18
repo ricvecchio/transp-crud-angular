@@ -78,7 +78,10 @@ import { ClienteService } from '../../servicos/cliente.service';
 export class ClientesListaComponent implements OnInit {
   permissaoUsuario: string | null = null;
 
+  isModoOffline = false;
+
   clientes$: Observable<ClientePagina> | null = null;
+
   readonly displayedColumns: string[] = [
     'acaoConsulta',
     'idCliente',
@@ -90,10 +93,31 @@ export class ClientesListaComponent implements OnInit {
   ];
 
   dataSource = new MatTableDataSource<Cliente>();
+
   filterControl = new FormControl('');
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  pageIndex = 0;
+
+  pageSize = 10;
+
+  constructor(
+    private clienteService: ClienteService,
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
+    private mensagemService: MensagemService,
+  ) {}
 
   ngOnInit(): void {
     this.permissaoUsuario = sessionStorage.getItem('permission');
+
+    this.isModoOffline =
+      sessionStorage.getItem('permission') === 'OFFLINE' ||
+      sessionStorage.getItem('offline-mode') === 'true';
+
+    this.atualiza();
 
     this.filterControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
@@ -105,26 +129,47 @@ export class ClientesListaComponent implements OnInit {
       });
   }
 
-  constructor(
-    private clienteService: ClienteService,
-    public dialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute,
-    private mensagemService: MensagemService,
-  ) {
-    this.atualiza();
-  }
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  pageIndex = 0;
-  pageSize = 10;
-
-  atualiza(
+  async atualiza(
     pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 },
     filterValue: string | null = '',
   ) {
     const normalizedFilter = filterValue?.trim().toLowerCase() || '';
+
+    if (this.isModoOffline || !navigator.onLine) {
+      try {
+        const clientesOffline =
+          await this.clienteService.listarOffline(normalizedFilter);
+
+        this.pageIndex = 0;
+        this.pageSize = pageEvent.pageSize;
+
+        this.dataSource.data = clientesOffline;
+
+        this.clientes$ = of({
+          clientes: clientesOffline,
+          totalElementos: clientesOffline.length,
+          totalPaginas: 1,
+        });
+
+        return;
+      } catch (error) {
+        console.error('Erro ao carregar clientes offline:', error);
+
+        this.mensagemService.showErrorMessage(
+          'Erro ao carregar clientes offline.',
+        );
+
+        this.dataSource.data = [];
+
+        this.clientes$ = of({
+          clientes: [],
+          totalElementos: 0,
+          totalPaginas: 0,
+        });
+
+        return;
+      }
+    }
 
     this.clientes$ = this.clienteService
       .listar(pageEvent.pageIndex, pageEvent.pageSize, normalizedFilter)
@@ -132,6 +177,7 @@ export class ClientesListaComponent implements OnInit {
         tap((pagina) => {
           this.pageIndex = pageEvent.pageIndex;
           this.pageSize = pageEvent.pageSize;
+
           this.dataSource.data = pagina.clientes;
         }),
         catchError((error) => {
@@ -141,9 +187,18 @@ export class ClientesListaComponent implements OnInit {
               : error.status === 500
                 ? 'Erro interno no servidor. Contate o suporte.'
                 : 'Erro ao carregar clientes.';
+
           this.mensagemService.showErrorMessage(errorMessage);
+
           console.error('Erro ao carregar clientes: ', error);
-          return of({ clientes: [], totalElementos: 0, totalPaginas: 0 });
+
+          this.dataSource.data = [];
+
+          return of({
+            clientes: [],
+            totalElementos: 0,
+            totalPaginas: 0,
+          });
         }),
       );
   }
@@ -153,7 +208,9 @@ export class ClientesListaComponent implements OnInit {
   }
 
   onAdd() {
-    this.router.navigate(['/cadastrar-cliente'], { relativeTo: this.route });
+    this.router.navigate(['/cadastrar-cliente'], {
+      relativeTo: this.route,
+    });
   }
 
   onEdit(cliente: Cliente) {
@@ -165,6 +222,10 @@ export class ClientesListaComponent implements OnInit {
   onSearch(cliente: Cliente) {
     this.router.navigate(['/expandir-cliente', cliente.idCliente], {
       relativeTo: this.route,
+      state: {
+        offlineMode: this.isModoOffline,
+        clienteOffline: cliente,
+      },
     });
   }
 
@@ -172,11 +233,13 @@ export class ClientesListaComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: 'Tem certeza que deseja remover esse cliente?',
     });
+
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
         this.clienteService.excluir(cliente.idCliente).subscribe(
           () => {
             this.atualiza();
+
             this.mensagemService.showSuccessMessage(
               'Cliente removido com sucesso!',
             );

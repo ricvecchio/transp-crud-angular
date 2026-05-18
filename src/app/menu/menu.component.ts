@@ -26,6 +26,14 @@ export class MenuComponent implements OnInit {
     this.mensagemService.showErrorMessage('Funcionalidade em desenvolvimento!');
   }
 
+  consultarClientesOffline(): void {
+    window.location.href = '/consultar-clientes';
+  }
+
+  emitirPedidoOffline(): void {
+    window.location.href = '/cadastrar-pedido';
+  }
+
   sairModoOffline(): void {
     sessionStorage.removeItem('auth-token');
     sessionStorage.removeItem('username');

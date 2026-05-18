@@ -28,7 +28,17 @@
         "files": [
           "/assets/**",
           "/icons/**",
-          "/**/*.(svg|jpg|jpeg|png|gif|webp|woff|woff2|ttf|otf)"
+          "/media/**",
+          "/**/*.svg",
+          "/**/*.jpg",
+          "/**/*.jpeg",
+          "/**/*.png",
+          "/**/*.gif",
+          "/**/*.webp",
+          "/**/*.woff",
+          "/**/*.woff2",
+          "/**/*.ttf",
+          "/**/*.otf"
         ]
       }
     }
@@ -44,7 +54,7 @@
       ],
 
       "cacheConfig": {
-        "strategy": "freshness",
+        "strategy": "performance",
         "maxSize": 20,
         "maxAge": "30d",
         "timeout": "10s"

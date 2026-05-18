@@ -14,6 +14,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'transportadora';
 
   online = navigator.onLine;
+
   sincronizandoOffline = false;
 
   private subscriptions = new Subscription();
@@ -73,7 +74,8 @@ export class AppComponent implements OnInit, OnDestroy {
     return (
       url.includes('/home') ||
       url.includes('/menu') ||
-      url.includes('/cadastrar-pedido')
+      url.includes('/cadastrar-pedido') ||
+      url.includes('/consultar-clientes')
     );
   }
 
