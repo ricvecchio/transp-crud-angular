@@ -26,7 +26,7 @@ export class MenuComponent implements OnInit {
   ngOnInit(): void {
     this.permissaoUsuario = sessionStorage.getItem('permission');
 
-    if (this.permissaoUsuario !== 'OFFLINE') {
+    if (this.permissaoUsuario === 'ADMIN') {
       this.validarUltimoBackup();
     }
   }
