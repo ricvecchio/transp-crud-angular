@@ -16,3 +16,31 @@ main {
   height: calc(100vh - 100px); /* Subtraindo cabeçalho e rodapé */
   overflow-y: auto;
 }
+
+.offline-banner {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  padding: 0.7rem;
+  background: #8a1f11;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sync-banner {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  padding: 0.7rem;
+  background: #154580;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}

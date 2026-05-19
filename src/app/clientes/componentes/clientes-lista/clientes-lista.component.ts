@@ -42,6 +42,7 @@ import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { Cliente } from '../../../modelo/cliente';
 import { ClientePagina } from '../../../modelo/cliente-pagina';
 import { ClienteService } from '../../servicos/cliente.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-clientes-lista',
@@ -78,7 +79,10 @@ import { ClienteService } from '../../servicos/cliente.service';
 export class ClientesListaComponent implements OnInit {
   permissaoUsuario: string | null = null;
 
+  isModoOffline = false;
+
   clientes$: Observable<ClientePagina> | null = null;
+
   readonly displayedColumns: string[] = [
     'acaoConsulta',
     'idCliente',
@@ -90,10 +94,31 @@ export class ClientesListaComponent implements OnInit {
   ];
 
   dataSource = new MatTableDataSource<Cliente>();
+
   filterControl = new FormControl('');
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  pageIndex = 0;
+
+  pageSize = 10;
+
+  constructor(
+    private clienteService: ClienteService,
+    public dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute,
+    private mensagemService: MensagemService,
+  ) {}
 
   ngOnInit(): void {
     this.permissaoUsuario = sessionStorage.getItem('permission');
+
+    this.isModoOffline =
+      sessionStorage.getItem('permission') === 'OFFLINE' ||
+      sessionStorage.getItem('offline-mode') === 'true';
+
+    this.atualiza();
 
     this.filterControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
@@ -105,26 +130,47 @@ export class ClientesListaComponent implements OnInit {
       });
   }
 
-  constructor(
-    private clienteService: ClienteService,
-    public dialog: MatDialog,
-    private router: Router,
-    private route: ActivatedRoute,
-    private mensagemService: MensagemService,
-  ) {
-    this.atualiza();
-  }
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  pageIndex = 0;
-  pageSize = 10;
-
-  atualiza(
+  async atualiza(
     pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 },
     filterValue: string | null = '',
   ) {
     const normalizedFilter = filterValue?.trim().toLowerCase() || '';
+
+    if (this.isModoOffline || !navigator.onLine) {
+      try {
+        const clientesOffline =
+          await this.clienteService.listarOffline(normalizedFilter);
+
+        this.pageIndex = 0;
+        this.pageSize = pageEvent.pageSize;
+
+        this.dataSource.data = clientesOffline;
+
+        this.clientes$ = of({
+          clientes: clientesOffline,
+          totalElementos: clientesOffline.length,
+          totalPaginas: 1,
+        });
+
+        return;
+      } catch (error) {
+        console.error('Erro ao carregar clientes offline:', error);
+
+        this.mensagemService.showErrorMessage(
+          'Erro ao carregar clientes offline.',
+        );
+
+        this.dataSource.data = [];
+
+        this.clientes$ = of({
+          clientes: [],
+          totalElementos: 0,
+          totalPaginas: 0,
+        });
+
+        return;
+      }
+    }
 
     this.clientes$ = this.clienteService
       .listar(pageEvent.pageIndex, pageEvent.pageSize, normalizedFilter)
@@ -132,6 +178,7 @@ export class ClientesListaComponent implements OnInit {
         tap((pagina) => {
           this.pageIndex = pageEvent.pageIndex;
           this.pageSize = pageEvent.pageSize;
+
           this.dataSource.data = pagina.clientes;
         }),
         catchError((error) => {
@@ -141,9 +188,18 @@ export class ClientesListaComponent implements OnInit {
               : error.status === 500
                 ? 'Erro interno no servidor. Contate o suporte.'
                 : 'Erro ao carregar clientes.';
+
           this.mensagemService.showErrorMessage(errorMessage);
+
           console.error('Erro ao carregar clientes: ', error);
-          return of({ clientes: [], totalElementos: 0, totalPaginas: 0 });
+
+          this.dataSource.data = [];
+
+          return of({
+            clientes: [],
+            totalElementos: 0,
+            totalPaginas: 0,
+          });
         }),
       );
   }
@@ -153,7 +209,9 @@ export class ClientesListaComponent implements OnInit {
   }
 
   onAdd() {
-    this.router.navigate(['/cadastrar-cliente'], { relativeTo: this.route });
+    this.router.navigate(['/cadastrar-cliente'], {
+      relativeTo: this.route,
+    });
   }
 
   onEdit(cliente: Cliente) {
@@ -165,6 +223,10 @@ export class ClientesListaComponent implements OnInit {
   onSearch(cliente: Cliente) {
     this.router.navigate(['/expandir-cliente', cliente.idCliente], {
       relativeTo: this.route,
+      state: {
+        offlineMode: this.isModoOffline,
+        clienteOffline: cliente,
+      },
     });
   }
 
@@ -172,11 +234,13 @@ export class ClientesListaComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: 'Tem certeza que deseja remover esse cliente?',
     });
+
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
         this.clienteService.excluir(cliente.idCliente).subscribe(
           () => {
             this.atualiza();
+
             this.mensagemService.showSuccessMessage(
               'Cliente removido com sucesso!',
             );
@@ -195,5 +259,125 @@ export class ClientesListaComponent implements OnInit {
     this.router.navigate(['/menu'], {
       relativeTo: this.route,
     });
+  }
+
+  exportToExcel(): void {
+    this.clienteService.listar(0, 100000, '').subscribe(
+      (pagina) => {
+        if (!pagina.clientes.length) {
+          this.mensagemService.showErrorMessage(
+            'Nenhum cliente disponível para exportação.',
+          );
+          return;
+        }
+
+        const clientesOrdenados = [...pagina.clientes].sort(
+          (a, b) => Number(b.idCliente) - Number(a.idCliente),
+        );
+
+        const clientesData = clientesOrdenados.map((cliente) => ({
+          idCliente: cliente.idCliente,
+          nome: cliente.nome,
+          cpfCnpj: cliente.cpfCnpj,
+          razaoSocial: cliente.razaoSocial,
+          telefone: cliente.telefone,
+          celular: cliente.celular,
+          email: cliente.email,
+          contatosAdicionais: cliente.contatosAdicionais,
+          cep: cliente.cep,
+          logradouro: cliente.logradouro,
+          numero: cliente.numero,
+          complemento: cliente.complemento,
+          bairro: cliente.bairro,
+          cidade: cliente.cidade,
+          estado: cliente.estado,
+          tipoPgto: cliente.tipoPgto,
+          infoPagamento: cliente.infoPagamento,
+          cepEntrega: cliente.cepEntrega,
+          logradouroEntrega: cliente.logradouroEntrega,
+          numeroEntrega: cliente.numeroEntrega,
+          complementoEntrega: cliente.complementoEntrega,
+          bairroEntrega: cliente.bairroEntrega,
+          cidadeEntrega: cliente.cidadeEntrega,
+          estadoEntrega: cliente.estadoEntrega,
+          sfobras: cliente.sfobras,
+          cno: cliente.cno,
+          ie: cliente.ie,
+          mangueira: cliente.mangueira,
+          valorAjudante: cliente.valorAjudante,
+          valorAdicional: cliente.valorAdicional,
+          precoCx5: cliente.precoCx5,
+          precoCx10: cliente.precoCx10,
+          precoCx15: cliente.precoCx15,
+          precoLv5: cliente.precoLv5,
+          precoLv10: cliente.precoLv10,
+          precoLv15: cliente.precoLv15,
+          observacao: cliente.observacao,
+          dataAtualizacaoCliente: this.formatarDataHora(
+            cliente.dataAtualizacaoCliente,
+          ),
+        }));
+
+        const worksheet: XLSX.WorkSheet =
+          XLSX.utils.json_to_sheet(clientesData);
+
+        const headers = Object.keys(clientesData[0]);
+
+        worksheet['!cols'] = headers.map((header) => {
+          const maxLength = Math.max(
+            header.length,
+            ...clientesData.map(
+              (row) => row[header as keyof typeof row]?.toString().length || 0,
+            ),
+          );
+
+          return { wch: maxLength + 5 };
+        });
+
+        const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+
+        XLSX.utils.book_append_sheet(
+          workbook,
+          worksheet,
+          'Backup Clientes',
+        );
+
+        const dataAtual = new Date();
+
+        const nomeArquivo = `Backup_Clientes_${dataAtual
+          .toISOString()
+          .replace(/[:.]/g, '-')}.xlsx`;
+
+        XLSX.writeFile(workbook, nomeArquivo);
+
+        this.mensagemService.showSuccessMessage(
+          'Backup de clientes exportado com sucesso!',
+        );
+      },
+      (error) => {
+        console.error('Erro ao exportar clientes:', error);
+
+        this.mensagemService.showErrorMessage(
+          'Erro ao exportar backup de clientes.',
+        );
+      },
+    );
+  }
+
+  private formatarDataHora(data: string): string {
+    if (!data) {
+      return '';
+    }
+
+    const dataFormatada = new Date(data);
+
+    const ano = dataFormatada.getFullYear();
+    const mes = String(dataFormatada.getMonth() + 1).padStart(2, '0');
+    const dia = String(dataFormatada.getDate()).padStart(2, '0');
+    const hora = String(dataFormatada.getHours()).padStart(2, '0');
+    const minuto = String(dataFormatada.getMinutes()).padStart(2, '0');
+    const segundo = String(dataFormatada.getSeconds()).padStart(2, '0');
+
+    return `${ano}-${mes}-${dia} ${hora}:${minuto}:${segundo}`;
   }
 }

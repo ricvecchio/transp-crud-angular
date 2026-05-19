@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 
 import { ClienteService } from '../clientes/servicos/cliente.service';
 import { Cliente } from '../modelo/cliente';
@@ -15,10 +15,34 @@ export class ClienteResolver {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<Cliente> {
-    if (route.params && route.params['idCliente']) {
-      return this.service.buscarPorId(route.params['idCliente']);
+    const idCliente = route.params?.['idCliente'];
+
+    const modoOffline =
+      sessionStorage.getItem('permission') === 'OFFLINE' ||
+      sessionStorage.getItem('offline-mode') === 'true' ||
+      !navigator.onLine;
+
+    if (idCliente && modoOffline) {
+      return from(this.buscarClienteOfflineOuVazio(idCliente));
     }
-    return of({
+
+    if (idCliente) {
+      return this.service.buscarPorId(idCliente);
+    }
+
+    return of(this.getClienteVazio());
+  }
+
+  private async buscarClienteOfflineOuVazio(
+    idCliente: string,
+  ): Promise<Cliente> {
+    const clienteOffline = await this.service.buscarOfflinePorId(idCliente);
+
+    return clienteOffline || this.getClienteVazio();
+  }
+
+  private getClienteVazio(): Cliente {
+    return {
       nomeBusca: '',
       idCliente: '',
       nome: '',
@@ -58,6 +82,6 @@ export class ClienteResolver {
       precoLv15: '',
       observacao: '',
       dataAtualizacaoCliente: '',
-    });
+    };
   }
 }

@@ -32,6 +32,8 @@ import { PedidoService } from '../../../pedidos/servico/pedido.service';
 export class ExpandirClienteComponent implements OnInit {
   formulario!: FormGroup;
 
+  isModoOffline = false;
+
   ultimosPedidos: {
     dataPedido: string;
     volume: string;
@@ -50,9 +52,17 @@ export class ExpandirClienteComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isModoOffline =
+      sessionStorage.getItem('permission') === 'OFFLINE' ||
+      sessionStorage.getItem('offline-mode') === 'true' ||
+      !navigator.onLine;
+
     const cliente: Cliente = this.route.snapshot.data['cliente'];
 
-    this.carregarUltimosPedidos(Number(cliente.idCliente));
+    if (!this.isModoOffline) {
+      this.carregarUltimosPedidos(Number(cliente.idCliente));
+    }
+
     const formattedDate = this.datePipe.transform(
       cliente.dataAtualizacaoCliente,
       'dd/MM/yyyy HH:mm:ss',
@@ -111,21 +121,27 @@ export class ExpandirClienteComponent implements OnInit {
             case 'CX-5m³':
               valor = pedido.precoCx5;
               break;
+
             case 'CX-10m³':
               valor = pedido.precoCx10;
               break;
+
             case 'CX-15m³':
               valor = pedido.precoCx15;
               break;
+
             case 'LAV-5m³':
               valor = pedido.precoLv5;
               break;
+
             case 'LAV-10m³':
               valor = pedido.precoLv10;
               break;
+
             case 'LAV-15m³':
               valor = pedido.precoLv15;
               break;
+
             default:
               valor = '';
           }
@@ -136,8 +152,11 @@ export class ExpandirClienteComponent implements OnInit {
                 pedido.dataAtualizacaoPedido,
                 'dd/MM/yyyy HH:mm:ss',
               ) || '',
+
             volume: pedido.volume,
+
             valor: valor,
+
             idPedido: Number(pedido.idPedido),
           };
         });

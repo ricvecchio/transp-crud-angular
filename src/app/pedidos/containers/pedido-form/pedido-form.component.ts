@@ -1,5 +1,11 @@
 import { CommonModule, Location } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+} from '@angular/core';
 import {
   FormGroup,
   FormsModule,
@@ -31,6 +37,7 @@ import { FormUtilsService } from '../../../compartilhado/form-utils-service';
 import { MensagemService } from '../../../compartilhado/mensagem.service';
 import { Cliente } from '../../../modelo/cliente';
 import { Pedido } from '../../../modelo/pedido';
+import { OfflineDbService } from '../../../offline/offline-db.service';
 import { PedidoService } from '../../servico/pedido.service';
 
 interface Volumes {
@@ -63,24 +70,31 @@ interface Volumes {
     MatCheckboxModule,
   ],
 })
-export class PedidoFormComponent implements OnInit {
+export class PedidoFormComponent implements OnInit, AfterViewInit {
   formulario!: FormGroup;
   dataAtual: Date = new Date();
+  isModoOffline = false;
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
     private consultaCepService: ConsultaCepService,
     private pedidoService: PedidoService,
     private mensagemService: MensagemService,
+    private offlineDbService: OfflineDbService,
     private location: Location,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
     public formUtils: FormUtilsService,
     private cdr: ChangeDetectorRef,
+    private elementRef: ElementRef,
   ) {}
 
   ngOnInit(): void {
+    this.isModoOffline =
+      sessionStorage.getItem('permission') === 'OFFLINE' ||
+      sessionStorage.getItem('offline-mode') === 'true';
+
     const pedido: Pedido = this.route.snapshot.data['pedido'];
     this.formulario = this.formBuilder.group({
       idPedido: [pedido.idPedido],
@@ -249,6 +263,28 @@ export class PedidoFormComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.liberarCamposSomenteNoModoOffline();
+  }
+
+  private liberarCamposSomenteNoModoOffline(): void {
+    if (!this.isModoOffline) {
+      return;
+    }
+
+    setTimeout(() => {
+      const inputsBloqueados =
+        this.elementRef.nativeElement.querySelectorAll('input[readonly]');
+
+      inputsBloqueados.forEach((input: HTMLInputElement) => {
+        input.removeAttribute('readonly');
+        input.removeAttribute('tabindex');
+      });
+
+      this.cdr.detectChanges();
+    }, 0);
+  }
+
   private formatarPedido(pedidoParams: any): Pedido {
     return {
       idPedido: pedidoParams.idPedido || '',
@@ -347,6 +383,7 @@ export class PedidoFormComponent implements OnInit {
   checked = false;
 
   isAdressChecked = false;
+
   onToggleChange(event: any): void {
     this.isAdressChecked = event.checked;
     if (this.isAdressChecked) {
@@ -355,6 +392,8 @@ export class PedidoFormComponent implements OnInit {
     } else {
       this.limpaEndereco();
     }
+
+    this.liberarCamposSomenteNoModoOffline();
   }
 
   buscaEndereco() {
@@ -413,11 +452,14 @@ export class PedidoFormComponent implements OnInit {
           cidadeEntrega: dados.localidade,
           estadoEntrega: dados.uf,
         });
+
+        this.liberarCamposSomenteNoModoOffline();
       });
     }
   }
 
   listaVolume!: string;
+
   volumes: Volumes[] = [
     { value: 'CX-5m³', viewValue: 'CX-5m³' },
     { value: 'CX-10m³', viewValue: 'CX-10m³' },
@@ -578,17 +620,26 @@ export class PedidoFormComponent implements OnInit {
         },
         error: () => this.onError(),
       });
-    } else {
-      try {
+      return;
+    }
+
+    try {
+      if (navigator.onLine && !this.isModoOffline) {
         await this.emitirPedidoComImagemEImpressao();
         this.mensagemService.showSuccessMessage('Pedido emitido com sucesso!');
-        this.router.navigate(['/menu']);
-      } catch (error) {
-        console.error('Erro ao emitir pedido:', error);
-        this.mensagemService.showErrorMessage(
-          'Erro ao emitir pedido ou gerar impressão',
+      } else {
+        await this.emitirPedidoOfflineComImagemEImpressao();
+        this.mensagemService.showSuccessMessage(
+          'Pedido emitido offline com sucesso! Será sincronizado quando a internet voltar.',
         );
       }
+
+      this.router.navigate(['/menu']);
+    } catch (error) {
+      console.error('Erro ao emitir pedido:', error);
+      this.mensagemService.showErrorMessage(
+        'Erro ao emitir pedido ou gerar impressão',
+      );
     }
   }
 
@@ -624,6 +675,39 @@ export class PedidoFormComponent implements OnInit {
       lastValueFrom(this.pedidoService.salvar(pedidoComImagem)),
       this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido),
     ]);
+  }
+
+  private async emitirPedidoOfflineComImagemEImpressao(): Promise<void> {
+    this.prepararFormularioAntesDoEnvio();
+
+    const offlineId = this.offlineDbService.gerarIdOffline();
+
+    this.formulario.patchValue(
+      {
+        idPedido: offlineId,
+        status: 'Emitido',
+        imagemPedido: '',
+      },
+      { emitEvent: false },
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const pedidoOffline: Partial<Pedido> = {
+      ...this.formulario.value,
+      idPedido: offlineId,
+      imagemPedido: '',
+      status: 'Emitido',
+    };
+
+    await this.offlineDbService.salvarPedidoOffline({
+      offlineId,
+      pedido: pedidoOffline,
+      sincronizado: false,
+      dataCriacaoOffline: new Date().toISOString(),
+    });
+
+    await this.pedidoService.gerarImpressaoOfflineDireta();
   }
 
   private atualizarFormulario(status: string) {

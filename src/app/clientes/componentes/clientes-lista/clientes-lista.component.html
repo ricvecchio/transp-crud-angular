@@ -2,13 +2,27 @@
   <div class="d-flex justify-content-center">
     <mat-form-field class="form-grid">
       <mat-label>Buscar Cliente</mat-label>
+
       <input
         matInput
         [formControl]="filterControl"
         placeholder="Digite os dados do cliente"
       />
+
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="form-grid small-button export-button"
+      (click)="exportToExcel()"
+      *ngIf="!isModoOffline"
+    >
+      <mat-icon>file_download</mat-icon>
+      Exportar
+    </button>
+
     <button
       mat-raised-button
       color="primary"
@@ -17,6 +31,7 @@
     >
       Limpar Filtros
     </button>
+
     <button
       mat-raised-button
       color="primary"
@@ -27,10 +42,17 @@
     </button>
   </div>
 
+  @if (isModoOffline) {
+    <div class="mb-3 text-center">
+      <strong>Clientes carregados do modo offline.</strong>
+    </div>
+  }
+
   @if (clientes$ | async; as clientes) {
     <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="acaoConsulta">
         <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+
         <mat-cell *matCellDef="let cliente">
           <button
             mat-mini-fab
@@ -45,33 +67,50 @@
       </ng-container>
 
       <ng-container matColumnDef="idCliente">
-        <mat-header-cell *matHeaderCellDef
-          ><strong>Cliente</strong></mat-header-cell
-        >
-        <mat-cell *matCellDef="let cliente">{{ cliente.idCliente }}</mat-cell>
+        <mat-header-cell *matHeaderCellDef>
+          <strong>Cliente</strong>
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let cliente">
+          {{ cliente.idCliente }}
+        </mat-cell>
       </ng-container>
+
       <ng-container matColumnDef="nome">
-        <mat-header-cell *matHeaderCellDef
-          ><strong>Nome</strong></mat-header-cell
-        >
-        <mat-cell *matCellDef="let cliente">{{ cliente.nome }}</mat-cell>
+        <mat-header-cell *matHeaderCellDef>
+          <strong>Nome</strong>
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let cliente">
+          {{ cliente.nome }}
+        </mat-cell>
       </ng-container>
+
       <ng-container matColumnDef="razaoSocial">
-        <mat-header-cell *matHeaderCellDef
-          ><strong>Razão Social</strong></mat-header-cell
-        >
-        <mat-cell *matCellDef="let cliente">{{ cliente.razaoSocial }}</mat-cell>
+        <mat-header-cell *matHeaderCellDef>
+          <strong>Razão Social</strong>
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let cliente">
+          {{ cliente.razaoSocial }}
+        </mat-cell>
       </ng-container>
+
       <ng-container matColumnDef="cpfCnpj">
-        <mat-header-cell *matHeaderCellDef
-          ><strong>CPF/CNPJ</strong></mat-header-cell
-        >
-        <mat-cell *matCellDef="let cliente">{{ cliente.cpfCnpj }}</mat-cell>
+        <mat-header-cell *matHeaderCellDef>
+          <strong>CPF/CNPJ</strong>
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let cliente">
+          {{ cliente.cpfCnpj }}
+        </mat-cell>
       </ng-container>
+
       <ng-container matColumnDef="enderecoEntrega">
-        <mat-header-cell *matHeaderCellDef
-          ><strong>Endereço</strong></mat-header-cell
-        >
+        <mat-header-cell *matHeaderCellDef>
+          <strong>Endereço</strong>
+        </mat-header-cell>
+
         <mat-cell *matCellDef="let cliente">
           {{
             cliente.logradouroEntrega
@@ -88,6 +127,7 @@
       <ng-container matColumnDef="acao">
         <mat-header-cell *matHeaderCellDef>
           <button
+            *ngIf="!isModoOffline"
             mat-mini-fab
             color="accent"
             class="action-button"
@@ -96,8 +136,10 @@
             <mat-icon>add</mat-icon>
           </button>
         </mat-header-cell>
+
         <mat-cell *matCellDef="let cliente" class="action-column">
           <button
+            *ngIf="!isModoOffline"
             mat-mini-fab
             color="primary"
             aria-label="Editar Cliente"
@@ -106,9 +148,11 @@
           >
             <mat-icon>edit</mat-icon>
           </button>
+
           <button
             *ngIf="
-              permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'
+              !isModoOffline &&
+              (permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV')
             "
             mat-mini-fab
             color="warn"
@@ -120,9 +164,12 @@
           </button>
         </mat-cell>
       </ng-container>
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
       <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
+
     <mat-paginator
       [pageSizeOptions]="[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]"
       showFirstLastButtons

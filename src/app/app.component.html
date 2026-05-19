@@ -2,6 +2,17 @@
   <app-cabecalho></app-cabecalho>
 </header>
 
+@if (!online) {
+  <div class="offline-banner">
+    Sistema offline. Os pedidos emitidos serão salvos localmente e sincronizados
+    quando a internet voltar.
+  </div>
+}
+
+@if (online && sincronizandoOffline) {
+  <div class="sync-banner">Sincronizando pedidos emitidos offline...</div>
+}
+
 <main>
   <router-outlet></router-outlet>
 </main>

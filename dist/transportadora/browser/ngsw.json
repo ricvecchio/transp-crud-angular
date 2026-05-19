@@ -1,0 +1,121 @@
+{
+  "configVersion": 1,
+  "timestamp": 1779148426444,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/chunk-G7DYPPKH.js",
+        "/chunk-STRQJ22Q.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main-5T4VX4BD.js",
+        "/polyfills-FFHMD2TL.js",
+        "/styles-VYJHAEYC.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/img/background-agua3.jpg",
+        "/assets/img/background-agua5.jpg",
+        "/assets/img/caminhao-cabecalho.png",
+        "/assets/img/fundo-cabecalho.png",
+        "/assets/img/fundo-rodape.png",
+        "/assets/img/icone-editar.png",
+        "/assets/img/icone-excluir.png",
+        "/assets/img/logo-cabecalho.png",
+        "/assets/img/logo-rodape.png",
+        "/assets/img/logo-saotome.png",
+        "/assets/img/logo.png",
+        "/assets/img/logoB.png",
+        "/assets/img/logoEx.png",
+        "/assets/img/lupa.png",
+        "/assets/img/rodapeprevia.png",
+        "/media/fontawesome-webfont-3KIJVIEY.svg",
+        "/media/fontawesome-webfont-5GKVPAEF.woff2",
+        "/media/fontawesome-webfont-FMJ3VJ65.eot",
+        "/media/fontawesome-webfont-RJ6LE7IU.ttf",
+        "/media/fontawesome-webfont-Z4ARLA73.woff"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "google-fonts",
+      "patterns": [
+        "https:\\/\\/fonts\\.googleapis\\.com\\/.*",
+        "https:\\/\\/fonts\\.gstatic\\.com\\/.*"
+      ],
+      "strategy": "performance",
+      "maxSize": 20,
+      "maxAge": 2592000000,
+      "timeoutMs": 10000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/assets/img/background-agua3.jpg": "857c1d71625114a5f6e5706f9b3638280804d86f",
+    "/assets/img/background-agua5.jpg": "f4489b3950b3468059c8e054dd1310c3ce9b5f39",
+    "/assets/img/caminhao-cabecalho.png": "703a24216fa7812f4e34453380a87902c19d19aa",
+    "/assets/img/fundo-cabecalho.png": "8ccbd4c24f9445bf60f1e9e39c93828166aa796d",
+    "/assets/img/fundo-rodape.png": "c5597c2bb0aeedf8c0228d1082a880c84095088c",
+    "/assets/img/icone-editar.png": "64ca759fdd35615805447da34d5ec6ccb26ae963",
+    "/assets/img/icone-excluir.png": "0b20f08a268d0878b17e46dcbb3d473dc28895b1",
+    "/assets/img/logo-cabecalho.png": "9713148dfd6b858e91f18543f952dcb0cb31230a",
+    "/assets/img/logo-rodape.png": "234c9e913929b9389b0ecafd4b3282c1e0e25cc9",
+    "/assets/img/logo-saotome.png": "835f4a59a545358fa5bb861728e5a0b8478db605",
+    "/assets/img/logo.png": "bd97e5a2cf5ce71d643252d86c7059251d807e8a",
+    "/assets/img/logoB.png": "0ddb64d79773028f113523bc8bfbdf78da8d51f1",
+    "/assets/img/logoEx.png": "184cbe35ae121db2d498c78444ed52141e16d6a2",
+    "/assets/img/lupa.png": "6328c235bd1094279efd46d007a15cff35c5d7aa",
+    "/assets/img/rodapeprevia.png": "e644b5d0c4192bd121e1123d8c7b865e887851fe",
+    "/chunk-G7DYPPKH.js": "c0d5f0284436e9de4fcfc23248df6ea16be0f575",
+    "/chunk-STRQJ22Q.js": "e0ca30cfba1c8d09a6e60998f300e0673c0dda36",
+    "/favicon.ico": "9c39f434fe1261f68c5e3eefdf734630d99c5670",
+    "/index.html": "e7d32b9ea4186bdd8f7ab7a8de2aaba09fa233c8",
+    "/main-5T4VX4BD.js": "d7c56ec8b4d1187d14e89c40729618c33c4a1df7",
+    "/media/fontawesome-webfont-3KIJVIEY.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
+    "/media/fontawesome-webfont-5GKVPAEF.woff2": "d6f48cba7d076fb6f2fd6ba993a75b9dc1ecbf0c",
+    "/media/fontawesome-webfont-FMJ3VJ65.eot": "d980c2ce873dc43af460d4d572d441304499f400",
+    "/media/fontawesome-webfont-RJ6LE7IU.ttf": "13b1eab65a983c7a73bc7997c479d66943f7c6cb",
+    "/media/fontawesome-webfont-Z4ARLA73.woff": "28b782240b3e76db824e12c02754a9731a167527",
+    "/polyfills-FFHMD2TL.js": "f49b49a155bc7d192db62a4c15d0a612b460a667",
+    "/styles-VYJHAEYC.css": "200048d6389ccacaabb42e712c81ec4495f67ced"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

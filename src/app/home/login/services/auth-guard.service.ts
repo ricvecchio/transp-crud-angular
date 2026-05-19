@@ -12,6 +12,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
+  private readonly ROTAS_PERMITIDAS_OFFLINE = [
+    '/menu',
+    '/cadastrar-pedido',
+    '/consultar-clientes',
+    '/expandir-cliente',
+    '/cadastrar-cliente',
+  ];
+
   constructor(private router: Router) {}
 
   canActivate(
@@ -24,11 +32,31 @@ export class AuthGuard implements CanActivate {
     | UrlTree {
     const authToken = sessionStorage.getItem('auth-token');
 
-    if (authToken) {
-      return true;
-    } else {
+    const permissaoUsuario = sessionStorage.getItem('permission');
+
+    const modoOffline = sessionStorage.getItem('offline-mode') === 'true';
+
+    if (!authToken) {
       this.router.navigate(['/home']);
+
       return false;
     }
+
+    if (modoOffline || permissaoUsuario === 'OFFLINE') {
+      const rotaPermitida =
+        this.ROTAS_PERMITIDAS_OFFLINE.some((rota) =>
+          state.url.startsWith(rota),
+        );
+
+      if (rotaPermitida) {
+        return true;
+      }
+
+      this.router.navigate(['/menu']);
+
+      return false;
+    }
+
+    return true;
   }
 }

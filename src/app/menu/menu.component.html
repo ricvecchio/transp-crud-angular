@@ -1,44 +1,85 @@
 <section class="container">
-  <div class="d-flex">
-    <button routerLink="/consultar-pedidos" class="botao">
-      <i class="fa fa-search" aria-hidden="true"></i>
-      Consultar Pedidos
-    </button>
+  @if (permissaoUsuario === "OFFLINE") {
+    <div class="offline-menu">
+      <div class="offline-menu-principal">
+        <button
+          type="button"
+          class="botao"
+          (click)="consultarClientesOffline()"
+        >
+          <i class="fa fa-search" aria-hidden="true"></i>
+          Consultar Clientes Offline
+        </button>
 
-    <button routerLink="/cadastrar-cliente" class="botao">
-      <span style="font-size: 1em; color: white">
-        <i class="fa fa-plus fa-sm" aria-hidden="true"></i>
-      </span>
-      Cadastrar Cliente
-    </button>
+        <button type="button" class="botao" (click)="emitirPedidoOffline()">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          Emitir Pedido Offline
+        </button>
+      </div>
 
-    <button routerLink="/consultar-clientes" class="botao">
-      <i class="fa fa-search" aria-hidden="true"></i>
-      Consultar Clientes
-    </button>
-  </div>
+      <div class="offline-menu-saida">
+        <button
+          type="button"
+          class="botao botao-offline-sair"
+          (click)="sairModoOffline()"
+        >
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          Sair do Modo Offline
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="d-flex">
+      <button routerLink="/consultar-pedidos" class="botao">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        Consultar Pedidos
+      </button>
 
-  <div class="d-flex">
-    <button
-      *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
-      routerLink="/dashboard"
-      class="botao-restricted"
-    >
-      <span style="font-size: 1em; color: white">
-        <i class="fa fa-bar-chart" aria-hidden="true"></i>
-      </span>
-      Gráficos de Gastos
-    </button>
+      <button routerLink="/cadastrar-cliente" class="botao">
+        <span style="font-size: 1em; color: white">
+          <i class="fa fa-plus fa-sm" aria-hidden="true"></i>
+        </span>
+        Cadastrar Cliente
+      </button>
 
-    <button
-      *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
-      routerLink="/usuarios"
-      class="botao-restricted"
-    >
-      <span style="font-size: 1em; color: white">
-        <i class="fa fa-users fa-sm" aria-hidden="true"></i>
-      </span>
-      Usuários e Permissões
-    </button>
-  </div>
+      <button routerLink="/consultar-clientes" class="botao">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        Consultar Clientes
+      </button>
+    </div>
+
+    <div class="d-flex">
+      <button
+        *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
+        routerLink="/dashboard"
+        class="botao-restricted"
+      >
+        <span style="font-size: 1em; color: white">
+          <i class="fa fa-bar-chart" aria-hidden="true"></i>
+        </span>
+        Gráficos de Gastos
+      </button>
+
+      <button
+        type="button"
+        *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
+        class="botao-restricted botao-backup"
+        (click)="exportarBackupClientes()"
+      >
+        <i class="fa fa-download" aria-hidden="true"></i>
+        Backup Clientes
+      </button>
+
+      <button
+        *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
+        routerLink="/usuarios"
+        class="botao-restricted"
+      >
+        <span style="font-size: 1em; color: white">
+          <i class="fa fa-users fa-sm" aria-hidden="true"></i>
+        </span>
+        Usuários e Permissões
+      </button>
+    </div>
+  }
 </section>
