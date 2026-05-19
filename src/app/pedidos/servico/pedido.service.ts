@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import html2canvas from 'html2canvas';
+import domtoimage from 'dom-to-image';
 
 import { first, Observable } from 'rxjs';
 
@@ -99,9 +99,15 @@ export class PedidoService {
   excluir(idPedido: string) {
     const headers = this.getAuthHeaders();
 
-    return this.http.delete(`${this.API}/${idPedido}`, { headers }).pipe(first());
+    return this.http
+      .delete(`${this.API}/${idPedido}`, { headers })
+      .pipe(first());
   }
 
+  /**
+   * ONLINE
+   * NÃO ALTERAR
+   */
   async gerarImagemBase64(): Promise<string | null> {
     const container = document.querySelector(
       '.container-previa',
@@ -111,28 +117,55 @@ export class PedidoService {
       this.mensagemService.showErrorMessage(
         'Elemento .container-previa não encontrado',
       );
+
       return null;
     }
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      const clone = container.cloneNode(true) as HTMLElement;
 
-      const canvas = await html2canvas(container, {
-        backgroundColor: '#ffffff',
-        scale: 2,
-        useCORS: true,
-        logging: false,
+      clone
+        .querySelectorAll('button, input, select, textarea, .nao-imprimir')
+        .forEach((el) => el.remove());
+
+      const wrapper = document.createElement('div');
+
+      wrapper.style.position = 'fixed';
+      wrapper.style.top = '100vh';
+      wrapper.style.left = '0';
+      wrapper.style.zIndex = '9999';
+      wrapper.style.opacity = '1';
+      wrapper.style.pointerEvents = 'none';
+      wrapper.style.background = 'white';
+
+      wrapper.appendChild(clone);
+
+      document.body.appendChild(clone);
+
+      const dataUrl = await domtoimage.toPng(clone, {
+        cacheBust: true,
+        bgcolor: '#fff',
       });
 
-      return canvas.toDataURL('image/png');
+      document.body.removeChild(clone);
+
+      return dataUrl;
     } catch (error) {
-      console.error('Erro gerarImagemBase64:', error);
-      this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
+      this.mensagemService.showErrorMessage(
+        'Erro ao gerar imagem do pedido.',
+      );
+
       return null;
     }
   }
 
-  async gerarImpressaoUsandoImagem(imagemData: string): Promise<void> {
+  /**
+   * ONLINE
+   * NÃO ALTERAR
+   */
+  async gerarImpressaoUsandoImagem(
+    imagemData: string,
+  ): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       try {
         const iframe = document.createElement('iframe');
@@ -150,7 +183,9 @@ export class PedidoService {
           this.mensagemService.showErrorMessage(
             'Erro ao acessar o documento do iframe',
           );
+
           document.body.removeChild(iframe);
+
           return reject();
         }
 
@@ -158,12 +193,151 @@ export class PedidoService {
           const printWindow = iframe.contentWindow;
 
           const afterPrintHandler = () => {
-            printWindow?.removeEventListener('afterprint', afterPrintHandler);
+            printWindow?.removeEventListener(
+              'afterprint',
+              afterPrintHandler,
+            );
+
             document.body.removeChild(iframe);
+
             resolve();
           };
 
-          printWindow?.addEventListener('afterprint', afterPrintHandler);
+          printWindow?.addEventListener(
+            'afterprint',
+            afterPrintHandler,
+          );
+
+          printWindow?.focus();
+          printWindow?.print();
+        };
+
+        iframeDocument.open();
+
+        iframeDocument.write(`
+        <html>
+          <head>
+            <style>
+              @page {
+                size: A4 portrait;
+                margin: 0;
+              }
+
+              body {
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+              }
+
+              .page {
+                position: relative;
+                width: 100%;
+                height: 100vh;
+              }
+
+              .image-container {
+                width: 100%;
+                height: 50%;
+                position: absolute;
+                padding: 20px;
+                box-sizing: border-box;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+
+              .image {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                position: relative;
+              }
+            </style>
+          </head>
+
+          <body>
+            <div class="page">
+              <div class="image-container" style="top: 0;">
+                <img src="${imagemData}" class="image" />
+              </div>
+
+              <div class="image-container" style="top: 50%;">
+                <img src="${imagemData}" class="image" />
+              </div>
+            </div>
+          </body>
+        </html>
+      `);
+
+        iframeDocument.close();
+      } catch (error) {
+        this.mensagemService.showErrorMessage(
+          'Erro ao imprimir o pedido.',
+        );
+
+        reject(error);
+      }
+    });
+  }
+
+  /**
+   * OFFLINE
+   * ISOLADO DO ONLINE
+   */
+  async gerarImpressaoOfflineDireta(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        const containerOriginal = document.querySelector(
+          '.container-previa',
+        ) as HTMLElement;
+
+        if (!containerOriginal) {
+          this.mensagemService.showErrorMessage(
+            'Prévia do pedido não encontrada.',
+          );
+
+          return reject();
+        }
+
+        const conteudoPedido = containerOriginal.innerHTML;
+
+        const iframe = document.createElement('iframe');
+
+        iframe.style.position = 'absolute';
+        iframe.style.width = '0px';
+        iframe.style.height = '0px';
+        iframe.style.border = 'none';
+
+        document.body.appendChild(iframe);
+
+        const iframeDocument = iframe.contentWindow?.document;
+
+        if (!iframeDocument) {
+          document.body.removeChild(iframe);
+
+          return reject();
+        }
+
+        iframe.onload = () => {
+          const printWindow = iframe.contentWindow;
+
+          const afterPrintHandler = () => {
+            printWindow?.removeEventListener(
+              'afterprint',
+              afterPrintHandler,
+            );
+
+            document.body.removeChild(iframe);
+
+            resolve();
+          };
+
+          printWindow?.addEventListener(
+            'afterprint',
+            afterPrintHandler,
+          );
+
           printWindow?.focus();
           printWindow?.print();
         };
@@ -179,89 +353,51 @@ export class PedidoService {
                   margin: 0;
                 }
 
+                html,
                 body {
                   margin: 0;
                   padding: 0;
+                  width: 100%;
+                  background: white;
+                  font-family: Arial, sans-serif;
                 }
 
-                img {
+                .page {
                   width: 100%;
-                  display: block;
+                  height: 100vh;
+                  display: flex;
+                  flex-direction: column;
+                }
+
+                .pedido-wrapper {
+                  width: 100%;
+                  height: 50vh;
+                  padding: 12px;
+                  box-sizing: border-box;
+                  overflow: hidden;
+                }
+
+                .container-previa {
+                  transform: scale(0.95);
+                  transform-origin: top left;
+                  width: 105%;
                 }
               </style>
             </head>
 
             <body>
-              <img src="${imagemData}" />
-              <img src="${imagemData}" />
-            </body>
-          </html>
-        `);
+              <div class="page">
+                <div class="pedido-wrapper">
+                  <div class="container-previa">
+                    ${conteudoPedido}
+                  </div>
+                </div>
 
-        iframeDocument.close();
-      } catch (error) {
-        this.mensagemService.showErrorMessage('Erro ao imprimir o pedido.');
-        reject(error);
-      }
-    });
-  }
-
-  async gerarImpressaoOfflineDireta(): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      try {
-        const containerOriginal = document.querySelector(
-          '.container-previa',
-        ) as HTMLElement;
-
-        if (!containerOriginal) {
-          this.mensagemService.showErrorMessage('Prévia do pedido não encontrada.');
-          return reject();
-        }
-
-        const primeiraVia = this.criarConteudoOfflineFormatado(containerOriginal);
-        const segundaVia = this.criarConteudoOfflineFormatado(containerOriginal);
-
-        const iframe = document.createElement('iframe');
-
-        iframe.style.position = 'absolute';
-        iframe.style.width = '0px';
-        iframe.style.height = '0px';
-        iframe.style.border = 'none';
-
-        document.body.appendChild(iframe);
-
-        const iframeDocument = iframe.contentWindow?.document;
-
-        if (!iframeDocument) {
-          document.body.removeChild(iframe);
-          return reject();
-        }
-
-        iframe.onload = () => {
-          const printWindow = iframe.contentWindow;
-
-          const afterPrintHandler = () => {
-            printWindow?.removeEventListener('afterprint', afterPrintHandler);
-            document.body.removeChild(iframe);
-            resolve();
-          };
-
-          printWindow?.addEventListener('afterprint', afterPrintHandler);
-          printWindow?.focus();
-          printWindow?.print();
-        };
-
-        iframeDocument.open();
-
-        iframeDocument.write(`
-          <html>
-            <body>
-              <div class="via-pedido">
-                ${primeiraVia}
-              </div>
-
-              <div class="via-pedido">
-                ${segundaVia}
+                <div class="pedido-wrapper">
+                  <div class="container-previa">
+                    ${conteudoPedido}
+                  </div>
+                </div>
               </div>
             </body>
           </html>
@@ -269,40 +405,17 @@ export class PedidoService {
 
         iframeDocument.close();
       } catch (error) {
-        console.error('Erro gerarImpressaoOfflineDireta:', error);
-        this.mensagemService.showErrorMessage('Erro ao gerar impressão offline.');
+        console.error(
+          'Erro gerarImpressaoOfflineDireta:',
+          error,
+        );
+
+        this.mensagemService.showErrorMessage(
+          'Erro ao gerar impressão offline.',
+        );
+
         reject(error);
       }
     });
-  }
-
-  private criarConteudoOfflineFormatado(containerOriginal: HTMLElement): string {
-    const clone = containerOriginal.cloneNode(true) as HTMLElement;
-
-    this.reformatarLinhaPedido(clone);
-
-    return clone.innerHTML;
-  }
-
-  private reformatarLinhaPedido(clone: HTMLElement): void {
-    const pedido = clone.querySelector('.texto-vermelho');
-    const data = clone.querySelector('.texto-azul-escuro');
-
-    if (!pedido || !data) {
-      return;
-    }
-
-    const linhaOriginal = pedido.closest('.container-previa-texto');
-
-    if (!linhaOriginal) {
-      return;
-    }
-
-    linhaOriginal.outerHTML = `
-      <div class="linha-pedido">
-        <div class="pedido-numero">${pedido.textContent || ''}</div>
-        <div class="pedido-data">${data.textContent || ''}</div>
-      </div>
-    `;
   }
 }
