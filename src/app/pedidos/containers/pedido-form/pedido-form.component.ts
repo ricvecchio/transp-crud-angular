@@ -624,14 +624,14 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
     }
 
     try {
-      if (navigator.onLine && !this.isModoOffline) {
-        await this.emitirPedidoComImagemEImpressao();
-        this.mensagemService.showSuccessMessage('Pedido emitido com sucesso!');
-      } else {
+      if (this.isModoOffline || !navigator.onLine) {
         await this.emitirPedidoOfflineComImagemEImpressao();
         this.mensagemService.showSuccessMessage(
           'Pedido emitido offline com sucesso! Será sincronizado quando a internet voltar.',
         );
+      } else {
+        await this.emitirPedidoComImagemEImpressao();
+        this.mensagemService.showSuccessMessage('Pedido emitido com sucesso!');
       }
 
       this.router.navigate(['/menu']);
@@ -677,38 +677,45 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
     ]);
   }
 
-  private async emitirPedidoOfflineComImagemEImpressao(): Promise<void> {
-    this.prepararFormularioAntesDoEnvio();
+private async emitirPedidoOfflineComImagemEImpressao(): Promise<void> {
+  this.prepararFormularioAntesDoEnvio();
 
-    const offlineId = this.offlineDbService.gerarIdOffline();
+  const offlineId = this.offlineDbService.gerarIdOffline();
 
-    this.formulario.patchValue(
-      {
-        idPedido: offlineId,
-        status: 'Emitido',
-        imagemPedido: '',
-      },
-      { emitEvent: false },
-    );
-
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    const pedidoOffline: Partial<Pedido> = {
-      ...this.formulario.value,
+  this.formulario.patchValue(
+    {
       idPedido: offlineId,
-      imagemPedido: '',
       status: 'Emitido',
-    };
+      imagemPedido: '',
+    },
+    { emitEvent: false },
+  );
 
-    await this.offlineDbService.salvarPedidoOffline({
-      offlineId,
-      pedido: pedidoOffline,
-      sincronizado: false,
-      dataCriacaoOffline: new Date().toISOString(),
-    });
+  await new Promise((resolve) => setTimeout(resolve, 0));
 
-    await this.pedidoService.gerarImpressaoOfflineDireta();
+  const imagemPedido = await this.pedidoService.gerarImagemBase64();
+
+  const pedidoOffline: Partial<Pedido> = {
+    ...this.formulario.value,
+    idPedido: offlineId,
+    imagemPedido: imagemPedido || '',
+    status: 'Emitido',
+  };
+
+  await this.offlineDbService.salvarPedidoOffline({
+    offlineId,
+    pedido: pedidoOffline,
+    sincronizado: false,
+    dataCriacaoOffline: new Date().toISOString(),
+  });
+
+  if (imagemPedido) {
+    await this.pedidoService.gerarImpressaoUsandoImagem(imagemPedido);
+    return;
   }
+
+  await this.pedidoService.gerarImpressaoOfflineDireta();
+}
 
   private atualizarFormulario(status: string) {
     const dataFormatada = new Date(
