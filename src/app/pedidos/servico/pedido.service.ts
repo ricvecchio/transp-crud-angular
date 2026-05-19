@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import domtoimage from 'dom-to-image';
+import html2canvas from 'html2canvas';
 
 import { first, Observable } from 'rxjs';
 
@@ -115,28 +115,16 @@ export class PedidoService {
     }
 
     try {
-      const clone = container.cloneNode(true) as HTMLElement;
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-      clone
-        .querySelectorAll('button, input, select, textarea, .nao-imprimir')
-        .forEach((el) => el.remove());
-
-      clone.style.background = 'white';
-      clone.style.position = 'fixed';
-      clone.style.top = '-99999px';
-      clone.style.left = '-99999px';
-      clone.style.width = '1200px';
-
-      document.body.appendChild(clone);
-
-      const dataUrl = await domtoimage.toPng(clone, {
-        cacheBust: false,
-        bgcolor: '#ffffff',
+      const canvas = await html2canvas(container, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        useCORS: true,
+        logging: false,
       });
 
-      document.body.removeChild(clone);
-
-      return dataUrl;
+      return canvas.toDataURL('image/png');
     } catch (error) {
       console.error('Erro gerarImagemBase64:', error);
       this.mensagemService.showErrorMessage('Erro ao gerar imagem do pedido.');
@@ -267,243 +255,6 @@ export class PedidoService {
 
         iframeDocument.write(`
           <html>
-            <head>
-              <title>Pedido Offline</title>
-
-              <style>
-                @page {
-                  size: A4 portrait;
-                  margin: 6mm;
-                }
-
-                * {
-                  box-sizing: border-box;
-                }
-
-                body {
-                  margin: 0;
-                  padding: 0;
-                  color: #222;
-                  background: #ffffff;
-                  font-family: Arial, Helvetica, sans-serif;
-                  font-size: 13px;
-                }
-
-                .via-pedido {
-                  width: 100%;
-                  min-height: 48%;
-                  margin-bottom: 20px;
-                  page-break-inside: avoid;
-                }
-
-                .container-previa {
-                  display: block;
-                  width: 100%;
-                  margin: 0;
-                }
-
-                .container-previa-obs {
-                  color: #a10f0f;
-                  font-size: 13px;
-                  font-weight: bold;
-                  margin-bottom: 8px;
-                }
-
-                .modelo {
-                  width: 100%;
-                  border: 0;
-                  padding: 0;
-                  margin: 0;
-                }
-
-                .cabecalho-offline {
-                  border: 4px solid #000;
-                  padding: 6px 10px 4px;
-                  margin-bottom: 8px;
-                  text-align: center;
-                }
-
-                .cabecalho-titulo {
-                  color: #142b67;
-                  font-size: 26px;
-                  font-weight: 900;
-                  letter-spacing: 1px;
-                  line-height: 1.1;
-                  border-bottom: 1px solid #333;
-                  padding-bottom: 4px;
-                }
-
-                .gota {
-                  color: #0b4f9c;
-                  margin-left: 8px;
-                }
-
-                .cabecalho-contatos {
-                  display: flex;
-                  justify-content: space-between;
-                  gap: 10px;
-                  font-size: 10px;
-                  font-weight: bold;
-                  padding-top: 4px;
-                }
-
-                .linha-pedido {
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                  border-bottom: 1px solid #ddd;
-                  padding-bottom: 5px;
-                  margin-bottom: 8px;
-                  font-size: 16px;
-                  font-weight: bold;
-                }
-
-                .pedido-numero {
-                  color: #a10f0f;
-                }
-
-                .pedido-data {
-                  color: #142b67;
-                }
-
-                .modelo > .col-md-12.d-flex {
-                  display: flex;
-                  align-items: flex-start;
-                  width: 100%;
-                  margin-bottom: 6px;
-                  line-height: 1.35;
-                }
-
-                .modelo > .d-flex {
-                  display: grid;
-                  grid-template-columns: repeat(3, 1fr);
-                  column-gap: 24px;
-                  row-gap: 5px;
-                  width: 100%;
-                  margin-top: 8px;
-                  margin-bottom: 6px;
-                  align-items: start;
-                }
-
-                .modelo > .d-flex > .col-md-4 {
-                  width: 100%;
-                  min-width: 0;
-                  display: flex;
-                  align-items: center;
-                  gap: 5px;
-                  white-space: normal;
-                }
-
-                .modelo > .d-flex.align-items-center > .col-md-4 {
-                  display: block;
-                }
-
-                .modelo > .d-flex.align-items-center > .col-md-4 .container-previa-texto-fixo {
-                  display: block;
-                }
-
-                .container-previa-texto-fixo {
-                  color: #142b67;
-                  font-weight: 900;
-                  font-size: 13px;
-                  margin-right: 5px;
-                  white-space: nowrap;
-                  display: inline-block;
-                }
-
-                .container-previa-texto {
-                  color: #222;
-                  font-size: 13px;
-                  font-weight: 400;
-                  display: inline-block;
-                  word-break: break-word;
-                }
-
-                .obs-vermelha,
-                .container-previa-obs .texto-vermelho {
-                  color: #a10f0f;
-                  font-weight: bold;
-                  margin: 10px 0 8px;
-                }
-
-                .texto-vermelho {
-                  color: #a10f0f;
-                }
-
-                .texto-azul-escuro {
-                  color: #142b67;
-                }
-
-                .rodape-offline {
-                  display: grid;
-                  grid-template-columns: 36% 64%;
-                  border: 4px solid #000;
-                  min-height: 48px;
-                  margin-top: 8px;
-                }
-
-                .rodape-esquerda {
-                  border-right: 4px solid #000;
-                  padding: 7px;
-                  font-size: 9px;
-                  font-weight: bold;
-                  line-height: 1.1;
-                }
-
-                .rodape-direita {
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: center;
-                  align-items: center;
-                  text-align: center;
-                  position: relative;
-                  overflow: hidden;
-                  padding: 4px;
-                }
-
-                .conferencia {
-                  color: #d8d8d8;
-                  font-size: 20px;
-                  font-weight: 900;
-                  letter-spacing: 1px;
-                  line-height: 1;
-                  white-space: nowrap;
-                }
-
-                .assinatura {
-                  color: #000;
-                  font-size: 10px;
-                  font-weight: 900;
-                  margin-top: 4px;
-                }
-
-                img,
-                mat-list,
-                mat-divider,
-                .preview-image-container {
-                  display: none !important;
-                }
-
-                .col-md-12,
-                .col-md-9,
-                .col-md-6,
-                .col-md-4,
-                .col-md-3,
-                .col-md-2,
-                .col-md-1 {
-                  padding: 0;
-                  max-width: none;
-                }
-
-                @media print {
-                  body {
-                    -webkit-print-color-adjust: exact;
-                    print-color-adjust: exact;
-                  }
-                }
-              </style>
-            </head>
-
             <body>
               <div class="via-pedido">
                 ${primeiraVia}
@@ -527,41 +278,6 @@ export class PedidoService {
 
   private criarConteudoOfflineFormatado(containerOriginal: HTMLElement): string {
     const clone = containerOriginal.cloneNode(true) as HTMLElement;
-
-    const logo = clone.querySelector('img[alt="Logo São Tomé"]');
-    if (logo) {
-      logo.outerHTML = `
-        <div class="cabecalho-offline">
-          <div class="cabecalho-titulo">
-            SÃO TOMÉ CATIME <span class="gota">💧</span>
-          </div>
-
-          <div class="cabecalho-contatos">
-            <div>TELS.: (11) 96448-2908 / (11) 5073-0376 / (11) 5073-9610</div>
-            <div>
-              saotome@transportadorasaotome.com.br<br />
-              www.transportadorasaotome.com.br
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    const rodape = clone.querySelector('img[alt="Rodapé da Prévia do Pedido"]');
-    if (rodape) {
-      rodape.outerHTML = `
-        <div class="rodape-offline">
-          <div class="rodape-esquerda">
-            OBS.: Permanecer no máximo 1 hora no local, após este período será acrescido 50% do valor frete.
-          </div>
-
-          <div class="rodape-direita">
-            <div class="conferencia">CONFERÊNCIA NA CHEGADA E SAÍDA</div>
-            <div class="assinatura">RECEBIDO - ASSINATURA LEGÍVEL OU CARIMBO</div>
-          </div>
-        </div>
-      `;
-    }
 
     this.reformatarLinhaPedido(clone);
 
