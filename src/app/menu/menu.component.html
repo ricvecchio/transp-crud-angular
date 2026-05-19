@@ -62,7 +62,7 @@
 
       <button
         type="button"
-        *ngIf="permissaoUsuario === 'ADMIN' || permissaoUsuario === 'DESENV'"
+        *ngIf="permissaoUsuario === 'ADMIN'"
         class="botao-restricted botao-backup"
         (click)="exportarBackupClientes()"
       >
