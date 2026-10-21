@@ -312,6 +312,12 @@ export class ClientesListaComponent implements OnInit {
           precoLv5: cliente.precoLv5,
           precoLv10: cliente.precoLv10,
           precoLv15: cliente.precoLv15,
+          precoCx5Sabado: cliente.precoCx5Sabado,
+          precoCx10Sabado: cliente.precoCx10Sabado,
+          precoCx15Sabado: cliente.precoCx15Sabado,
+          precoLv5Sabado: cliente.precoLv5Sabado,
+          precoLv10Sabado: cliente.precoLv10Sabado,
+          precoLv15Sabado: cliente.precoLv15Sabado,
           observacao: cliente.observacao,
           dataAtualizacaoCliente: this.formatarDataHora(
             cliente.dataAtualizacaoCliente,

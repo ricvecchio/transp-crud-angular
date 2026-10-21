@@ -168,6 +168,12 @@ export class ClienteFormComponent implements OnInit {
       precoLv5: [this.formatarParaReais(cliente.precoLv5)],
       precoLv10: [this.formatarParaReais(cliente.precoLv10)],
       precoLv15: [this.formatarParaReais(cliente.precoLv15)],
+      precoCx5Sabado: [this.formatarParaReais(cliente.precoCx5Sabado)],
+      precoCx10Sabado: [this.formatarParaReais(cliente.precoCx10Sabado)],
+      precoCx15Sabado: [this.formatarParaReais(cliente.precoCx15Sabado)],
+      precoLv5Sabado: [this.formatarParaReais(cliente.precoLv5Sabado)],
+      precoLv10Sabado: [this.formatarParaReais(cliente.precoLv10Sabado)],
+      precoLv15Sabado: [this.formatarParaReais(cliente.precoLv15Sabado)],
       observacao: [cliente.observacao],
       dataAtualizacaoCliente: [cliente.dataAtualizacaoCliente],
     });
@@ -189,6 +195,12 @@ export class ClienteFormComponent implements OnInit {
       'precoLv5',
       'precoLv10',
       'precoLv15',
+      'precoCx5Sabado',
+      'precoCx10Sabado',
+      'precoCx15Sabado',
+      'precoLv5Sabado',
+      'precoLv10Sabado',
+      'precoLv15Sabado',
     ]);
   }
 

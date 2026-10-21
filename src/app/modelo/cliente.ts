@@ -36,6 +36,12 @@ export interface Cliente {
   precoLv5: string;
   precoLv10: string;
   precoLv15: string;
+  precoCx5Sabado: string;
+  precoCx10Sabado: string;
+  precoCx15Sabado: string;
+  precoLv5Sabado: string;
+  precoLv10Sabado: string;
+  precoLv15Sabado: string;
   observacao: string;
   dataAtualizacaoCliente: string;
 }

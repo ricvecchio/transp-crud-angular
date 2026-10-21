@@ -80,6 +80,12 @@ export class ClienteResolver {
       precoLv5: '',
       precoLv10: '',
       precoLv15: '',
+      precoCx5Sabado: '',
+      precoCx10Sabado: '',
+      precoCx15Sabado: '',
+      precoLv5Sabado: '',
+      precoLv10Sabado: '',
+      precoLv15Sabado: '',
       observacao: '',
       dataAtualizacaoCliente: '',
     };
