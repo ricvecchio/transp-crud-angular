@@ -43,6 +43,8 @@ export interface Pedido {
   precoLv5Sabado: string;
   precoLv10Sabado: string;
   precoLv15Sabado: string;
+  entregaSabado: string;
+  exibirPreco: string;
   ajudante: string;
   adicional: string;
   precoFinal: string;

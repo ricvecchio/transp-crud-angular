@@ -142,9 +142,10 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
       precoLv10Sabado: [this.formatarParaReais(pedido.precoLv10Sabado)],
       precoLv15Sabado: [this.formatarParaReais(pedido.precoLv15Sabado)],
       precoEscolhido: [''],
-      exibirPreco: ['NÃO'],
-      ajudante: 'NÃO',
-      adicional: 'NÃO',
+      entregaSabado: [this.normalizarFlagSimNao(pedido.entregaSabado)],
+      exibirPreco: [this.normalizarFlagSimNao(pedido.exibirPreco)],
+      ajudante: [this.normalizarFlagSimNao(pedido.ajudante)],
+      adicional: [this.normalizarFlagSimNao(pedido.adicional)],
       precoFinal: [this.formatarParaReais(pedido.precoFinal)],
       observacao: [pedido.observacao],
       observacao2: [pedido.observacao2],
@@ -201,8 +202,14 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
           precoLv5Sabado: pedido.precoLv5Sabado,
           precoLv10Sabado: pedido.precoLv10Sabado,
           precoLv15Sabado: pedido.precoLv15Sabado,
-          ajudante: 'NÃO',
-          adicional: 'NÃO',
+          entregaSabado: this.normalizarFlagSimNao(
+            params['entregaSabado'] || pedido.entregaSabado,
+          ),
+          exibirPreco: this.normalizarFlagSimNao(
+            params['exibirPreco'] || pedido.exibirPreco,
+          ),
+          ajudante: this.normalizarFlagSimNao(pedido.ajudante),
+          adicional: this.normalizarFlagSimNao(pedido.adicional),
           precoFinal: pedido.precoFinal,
           observacao: pedido.observacao,
           observacao2: pedido.observacao2,
@@ -355,6 +362,8 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
       precoLv5Sabado: pedidoParams.precoLv5Sabado || '',
       precoLv10Sabado: pedidoParams.precoLv10Sabado || '',
       precoLv15Sabado: pedidoParams.precoLv15Sabado || '',
+      entregaSabado: pedidoParams.entregaSabado || 'NÃO',
+      exibirPreco: pedidoParams.exibirPreco || 'NÃO',
       ajudante: pedidoParams.ajudante || '',
       adicional: pedidoParams.adicional || '',
       precoFinal: pedidoParams.precoFinal || '',
@@ -531,6 +540,10 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
     });
   }
 
+  private normalizarFlagSimNao(valor: string | undefined): string {
+    return valor === 'SIM' ? 'SIM' : 'NÃO';
+  }
+
   convertToUppercase(controlName: string): void {
     const control = this.formulario.get(controlName);
     if (control) {
@@ -551,6 +564,14 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onCheckboxChangeEntregaSabado(valor: boolean) {
+    const entregaSabado = valor ? 'SIM' : 'NÃO';
+
+    this.formulario.patchValue({ entregaSabado: entregaSabado });
+
+    this.atualizarPrecoComExtras();
+  }
+
   onCheckboxChangeValorAjudante(checked: boolean) {
     const valor = checked ? 'SIM' : 'NÃO';
     this.formulario.patchValue({ ajudante: valor });
@@ -568,35 +589,44 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
 
     const volumeControl = this.formulario.get('volume');
     const volumeSelecionado = volumeControl?.value;
+    const entregaSabado = this.formulario.get('entregaSabado')?.value === 'SIM';
 
     switch (volumeSelecionado) {
       case 'CX-5m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoCx5')?.value) || 0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoCx5Sabado' : 'precoCx5')
+            ?.value,
+        );
         break;
       case 'CX-10m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoCx10')?.value) ||
-          0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoCx10Sabado' : 'precoCx10')
+            ?.value,
+        );
         break;
       case 'CX-15m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoCx15')?.value) ||
-          0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoCx15Sabado' : 'precoCx15')
+            ?.value,
+        );
         break;
       case 'LAV-5m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoLv5')?.value) || 0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoLv5Sabado' : 'precoLv5')
+            ?.value,
+        );
         break;
       case 'LAV-10m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoLv10')?.value) ||
-          0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoLv10Sabado' : 'precoLv10')
+            ?.value,
+        );
         break;
       case 'LAV-15m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoLv15')?.value) ||
-          0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoLv15Sabado' : 'precoLv15')
+            ?.value,
+        );
         break;
     }
 
@@ -793,6 +823,8 @@ private async emitirPedidoOfflineComImagemEImpressao(): Promise<void> {
 
     form.patchValue({
       exibirPreco,
+      entregaSabado:
+        form.get('entregaSabado')?.value === 'SIM' ? 'SIM' : 'NÃO',
       ajudante,
       adicional,
       valorAjudante,

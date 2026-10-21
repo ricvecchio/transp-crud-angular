@@ -63,6 +63,8 @@ export class PedidoResolver {
       precoLv5Sabado: '',
       precoLv10Sabado: '',
       precoLv15Sabado: '',
+      entregaSabado: 'NÃO',
+      exibirPreco: 'NÃO',
       ajudante: '',
       adicional: '',
       precoFinal: '',

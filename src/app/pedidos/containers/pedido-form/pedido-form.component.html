@@ -758,7 +758,20 @@
       <div class="row">
         <div class="col-md-1">
           <br />
+          <h6>Entrega Sábado?</h6>
+          <p>
+            <mat-checkbox
+              [checked]="formulario.get('entregaSabado')?.value === 'SIM'"
+              (change)="onCheckboxChangeEntregaSabado($event.checked)"
+            >
+              Sim
+            </mat-checkbox>
+          </p>
+        </div>
+        <div class="col-md-1">
+          <br />
           <h6>Exibir Preço?</h6>
+          <br />
           <p>
             <mat-checkbox
               [checked]="formulario.get('exibirPreco')?.value === 'SIM'"
@@ -792,7 +805,7 @@
             </mat-checkbox>
           </p>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-8">
           <br />
           <mat-form-field class="form-grid">
             <mat-label>Observações:</mat-label>
