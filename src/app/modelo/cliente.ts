@@ -28,8 +28,12 @@ export interface Cliente {
   cno: string;
   ie: string;
   mangueira: string;
-  valorAjudante: string;
-  valorAdicional: string;
+  valorAjudanteVuc: string;
+  valorAjudanteToco: string;
+  adicionalMangueira: string;
+  adicionalBombaGas: string;
+  valorAjudante?: string;
+  valorAdicional?: string;
   precoCx5: string;
   precoCx10: string;
   precoCx15: string;

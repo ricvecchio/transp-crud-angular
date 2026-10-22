@@ -28,8 +28,12 @@ export interface Pedido {
   cno: string;
   ie: string;
   mangueira: string;
-  valorAjudante: string;
-  valorAdicional: string;
+  valorAjudanteVuc: string;
+  valorAjudanteToco: string;
+  adicionalMangueira: string;
+  adicionalBombaGas: string;
+  valorAjudante?: string;
+  valorAdicional?: string;
   volume: string;
   precoCx5: string;
   precoCx10: string;
@@ -47,6 +51,8 @@ export interface Pedido {
   exibirPreco: string;
   ajudante: string;
   adicional: string;
+  ajudanteToco?: string;
+  bombaGas?: string;
   precoFinal: string;
   observacao: string;
   observacao2: string;

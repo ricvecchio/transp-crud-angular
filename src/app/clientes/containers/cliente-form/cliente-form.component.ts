@@ -156,12 +156,16 @@ export class ClienteFormComponent implements OnInit {
       cno: [cliente.cno],
       ie: [cliente.ie],
       mangueira: [cliente.mangueira],
-      valorAjudante: cliente.valorAjudante
-        ? this.formatarParaReais(cliente.valorAjudante)
-        : '80,00',
-      valorAdicional: cliente.valorAdicional
-        ? this.formatarParaReais(cliente.valorAdicional)
-        : '30,00',
+      valorAjudanteVuc: this.formatarParaReais(
+        cliente.valorAjudanteVuc || cliente.valorAjudante || '80,00',
+      ),
+      valorAjudanteToco: this.formatarParaReais(cliente.valorAjudanteToco),
+      adicionalMangueira: this.formatarParaReais(
+        cliente.adicionalMangueira || cliente.valorAdicional || '30,00',
+      ),
+      adicionalBombaGas: this.formatarParaReais(cliente.adicionalBombaGas),
+      valorAjudante: [''],
+      valorAdicional: [''],
       precoCx5: [this.formatarParaReais(cliente.precoCx5)],
       precoCx10: [this.formatarParaReais(cliente.precoCx10)],
       precoCx15: [this.formatarParaReais(cliente.precoCx15)],
@@ -187,8 +191,10 @@ export class ClienteFormComponent implements OnInit {
     this.formatarCampoCep();
 
     this.formatarCampos([
-      'valorAjudante',
-      'valorAdicional',
+      'valorAjudanteVuc',
+      'valorAjudanteToco',
+      'adicionalMangueira',
+      'adicionalBombaGas',
       'precoCx5',
       'precoCx10',
       'precoCx15',
@@ -502,6 +508,8 @@ export class ClienteFormComponent implements OnInit {
 
     this.formulario.patchValue({
       dataAtualizacaoCliente: dataFormatada,
+      valorAjudante: this.formulario.get('valorAjudanteVuc')?.value,
+      valorAdicional: this.formulario.get('adicionalMangueira')?.value,
     });
 
     const formValue = this.formulario.value;

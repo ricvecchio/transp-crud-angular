@@ -496,6 +496,18 @@
             />
           </mat-form-field>
         </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Inscrição Estadual:</mat-label>
+            <input
+              matInput
+              name="ie"
+              formControlName="ie"
+              tabindex="-1"
+              readonly="true"
+            />
+          </mat-form-field>
+        </div>
       </div>
 
       <div class="row">
@@ -525,18 +537,6 @@
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid" appearance="outline">
-            <mat-label>Inscrição Estadual:</mat-label>
-            <input
-              matInput
-              name="ie"
-              formControlName="ie"
-              tabindex="-1"
-              readonly="true"
-            />
-          </mat-form-field>
-        </div>
-        <div class="col-md-2">
-          <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Mangueira:</mat-label>
             <input
               matInput
@@ -549,11 +549,11 @@
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid" appearance="outline">
-            <mat-label>Valor Ajudante:</mat-label>
+            <mat-label>Valor Ajudante VUC:</mat-label>
             <input
               matInput
-              name="valorAjudante"
-              formControlName="valorAjudante"
+              name="valorAjudanteVuc"
+              formControlName="valorAjudanteVuc"
               tabindex="-1"
               readonly="true"
             />
@@ -561,11 +561,35 @@
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid" appearance="outline">
-            <mat-label>Valor Adicional:</mat-label>
+            <mat-label>Valor Ajudante TOCO:</mat-label>
             <input
               matInput
-              name="valorAdicional"
-              formControlName="valorAdicional"
+              name="valorAjudanteToco"
+              formControlName="valorAjudanteToco"
+              tabindex="-1"
+              readonly="true"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-1 campo-metade">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Ad. Mangueira:</mat-label>
+            <input
+              matInput
+              name="adicionalMangueira"
+              formControlName="adicionalMangueira"
+              tabindex="-1"
+              readonly="true"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-1 campo-metade">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Ad. Bomba Gás:</mat-label>
+            <input
+              matInput
+              name="adicionalBombaGas"
+              formControlName="adicionalBombaGas"
               tabindex="-1"
               readonly="true"
             />
@@ -783,7 +807,7 @@
         </div>
         <div class="col-md-1">
           <br />
-          <h6>Valor Ajudante?</h6>
+          <h6>Valor Ajudante VUC?</h6>
           <p>
             <mat-checkbox
               [checked]="formulario.value.ajudante === 'SIM'"
@@ -795,7 +819,19 @@
         </div>
         <div class="col-md-1">
           <br />
-          <h6>Valor Adicional?</h6>
+          <h6>Valor Ajudante TOCO?</h6>
+          <p>
+            <mat-checkbox
+              [checked]="formulario.value.ajudanteToco === 'SIM'"
+              (change)="onCheckboxChangeValorAjudanteToco($event.checked)"
+            >
+              Sim
+            </mat-checkbox>
+          </p>
+        </div>
+        <div class="col-md-1">
+          <br />
+          <h6>Adicional Mangueira?</h6>
           <p>
             <mat-checkbox
               [checked]="formulario.value.adicional === 'SIM'"
@@ -805,7 +841,19 @@
             </mat-checkbox>
           </p>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-1">
+          <br />
+          <h6>Adicional Bomba Gás?</h6>
+          <p>
+            <mat-checkbox
+              [checked]="formulario.value.bombaGas === 'SIM'"
+              (change)="onCheckboxChangeAdicionalBombaGas($event.checked)"
+            >
+              Sim
+            </mat-checkbox>
+          </p>
+        </div>
+        <div class="col-md-6">
           <br />
           <mat-form-field class="form-grid">
             <mat-label>Observações:</mat-label>
@@ -964,21 +1012,41 @@
       </div>
 
       <div class="d-flex">
-        <div class="col-md-4 d-flex align-items-center">
+        <div class="col-md-6 d-flex align-items-center">
           <div class="container-previa-texto-fixo">
-            <b class="texto-azul-escuro">AJUDANTE: </b>
+            <b class="texto-azul-escuro">AJUDANTE VUC: </b>
           </div>
           <div class="container-previa-texto">
             {{ this.formulario.get("ajudante")?.value }}
           </div>
         </div>
 
-        <div class="col-md-4 d-flex align-items-center">
+        <div class="col-md-6 d-flex align-items-center">
           <div class="container-previa-texto-fixo">
-            <b class="texto-azul-escuro">ADICIONAL: </b>
+            <b class="texto-azul-escuro">AJUDANTE TOCO: </b>
+          </div>
+          <div class="container-previa-texto">
+            {{ this.formulario.get("ajudanteToco")?.value }}
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex">
+        <div class="col-md-6 d-flex align-items-center">
+          <div class="container-previa-texto-fixo">
+            <b class="texto-azul-escuro">AD. MANGUEIRA: </b>
           </div>
           <div class="container-previa-texto">
             {{ this.formulario.get("adicional")?.value }}
+          </div>
+        </div>
+
+        <div class="col-md-6 d-flex align-items-center">
+          <div class="container-previa-texto-fixo">
+            <b class="texto-azul-escuro">AD. BOMBA GÁS: </b>
+          </div>
+          <div class="container-previa-texto">
+            {{ this.formulario.get("bombaGas")?.value }}
           </div>
         </div>
       </div>

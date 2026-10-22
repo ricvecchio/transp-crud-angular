@@ -304,8 +304,11 @@ export class ClientesListaComponent implements OnInit {
           cno: cliente.cno,
           ie: cliente.ie,
           mangueira: cliente.mangueira,
-          valorAjudante: cliente.valorAjudante,
-          valorAdicional: cliente.valorAdicional,
+          valorAjudanteVuc: cliente.valorAjudanteVuc || cliente.valorAjudante,
+          valorAjudanteToco: cliente.valorAjudanteToco,
+          adicionalMangueira:
+            cliente.adicionalMangueira || cliente.valorAdicional,
+          adicionalBombaGas: cliente.adicionalBombaGas,
           precoCx5: cliente.precoCx5,
           precoCx10: cliente.precoCx10,
           precoCx15: cliente.precoCx15,
