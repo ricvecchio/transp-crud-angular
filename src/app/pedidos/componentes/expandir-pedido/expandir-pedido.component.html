@@ -359,7 +359,7 @@
             />
           </mat-form-field>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-8">
           <mat-form-field class="form-grid" appearance="outline">
             <mat-label>Informações Adicionais do Faturamento:</mat-label>
             <input
@@ -368,6 +368,18 @@
               matInput
               name="infoPagamento"
               formControlName="infoPagamento"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Inscrição Estadual:</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="ie"
+              formControlName="ie"
             />
           </mat-form-field>
         </div>
@@ -400,19 +412,7 @@
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid" appearance="outline">
-            <mat-label>Inscrição Estadual:</mat-label>
-            <input
-              tabindex="-1"
-              readonly="true"
-              matInput
-              name="ie"
-              formControlName="ie"
-            />
-          </mat-form-field>
-        </div>
-        <div class="col-md-2">
-          <mat-form-field class="form-grid" appearance="outline">
-            <mat-label>Mangueira: Metros</mat-label>
+            <mat-label>Mangueira:</mat-label>
             <input
               tabindex="-1"
               readonly="true"
@@ -424,13 +424,49 @@
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid" appearance="outline">
-            <mat-label>Volume:</mat-label>
+            <mat-label>Valor Ajudante VUC:</mat-label>
             <input
               tabindex="-1"
               readonly="true"
               matInput
-              name="volume"
-              formControlName="volume"
+              name="valorAjudanteVuc"
+              formControlName="valorAjudanteVuc"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Valor Ajudante TOCO:</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="valorAjudanteToco"
+              formControlName="valorAjudanteToco"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-1 campo-metade">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Ad. Mangueira:</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="adicionalMangueira"
+              formControlName="adicionalMangueira"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-1 campo-metade">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Ad. Bomba Gás:</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="adicionalBombaGas"
+              formControlName="adicionalBombaGas"
             />
           </mat-form-field>
         </div>
@@ -511,10 +547,86 @@
         </div>
       </div>
 
+      <h6><strong>Entregas aos sábados:</strong></h6>
       <div class="row">
         <div class="col-md-2">
           <mat-form-field class="form-grid" appearance="outline">
-            <mat-label>Ajudante:</mat-label>
+            <mat-label>Preço cx-5m³</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoCx5Sabado"
+              formControlName="precoCx5Sabado"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Preço cx-10m³</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoCx10Sabado"
+              formControlName="precoCx10Sabado"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Preço cx-15m³</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoCx15Sabado"
+              formControlName="precoCx15Sabado"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Preço lav-5m³</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoLv5Sabado"
+              formControlName="precoLv5Sabado"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Preço lav-10m³</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoLv10Sabado"
+              formControlName="precoLv10Sabado"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Preço lav-15m³</mat-label>
+            <input
+              tabindex="-1"
+              readonly="true"
+              matInput
+              name="precoLv15Sabado"
+              formControlName="precoLv15Sabado"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-2">
+          <mat-form-field class="form-grid" appearance="outline">
+            <mat-label>Ajudante VUC:</mat-label>
             <input
               tabindex="-1"
               readonly="true"
@@ -526,19 +638,19 @@
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid" appearance="outline">
-            <mat-label>Valor Ajudante:</mat-label>
+            <mat-label>Ajudante TOCO:</mat-label>
             <input
               tabindex="-1"
               readonly="true"
               matInput
-              name="valorAjudante"
-              formControlName="valorAjudante"
+              name="ajudanteToco"
+              formControlName="ajudanteToco"
             />
           </mat-form-field>
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid" appearance="outline">
-            <mat-label>Adicional:</mat-label>
+            <mat-label>Ad. Mangueira:</mat-label>
             <input
               tabindex="-1"
               readonly="true"
@@ -550,13 +662,13 @@
         </div>
         <div class="col-md-2">
           <mat-form-field class="form-grid" appearance="outline">
-            <mat-label>Valor Adicional:</mat-label>
+            <mat-label>Ad. Bomba Gás:</mat-label>
             <input
               tabindex="-1"
               readonly="true"
               matInput
-              name="valorAdicional"
-              formControlName="valorAdicional"
+              name="bombaGas"
+              formControlName="bombaGas"
             />
           </mat-form-field>
         </div>

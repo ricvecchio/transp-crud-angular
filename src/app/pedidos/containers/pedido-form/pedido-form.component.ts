@@ -126,8 +126,14 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
       cno: [pedido.cno],
       ie: [pedido.ie],
       mangueira: [pedido.mangueira],
-      valorAjudante: [pedido.valorAjudante],
-      valorAdicional: [pedido.valorAdicional],
+      valorAjudanteVuc: [pedido.valorAjudanteVuc || pedido.valorAjudante || ''],
+      valorAjudanteToco: [pedido.valorAjudanteToco || ''],
+      adicionalMangueira: [
+        pedido.adicionalMangueira || pedido.valorAdicional || '',
+      ],
+      adicionalBombaGas: [pedido.adicionalBombaGas || ''],
+      valorAjudante: [pedido.valorAjudanteVuc || pedido.valorAjudante || ''],
+      valorAdicional: [pedido.adicionalMangueira || pedido.valorAdicional || ''],
       volume: [pedido.volume],
       precoCx5: [this.formatarParaReais(pedido.precoCx5)],
       precoCx10: [this.formatarParaReais(pedido.precoCx10)],
@@ -135,10 +141,19 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
       precoLv5: [this.formatarParaReais(pedido.precoLv5)],
       precoLv10: [this.formatarParaReais(pedido.precoLv10)],
       precoLv15: [this.formatarParaReais(pedido.precoLv15)],
+      precoCx5Sabado: [this.formatarParaReais(pedido.precoCx5Sabado)],
+      precoCx10Sabado: [this.formatarParaReais(pedido.precoCx10Sabado)],
+      precoCx15Sabado: [this.formatarParaReais(pedido.precoCx15Sabado)],
+      precoLv5Sabado: [this.formatarParaReais(pedido.precoLv5Sabado)],
+      precoLv10Sabado: [this.formatarParaReais(pedido.precoLv10Sabado)],
+      precoLv15Sabado: [this.formatarParaReais(pedido.precoLv15Sabado)],
       precoEscolhido: [''],
-      exibirPreco: ['NÃO'],
-      ajudante: 'NÃO',
-      adicional: 'NÃO',
+      entregaSabado: [this.normalizarFlagSimNao(pedido.entregaSabado)],
+      exibirPreco: [this.normalizarFlagSimNao(pedido.exibirPreco)],
+      ajudante: [this.normalizarFlagSimNao(pedido.ajudante)],
+      adicional: [this.normalizarFlagSimNao(pedido.adicional)],
+      ajudanteToco: [this.normalizarFlagSimNao(pedido.ajudanteToco)],
+      bombaGas: [this.normalizarFlagSimNao(pedido.bombaGas)],
       precoFinal: [this.formatarParaReais(pedido.precoFinal)],
       observacao: [pedido.observacao],
       observacao2: [pedido.observacao2],
@@ -180,8 +195,14 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
           cno: pedido.cno,
           ie: pedido.ie,
           mangueira: pedido.mangueira,
-          valorAjudante: pedido.valorAjudante,
-          valorAdicional: pedido.valorAdicional,
+          valorAjudanteVuc: pedido.valorAjudanteVuc || pedido.valorAjudante || '',
+          valorAjudanteToco: pedido.valorAjudanteToco || '',
+          adicionalMangueira:
+            pedido.adicionalMangueira || pedido.valorAdicional || '',
+          adicionalBombaGas: pedido.adicionalBombaGas || '',
+          valorAjudante: pedido.valorAjudanteVuc || pedido.valorAjudante || '',
+          valorAdicional:
+            pedido.adicionalMangueira || pedido.valorAdicional || '',
           volume: pedido.volume,
           precoCx5: pedido.precoCx5,
           precoCx10: pedido.precoCx10,
@@ -189,8 +210,22 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
           precoLv5: pedido.precoLv5,
           precoLv10: pedido.precoLv10,
           precoLv15: pedido.precoLv15,
-          ajudante: 'NÃO',
-          adicional: 'NÃO',
+          precoCx5Sabado: pedido.precoCx5Sabado,
+          precoCx10Sabado: pedido.precoCx10Sabado,
+          precoCx15Sabado: pedido.precoCx15Sabado,
+          precoLv5Sabado: pedido.precoLv5Sabado,
+          precoLv10Sabado: pedido.precoLv10Sabado,
+          precoLv15Sabado: pedido.precoLv15Sabado,
+          entregaSabado: this.normalizarFlagSimNao(
+            params['entregaSabado'] || pedido.entregaSabado,
+          ),
+          exibirPreco: this.normalizarFlagSimNao(
+            params['exibirPreco'] || pedido.exibirPreco,
+          ),
+          ajudante: this.normalizarFlagSimNao(pedido.ajudante),
+          adicional: this.normalizarFlagSimNao(pedido.adicional),
+          ajudanteToco: this.normalizarFlagSimNao(pedido.ajudanteToco),
+          bombaGas: this.normalizarFlagSimNao(pedido.bombaGas),
           precoFinal: pedido.precoFinal,
           observacao: pedido.observacao,
           observacao2: pedido.observacao2,
@@ -232,14 +267,18 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
           cno: cliente.cno,
           ie: cliente.ie,
           mangueira: cliente.mangueira,
-          valorAjudante: cliente.valorAjudante,
-          valorAdicional: cliente.valorAdicional,
           precoCx5: cliente.precoCx5,
           precoCx10: cliente.precoCx10,
           precoCx15: cliente.precoCx15,
           precoLv5: cliente.precoLv5,
           precoLv10: cliente.precoLv10,
           precoLv15: cliente.precoLv15,
+          precoCx5Sabado: cliente.precoCx5Sabado,
+          precoCx10Sabado: cliente.precoCx10Sabado,
+          precoCx15Sabado: cliente.precoCx15Sabado,
+          precoLv5Sabado: cliente.precoLv5Sabado,
+          precoLv10Sabado: cliente.precoLv10Sabado,
+          precoLv15Sabado: cliente.precoLv15Sabado,
           observacao: cliente.observacao,
           dataAtualizacaoCliente: cliente.dataAtualizacaoCliente,
         });
@@ -253,6 +292,12 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
       'precoLv5',
       'precoLv10',
       'precoLv15',
+      'precoCx5Sabado',
+      'precoCx10Sabado',
+      'precoCx15Sabado',
+      'precoLv5Sabado',
+      'precoLv10Sabado',
+      'precoLv15Sabado',
       'precoFinal',
     ]);
 
@@ -316,8 +361,16 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
       cno: pedidoParams.cno || '',
       ie: pedidoParams.ie || '',
       mangueira: pedidoParams.mangueira || '',
-      valorAjudante: pedidoParams.valorAjudante || '',
-      valorAdicional: pedidoParams.valorAdicional || '',
+      valorAjudanteVuc:
+        pedidoParams.valorAjudanteVuc || pedidoParams.valorAjudante || '',
+      valorAjudanteToco: pedidoParams.valorAjudanteToco || '',
+      adicionalMangueira:
+        pedidoParams.adicionalMangueira || pedidoParams.valorAdicional || '',
+      adicionalBombaGas: pedidoParams.adicionalBombaGas || '',
+      valorAjudante:
+        pedidoParams.valorAjudanteVuc || pedidoParams.valorAjudante || '',
+      valorAdicional:
+        pedidoParams.adicionalMangueira || pedidoParams.valorAdicional || '',
       volume: pedidoParams.volume || '',
       precoCx5: pedidoParams.precoCx5 || '',
       precoCx10: pedidoParams.precoCx10 || '',
@@ -325,8 +378,18 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
       precoLv5: pedidoParams.precoLv5 || '',
       precoLv10: pedidoParams.precoLv10 || '',
       precoLv15: pedidoParams.precoLv15 || '',
+      precoCx5Sabado: pedidoParams.precoCx5Sabado || '',
+      precoCx10Sabado: pedidoParams.precoCx10Sabado || '',
+      precoCx15Sabado: pedidoParams.precoCx15Sabado || '',
+      precoLv5Sabado: pedidoParams.precoLv5Sabado || '',
+      precoLv10Sabado: pedidoParams.precoLv10Sabado || '',
+      precoLv15Sabado: pedidoParams.precoLv15Sabado || '',
+      entregaSabado: pedidoParams.entregaSabado || 'NÃO',
+      exibirPreco: pedidoParams.exibirPreco || 'NÃO',
       ajudante: pedidoParams.ajudante || '',
       adicional: pedidoParams.adicional || '',
+      ajudanteToco: pedidoParams.ajudanteToco || '',
+      bombaGas: pedidoParams.bombaGas || '',
       precoFinal: pedidoParams.precoFinal || '',
       observacao: pedidoParams.observacao || '',
       observacao2: pedidoParams.observacao2 || '',
@@ -367,6 +430,12 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
       cno: clienteParams.cno || '',
       ie: clienteParams.ie || '',
       mangueira: clienteParams.mangueira || '',
+      valorAjudanteVuc:
+        clienteParams.valorAjudanteVuc || clienteParams.valorAjudante || '',
+      valorAjudanteToco: clienteParams.valorAjudanteToco || '',
+      adicionalMangueira:
+        clienteParams.adicionalMangueira || clienteParams.valorAdicional || '',
+      adicionalBombaGas: clienteParams.adicionalBombaGas || '',
       valorAjudante: clienteParams.valorAjudante || '',
       valorAdicional: clienteParams.valorAdicional || '',
       precoCx5: clienteParams.precoCx5 || '',
@@ -375,6 +444,12 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
       precoLv5: clienteParams.precoLv5 || '',
       precoLv10: clienteParams.precoLv10 || '',
       precoLv15: clienteParams.precoLv15 || '',
+      precoCx5Sabado: clienteParams.precoCx5Sabado || '',
+      precoCx10Sabado: clienteParams.precoCx10Sabado || '',
+      precoCx15Sabado: clienteParams.precoCx15Sabado || '',
+      precoLv5Sabado: clienteParams.precoLv5Sabado || '',
+      precoLv10Sabado: clienteParams.precoLv10Sabado || '',
+      precoLv15Sabado: clienteParams.precoLv15Sabado || '',
       observacao: clienteParams.observacao || '',
       dataAtualizacaoCliente: clienteParams.dataAtualizacaoCliente || '',
     };
@@ -495,6 +570,10 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
     });
   }
 
+  private normalizarFlagSimNao(valor: string | undefined): string {
+    return valor === 'SIM' ? 'SIM' : 'NÃO';
+  }
+
   convertToUppercase(controlName: string): void {
     const control = this.formulario.get(controlName);
     if (control) {
@@ -515,6 +594,14 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onCheckboxChangeEntregaSabado(valor: boolean) {
+    const entregaSabado = valor ? 'SIM' : 'NÃO';
+
+    this.formulario.patchValue({ entregaSabado: entregaSabado });
+
+    this.atualizarPrecoComExtras();
+  }
+
   onCheckboxChangeValorAjudante(checked: boolean) {
     const valor = checked ? 'SIM' : 'NÃO';
     this.formulario.patchValue({ ajudante: valor });
@@ -527,40 +614,61 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
     this.atualizarPrecoComExtras();
   }
 
+  onCheckboxChangeValorAjudanteToco(checked: boolean) {
+    const valor = checked ? 'SIM' : 'NÃO';
+    this.formulario.patchValue({ ajudanteToco: valor });
+    this.atualizarPrecoComExtras();
+  }
+
+  onCheckboxChangeAdicionalBombaGas(checked: boolean) {
+    const valor = checked ? 'SIM' : 'NÃO';
+    this.formulario.patchValue({ bombaGas: valor });
+    this.atualizarPrecoComExtras();
+  }
+
   atualizarPrecoComExtras() {
     let precoBase = 0;
 
     const volumeControl = this.formulario.get('volume');
     const volumeSelecionado = volumeControl?.value;
+    const entregaSabado = this.formulario.get('entregaSabado')?.value === 'SIM';
 
     switch (volumeSelecionado) {
       case 'CX-5m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoCx5')?.value) || 0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoCx5Sabado' : 'precoCx5')
+            ?.value,
+        );
         break;
       case 'CX-10m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoCx10')?.value) ||
-          0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoCx10Sabado' : 'precoCx10')
+            ?.value,
+        );
         break;
       case 'CX-15m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoCx15')?.value) ||
-          0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoCx15Sabado' : 'precoCx15')
+            ?.value,
+        );
         break;
       case 'LAV-5m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoLv5')?.value) || 0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoLv5Sabado' : 'precoLv5')
+            ?.value,
+        );
         break;
       case 'LAV-10m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoLv10')?.value) ||
-          0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoLv10Sabado' : 'precoLv10')
+            ?.value,
+        );
         break;
       case 'LAV-15m³':
-        precoBase =
-          this.converterParaNumero(this.formulario.get('precoLv15')?.value) ||
-          0;
+        precoBase = this.converterParaNumero(
+          this.formulario.get(entregaSabado ? 'precoLv15Sabado' : 'precoLv15')
+            ?.value,
+        );
         break;
     }
 
@@ -572,20 +680,34 @@ export class PedidoFormComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const temAjudante = this.formulario.get('ajudante')?.value === 'SIM';
-    const temAdicional = this.formulario.get('adicional')?.value === 'SIM';
+    const temAjudanteVuc = this.formulario.get('ajudante')?.value === 'SIM';
+    const temAjudanteToco =
+      this.formulario.get('ajudanteToco')?.value === 'SIM';
+    const temAdicionalMangueira =
+      this.formulario.get('adicional')?.value === 'SIM';
+    const temAdicionalBombaGas =
+      this.formulario.get('bombaGas')?.value === 'SIM';
 
-    const valorAjudante =
-      this.converterParaNumero(this.formulario.get('valorAjudante')?.value) ||
+    const valorAjudanteVuc =
+      this.converterParaNumero(this.formulario.get('valorAjudanteVuc')?.value) ||
       0;
-    const valorAdicional =
-      this.converterParaNumero(this.formulario.get('valorAdicional')?.value) ||
+    const valorAjudanteToco =
+      this.converterParaNumero(this.formulario.get('valorAjudanteToco')?.value) ||
+      0;
+    const adicionalMangueira =
+      this.converterParaNumero(this.formulario.get('adicionalMangueira')?.value) ||
+      0;
+    const adicionalBombaGas =
+      this.converterParaNumero(this.formulario.get('adicionalBombaGas')?.value) ||
       0;
 
-    const adicionalAjudante = temAjudante ? valorAjudante : 0;
-    const adicionalAdicional = temAdicional ? valorAdicional : 0;
+    const somaExtras =
+      (temAjudanteVuc ? valorAjudanteVuc : 0) +
+      (temAjudanteToco ? valorAjudanteToco : 0) +
+      (temAdicionalMangueira ? adicionalMangueira : 0) +
+      (temAdicionalBombaGas ? adicionalBombaGas : 0);
 
-    const precoFinal = precoBase + adicionalAjudante + adicionalAdicional;
+    const precoFinal = precoBase + somaExtras;
 
     const precoFormatado = precoFinal.toLocaleString('pt-BR', {
       style: 'currency',
@@ -722,16 +844,29 @@ private async emitirPedidoOfflineComImagemEImpressao(): Promise<void> {
       Date.now() - 3 * 60 * 60 * 1000,
     ).toISOString();
 
-    const valorAjudante = this.converterParaNumero(
-      this.formulario.get('valorAjudante')?.value,
+    const valorAjudanteVuc = this.converterParaNumero(
+      this.formulario.get('valorAjudanteVuc')?.value,
     );
-    const valorAdicional = this.converterParaNumero(
-      this.formulario.get('valorAdicional')?.value,
+    const valorAjudanteToco = this.converterParaNumero(
+      this.formulario.get('valorAjudanteToco')?.value,
     );
+    const adicionalMangueira = this.converterParaNumero(
+      this.formulario.get('adicionalMangueira')?.value,
+    );
+    const adicionalBombaGas = this.converterParaNumero(
+      this.formulario.get('adicionalBombaGas')?.value,
+    );
+
+    const valorAjudante = valorAjudanteVuc + valorAjudanteToco;
+    const valorAdicional = adicionalMangueira + adicionalBombaGas;
 
     this.formulario.patchValue({
       status,
       dataAtualizacaoPedido: dataFormatada,
+      valorAjudanteVuc,
+      valorAjudanteToco,
+      adicionalMangueira,
+      adicionalBombaGas,
       valorAjudante,
       valorAdicional,
     });
@@ -744,21 +879,42 @@ private async emitirPedidoOfflineComImagemEImpressao(): Promise<void> {
       form.get('exibirPreco')?.value === 'SIM' ? 'SIM' : 'NÃO';
     const ajudante = form.get('ajudante')?.value === 'SIM' ? 'SIM' : 'NÃO';
     const adicional = form.get('adicional')?.value === 'SIM' ? 'SIM' : 'NÃO';
+    const ajudanteToco =
+      form.get('ajudanteToco')?.value === 'SIM' ? 'SIM' : 'NÃO';
+    const bombaGas = form.get('bombaGas')?.value === 'SIM' ? 'SIM' : 'NÃO';
 
-    const valorAjudante =
+    const valorAjudanteVuc =
       ajudante === 'SIM'
-        ? this.converterParaNumero(form.get('valorAjudante')?.value)
+        ? this.converterParaNumero(form.get('valorAjudanteVuc')?.value)
+        : 0;
+    const valorAjudanteToco =
+      ajudanteToco === 'SIM'
+        ? this.converterParaNumero(form.get('valorAjudanteToco')?.value)
+        : 0;
+    const adicionalMangueira =
+      adicional === 'SIM'
+        ? this.converterParaNumero(form.get('adicionalMangueira')?.value)
+        : 0;
+    const adicionalBombaGas =
+      bombaGas === 'SIM'
+        ? this.converterParaNumero(form.get('adicionalBombaGas')?.value)
         : 0;
 
-    const valorAdicional =
-      adicional === 'SIM'
-        ? this.converterParaNumero(form.get('valorAdicional')?.value)
-        : 0;
+    const valorAjudante = valorAjudanteVuc + valorAjudanteToco;
+    const valorAdicional = adicionalMangueira + adicionalBombaGas;
 
     form.patchValue({
       exibirPreco,
+      entregaSabado:
+        form.get('entregaSabado')?.value === 'SIM' ? 'SIM' : 'NÃO',
       ajudante,
       adicional,
+      ajudanteToco,
+      bombaGas,
+      valorAjudanteVuc,
+      valorAjudanteToco,
+      adicionalMangueira,
+      adicionalBombaGas,
       valorAjudante,
       valorAdicional,
     });

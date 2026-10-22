@@ -25,6 +25,25 @@ h5 {
   display: grid;
 }
 
+.campo-metade {
+  min-width: 0;
+}
+
+.campo-metade .mat-mdc-form-field {
+  width: 100%;
+  min-width: 0;
+}
+
+:host ::ng-deep .campo-metade .mat-mdc-form-field-infix {
+  width: auto;
+  min-width: 0;
+}
+
+:host ::ng-deep .campo-metade .mdc-floating-label,
+:host ::ng-deep .campo-metade .mat-mdc-floating-label {
+  font-size: 0.85rem;
+}
+
 .acoes {
   display: flex;
   justify-content: center;
